@@ -1,0 +1,104 @@
+<include file="Public:header" />
+<include file="Setting:sub" />
+
+
+<div class="pad_lr_10">
+	<form id="info_form" action="{:u('setting/edit')}" method="post" enctype="multipart/form-data">
+		<table width="100%" class="table_form">
+
+				<th>微信小程序线上版本 :</th>
+				<td>
+					<select name="setting[wx_version]" class="input-text radius valid"
+						style="width: 120px; height: 20px;">
+						<option <if condition="C('yh_wx_version') eq '1.0.0'">selected="selected"</if>
+							value="1.0.0">审核版本</option>
+						<option <if condition="C('yh_wx_version') eq '2.0.0'">selected="selected"</if>
+							value="2.0.0">2.0.0</option>
+						<option <if condition="C('yh_wx_version') eq '2.1.0'">selected="selected"</if>
+							value="2.1.0">2.1.0</option>
+						<option <if condition="C('yh_wx_version') eq '2.2.0'">selected="selected"</if>
+							value="2.2.0">2.2.0</option>
+					
+					</select>
+					<span class="gray"> 小程序审核通过并且发布后，再选择对应的版本</span>
+				</td>
+			</tr>
+			<tr>
+				<th width="10%">微信小程序AppID :</th>
+				<td width="40%">
+					<input type="text" name="setting[wechat_appid]" class="input-text" size="45"
+						value="{:C('yh_wechat_appid')}">
+					<span class="gray ml10">微信小程序AppID设置教程 <a href="https://www.tuiquanke.com/view/32250685033"
+							target="_blank">点这里</a> </span>
+				</td>
+			</tr>
+
+			<tr>
+				<th width="10%">微信小程序appSecret :</th>
+				<td width="40%">
+					<input type="text" name="setting[wechat_secret]" class="input-text" size="45"
+						value="{:C('yh_wechat_secret')}">
+				</td>
+			</tr>
+
+			<tr>
+				<th width="10%">饿了么小程序AppID :</th>
+				<td width="40%">
+					<input type="text" name="setting[elmappid]" class="input-text" size="45"
+						value="{:C('yh_elmappid')?:'wxece3a9a4c82f58c9'}">
+					<span class="gray ml10">饿了么微信小程序Appid和路径获取教程 <a href="https://www.tuiquanke.com/view/99251927978"
+							target="_blank">点这里</a> </span>
+				</td>
+			</tr>
+
+
+			<tr>
+				<th>百度小程序线上版本 :</th>
+				<td>
+					<select name="setting[bd_version]" class="input-text radius valid"
+						style="width: 120px; height: 20px;">
+						<option <if condition="C('yh_bd_version') eq '1.0.0'">selected="selected"</if>
+							value="1.0.0">审核版本</option>
+						<option <if condition="C('yh_bd_version') eq '2.0.0'">selected="selected"</if>
+							value="2.0.0">2.0.0</option>
+						<option <if condition="C('yh_bd_version') eq '2.1.0'">selected="selected"</if>
+							value="2.1.0">2.1.0</option>
+							<option <if condition="C('yh_bd_version') eq '2.2.0'">selected="selected"</if>
+								value="2.2.0">2.2.0</option>
+					</select>
+					<span class="gray"> 小程序审核通过并且发布后，再选择对应的版本</span>
+				</td>
+			</tr>
+			<tr>
+				<th width="10%">百度小程序AppKey :</th>
+				<td width="40%">
+					<input type="text" name="setting[bd_appid]" class="input-text" size="45"
+						value="{:C('yh_bd_appid')}">
+					<span class="gray ml10">百度小程序AppKey获取教程 <a href="https://www.tuiquanke.com/view/29272282739"
+							target="_blank">点这里</a> </span>
+				</td>
+			</tr>
+
+			<tr>
+				<th width="10%">百度小程序AppSecret :</th>
+				<td width="40%">
+					<input type="text" name="setting[bd_secret]" class="input-text" size="45"
+						value="{:C('yh_bd_secret')}">
+				</td>
+			</tr>
+
+
+			<tr>
+				<th></th>
+				<td><input type="hidden" name="menuid" value="{$menuid}" />
+					<input type="hidden" name="setting[app_kehuduan]" value="{:C('yh_app_kehuduan')}" />
+					<input type="submit" class="smt mr10" value="{:L('submit')}" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<include file="Public:footer" />
+
+</body>
+</html>

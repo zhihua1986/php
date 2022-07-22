@@ -1,0 +1,132 @@
+<!--添加栏目-->
+<div class="dialog_content col_tab">
+<form id="info_form" action="{:U('itemscate/add')}" method="post">
+	<ul class="J_tabs tab_but cu_li">
+		<li class="current">基本设置</li>
+		<!--<li>特殊设置</li>-->
+		<li>SEO设置</li>
+		<!--<li>分类图标</li>-->
+	</ul>
+	<div class="J_panes">
+        <div class="content_list pad_10">
+	<table width="100%" class="table_form">
+		<tr> 
+			<th width="100">{:L('item_cate_parent')} :</th>
+			<td>
+				<select class="J_cate_select mr10" data-pid="0" data-uri="{:U('itemscate/ajax_getchilds')}" data-selected="{$spid}"></select>
+				<input type="hidden" name="pid" id="J_cate_id" />
+			</td>
+		</tr>
+		<tr>
+			<th>{:L('item_cate_name')} :</th>
+			<td>
+				<input type="text" name="name" id="J_name" class="input-text" size="20">
+			</td>
+		</tr>
+		<tr>
+			<th>淘宝联盟分类ID :</th>
+			<td>
+				<input placeholder="如 30" type="text" required="required" name="ali_id" id="ali_id" class="input-text" size="20">
+				<a href="https://www.tuiquanke.com/view/23272654731" target="_blank">淘宝分类ID大全</a>
+				<br/>注意：这里ID只能填一个数字，不能出现任何符号。
+			</td>
+		</tr>
+			<tr>
+			<th>图标:</th>
+			<td><input type="text" name="remark" id="J_cate_img" placeholder="图片地址必须包含http://或者 https://" class="input-text fl mr10" style="width:300px" value=""></td>
+            <td></td>
+			<td>
+		</td>
+		</tr>
+		<tr>
+			<th>显示 :</th>
+			<td>
+				<label><input type="radio" name="status" value="0" > 不显示</label>&nbsp;&nbsp;
+				<label><input type="radio" name="status" value="1" checked> 显示</label>
+			</td>
+		</tr>
+<input type="hidden" name="cateimg" value="1" />
+<input type="hidden" name="tags" value="1" />
+<input type="hidden" name="shop_type" value="1" />
+<input type="hidden" name="add_time" value="{:time()}" />
+	</table>
+	</div>
+	
+
+	<div class="content_list pad_10 hidden">
+	<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+		<tr>
+			<th width="100">{:L('seo_title')} :</th>
+			<td><input type="text" name="seo_title" class="input-text" style="width:300px;"></td>
+		</tr>
+		<tr>
+			<th>{:L('seo_keys')} :</th>
+			<td><input type="text" name="seo_keys" class="input-text" style="width:300px;"></td>
+		</tr>
+		<tr>
+			<th>{:L('seo_desc')} :</th>
+			<td><textarea name="seo_desc" style="width:295px; height:50px;"></textarea></td>
+		</tr>
+	</table>
+	</div>
+
+        </div>
+	</form>
+</div>
+<script>
+$(function(){
+	$('ul.J_tabs').tabs('div.J_panes > div');
+	$.formValidator.initConfig({formid:"info_form",autotip:true});
+	$('#J_name').formValidator({onshow:lang.please_input+lang.items_cate_name,onfocus:lang.please_input+lang.items_cate_name}).inputValidator({min:1,onerror:lang.please_input+lang.items_cate_name});
+	
+	$('#info_form').ajaxForm({success:complate, dataType:'json'});
+	function complate(result){
+		if(result.status == 1){
+			$.dialog.get(result.dialog).close();
+			$.yhxia.tip({content:result.msg});
+			window.location.reload();
+		} else {
+			$.yhxia.tip({content:result.msg, icon:'alert'});
+		}
+	}
+	//分类联动
+	$('.J_cate_select').cate_select();
+});
+</script>
+<script src="__STATIC__/js/fileuploader.js"></script>
+<script type="text/javascript">
+$(function(){
+    var upload = new qq.FileUploaderBasic({
+    	allowedExtensions: ['jpg','gif','png'],
+        button: document.getElementById('J_cate_upload_img'),
+        multiple: false,
+        action: "{:U('itemscate/ajax_upload')}",
+        inputName: 'img',
+        forceMultipart: true, //用$_FILES
+        messages: {
+        	typeError: lang.upload_type_error,
+        	sizeError: lang.upload_size_error,
+        	minSizeError: lang.upload_minsize_error,
+        	emptyError: lang.upload_empty_error,
+        	noFilesError: lang.upload_nofile_error,
+        	onLeave: lang.upload_onLeave
+        },
+        showMessage: function(message){
+        	$.yhxia.tip({content:message, icon:'error'});
+        },
+        onSubmit: function(id, fileName){
+        	$('#J_cate_upload_img').addClass('btn_disabled').find('span').text(lang.uploading);
+        },
+        onComplete: function(id, fileName, result){
+        	$('#J_cate_upload_img').removeClass('btn_disabled').find('span').text(lang.upload);
+		if(result.status == '1'){
+            		$('#show_cate_J_img').attr('src',result.data);
+        		$('#J_cate_img').val(result.data);
+        	}else{
+        		$.yhxia.tip({content:result.msg, icon:'error'});
+        	}
+        }
+    });
+    
+});
+</script>

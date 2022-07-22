@@ -1,0 +1,324 @@
+<include file="Public:meta" />
+<style>
+.swiper-container{position:fixed;top:20px;left:0;right:0;bottom:0; z-index: -100; max-width: 750px;}
+</style>
+		<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+		   <form action="{:U('pdd/index')}" id="so" method="get">
+		   <div class="pin-top">
+				<!--<a href="javascript:history.go(-1)" class="pin-top-back c-white"><i class="iconfont tqk-fanhui"></i></a>-->
+				<div class="pin-top-form">
+					<div class="pin-top-group">
+						<i class="iconfont tqk-search c-666 pin-top-icon"></i>
+						<input type="text" value="{$sokey}" onblur="$('#so').submit()" name="k"  placeholder="搜索拼多多商品优惠券" class="pin-top-input" />
+					</div>
+					<input type="submit" value="搜索" class="pin-top-submit" />
+				</div>
+			</div>
+			</form>
+		</header>
+		<div class="listpanel">
+			<!-- menu -->
+	<div style="display:flex">
+<div class="scrollx mescroll-touch-x">
+				<div id="scrollxContent" class="scrollx-content">
+					<ul id="nav" class="nav">
+	<li i="0"><a href="{:U('pdd/index')}{$trackurl}" class="menu-item <empty name="cid">active</empty>">全部商品</a></li>
+	<volist name="ItemCate" id="tree" key="i">
+	 <li i="{$i}">
+	 <a class="menu-item <if condition="$cid eq $key">active</if>" href="{:U('pdd/index',array('cid'=>$key))}{$trackurl}">{$tree}</a>
+	 </li>
+	  </volist>
+	</ul>
+				</div>
+			</div>    
+		    
+<div class="cxx-more-cate" style="display: none;">
+    <ul style="width:100%">	
+    	<volist name="ItemCate" id="tree" key="i">
+        <li data-id="{$i}"><a <if condition="$cid eq $key">class="am-btn am-btn-default am-round"</if> href="{:U('pdd/index',array('cid'=>$key))}{$trackurl}"><span>{$tree}</span></a></li>
+      </volist>
+	    </ul>
+</div>
+<div class="cxx-transparent-bg"></div>  
+  <div id="drop-down" class="drop-down" data-action="down"><i class="iconfont tqk-jiantou_down maincolor"></i></div>
+    <div class="cate"></div>
+   </div>
+		   	<!--filter-->
+		   	<div class="filter">
+		        <div class="filter-item"><a href="{:U("pdd/index",array('sort'=>'0','cid'=>$cid))}?k={:urldecode($sokey)}">综合</a> <empty name="txt_sort"><i class="icon-caret down"></i></empty> <if condition='$txt_sort eq "0"'><i class="icon-caret down"></i></if></div>
+		        <div class="filter-item"><a href="{:U("pdd/index",array('sort'=>'6','cid'=>$cid))}?k={:urldecode($sokey)}">销量</a><if condition='$txt_sort eq "6"'><i class="icon-caret down"></i></if></div>
+		        <div class="filter-item"><a href="{:U("pdd/index",array('sort'=>'9','cid'=>$cid))}?k={:urldecode($sokey)}">价格</a><if condition='$txt_sort eq "9"'><i class="icon-caret down"></i></if></div>
+		        <div class="filter-item">
+					<label class="nj-input-checkbox">
+						<input type="checkbox" class="tqk-filter-checkbox" <if condition="$stype eq 1">checked="checked"</if> val="{:U("pdd/index",array('sort'=>$txt_sort,'cid'=>$cid))}?k={:urldecode($k)}" value="{:U("pdd/index",array('stype'=>'1','sort'=>$txt_sort,'cid'=>$cid))}?k={:urldecode($k)}">
+						<span> 只看有券</span>
+					</label>
+		        </div>
+		    </div>
+		</div>
+			
+	   	<!--list-->
+<!--<div id="swiper" class="swiper-container">
+<div id="swiperWrapper" class="swiper-wrapper">-->
+<div id="mescroll" class="mescroll">
+<div class="goods-wrap">
+	
+	<div class="goods">
+		
+  <volist name='list' id="vo"> 
+  	
+<if condition="$vo['id']">		
+	            <div class="goods-item">
+					<a href="{$vo.linkurl}{$trackurl}">
+	               <div class="goods-pic">
+	                   <img src="{$vo.pic_url}" class="goods-pic">
+	    <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	    <span class="share-info" >
+	    	预计返￥ {:Rebate1($vo['coupon_price']*$vo['promotion_rate']/1000,$visitor['webmaster_rate'])}</span>
+	  </if> 
+	               </div>
+	               <div class="goods-info">
+	                   <i class="icon-type pinduo"></i>
+	                   <p class="goods-name ellipsis-2">{$vo.title}</p>
+	               </div>
+	               <div class="goods-mid">
+	                   <p class="f-12 c-999">拼团 ￥{$vo.group_price}</p>
+	                   <p class="goods-share maincolor">
+	                   	月销{$vo.volume}件
+	                   </p>
+	               </div>
+	               <div class="goods-bot">
+	                   <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+	                   <if condition="$vo['quan']">
+					   <div class="goods-coupon">
+	                       <p class="f-10 c-white">{$vo.quan}元券</p>
+	                   </div>
+					    </if>
+	               </div>
+					</a>
+	            </div>
+<else/> 
+ <div class="goods-item">
+<a class="jumptopdd" search_id="{$vo.search_id}" sold_quantity="{$vo.volume}" goods_id="{$vo.goods_sign}" promotion_rate="{$vo.promotion_rate}" coupon_end_time="{$vo.end_time}"  min_group_price="{$vo.group_price}" min_normal_price="{$vo.price}" goods_thumbnail_url="{$vo.pic_url}" coupon_discount="{$vo.quan}" goods_name="{$vo.title}" href="javascript:;">
+	               <div class="goods-pic">
+	                   <img src="{$vo.pic_url}" class="goods-pic">
+	    <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	    <span class="share-info" >
+	    	预计返￥ {:Rebate1($vo['coupon_price']*$vo['promotion_rate']/1000,$visitor['webmaster_rate'])}</span>
+	  </if> 
+	               </div>
+	               <div class="goods-info">
+	                   <i class="icon-type pinduo"></i>
+	                   <p class="goods-name ellipsis-2">{$vo.title}</p>
+	               </div>
+	               <div class="goods-mid">
+	                   <p class="f-12 c-999">拼团 ￥{$vo.group_price}</p>
+	                   <p class="goods-share maincolor">
+	                   	月销{$vo.volume}件
+	                   </p>
+	               </div>
+	               <div class="goods-bot">
+	                   <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+	                 <if condition="$vo['quan']">
+					   <div class="goods-coupon">
+	                       <p class="f-10 c-white">{$vo.quan}元券</p>
+	                   </div>
+					   </if>
+	               </div>
+					</a>
+	            </div>
+</if>
+	            
+	            
+	            
+</volist>
+	 
+  
+	</div>
+	
+<div id="dataList">
+	
+</div>
+</div>
+</div>
+<!--</div></div>-->
+<include file="Public:footer" />
+<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js,__STATIC__/wap/js/swiper.min.js,__STATIC__/wap/js/mescroll.min.js"/>
+ <script type="text/javascript">
+var curNavDom;
+var i=$('.active').parent().index('li');
+$("#nav li").each(function(n,dom){
+	if (dom.getAttribute("i")==i) {
+		dom.classList.add("active");
+		curNavDom=dom;
+	} else{
+		dom.classList.remove("active");
+	}
+});
+
+var isFirst = true;
+var issave=false;
+var ispage=1;
+var posname="pos_{$txt_sort}_{$sokey}_{$cid}";
+var htname="ht_{$txt_sort}_{$sokey}_{$cid}";
+var pgname="pg_{$txt_sort}_{$sokey}_{$cid}";
+var pgnum = parseInt(sessionStorage.getItem(pgname));
+if(pgnum>0){
+var pageIndex = pgnum;		
+}else{
+var pageIndex = 0;	
+}
+page = {num:1};
+var mescroll = new MeScroll("mescroll", {
+	      up: {
+                 use:true,
+                auto:true,
+                callback: getListData,
+                isBounce: false,
+                hardwareClass:'mescroll-hardware',
+                	warpClass: "mescroll-upwarp",
+                clearEmptyId: "dataList",
+                toTop:{ 
+                    src : "__STATIC__/wap/images/icon/mescroll-totop.png",
+                },
+                onScroll:function(mescroll){
+                <if condition="$isweixin">
+                	if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
+                 var pos=mescroll.getScrollTop();
+                 sessionStorage.setItem(posname,pos); 
+                 var datahtml =$('#dataList').html();
+                 sessionStorage.setItem(htname,datahtml);
+                 issave = true; 
+                 sessionStorage.setItem(pgname,ispage); 
+                 }
+                	</if>
+                 
+                }
+            }
+		});
+
+var scrollxContent=document.getElementById("scrollxContent");
+var star = scrollxContent.scrollLeft;
+var end = curNavDom.offsetLeft + curNavDom.clientWidth/2 - document.body.clientWidth/2;
+mescroll.getStep(star, end, function(step,timer){
+scrollxContent.scrollLeft=step; 
+});
+
+	function getListData(page){
+				getListDataFromNet(page.num+pageIndex,function(curPageData){
+					mescroll.endByPage(20, {$page_size});
+					setListData(curPageData);
+				}, function(){
+	                mescroll.endErr();
+				});
+			}
+	function getListDataFromNet(pageNum,successCallback,errorCallback) {
+		
+	
+		
+			 var ajaxurl="{:U('pdd/catelist',array('stype'=>$stype,'cid'=>$cid,'sort'=>$txt_sort))}";
+			 ajaxurl=ajaxurl+"?k={$sokey}&p="+pageNum; 
+			  ispage=pageNum;
+                	$.ajax({
+		                type: 'GET',
+		                url: ajaxurl,
+		                dataType: 'html',
+		                success: function(data){
+		                	successCallback(data);
+		                },
+		                error: errorCallback
+		            });
+		    
+			}
+function setListData(curPageData){
+				var listDom=document.getElementById("dataList");
+				var liDom=document.createElement("div");
+				liDom.className='goods';
+				liDom.innerHTML=curPageData;
+				listDom.appendChild(liDom);
+<if condition="$isweixin">             
+ if(isFirst){ //如果存在缓存
+ var tops = parseInt(sessionStorage.getItem(posname));
+ var htmldata = sessionStorage.getItem(htname);
+ if(htmldata){
+ $('#dataList').html(htmldata);
+ mescroll.scrollTo(tops,0);
+ }
+sessionStorage.removeItem(posname);
+sessionStorage.removeItem(htname);
+sessionStorage.removeItem(pgname);
+sessionStorage.clear();
+isFirst = false;
+ }
+ </if>
+			}
+;$(function(){
+    $('#drop-down, .drop-down').click(
+    	function(){
+    		var action = $('#drop-down, .drop-down').attr('data-action');
+    		if(action == 'down'){
+    			$('.drop-down i').attr({ class: "iconfont tqk-jiantou_up maincolor" });
+    			$('.cxx-more-cate').slideDown('fast');
+    			$('.cxx-transparent-bg').show();
+    			$('#drop-down, .drop-down').attr('data-action','up');	
+    		}
+    		if(action == 'up'){
+                $('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
+                $('.cxx-transparent-bg').hide();
+    			$('.cxx-more-cate').slideUp('fast');
+    			$('.cxx-transparent-bg').hide();
+    			$('#drop-down, .drop-down').attr('data-action','down');
+    		}		
+    	}
+    );
+    $('.cxx-transparent-bg').on('click',function(){
+        var action = $('#drop-down, .drop-down').attr('data-action');
+        if(action == 'up'){
+            $('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
+            $('.cxx-transparent-bg').hide();
+            $('.cxx-more-cate').slideUp('fast');
+            $('.cxx-transparent-bg').hide();
+            $('#drop-down, .drop-down').attr('data-action','down');
+        }
+    	$('.cxx-transparent-bg').hide();	
+    });
+      $('.jumptopdd').on('click',function(){
+  var goods_name=$(this).attr('goods_name');
+  var coupon_discount=$(this).attr('coupon_discount');
+  var goods_thumbnail_url=$(this).attr('goods_thumbnail_url');
+  var min_normal_price=$(this).attr('min_normal_price');
+  var min_group_price=$(this).attr('min_group_price');
+  var coupon_end_time = $(this).attr('coupon_end_time');
+  var promotion_rate = $(this).attr('promotion_rate');
+  var goods_id = $(this).attr('goods_id');
+  var sold_quantity = $(this).attr('sold_quantity');
+   var search_id = $(this).attr('search_id');
+  $.ajax({
+  	type:"post",
+  	data:{search_id:search_id,sold_quantity:sold_quantity,goods_id:goods_id,promotion_rate:promotion_rate,coupon_end_time:coupon_end_time,goods_name:goods_name,coupon_discount:coupon_discount,goods_thumbnail_url:goods_thumbnail_url,min_normal_price:min_normal_price,min_group_price:min_group_price,coupon_end_time:coupon_end_time},
+  	url:"{:U('pdditem/jumpclick')}",
+  	dataType: 'json',
+  	success:function(json){
+  		if(json.status==1){
+  			window.location.href=json.urls;
+  		}
+  	}
+  });
+  	
+  });
+  
+  $('.tqk-filter-checkbox').on('change',function(){
+  if($(this).is(':checked')){
+  location.href=$(this).attr('value');
+  
+  }else{
+  
+  location.href=$(this).attr('val');
+  
+  }
+  });
+  
+});
+</script>       
+</body>
+</html>

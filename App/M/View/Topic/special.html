@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}" />
+<meta name="description" content="{$page_seo.description}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_725800_rzzl9wlrp6i.css" />
+	<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
+	<link rel="stylesheet" href="__SKIN2__/static/home/css/firstorder.css?v=1.47">
+</head>
+<body>
+<style type="text/css">
+	.layui-container{background-color:#ff521e}
+	.am-navbar{border-top:1px solid #ccc;background-color:#fff;position:fixed;left:0;bottom:0;right:0;width:100%;height:49px;line-height:49px;z-index:1010;display:flex}
+	.am-navbar .am-navbar-nav{background-color:#fff;width:100%;display:flex;flex-wrap:nowrap;justify-content:space-between}
+	.am-navbar li{float:left}
+	.am-navbar .am-navbar-nav a .am-navbar-label{color:#646464;font-size:12px}
+	.am-navbar-nav a .am-navbar-label{padding-top:3px;line-height:1;font-size:12px;display:block;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+	.am-navbar-nav a{display:inline-block;width:100%;height:49px;line-height:20px}
+	.am-navbar-nav i{font-size:18px;display:block}
+	.am-navbar .am-navbar-nav{padding-left:8px;padding-right:8px;width: 88%;margin: 0 auto;text-align:center;position:relative;overflow:hidden}
+ .body{background:#fa3534}
+ .btn-box{padding:20px;margin-top:30px}
+ .btn-box button{ width: 80%;}
+
+ .imgContainer img{width:100%;height:auto;box-shadow:0 3px 12px rgba(21,0,71,.16)}
+ .beatWord{text-align:center;margin:10px;margin-top:20px}
+ .fieldset{padding:12px;border:1px dashed #ff4d4d;background:#fff;min-height:100px}
+ .legend{background:#f30;border:none;font-size:14px;line-height:60px;color:#feff00;padding:15px;top:-20px;position:relative}
+ .itemCopy{border:none;font-size:14px;padding:6px 15px;background:#f60;display:inline-block;margin:10px auto;border-radius:16px;color:#fff}
+ .itemWord{font-size:16px;position:relative;text-align:left}
+ .kz-float-layer{height:0!important}
+ .kz-float-layer{display:none!important}
+ .scenograph{padding:16px 16px 0}
+ .scenograph{padding:16px 16px 0}
+ .scenograph #type-bimg{box-shadow:0px 4px 8px rgba(21,0,71,.1);width:100%}
+ .drugsword{margin:14px;margin-top:16px;text-align:center}
+ .medicine-bag{background:#fff;border:1px dashed #fb6a65;padding:5px;border-radius:5px}
+ .copy-tip{display:flex;justify-content:space-around;align-items:center;background:linear-gradient(to right,#f9c492,#fb6a65);color:#fff;font-size:14px;height:44px}
+ .jtone{position:relative;width:0;height:0;border-top:12px solid transparent;border-left:10px solid #fff;border-bottom:12px solid transparent}
+ .jtone::before{content:"";position:absolute;top:-12px;left:-13px;width:0;height:0;border-top:12px solid transparent;border-left:10px solid #fab189;border-bottom:12px solid transparent}
+ .jttwo{position:relative;width:0;height:0;border-top:12px solid transparent;border-left:10px solid #fff;border-bottom:12px solid transparent}
+ .jttwo::before{content:"";position:absolute;top:-12px;left:-13px;width:0;height:0;border-top:12px solid transparent;border-left:10px solid #fa9b7e;border-bottom:12px solid transparent}
+ .jtthree{position:relative;width:0;height:0;border-top:12px solid transparent;border-left:10px solid #fff;border-bottom:12px solid transparent}
+ .jtthree::before{content:"";position:absolute;top:-12px;left:-13px;width:0;height:0;border-top:12px solid transparent;border-left:10px solid #fa8673;border-bottom:12px solid transparent}
+
+    </style>
+<div class="container">
+<div class="imgContainer">
+<img src="{$data.banner}" style="width: 100%;"/>
+			</div>
+			<div class="beatWord">
+				<div class="fieldset">
+					<p class="itemWord" id="code">
+						{$data.content}
+					</p>
+				</div>
+				<div class="copy-tip">
+				    <text>点击复制文案</text>
+				    <text class="jttwo"></text>
+				    <text>打开手机淘宝APP</text> 
+				    <text class="jtthree"></text>
+				    <text>进入活动页面</text>
+				</div>
+				<div class="btn-box">
+					<button type="button" data-clipboard-target="#code" data-clipboard-action="copy" class="layui-btn layui-btn-radius layui-btn-primary copycode">复制文案</button>
+				</div>
+				
+				
+			</div>
+			
+			<div id="silde">
+				<if condition="$back">
+				<a class="tqkup" href="{$back}">返回</a>
+				</if>
+				</div>
+			
+</div>
+
+<include file="Public:footer" />
+<script src="__SKIN2__/layui/layui.js?v=2.11"></script>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: '__SKIN2__/static/home/js/' 
+    ,version: 1.62
+    ,debug:false
+  }).use('tqk'); 
+</script>
+<include file="Public:stat" />
+</body>
+</html>

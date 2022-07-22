@@ -1,0 +1,520 @@
+<include file="Public:head_nosearch" />
+<style>
+*.top{ height:54px; line-height:54px; background: #FF231F; width:100%;}
+.topl{float: left; width: 40px;}
+.f{ float:left; overflow:hidden;}
+.r{ float:right; overflow:hidden;}
+.xi12{ font-size:12px;}
+.xi13{ font-size:13px;}
+.xi14{ font-size:1.2rem;}
+.xi15{ font-size:15px;}
+.xi16{ font-size:16px;}
+.xi17{ font-size:17px;}
+.xi18{ font-size:18px;}
+.xi19{ font-size:19px;}
+.xi20{ font-size:1.8rem;}
+.xi21{ font-size:21px;}
+.xi22{ font-size:26px;}
+.xi23{ font-size:23px;}
+.xi24{ font-size:24px;}
+.xi25{ font-size:15px;}
+.xi30{ font-size:30px;}
+.xi26{ font-size:1.4rem;}
+.con3{ background:#fff; margin-bottom:6px; box-sizing:border-box; padding:0 6px}
+.report-num-item{ text-align: center;}
+.report-num-item a{ color: #666;}
+.report-num-item p{ font-size: 1.2rem; color: #999;}
+.con3t{ border-bottom:1px solid #e8e8e8; height:48px; line-height:48px;}
+.con3trs{ width:128px; height:34px; line-height:34px; border:2px solid #fa0000; border-radius:34px; color:#fa0000; margin-top:18px}
+.con3f li{ float:left; width:25%; text-align:center; line-height:46px; padding-top:14px; padding-bottom:6px;}
+.con1r{ text-align:right; line-height:36px; padding-top:10px}
+.bai,.bai a{ color:#FFFFFF;}
+.hong,.hong a{ color:#ff0000;}
+.huang,.huang a{ color:#faaf19;}
+.lan,.lan a{ color:#2293d1;}
+.lv,.lv a{ color:#2293d1;}
+.hui,.hui a{color:#909090;}
+.mgz{ margin:0 auto;overflow:hidden; width:100%;}
+.mgza{ margin-left: auto;margin-right: auto;overflow: hidden; width:640px;}
+.mg{ margin:0 auto; overflow:hidden; width:100%;}
+.mg2{ margin:0 auto;overflow:hidden;}
+.cen{ text-align:center;}
+.con1{ background:url(/Public/static/wap/images/icon/user-bg.jpg?1) center 0 no-repeat; height:180px; box-sizing:border-box; padding:48px 14px 0px 16px;}
+.con1l{ width:68px; height:68px; border-radius:50%; margin-top: 10px;}
+.con1m{ margin-left:16px}
+.con1mt{ padding-top:10px; padding-bottom:10px; width: 110px; overflow: hidden; height: 45px;}
+.con2mf{ width:112px; height:27px; line-height: 22px; border: 1px solid #fff; border-radius:34px}
+.con1mf{ width:112px; height:27px; line-height: 22px; border: 2px solid #fff; border-radius:34px}
+.con1r{ text-align:right; line-height:36px; padding-top:10px}
+.con2{ background:#fff; padding:4px 0px; margin-bottom:10px;}
+.cons2{ background:#fff; padding:4px 0px; margin-bottom:5px;}
+.con2 li{ float:left; width:49%; height:74px; border-right:1px solid #e9e9e9; line-height:32px; padding-top:4px; text-align:center}
+.cons2 li{ float:left; width:25%; height:74px; border-right:1px solid #e9e9e9; line-height:32px; padding-top:4px; text-align:center}
+.con2 li:last-child{ border-right:none}
+.canvas-code2 {width: 60px;height: 60px;margin-top: -234px;margin-left: 110px; -webkit-transform: translateZ(1px);transform: translateZ(1px);}
+.con4{background: #fff;padding-top: 34px;padding-bottom: 4px;margin-bottom: 8px;}
+.am-list-item-dated{padding-left:30px}
+#newslist{position:absolute;z-index:12;line-height:20px;width:288px;top:6px;left:32%}
+#contain{overflow:hidden;list-style:none;width:288px;height:20px;margin:0;padding:0}
+#contain li{height:22px;line-height:22px;white-space:nowrap;overflow:hidden}
+#contain li a{color:#333;font-size:12px}
+.gg{position:absolute;top:10px;left:4.8%;width:80px;height:20px;overflow:hidden;z-index:12}
+.aui-my-info{background:#fff;position:relative;overflow:hidden;height:40px}
+.aui-page-my .aui-icon{width:22px;height:20px}
+.aui-page-my .aui-menu-list ul li h3{color:#4f4f4f;font-size:14px}
+.am-list-news-bd ul li a{ padding: 0; margin: 0;}
+.am-list-news-bd a{color: #888;}
+.am-list-news-bd ul li{padding-left: 15px; padding-bottom: 5px;}
+</style>
+<main>	
+<div style="height:0px;overflow:hidden;z-index: -1; top: 0;">
+<div class="canvas-mask" style="height: 557px; width: 300px; overflow: hidden; padding: 0;">
+				<div class="canvas-container" style="padding-top:0px ; margin-top: 0px;">
+					<div class="canvas-wrap">
+						<div class="canvas-pics" style="position:relative">
+							<div class="text-box" style="position:absolute;float:left;padding: 5px; color: #000; margin-top: 260px; width: 200px; margin-left: 50px;">
+								 <if condition="$isagent && $openinvocode">
+								<label style="color: #000; display:block; background: #ffffff;border-radius:34px; margin: 0 auto; text-align: center; width: 180px; margin-bottom: 8px;">邀请码：{$invicode?$invicode:$user.invocode}</label>
+								</if>
+								<if condition="C('yh_taojindian_html')">
+								{:C('yh_taojindian_html')}
+								<else/>
+								请到网站后台“站点设置”填写你的推广海报文案
+								</if>
+							</div>
+							<img src="__STATIC__/wap/images/haibao.png?v=3" class="canvas-pic" />
+							<if condition="C('yh_site_tiaozhuan') eq 1">
+							<img src="{$qrcode}" class="canvas-code"/>
+							<else/>
+							<img src="{:U('user/qrcode')}" class="canvas-code"/>
+							</if>
+							
+						</div>
+						</div>		
+</div>
+</div>
+</div>
+    <div class="con1 mgz">
+        <div class="con1l f"><a href="{:U('user/modify')}">
+        	<img src="{$user.avatar}" style="width:68px; height:68px; border-radius:50%; border: solid 2.4px #ffffff; overflow: hidden;">
+        </a>
+        </div>
+        <div class="con1m f">
+            <div class="con1mt xi20 bai">{$user.nickname}</div>
+             <if condition="$isagent">
+            <div  class="con1mf xi14 bai cen canvasimg">
+              <i class="iconfont tqk-erweima1"></i>
+             我要推广</div>
+             
+             <else/>
+              <div  class="con1mf xi14 bai cen">
+              <i class="iconfont tqk-profile"></i>
+             普通用户</div>
+            </if>
+        </div>
+       <if condition="$isagent && $openinvocode">
+        <a href="javascript:;">
+            <div class="con1r r xi40 bai">
+                {$invicode?$invicode:$user.invocode}<br>
+                <span class="con2mf xi14 copycodes">&nbsp;&nbsp;复制邀请码&nbsp;&nbsp;</span>
+            </div>
+        </a>
+        </if>
+
+		</div>
+
+  <style>
+
+</style> 
+
+<div class="aui-container">
+<div class="aui-page">
+<div class="aui-page-my">
+<div class="aui-my-info">
+ <img src="/Public/static/wap/images/gg22.png" class="gg">
+<div id="newslist">
+<ul id="contain"> 
+<li><a>确认收货{:C('yh_ComputingTime')}天后结算到账,余额满{:C('yh_Quota')}元可提现。</a></li>
+<volist name="article" id="art">
+<li><a href="<if condition="C('URL_MODEL') eq 2 and C('APP_SUB_DOMAIN_DEPLOY') eq true">/article/view_{$art.id}<else/>{:U('/m/article/read',array('id'=>$art['id']))}</if>">{$art.title}</a></li>
+</volist>	
+</ul>
+                   </div>
+               </div>   
+               </div>
+               </div>
+     </div>
+  <div style="background:##F0F0F5;height:5px;"></div>
+    <div class="cons2 mgz">
+        <ul>
+            <li>
+                <a href="{:U('user/record')}" class="hong xi26">￥{$user.money}</a><br>
+                <label class="xi26"> 账户余额</label>
+            </li>
+             <li>
+                <a href="{:U('user/teamprofit')}" class="hong xi26">￥{$current_money}</a><br> <label class="xi26">今日预估</label>
+            </li>
+			<li>
+			    <span class="hong xi26">￥{$this_money}</span><br> <label class="xi26">本月预估</label>
+			</li>
+             <li>
+                <span class="hong xi26">￥{$pre_money}</span><br> <label class="xi26">上月收益</label>
+            </li>
+            
+        </ul>
+    </div>
+    
+    
+    <!--<if condition="$user['webmaster']">
+					<div class="Huialert Huialert-error" style="text-align: center;">
+						<a href="{:U('zhan/ucenter')}"> 进入老的代理用户中心</a>
+					</div>
+	</if>-->
+<if condition="C('yh_bingtaobao') gt 0 and $user['webmaster'] eq 0">
+<div style="background: #ffffff; padding: 5px;">	
+<a href="javascript:;" class="inviterCode"><img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN0190MQUa2MgYgFAhzkA_!!3175549857.jpg" width="100%"></a>
+</div>
+<div style="padding-bottom: 5px;"> </div>
+
+<elseif condition="!$user['oid'] and $user['webmaster'] eq 0"/>
+
+<!-- <div style="background: #ffffff; padding: 5px;">
+<a href="{:U('user/suborder')}"><img src="__STATIC__/wap/images/bindorder.png?v=2" width="100%"></a>
+</div>
+<div style="padding-bottom: 5px;"> </div> -->
+
+</if>
+
+	
+    
+    <div class="con3 mgz">
+        <div class="con3t ov">
+            <div class="con3tl f xi16">我的订单</div>
+        </div>
+    </div>
+    	<div class="wbg m5">
+		<div class="report-num flexbox">
+			<div class="report-num-item xi25">
+				<a href="{:U('user/myorder')}"><img src="/Public/static/wap/images/icon/dd-1.png" style="width:48px;height:48px;" align='absmiddle'>
+				<p>全部订单</p> </a>
+			</div>
+			<div class="report-num-item xi25">
+				<a href="{:U('user/myorder',array('status'=>3))}"><img src="/Public/static/wap/images/icon/dd-2.png" style="width:48px;height:48px;" align='absmiddle'>
+				<p>已收货</p> </a>
+			</div>
+			<div class="report-num-item xi25">
+				<a href="{:U('user/myorder',array('status'=>1))}"><img src="/Public/static/wap/images/icon/dd-3.png" style="width:48px;height:48px;" align='absmiddle'>
+				<p>已付款</p> </a>
+			
+			</div>
+			<div class="report-num-item xi25">
+				<a href="{:U('user/myorder',array('status'=>2))}">	<img src="/Public/static/wap/images/icon/dd-4.png" style="width:48px;height:48px;" align='absmiddle'> 
+				<p>已失效</p></a>
+				
+			</div>
+			
+		</div>
+	
+	</div>
+<div style="padding-bottom: 5px;"> </div>
+	 <if condition="$isagent">
+	<div style="padding-bottom: 5px;"> </div>
+	
+	    <div class="con3 mgz">
+        <div class="con3t ov">
+            <div class="con3tl f xi16">代理中心</div>
+        </div>
+    </div>
+    	<div class="wbg m5">
+		<div class="report-num flexbox">
+			<div class="report-num-item xi25">
+				<a href="{:U('user/teamprofit')}">
+					 <p class="score iconfont tqk-shouyi" style="font-size: 3.5rem;"> </p>
+				<p>我的收益</p> </a>
+			</div>
+			<div class="report-num-item xi25">
+				<a href="{:U('user/teamorder')}">
+			  <p class="score iconfont tqk-list_hetongjiesuan" style="font-size: 3.5rem;"> </p>
+				<p>团队订单</p> </a>
+			</div>
+			
+			 
+			 <div class="report-num-item xi25">
+				<a href="{:U('user/tixian')}">
+				 <p class="score iconfont tqk-tixian1" style="font-size: 3.5rem;"> </p>
+				<p>我要提现</p> </a>
+			</div>
+			
+		
+			<div class="report-num-item xi25">
+				<a href="{:U('user/myteam')}">
+					 <p class="score iconfont tqk-tuandui" style="font-size: 3.5rem;"> </p>
+				<p>我的团队</p> </a>
+			
+			</div>
+			
+		</div>
+	
+	</div>
+</if>
+
+<div class="wbg m5">
+		<div class="report-num flexbox">
+			<div class="report-num-item">
+				<a href="{:U('user/record')}"><img src="/Public/static/wap/images/icon/t10.png" style="width:48px;height:48px;" align='absmiddle'>  
+				<p>我的钱包</p></a>			
+			</div>
+			<div class="report-num-item">
+				<a href="{:U('user/suborder')}"><img src="/Public/static/wap/images/icon/t12.png" style="width:48px;height:48px;" align='absmiddle'> 
+				<p>找回订单</p></a>
+			</div>
+			<div class="report-num-item">
+				<a href="{:U('user/journal')}"><img src="/Public/static/wap/images/icon/r4.png" style="width:48px;height:48px;" align='absmiddle'>
+				<p>财务日志</p> </a>			
+			</div>
+			<div class="report-num-item">
+				<a href="{:U('user/order')}"><img src="/Public/static/wap/images/icon/t13.png" style="width:48px;height:48px;" align='absmiddle'> 
+				<p>积分兑换</p></a>
+				
+			</div>
+			
+		</div>
+
+        </ul>
+    </div>
+    	<div style="padding-bottom: 5px;"> </div>
+    	
+  <div class="am-list-news-bd">
+  <ul class="am-list setting-a">
+ <li>								<a class="am-list-item-hd "	href="{:U('help/index',array('id'=>'wap'))}">
+								<i class="iconfont tqk-jiaocheng am-text-xl"></i>
+								领券指南
+								</a>
+								<span class="am-list-date iconfont tqk-jiantou"></span>
+</li>
+ <li>								<a class="am-list-item-hd "	href="{:U('help/index',array('id'=>'contactus'))}">
+								<i class="iconfont tqk-service am-text-xl"></i>
+								联系客服
+								</a>
+								<span class="am-list-date iconfont tqk-jiantou"></span>
+</li>
+ <li>								<a class="am-list-item-hd "	href="{:U('agent/index')}">
+								<i class="iconfont tqk-tuanduixiezuo am-text-xl"></i>
+								成为代理轻松赚钱
+								</a>
+								<span class="am-list-date iconfont tqk-jiantou"></span>
+</li>
+
+ <li><a class="am-list-item-hd "	href="{:U('help/index',array('id'=>'aboutus'))}">
+								<i class="iconfont tqk-tishi am-text-xl"></i>
+								关于我们
+								</a>
+								<span class="am-list-date iconfont tqk-jiantou"></span>
+</li>
+ <li>
+								<a class="am-list-item-hd "	href="{:U('user/modify')}">
+								<i class="iconfont tqk-gerenziliao am-text-xl"></i>
+								修改资料
+								</a>
+								<span class="am-list-date iconfont tqk-jiantou"></span>
+</li>
+ <li>
+								<a class="am-list-item-hd "	href="{:U('login/logout',array('id'=>1))}">
+								<i class="iconfont tqk-icon am-text-xl"></i>
+								退出登录
+								</a>
+								<span class="am-list-date iconfont tqk-jiantou"></span>
+</li>
+						
+							
+						</ul>
+					</div>
+
+		<div class="save">
+			<div class="savemask">
+				<div class="savewrap">
+					<div class="saveline">
+						<img src="__STATIC__/wap/images/icon/icon-thumb.png" class="icon-thumb"/>
+						<p class="f-21 c-white savecopy">长按虚线区域可以<br/>保存图片或分享给好友</p>
+						<img src="__STATIC__/wap/images/icon/icon-wire.png" class="icon-wire"/>
+					</div>
+				</div>
+			</div>
+		</div>
+</main>
+<include file="Public:foot" />
+<script language="JavaScript">
+	
+var copycodes = new ClipboardJS(".copycodes", {
+text: function() {
+    return "{$invicode?$invicode:$user.invocode}";
+}
+});
+copycodes.on('success', function(e) {
+        layer.msg('成功复制邀请码！', {time:2000});
+});
+
+var inviterCode = new ClipboardJS(".inviterCode", {
+text: function() {
+    return "{$inviterCode}";
+}
+});
+inviterCode.on('success', function(e) {
+layer.confirm('复制口令成功！现在打开【手机淘宝App】完成授权操作', {
+  btn: ['我已完成'] 
+}, function(){
+    $.ajax({
+                url: '{:U('user/getrelation')}',
+                type: 'post',
+                dataType : 'json',    
+                success: function(res) {
+                	if(res.status == 1){
+                layer.msg('授权成功！',{icon: 1});
+				setTimeout(function(){
+					window.location.reload();
+				}, 2000);
+				return false;
+				}
+                 
+                  layer.msg('授权失败，确定手机淘宝APP内完成备案了吗？', {icon: 2});
+                 
+                }
+            });
+	
+});
+        
+});
+    
+  function $$(selector) {
+        return document.querySelector(selector);
+    }
+  
+  
+  var main = {
+        init:function(){
+            main.setListener();
+        },
+        setListener:function(){
+            $(".canvasimg").on("click", function() {
+            	$(".saveline").width($(".canvas-wrap").width())
+				$(".saveline").height($(".canvas-wrap").height())
+              var index = layer.msg('正在为您生成推广海报,请稍后！',{time:10000}); 
+              
+              
+              
+               main.html2Canvas(index);
+               
+               
+            });
+        },
+        getPixelRatio:function(context){
+            var backingStore = context.backingStorePixelRatio ||
+                    context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;
+            return (window.devicePixelRatio || 1) / backingStore;
+        },
+        html2Canvas: function (index) {
+            var shareContent = $$(".canvas-mask");
+            var canvas = document.createElement('canvas'); 
+            var context = canvas.getContext('2d');
+            width=300;
+            height=527;
+            offsetTop=0;
+            scaleBy=2;
+            canvas.width = width * scaleBy; 
+            canvas.height = (height + offsetTop) * scaleBy; 
+            context.scale(scaleBy, scaleBy);
+            var opts = {
+                allowTaint:false,
+                useCORS:true,
+                tainttest:true, 
+                scale:scaleBy, 
+                canvas:canvas, 
+               logging: false, 
+                width:width,
+                height:height
+            };
+            html2canvas(shareContent, opts).then(function (canvas) {
+            	var dataUrl = canvas.toDataURL("image/png");
+            	var html = '<div class="canvas-mask" style="width:300px;height:537px;overflow: hidden;">'+
+								'<img crossOrigin="anonymous" width="300" src="'+dataUrl+'" class="kele-shared-modal">'+
+								'</div>'+
+								'<div class="canvas-nav">'+
+						        '<ul class="am-avg-sm-3">'+
+							    '<li class="nav-orange"><a href="javascript:;" id="canvasClose"><i class="iconfont icon-close_icon"></i>关闭</a></li>'+
+							    '<li class="nav-violet"><a href="javascript:;" id="canvasCopy"><i class="iconfont icon-wenjianxinxi"></i>复制推广链接</a></li>'+
+								'<li class="nav-green"><a href="javascript:;" id="canvasSave"><i class="iconfont icon-baocun"></i>保存图片</a></li>'+
+								'</ul>'+
+								'</div>';
+			    layer.close(index);
+             	layer.open({
+									type: 1,
+									title: false,
+									area: '100%',
+									shadeClose:true,
+									closeBtn: 0,
+									scrollbar: false,
+									fixed: true,
+									content: html,
+									skin:'canvas-layer',
+									success: function(layero, index){
+										$("html,body").addClass("lock")
+									    $("#canvasClose").on("click",function(){
+											layer.close(index)
+										})
+									    $(".canvas-mask").on("click",function(e){
+											var target  = $(e.target);
+											if(target.closest(".kele-shared-modal").length == 0){
+												layer.close(index)
+											};
+											e.stopPropagation();
+										})
+									},
+									end: function(){
+										$("html,body").removeClass("lock")
+									}
+								});
+					$("#canvasSave").on("click",function(){
+									layer.open({
+										type: 1,
+										title: false,
+										area: '100%',
+										offset: '0px',
+										shadeClose:true,
+										closeBtn: 0,
+										scrollbar: false,
+										fixed: true,
+										content: $(".save"),
+										skin:'save-layer',
+										success: function(layero, index){
+											$("html,body").addClass("lock")
+											$(".save-layer").on("click",function(){
+												layer.close(index)
+											})
+										}
+									});
+								})
+								var clipboard = new ClipboardJS("#canvasCopy", {
+							        text: function() {
+							            return "{:C('yh_site_url')}/?t={$r}";
+							        }
+							    });
+							    $("#canvasCopy").on("click",function(){
+									layer.msg('复制成功',{time:1000});
+								})
+            	
+            });
+        }
+    };
+  main.init();
+function xx(){ 
+var container=document.getElementById("contain"); 
+container.appendChild(container.firstChild); 
+} 
+setInterval("xx()",2000); 
+</script>
+</body></html>
+

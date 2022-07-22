@@ -1,0 +1,137 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+
+	<div class="mianbar">
+				
+	<div class="subnav mb-20">
+						<div class="report-money flexbox">
+							<div class="report-oval oval-2">
+								<h4><span>￥</span>{$yesterday_money?$yesterday_money:0}</h4>
+								<p>今日预估收入</p>
+							</div>
+							<div class="report-oval oval-1">
+								<h4><span>￥</span>{:$allmoney?$allmoney:0.00}</h4>
+								<p>本月结算金额</p>
+							</div>
+							<div class="report-oval oval-3">
+								<h4><span>￥</span>{$this_month?$this_month:0}</h4>
+								<p>本月预估收入</p>
+							</div>
+						</div>
+						<div class="report-num flexbox">
+							<div class="report-num-item">
+								<b>今日订单数量：</b>
+								<div class="tqk-pt-10">
+									<span>淘宝：</span> {:$stat['today_count']?$stat['today_count']:0} <span>笔</span>
+									<span class="tqk-pl-20">多多：</span> {:$stat['dd_today_count']?$stat['dd_today_count']:0} <span>笔</span>
+								   <br/>
+									<span">京东：</span> {:$stat['jd_today_count']?$stat['jd_today_count']:0} <span>笔</span>
+									<if condition="C('yh_openmt') eq 1">
+									<span class="tqk-pl-20">美团：</span> {:$stat['mt_today_count']?$stat['mt_today_count']:0} <span>笔</span>
+									</a>
+									<if condition="C('yh_dmappkey') gt 1">
+									<span class="tqk-pl-20">其它：</span> {:$stat['dm_today_count']?$stat['dm_today_count']:0} <span>笔</span>
+									</a>
+									
+								</div>
+							</div>
+							<div class="report-num-item">
+								<b>本月订单数量：</b>
+								<div class="tqk-pt-10">
+								<span>淘宝：</span> {:$stat['this_month_count']?$stat['this_month_count']:0} <span>笔</span>
+								<span class="tqk-pl-20">多多：</span> {:$stat['dd_this_month_count']?$stat['dd_this_month_count']:0} <span>笔</span>
+							   <br/>
+								<span>京东：</span> {:$stat['jd_this_month_count']?$stat['jd_this_month_count']:0} <span>笔</span>
+								<if condition="C('yh_openmt') eq 1">
+								<span class="tqk-pl-20">美团：</span> {:$stat['mt_this_month_count']?$stat['mt_this_month_count']:0} <span>笔</span>
+								</if>
+								<if condition="C('yh_dmappkey') gt 1">
+								<span class="tqk-pl-20">其它：</span> {:$stat['dm_this_month_count']?$stat['dm_this_month_count']:0} <span>笔</span>
+								</if>
+								
+							</div>
+							</div>
+							<div class="report-num-item">
+								<b>上月订单数量：</b>
+								<div class="tqk-pt-10">
+								<span>淘宝：</span> {:$stat['last_month_count']?$stat['last_month_count']:0} <span>笔</span>
+								<span class="tqk-pl-20">多多：</span> {:$stat['dd_last_month_count']?$stat['dd_last_month_count']:0} <span>笔</span>
+							   <br/>
+								<span>京东：</span> {:$stat['jd_last_month_count']?$stat['jd_last_month_count']:0} <span>笔</span>
+								<if condition="C('yh_openmt') eq 1">
+								 <span class="tqk-pl-20">美团：</span> {:$stat['mt_last_month_count']?$stat['mt_last_month_count']:0} <span>笔</span>
+								</if>
+								<if condition="C('yh_dmappkey') gt 1">
+								 <span class="tqk-pl-20">其它：</span> {:$stat['dm_last_month_count']?$stat['dm_last_month_count']:0} <span>笔</span>
+								</if>
+								
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				
+				
+			
+				<div class="subnav">
+					<table class="layui-table" lay-skin="nob">
+						<thead>
+							<tr>
+						<th>提现金额</th>
+						<th>提现时间</th>
+							</tr>
+						</thead>
+						<tbody>
+						<volist name="list" id="vo">		
+								<tr>
+							<td>{$vo.money}元</td>
+							<td>{$vo.create_time|frienddate}</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<div class="page cl">
+					<div class="f-r pd-10">
+						<if condition="$total_item gt 6">
+				{$page}
+				</if>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+
+    </div>
+    
+   </div>
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+
+</body>
+</html>

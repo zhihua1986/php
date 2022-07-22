@@ -1,0 +1,400 @@
+<include file="Public:meta" />
+		<!--detail-->
+		<div class="detail wfg">
+		<div style="height:0;overflow:hidden;z-index: -1">
+			<div class="canvas-mask">
+				<div class="canvas-container">
+					<div class="canvas-wrap">
+						<div class="canvas-pics">
+							<img src="__STATIC__/wap/images/static/goods.png" class="canvas-pic" />
+							<p class="canvas-count">已售{$item.volume}件</p>
+							<img src="{:U('item/qrcode')}?dataurl={:urlencode($mdomain.U('item/index',array('id'=>$item['id'],'t'=>I('trackid'))))}" class="canvas-code"/>
+						</div>
+						<div class="am-padding-sm">
+							<div class="am-padding-bottom-sm">
+								<i class="icon-type <if condition="$item['shop_type'] eq 'B'">tmall <else/>taobao</if>"></i>
+			                    <p class="goods-name ellipsis-2">{$item.title}</p>
+							</div>
+							<div class="am-cf am-padding-bottom-sm">
+								<div class="am-fl">
+									<p class="f-14 c-999">原价：<del>￥{$item.price}</del></p>
+									<p class="f-14 maincolor lh-22">券后：￥<span class="f-21">{$item.coupon_price}</span></p>
+								</div>
+								<div class="am-fr am-padding-sm">
+									<div class="coupon-main">
+										<p>{$item.quan}元优惠券</p>
+									</div>
+								</div>
+							</div>
+							<div class="am-text-center">
+								<p class="canvas-btn">长按识别二维码即可领券</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			<div class="detail-slider">
+				<img src="{$item.pic_url}_480x480.jpg" width="100%">
+				<div class="detail-bill">
+					<div data-am-widget="slider" class="am-slider am-slider-default" data-am-flexslider='{controlNav:false,directionNav:false,direction:"vertical",slideshowSpeed:2000}' >
+					    <ul class="am-slides">
+					    	<volist name="buyer" id="vo">
+					        <li>
+					        	<p class="am-text-truncate"><img src="{$vo.avatar}" width="100%">{$vo.nickname} {$vo.time}分钟前购买本产品</p>
+					        </li>
+					  </volist>
+					    </ul>
+					</div>
+				</div>	
+				<a href="javascript:history.go(-1)" class="iconfont tqk-fanhui detail-back"></a>
+				<a href="javascript:;" class="detail-share canvasimg">分享</a>
+			</div>
+		    <!--detail-info-->
+			<div class="detail-info">
+				<div>
+					<i class="icon-type <if condition="$item['shop_type'] eq 'B'">tmall <else/>taobao</if>"></i>
+					<p class="goods-name ellipsis-2">{$item.title}</p>
+				</div>
+				<div>
+					<p class="rights-item"><i class="iconfont icon-duigou2"></i>7天无理由退换</p>
+					<p class="rights-item"><i class="iconfont icon-duigou2"></i>运费险</p>
+					<p class="rights-item"><i class="iconfont icon-duigou2"></i>集分宝</p>
+					<p class="rights-item"><i class="iconfont icon-duigou2"></i>花呗</p>
+				</div>
+				<div class="detail-num">
+					<div class="detail-price">
+						<p class="quanhou">券后价</p>
+						<p class="price-present">￥{$item.coupon_price}</p>
+						<p class="price-origin">原价：￥{$item.price}</p>
+					</div>
+					<p class="buy-count">{$item.volume}人已购买</p>
+				</div>
+				
+	    <if condition="$act eq 'yes'">
+		<a href="/index.php?m=m&c=out&quanurl={:base64_encode($item['quanurl'])}" class="detail-coupon">
+		<elseif condition="$item['que'] eq 1 || $item['tk'] eq 0"/>
+		<a href="/index.php?m=m&c=out&id={$item.id}" class="detail-coupon">
+		<else/>
+		<a id="coupon" href="javascript:;" class="detail-coupon">
+	</if>
+					<p><span>{$item.quan}</span>元优惠券</p>
+					<p>立即领券</p>
+				</a>
+			</div>
+			<!--report-->
+		<!-- 	<div class="wbg card report am-cf">
+				<ul>
+					<li>
+						<a href="{:U('baoming/index')}"><i class="iconfont icon-shangjia"></i>卖家报名</a>
+					</li>
+					<li>
+						<a href="{:U('baoming/jubao',array('num_iid'=>$item['num_iid']))}"><i class="iconfont icon-jubao"></i>举报此商品</a>
+					</li>
+				</ul>
+			</div> -->
+			
+			<!--picture-->
+			<div class="picture card" id="details">
+				<div class="picture-wrap">
+					<!--detail-shop-->
+					<div class="detail-wrap">
+						<div class="detail-title">
+							<img src="__STATIC__/wap/images/icon/title-l.png" width="18" height="20"/>
+							<p>图文详情</p>
+							<img src="__STATIC__/wap/images/icon/title-r.png" width="18" height="20"/>
+						</div>
+						<div class="picture-content">
+							
+						</div>
+					</div>
+						
+				</div>
+				<p id="showdetail" class="picture-tit f-16 maincolor am-text-center"><i class="iconfont icon-tuwen am-text-lg am-margin-right-xs"></i>查看商品详情</p>
+			</div>
+			<!-- goods -->
+		    <div class="goods-wrap" id="recommend">
+		       <div class="goods-title"><div class="btn-violet-gradient btn-tag btn-md">同类商品推荐</div><div class="f-12 c-666">百万商品实时更新</div></div>
+		       <div class="goods">
+		       	
+		       	<volist name="orlike" id="val">
+		            <div class="goods-item">
+		               <div class="goods-pic">
+		               	<a href="{:U('item/index',array('id'=>$val['id']))}{$trackurl}">
+		                   <img src="{$val.pic_url}_300x300.jpg" width="100%" class="goods-img">
+		                   </a>
+		                   <div class="goods-mask">已有{$val.volume}人购买</div>
+		               </div>
+		               <div class="goods-info">
+		                   <i class="icon-type <if condition="$val['shop_type'] eq 'B'">tmall<else/>taobao</if>"></i>
+		                   <p class="goods-name ellipsis-2">{$val.title}</p>
+		               </div>
+		               <div class="goods-mid">
+		                   <p class="f-12 c-999">现价 ￥{$val.price}</p>
+		                  <!-- <div class="goods-share maincolor"><img src="__STATIC__/wap/images/icon/icon-share.png" class="icon-share">分享</div>-->
+		               </div>
+		               <div class="goods-bot">
+		                   <p class="f-12 c-666">券后<span class="maincolor"> ￥{$val.coupon_price}</span></p>
+		                   <div class="goods-coupon">
+		                       <p class="f-10 c-white">{$val.quan}元券</p>
+		                   </div>
+		               </div>
+		            </div>
+		            </volist>
+		            
+		       </div>
+		    </div>
+
+		</div>		
+		<!--footer-->
+		<div data-am-widget="navbar" class="am-navbar am-cf footer-action">
+			<a href="/" class="foot-cell"><i class="iconfont icon-shouye"></i><span class="am-navbar-label">首页</span></a>
+			<a href="javascript:;" class="foot-cell canvasimg" id="share"><i class="iconfont icon-fenxiang1"></i><span class="am-navbar-label">分享</span></a>
+			<a href="{:U('so/index')}?key={$item.title}" class="foot-cell" id="photo"><i class="iconfont icon-paizhao"></i><span class="am-navbar-label">同款比价</span></a>
+			<a href="javascript:;" id="couponkouling" class="parity" data-am-modal="{target: '#amoybuy'}">淘口令下单</a>
+		<if condition="$act eq 'yes'">
+		<a href="/index.php?m=m&c=out&quanurl={:base64_encode($item['quanurl'])}" class="collect">
+		<elseif condition="$item['que'] eq 1 || $item['tk'] eq 0"/>
+		<a href="/index.php?m=m&c=out&id={$item.id}" class="collect">
+		<else/>
+		<a id="coupon" href="javascript:;" class="collect">
+	   </if>	立即抢券</a>
+		</div>
+        <div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+		    <a href="#top"><i class="iconfont icon-top"></i><span>顶部</span></a>
+		</div>
+		
+		<div class="save">
+			<div class="savemask">
+				<div class="savewrap">
+					<div class="saveline">
+						<img src="__STATIC__/wap/images/icon/icon-thumb.png" class="icon-thumb"/>
+						<p class="f-21 c-white savecopy">长按虚线区域可以<br/>保存图片或分享给好友</p>
+						<img src="__STATIC__/wap/images/icon/icon-wire.png" class="icon-wire"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="am-modal am-modal-no-btn lightbox amoybuy" tabindex="-1" id="amoybuy">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">淘口令购买
+					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+				</div>
+				<div class="am-modal-bd">
+					<div class="fq-goods-border">
+						<div class="fq-explain">长按框内 &gt; 拷贝</div>
+						<div class="copy_key" id="copy_key_ios">{$item.quankouling}</div>
+						<button class="copy" >一键复制</button>
+					</div>
+					<div class="fq-instructions">
+						<span>
+							<span>温馨提示：</span>
+							手机无【手机淘宝】者，可选择浏览器购买方式哦~
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js,__STATIC__/wap/js/clipboard.min.js,__STATIC__/wap/layer/layer.js"/>	
+<script type="text/javascript" src="https://cdn.bootcss.com/html2canvas/0.4.1/html2canvas.min.js"></script>
+      <script type="text/javascript">
+      	var clipboard2 = new ClipboardJS('.copy', {
+	        text: function() {
+	            return '{$item.quankouling}';
+	        }
+	    });
+		$('.copy').on('click', function(e) {
+			layer.msg('复制成功',{time:1000});
+		});
+
+		$(".picture-tit").on("click",function(){
+		if(!$(this).hasClass("active")){
+		var num_iid="{:$item['num_iid']}";			
+		$.ajax({
+        url:'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"'+ num_iid +'"}',
+        type:'get',
+        dataType:'jsonp',
+        success: function(data){
+        	var imglist=data.data.pcDescContent;
+       imglist = imglist.replace('<img class="desc_anchor" id="desc-module-1" src="//assets.alicdn.com/kissy/1.0.0/build/imglazyload/spaceball.gif">','');
+       $('.picture-content').html(imglist);
+        }
+ })
+					$(".picture-wrap").stop(true, false).slideDown(1000)
+					$(this).addClass("active")
+				}else{
+					$(".picture-wrap").stop(true, false).slideUp()
+					$(this).removeClass("active")
+				}
+			})
+			
+			
+			$(document).ready( function(){ 
+			$(".canvasimg").on("click", function(event) { 
+				$(".saveline").width($(".canvas-wrap").width())
+				$(".saveline").height($(".canvas-wrap").height())
+				var index = layer.msg('正在为您生成图片,请稍后！',{time:10000}); 
+				var pic_url = "{$item.pic_url}";
+				$.ajax({
+					url: "{:U('canvas/index')}",  
+					type:'post',
+					dataType: "json",
+					data: {pic_url:pic_url},
+					async: true,  
+					success: function(json){
+						$(".canvas-pic").attr("src",json.save_path);
+						event.preventDefault();  
+						html2canvas($(".canvas-mask"), { 
+							allowTaint: true,  
+							taintTest: false,  
+							onrendered: function(canvas) {
+								canvas.id = "mycanvas";  
+								var dataUrl = canvas.toDataURL();  
+								var html = 
+								'<div class="canvas-mask">'+
+								'<img src='+dataUrl+' class="kele-shared-modal">'+
+								'</div>'+
+								'<div class="canvas-nav">'+
+						        '<ul class="am-avg-sm-3">'+
+							    '<li class="nav-orange"><a href="javascript:;" id="canvasClose"><i class="iconfont icon-close_icon"></i>关闭</a></li>'+
+							    '<li class="nav-violet"><a href="javascript:;" id="canvasCopy"><i class="iconfont icon-wenjianxinxi"></i>复制文案</a></li>'+
+								'<li class="nav-green"><a href="javascript:;" id="canvasSave"><i class="iconfont icon-baocun"></i>保存图片</a></li>'+
+								'</ul>'+
+								'</div>';
+	                            layer.close(index);
+								layer.open({
+									type: 1,
+									title: false,
+									area: '100%',
+									shadeClose:true,
+									closeBtn: 0,
+									scrollbar: false,
+									fixed: true,
+									content: html,
+									skin:'canvas-layer',
+									success: function(layero, index){
+										$("html,body").addClass("lock")
+									    $("#canvasClose").on("click",function(){
+											layer.close(index)
+										})
+									    $(".canvas-mask").on("click",function(e){
+											var target  = $(e.target);
+											if(target.closest(".kele-shared-modal").length == 0){
+												layer.close(index)
+											};
+											e.stopPropagation();
+										})
+							$.ajax({
+								url: "/index.php?m=m&c=canvas&a=del_img",
+								data:{"address":json.save_path},
+								type:'post',
+								dataType: "json",
+								async: true,  
+							})
+									},
+									end: function(){
+										$("html,body").removeClass("lock")
+									}
+								});
+								$("#canvasSave").on("click",function(){
+									layer.open({
+										type: 1,
+										title: false,
+										area: '100%',
+										offset: '0px',
+										shadeClose:true,
+										closeBtn: 0,
+										scrollbar: false,
+										fixed: true,
+										content: $(".save"),
+										skin:'save-layer',
+										success: function(layero, index){
+											$("html,body").addClass("lock")
+											$(".save-layer").on("click",function(){
+												layer.close(index)
+											})
+										}
+									});
+								})
+								var clipboard = new ClipboardJS("#canvasCopy", {
+							        text: function() {
+							            return '{$item.quankouling}';
+							        }
+							    });
+							    $("#canvasCopy").on("click",function(){
+									layer.msg('复制成功',{time:1000});
+								})
+							}  
+						});
+					}
+				})
+			});   
+		}); 
+			
+			//footer
+//			$(window).scroll(function(){
+//				if($(window).scrollTop()>100){
+//	        		$(".footer-action").fadeIn(1000)
+//	        	}else{
+//	        		$(".footer-action").fadeOut(1000)
+//	        	}
+//          })
+<if condition = "$item['tk'] eq 1 && $item['que'] eq 0">
+		$("#couponkouling").on("click", function() {
+			var runcount = 0;
+			layer.msg('优惠券生成中，请稍等！', {
+				icon: 16,
+				shade: 0.01,
+				time: 10000
+			});
+			autoplay = setInterval(function() {
+				$.ajax({
+					url: "{:U('min/checkque')}",
+					type: 'post',
+					dataType: "json",
+					timeout: 5000,
+					data: {
+						id: {$item.num_iid},
+						uptime: {: time()}
+					},
+					async: true,
+					success: function(data) {
+						if(data.status == 'ok') {
+							layer.closeAll('loading');
+							clearInterval(autoplay);
+							layer.msg('生成成功，现在可以领券下单啦！');
+							setTimeout(function() {
+								window.location.reload();
+							}, 2000);
+						}
+						if(data.status == 'no') {
+							runcount = runcount + 1
+							if(runcount > 0) {
+								layer.closeAll('loading');
+								clearInterval(autoplay);
+								layer.msg('生成成功，现在可以领券下单啦！');
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+
+					}
+				});
+			}, 3000);
+
+		}); 
+	</if>
+			$("#more").on("click",function(){
+				$(".review-wrapper").addClass("show")
+				$("body").addClass("fixed")
+			})
+			$("#back").on("click",function(){
+				$(".review-wrapper").removeClass("show")
+				$("body").removeClass("fixed")
+			})
+		</script>
+<include file="Public:stat" />
+	</body>
+</html>

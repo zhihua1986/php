@@ -1,0 +1,35 @@
+
+<!--编辑会员-->
+<div class="dialog_content">
+	<form id="info_form" action="{:u('jdorder/editorder')}" method="post">
+	<table width="100%" class="table_form">
+		<tr>
+			<th width="100">订单号 :</th>
+			<td>{$info.orderId}</td>
+		</tr>
+       
+        <tr>
+			<th>所属用户 :</th>
+			<td><input type="uid" name="uid" AUTOCOMPLETE="off" value="{$info.uid}" placeholder="请填写用户的ID（到用户列表中获取）" class="input-text" size="30">
+            </td>
+		</tr>
+	</table>
+	<input type="hidden" name="id" value="{$info.id}" />
+	</form>
+</div>
+<script>
+$(function(){
+	$.formValidator.initConfig({formid:"info_form",autotip:true});
+	
+	$('#info_form').ajaxForm({success:complate,dataType:'json'});
+	function complate(result){
+		if(result.status == 1){
+            $.yhxia.tip({content:result.msg});
+            window.location.reload();
+		} else {
+			$.yhxia.tip({content:result.msg, icon:'alert'});
+		}
+	}
+	
+});
+</script>

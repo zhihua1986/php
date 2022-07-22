@@ -1,0 +1,191 @@
+<include file="Public:header" />
+<include file="Setting:sub" />
+<style>
+.J_closed_reason{display: none;}
+.tempid dt{ padding: 5px;}
+</style>
+
+<div class="pad_lr_10">
+	<form id="info_form" action="{:u('setting/edit')}" method="post" enctype="multipart/form-data">
+		<table width="100%" class="table_form">
+
+
+			<tr>
+				<th>微信公众号类型 :</th>
+				<td>
+					<label><input type="radio" class="tqk_change_status" <if
+							condition="C('yh_site_tiaozhuan') eq '1'">checked="checked"</if> value="1"
+						name="setting[site_tiaozhuan]">认证服务号</label> &nbsp;&nbsp;
+					<label><input type="radio" class="tqk_change_status" <if
+							condition="C('yh_site_tiaozhuan') eq '2'">checked="checked"</if> value="2"
+						name="setting[site_tiaozhuan]">非认证服务号</label>&nbsp;&nbsp;
+					<label><input type="radio" class="tqk_change_status" <if
+							condition="C('yh_site_tiaozhuan') eq '0'">checked="checked"</if> value="0"
+						name="setting[site_tiaozhuan]">不启用</label>
+					<label style="color: blue;">（在推券客官网完成公众号配置后，才可以启用此功能。）</label><a
+						href="https://www.tuiquanke.com/topics/r0qkhow9vk73" target="_blank">公众号配置教程?</a>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>开启登录提醒 :</th>
+				<td>
+			    	<label><input type="radio" class="J_change_status" <if condition="C('yh_qrcode') eq '1'">checked="checked"</if> value="1" name="setting[qrcode]"> {:L('open')}</label> &nbsp;&nbsp;
+			        <label><input type="radio" class="J_change_status" <if condition="C('yh_qrcode') eq '2'">checked="checked"</if> value="2" name="setting[qrcode]"> {:L('close')}</label>
+			       &nbsp;&nbsp;<span class="blue ml10"><a href="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01ZAJW6w2MgYj0ujixd_!!3175549857.jpg"
+							target="_blank">点这里查看示例说明？</a></label></span>
+				</td>
+			</tr> 
+			
+			<tr class="J_closed_reason">
+				<th width="150">开发者ID(AppID) :</th>
+				<td><input type="text" name="setting[wxappid]" placeholder="如:wx6493748b69e1f002" class="input-text"
+						size="50" value="{:C('yh_wxappid')}">
+				</td>
+			</tr>
+			
+			<tr class="J_closed_reason">
+				<th>开启unionid :</th>
+				<td>
+			    	<label><input type="radio" class="J_change_status" <if condition="C('yh_unionid') eq '1'">checked="checked"</if> value="1" name="setting[unionid]"> {:L('open')}</label> &nbsp;&nbsp;
+			        <label><input type="radio" class="J_change_status" <if condition="C('yh_unionid') eq '0'">checked="checked"</if> value="0" name="setting[unionid]"> {:L('close')}</label>
+			       &nbsp;&nbsp;<span class="blue ml10"><a href="https://www.tuiquanke.com/view/71278004772"
+							target="_blank">什么是unionid？</a></label></span>
+							<span class="gray ml10">申请微信开放平台后才可以开启。</span>
+				</td>
+			</tr> 
+			
+			<tr class="J_closed_reason">
+				<th>开启网页扫码登录:</th>
+				<td>
+			    	<label><input type="radio" class="J_change_status" <if condition="C('yh_scan') eq '1'">checked="checked"</if> value="1" name="setting[scan]"> {:L('open')}</label> &nbsp;&nbsp;
+			        <label><input type="radio" class="J_change_status" <if condition="C('yh_scan') eq '0'">checked="checked"</if> value="0" name="setting[scan]"> {:L('close')}</label>
+			       &nbsp;&nbsp;<span class="blue ml10"><a href="https://www.tuiquanke.com/view/1278507241"
+							target="_blank">什么是网页扫码登录？</a></span>
+							
+							<span class="gray ml10">使用此功能必须要开启消息通知。</span>
+				</td>
+			</tr> 
+			
+			<tr class="J_closed_reason">
+				<th>开启消息通知 :</th>
+				<td>
+			    	<label><input type="radio" class="J_change_status" <if condition="C('yh_notice') eq '1'">checked="checked"</if> value="1" name="setting[notice]"> {:L('open')}</label> &nbsp;&nbsp;
+			        <label><input type="radio" class="J_change_status" <if condition="C('yh_notice') eq '0'">checked="checked"</if> value="0" name="setting[notice]"> {:L('close')}</label>
+			       &nbsp;&nbsp;<span class="blue ml10"><a href="https://www.tuiquanke.com/topics/22ft8l3pjdgk4"
+							target="_blank">点这里查看设置教程？</a></span>
+				</td>
+			</tr> 
+			
+			<tr class="J_closed_reason">
+				<th width="150">服务器地址(URL) :</th>
+				<td>
+					
+					{:C('yh_site_url')}/index.php?c=wechatapi
+					<input type="button" class="d-button d-state-highlight" value="复制"/>
+				</td>
+			</tr>
+
+		
+			
+			<tr class="J_closed_reason">
+				<th width="150">开发者密码(AppSecret) :</th>
+				<td><input type="text" name="setting[wxappsecret]"  class="input-text"
+						size="50" value="{:C('yh_wxappsecret')}">
+				</td>
+			</tr>
+			
+			<tr class="J_closed_reason">
+				<th width="150">令牌(Token) :</th>
+				<td><input type="text" name="setting[wxtoken]"  class="input-text" size="50" value="{:C('yh_wxtoken')?:'tqklmCOM'}">
+				<span class="gray ml10">必须为英文或数字，长度为3-32字符。</span>
+				</td>
+			</tr>
+			
+		<tr class="J_closed_reason">
+				<th width="150">消息加解密密钥 :</th>
+				<td><input type="text" name="setting[wxaeskey]"  class="input-text"
+						size="50" value="{:C('yh_wxaeskey')}">
+				</td>
+			</tr>
+			
+			<tr class="J_closed_reason">
+					<th width="150">公众号模板消息ID</th>
+					<td>
+<dl class="tempid">
+	<dt>
+		提现申请通知:	<input type="text" name="setting[tempid_1]"  class="input-text" size="50" value="{:C('yh_tempid_1')}">
+		通知谁 <input type="text" placeholder="填写用户ID" name="setting[tempid_1_uid]"  class="input-text" size="10" value="{:C('yh_tempid_1_uid')}">
+	</dt>
+	<dt>
+		佣金结算通知:	<input type="text" name="setting[tempid_2]"  class="input-text" size="50" value="{:C('yh_tempid_2')}">
+	</dt>
+	<dt>
+		订单受理通知:	<input type="text" name="setting[tempid_3]"  class="input-text" size="50" value="{:C('yh_tempid_3')}">
+	</dt>
+	<dt>
+		外卖定时通知:	<input type="text" name="setting[tempid_4]"  class="input-text" size="50" value="{:C('yh_tempid_4')}">
+		推送时间 <input type="text" placeholder="如:11:05" name="setting[tempid_4_time]"  class="input-text" size="10" value="{:C('yh_tempid_4_time')}">
+		<span class="gray ml10"> 请把输入法切换到英文状态填写 如: 11:05 </label></span>
+	</dt>
+	<dt>
+		登录成功提醒:	<input type="text" name="setting[tempid_5]"  class="input-text" size="50" value="{:C('yh_tempid_5')}">
+		<span class="gray ml10">网页端扫码登录成功提醒。</span>
+	</dt>
+	<dt >
+		外卖定时通知功能说明<br/>
+		①系统只推送给，最近30天登录过平台的用户。<br/>
+		②外卖定时通知本身就是一种营销推广行为，如果收到公众号平台警告，请立即停止推送，避免模板消息接口被封。<br/>
+	</dt>
+	
+	
+</dl>			
+
+					
+					
+					</td>
+			</tr>
+			
+			
+			
+			<tr>
+				<th></th>
+				<td><input type="hidden" name="menuid" value="{$menuid}" />
+					<input type="hidden" name="setting[app_kehuduan]" value="{:C('yh_app_kehuduan')}" />
+					<input type="submit" class="smt mr10" value="{:L('submit')}" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<include file="Public:footer" />
+<tqkjs  href="__STATIC__/wap/js/clipboard.min.js"/>	
+<script>
+$(function(){
+	
+	var reason = "{:C('yh_site_tiaozhuan')}";
+	
+	if(reason == '1'){
+		 $('.J_closed_reason').fadeIn();
+	}
+	
+    $('.tqk_change_status').live('click', function(){
+        if($(this).val() == '1'){
+            $('.J_closed_reason').fadeIn();
+        }else{
+            $('.J_closed_reason').fadeOut();
+        }
+    });
+
+var clipboard2 = new ClipboardJS('.d-button', {
+	        text: function() {
+	            return  '{:C('yh_site_url')}/index.php?c=wechatapi';
+	        }
+	    });
+		$('.d-button').on('click', function(e) {
+			 $.yhxia.tip({content:'复制成功'});
+		});
+});
+</script>
+</body>
+</html>

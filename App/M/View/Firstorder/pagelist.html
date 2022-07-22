@@ -1,0 +1,19 @@
+    	<volist name="topone" id="vo">
+    	<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+    		<div class="itemlist">
+    		<div class="item-pic" style="position: relative;">
+    		<div class="tag_double-eleven">预计支付{$vo.change_price}元</div>
+      	<a rel="nofollow" class="jump" href="{:U('/item/',array('id'=>$vo['num_iid']))}" >
+    		<img imgurl="{$vo.pic_url}_400x400.jpg" src="__SKIN2__/static/tqkpc/images/grey.gif" width="100%">
+      	</a>
+    		</div>
+    		<div class="item-title"><i class="tmall-ico"></i>{$vo.title}</div>
+    		<div class="goods-num-type">
+    		    			<span class="old-price fl">￥<i>{$vo.price|formatprice}</i></span><span class="goods-num fr"><i>{$vo.volume}</i>件</span></div>
+    		<div class="coupon-wrap2 clearfix"><span class="price"><div class="tip"> </div><i>￥</i><span>{$vo.coupon_price|formatprice}</span></span>
+    		<b class="coupon fr"><i>{$vo.quan}</i> 元券</b>
+    		</div>
+    		</div>
+    	</div>
+    	
+    	</volist>

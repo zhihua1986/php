@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$page_seo.title}</title>
+    <meta name="keywords" content="{$page_seo.keywords}" />
+    <meta name="description" content="{$page_seo.description}" />
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+<tqkcss href="http://at.alicdn.com/t/font_725800_rzzl9wlrp6i.css,__STATIC__/wap/css/mescroll.min.css"/>
+<tqkcss href="__STATIC__/wap/css/swiper.min.css,__STATIC__/wap/css/amazeui.min.css"/>
+<tqkcss href="__STATIC__/wap/css/style.css,__STATIC__/wap/layer/theme/default/layer.css"/>
+</head>
+<body>
+<style>
+.swiper-container{position:fixed;top:0px;left:0;right:0;bottom:0; z-index: -100; max-width: 750px;}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+		    <div class="am-header-left am-header-nav">
+		        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>
+		    </div>
+		    <h1 class="am-header-title">好货精选</h1>
+</header>
+<div style="max-width: 750px; margin: 0 auto;">
+<!--<div id="swiper" class="swiper-container">
+<div id="swiperWrapper" class="swiper-wrapper" >-->
+<div id="mescroll" class="mescroll" style="top:40px">
+<img src="__STATIC__/wap/images/icon/ptuan.png?v=1" width="100%">
+ <div class="goods-wrap">
+ 	<div class="goods">
+ 	  <volist name='list' id="vo"> 
+	           	<div class="goods-item">
+					<a href="javascript:jumpto('{$vo.coupon_price}','{$vo.jdd_num}','{$vo.oetime}','{$vo.num_iid}','{$vo.coupon_click_url}','{$vo.commission_rate}');">
+	               <div class="goods-pic">
+	                   <img src="{$vo.pic_url}_400x400.jpg" class="goods-pic">
+	    <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	    <span class="share-info" >
+	    	预计返￥ {:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}</span>
+	  </if>             
+	               </div>
+	               <div class="goods-info">
+	                   <i class="icon-type  <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
+	                   <p class="goods-name ellipsis-2">{$vo.title}</p>
+	               </div>
+	               <div class="goods-mid">
+	                   <p class="f-12 c-999"> 现价&nbsp;¥&nbsp; {$vo.zk_final_price}</p>
+	                   <p class="goods-share maincolor">
+	                 月销{$vo.volume}件
+	                   </p>
+	               </div>
+	               <div class="goods-bot">
+	                   <p class="f-12 c-111 lh-22">券后价&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+	                   <div class="goods-coupon">
+	                       <p class="f-10 c-white">{$vo.quan}元券</p>
+	                   </div>
+	               </div>
+					</a>
+	            </div>
+
+</volist>
+	 
+  
+ 	</div>
+<div id="dataList">
+</div>
+</div>
+
+
+</div>
+<!--</div></div>-->
+</div>
+<include file="Public:footer" />
+<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js"/>
+<tqkjs  href="__STATIC__/wap/js/mescroll.min.js"/>
+<include file="Public:alertad" />
+<script type="text/javascript">
+var isFirst = true;
+var issave=false;
+var ispage=1;
+var posname="pos_{:CONTROLLER_NAME}";
+var htname="ht_{:CONTROLLER_NAME}";
+var pgname="pg_{:CONTROLLER_NAME}";
+var pgnum = parseInt(sessionStorage.getItem(pgname));
+if(pgnum>0){
+var pageIndex = pgnum;		
+}else{
+var pageIndex = 0;	
+}
+page = {num:1};
+ 
+var mescroll = new MeScroll("mescroll", {
+            up: {
+                 use:true,
+                auto:true,
+                callback: getListData,
+                isBounce: false,
+                hardwareClass:'mescroll-hardware',
+                	warpClass: "mescroll-upwarp",
+                clearEmptyId: "dataList",
+                toTop:{ 
+                    src : "__STATIC__/wap/images/icon/mescroll-totop.png",
+                },
+                onScroll:function(mescroll){
+                <if condition="$isweixin">
+                	if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
+                 var pos=mescroll.getScrollTop();
+                 sessionStorage.setItem(posname,pos); 
+                 var datahtml =$('#dataList').html();
+                 sessionStorage.setItem(htname,datahtml);
+                 issave = true; 
+                 sessionStorage.setItem(pgname,ispage); 
+                 }
+                	</if>
+                 
+                }
+            }
+        });
+        
+  
+
+    function getListData(page){
+                getListDataFromNet(page.num+pageIndex,function(curPageData){
+                    mescroll.endByPage(20, 100);
+                    setListData(curPageData);
+                }, function(){
+                    mescroll.endErr();
+                });
+            }
+    function getListDataFromNet(pageNum,successCallback,errorCallback) {
+    	
+    	return false;    	
+             var ajaxurl="{:U('juhuasuan/catelist',array('cid'=>$cid,'sort'=>$txt_sort))}";
+                  ajaxurl=ajaxurl+"?k={$sokey}&p="+pageNum;
+                  
+                  ispage=pageNum;
+                  
+                    $.ajax({
+                        type: 'GET',
+                        url: ajaxurl,
+                        dataType: 'html',
+                        success: function(data){
+                            successCallback(data);
+                        },
+                        error: errorCallback
+                    });
+         
+            }
+    
+
+    
+function setListData(curPageData){
+                var listDom=document.getElementById("dataList");
+                var liDom=document.createElement("div");
+                liDom.className = 'goods';  
+                liDom.innerHTML=curPageData;
+                listDom.appendChild(liDom);
+                
+<if condition="$isweixin">             
+ if(isFirst){ //如果存在缓存
+ var tops = parseInt(sessionStorage.getItem(posname));
+ var htmldata = sessionStorage.getItem(htname);
+ if(htmldata){
+ $('#dataList').html(htmldata);
+ mescroll.scrollTo(tops,0);
+ }
+sessionStorage.removeItem(posname);
+sessionStorage.removeItem(htname);
+sessionStorage.removeItem(pgname);
+sessionStorage.clear();
+isFirst = false;
+ }
+ </if>
+ 
+ 
+}
+
+
+
+function jumpto(jdd_price,jdd_num,quan,num_id,quanurl,commission_rate){
+      var num_id=num_id;
+      var quan=quan;
+      var jdd_num=jdd_num;    
+      var jdd_price=jdd_price;
+      var quanurl=quanurl;
+      var commission_rate = commission_rate;
+      var trackurl='{$trackurl}';
+      $.ajax({
+        type:"post",
+        data:{jdd_price:jdd_price,jdd_num:jdd_num,numid:num_id,quan:quan,quanurl:quanurl,commission_rate:commission_rate},
+        url:"{:U('jumpto/jhsclick')}",
+        dataType: 'json',
+        success:function(json){
+            if(json.status==1){
+                window.location.href=json.urls+trackurl;
+            }
+        }
+      });
+    }
+
+</script>
+<include file="Public:stat" />
+</body>
+</html>

@@ -1,0 +1,165 @@
+<include file="Public:head_nosearch" />
+<main>
+<div style="height:0px;overflow:hidden;z-index: -1">
+<style>
+.canvas-code2 {width: 108px;height: 108px;margin-top: -266px;margin-left: 83px; -webkit-transform: translateZ(1px);transform: translateZ(1px);
+}
+</style>
+<div class="canvas-mask" style="height: 461px; width: 300px;">
+				<div class="canvas-container">
+					<div class="canvas-wrap">
+						<div class="canvas-pics">
+							<img src="__STATIC__/wap/images/haibao.png" class="canvas-pic" />
+							<img src="{:U('zhan/qrcode')}" class="canvas-code2"/>
+						</div>
+					</div>
+</div>
+</div>
+</div>
+	
+	<div class="user-bg">
+		<a href="{:U('login/logout')}" class="exit">退出</a>
+		<div class="user">
+			<a href="{:U('zhan/modify')}"><img src="{$user.avatar}"></a>
+			<p>{$user.nickname}<span class="am-badge am-badge-success am-radius">站长</span></p>
+		</div>
+		<div class="subnav flexbox">
+			<div class="subnav-item">
+				<a href="javascript:;" id="webpromote" data-am-modal="{target: '#web'}"><p><span>{:C('yh_site_url')}</span><span>网址推广</span></p></a>
+			</div>
+			<div class="subnav-item">
+				<!--data-am-modal="{target: '#code'}"-->
+				<a href="javascript:;" id="codepromote" ><p><i class="iconfont tqk-erweima"></i><span>我的推广海报</span></p></a>
+			</div>
+		</div>
+	</div>
+	<div class="wbg m5">
+		<div class="report-money flexbox">
+			<div class="oval-item">
+				<div class="report-oval oval-1">
+					<h4><span>￥</span>{$yesterday}</h4>
+					<p>昨日预估收入</p>
+				</div>
+			</div>
+			<div class="oval-item">
+				<div class="report-oval oval-3">
+					<h4><span>￥</span>{$month}</h4>
+					<p>本月预估收入</p>
+				</div>
+			</div>	
+		</div>
+		<div class="report-num flexbox">
+			<div class="report-num-item">
+				<p>昨日订单数量：</p>
+				<h4>{$yesterday_count}<span>笔</span></h4>
+			</div>
+			<div class="report-num-item">
+				<p>本月订单数量：</p>
+				<h4>{$month_count}<span>笔</span></h4>
+			</div>
+			<div class="report-num-item">
+				<p>上月订单数量：</p>
+				<h4>{$pre_count}<span>笔</span></h4>
+			</div>
+		</div>
+	
+	<div class="report-num flexbox">
+			<div class="am-center am-btn">
+				<a href="{:U('zhan/order')}" >查看淘宝订单</a>
+			</div>
+			<div class="am-center am-btn">
+				<a href="{:U('zhan/pdd')}">查看拼多多订单</a>
+			</div>
+		</div>
+	
+	
+	</div>
+	<div class="wbg m5">
+		<div class="accu-msg">
+			<h2>站长累计收入金额</h2>
+			<div class="am-text-center">
+				<h3><span>￥</span>{:$total?$total:0.00}</h3>
+				<p>每月20日结算上月预估收入</p>
+				<p>本月预估收入则在下月20日结算</p>
+			</div>
+		</div>
+		<div class="accu-state">
+			<ul>
+			<if condition='$flist'>
+				<li>
+					<div class="am-padding-sm am-cf">
+						<p>上月收入：￥{$flist.income}</p>
+						<span class="state state-warning">{$flist.status}</span>
+					</div>
+				</li>	
+			</if>	
+			</ul>
+		<div class="am-center" style="text-align: center;">	<a href="{:U('zhan/journal')}" class="more"><span>更多收入明细...</span></a></div>
+		</div>
+	</div>
+	<div class="wbg m5">
+		<div class="flow">
+			<h2>推广流程</h2>
+			<div class="flow-bg">
+				<div class="flow-step am-cf">
+					<span class="iconfont icon-share-copy"></span>
+					<div class="line"></div>
+					<div class="txt">
+						1.站长发送链接/二维码给用户
+					</div>
+				</div>
+				<div class="flow-step am-cf">
+					<span class="iconfont icon-visit"></span>
+					<div class="line"></div>
+					<div class="txt">
+						2.访问者访问您网站
+					</div>
+				</div>
+				<div class="flow-step am-cf">
+					<span class="iconfont icon-coupon"></span>
+					<div class="line"></div>
+					<div class="txt">
+						3.访问者领取优惠券并在淘宝天猫上成功下单
+					</div>
+				</div>
+				<div class="flow-step am-cf">
+					<span class="iconfont icon-integral"></span>
+					<div class="line"></div>
+					<div class="txt">
+						4.站长结算获得商家奖励
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+<div class="am-modal am-modal-no-btn lightbox" tabindex="-1" id="web">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">网址推广
+      <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+    </div>
+    <div class="am-modal-bd">
+      	<input type="text" class="am-form-field am-margin-top am-margin-bottom" value="{:C('yh_site_url')}/?t={$r}" id="foo" />
+		<button class="am-btn btn-main am-radius copy_key" data-clipboard-action="copy" data-clipboard-target="#foo">一键复制</button>
+		<p>分享给好友吧！</p>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+<include file="Public:foot" />
+<script type="text/javascript">
+	var clipboard = new ClipboardJS('.copy_key');
+    clipboard.on('success', function(e) {
+        layer.msg('成功复制推广链接！', {time:2000});
+    });
+  function $$(selector) {
+        return document.querySelector(selector);
+    }
+eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('n g={B:3(){g.o()},o:3(){$("#12").j("l",3(){C.Y();g.m()})},13:3(a){w(y.A||1)/(a.q||a.D||a.M||a.Q||a.X||a.q||1)},m:3(){n a=$$(".5-i"),b=1i.1t("5"),c=b.1w("v");6=x;7=z;p=0;9=2;b.6=6*9;b.7=(7+p)*9;c.k(9,9);E(a,{F:!0,G:!0,k:9,5:b,H:!1,6:6,7:7}).I(3(a){a=a.J("K/L");h.N({O:1,P:!1,1E:"R%",S:!0,T:0,U:!1,V:!0,W:\'<4 d="5-i" Z="6:10;7:11;"><4 d="8-e-14"> <4 d="8-e-15">\\16\\17\\18\\19\\1a\\1b\\1c\\1d\\1e <a 1f="1g: 1h(0)" d="8-f 8-f-1j" 1k-8-e-f>&1l;</a> </4> <4 d="8-e-1m 1n"> \\t<1o 1p="\'+a+\'" d="5-1q" /> </4> </4></4>\',1r:"5-h",1s:3(a,b){$("r,s").1v("u");$(".5-i").j("l",3(a){0==$(a.1x).1y(".1z-1A-e").1B&&h.f(b);a.1C()})},1D:3(){$("r,s").1u("u")}})})}};',62,103,'|||function|div|canvas|width|height|am|scaleBy||||class|modal|close|main|layer|mask|on|scale|click|html2Canvas|var|setListener|offsetTop|backingStorePixelRatio|html|body||lock|2d|return|300|window|461|devicePixelRatio|init|event|webkitBackingStorePixelRatio|html2canvas|allowTaint|tainttest|logging|then|toDataURL|image|png|mozBackingStorePixelRatio|open|type|title|msBackingStorePixelRatio|100|shadeClose|closeBtn|scrollbar|fixed|content|oBackingStorePixelRatio|preventDefault|style|300px|461px|codepromote|getPixelRatio|dialog|hd|u957f|u6309|u4fdd|u5b58|u6d77|u62a5|u5230|u624b|u673a|href|javascript|void|document|spin|data|times|bd|saveline|img|src|pic|skin|success|createElement|removeClass|addClass|getContext|target|closest|kele|shared|length|stopPropagation|end|area'.split('|'),0,{}))
+main.init();
+</script>
+</body></html>
+	

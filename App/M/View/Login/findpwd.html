@@ -1,0 +1,145 @@
+<include file="Public:head_nosearch" />
+<style type="text/css">
+	html,body{height: 100%;}
+</style>
+	<div class="form">
+		<h3>找回密码</h3>
+		<form action="{:U('login/findpwd')}"  method="post" id="register">
+			<div class="inputbox">
+				<span class="iconfont tqk-yonghu1"></span>
+				<input type="tel" name="phone" autocomplete="off" id="phone" placeholder="请输入您的手机号" />
+			</div>
+			<div class="inputbox">
+				<span class="iconfont tqk-password"></span>
+				<input type="password" autocomplete="off" name="password" id="password" placeholder="请设置您的密码" />
+			</div>
+			<div class="inputbox">
+				<span class="iconfont tqk-password"></span>
+				<input type="password" autocomplete="off" name="repassword" id="repassword" placeholder="请重复输入您的密码" />
+			</div>
+				<if condition="$sms_status">
+			<div class="inputbox code">
+				<span class="iconfont tqk-yanzhengma2"></span>
+				<input type="text" name="verify" id="verify" placeholder="请输入手机验证码" style="width: 49%;" />
+			 <label class="am-fr"><input type="button" style=" padding: 12px; width: 100%;" class="am-btn am-btn-block am-btn-default am-btn-lg" value="获取验证码" id="sendCode">
+			</div>
+			</if>
+			<input type="submit" value="确认修改密码" class="am-btn am-btn-block am-btn-danger am-radius am-btn-lg"/>
+			
+			<a class="am-btn am-btn-block am-btn-default am-radius am-btn-lg" href="{:U('login/index')}{$trackurl}">返回登录</a>
+			
+			<div style="background: #fff;height: 30px;">
+				
+			</div>
+		</form>
+	</div>
+<include file="Public:foot" />
+		<script type="text/javascript">
+	$(function(){
+			$("#register").validate({
+				rules:{
+					phone:{
+						required: true,
+						isMobile:true,
+					},
+					password:{
+						required: true,
+					},
+					repassword:{
+						required: true,
+						equalTo:"#password"
+					},
+						<if condition="$sms_status">
+					verify:{
+						required: true,
+					}
+					</if>
+				},
+				messages:{
+					phone:{
+						required: "请输入手机号",
+						isMobile:"请输入正确格式的手机号",
+					},
+					password:{
+						required: "请输入密码",
+					},
+					repassword:{
+						required: "请重复输入密码",
+						equalTo:"两次密码输入不一致"
+					},	<if condition="$sms_status">
+					verify:{
+						required: "请输入验证码",
+					}
+					</if>
+				},
+				submitHandler: function(form) 
+			    {
+					$(form).ajaxSubmit({
+						success: function(json) {
+							if(json.status == 1){
+								layer.msg(json.msg, {icon:6});
+								setTimeout(function(){
+									location.href = "{:U('login/index')}";
+								},1000);
+							}else{
+								layer.msg(json.msg, {icon:5});
+							}
+			            }
+					});     
+			    }
+			})
+	});
+	
+<if condition="$sms_status">	
+ var countdown=60;
+		var timer;
+		function settime(obj) {
+		    if (countdown == 0) {
+		        obj.removeAttribute("disabled");
+		        obj.value="获取验证码";
+		       // obj.removeAttribute('style');
+		        countdown = 60;
+		        return;
+		    } else { 
+		        obj.setAttribute("disabled", true);
+		        obj.value="重新发送(" + countdown + ")";
+		        obj.style.backgroundColor= "#d1d1d1";
+		        obj.style.borderColor= "#d1d1d1";
+		        countdown--;
+		    } 
+		    timer = setTimeout(function() { 
+		    	settime(obj);
+		    },1000) 
+		}
+		
+		$('#sendCode').click(function(){
+			if($('input[name=phone]').val() == ''){
+				layer.msg('请输入手机号码', {icon:5});
+				return false;
+			}
+			settime(this);
+			var _this = this;
+			$.post('{:U('login/pwdcode')}',{
+				phone:$('input[name=phone]').val(),
+				tempid:'{:trim(C('yh_sms_fwd_id'))}',
+				__hash__:$('input[name=__hash__]').val(),
+				ac:'findpass'
+			}, function(json){
+			 if(json.status == 1){
+			  layer.msg(json.msg, {icon:6});
+			 }
+			 
+			 if(json.status != 1){
+					clearTimeout(timer);
+					_this.removeAttribute("disabled");
+					_this.value="获取验证码";
+					//_this.removeAttribute('style');
+			        countdown = 60;
+			        layer.msg(json.msg, {icon:5});
+				}
+			})
+		});
+</if>
+		</script>
+	</body>
+</html>

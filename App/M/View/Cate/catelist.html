@@ -1,0 +1,90 @@
+  <volist name='list' id="vo">  
+       <if condition="$vo['category_id']">
+        <div class="post">
+        	<a href="javascript:jumpto('{$vo.quan}','{$vo.num_iid}','{$vo.coupon_click_url}','{$vo.commission_rate}');" class="jump">
+            <div class="list-pic">
+              	<img src="{$vo.pic_url}_400x400.jpg" width="125" height="125"/>
+               <div class="goods-mask">月销&nbsp;{$vo.volume}件</div>
+                     </div>
+            <div class="list-content">
+                <div class="list-flex">
+                    <div class="list-main">
+                        <i class="icon-type <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
+                        <p class="goods-name ellipsis-2">{$vo.title}</p>
+                    </div>
+                    <div class="list-footer">
+                    </div>
+                </div>
+                 <div class="coupon_progress">
+                           <!--<div class="coupon_progress-done"><p class="coupon_progress-name">券</p><p>{$vo.quan}元</p></div>
+                            <div class="coupon_progress-left"><p>月销{$vo.volume}件</p></div>-->
+                        </div>
+              <div class="goods-mid">
+	                   <p class="f-12 c-999">现价 ￥{$vo.price}</p>
+	                  <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                   <p class="goods-share maincolor">返￥
+	                   		{:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}
+	                   </p>
+	                   </if>
+	               </div>
+               <!--<div class="list-flex">
+                    <div class="list-main">
+                        <div class="am-cf"><p class="f-12 c-999 am-fl">现价 ¥{$vo.price}</p></div></div></div>-->
+                         <div class="goods-bot">
+                                <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+                           <if condition="$vo['quan']">  
+	                  <div class="goods-coupon">
+	                       <p class="f-10 c-white">{$vo.quan}元券</p>
+	                   </div>
+	                 </if> 
+                </div>
+            </div>
+           </a>
+        </div>
+
+                <else/>
+
+                <div class="post">
+                	<a href="{$vo.linkurl}{$trackurl}">
+                    <div class="list-pic">
+                        <img src="{$vo.pic_url}_400x400.jpg" width="125" height="125"/>
+                      <div class="goods-mask">月销&nbsp;{$vo.volume}件</div>
+                    </div>
+                    <div class="list-content">
+                        <div class="list-flex">
+                            <div class="list-main">
+                                <i class="icon-type <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
+             									 <p class="goods-name ellipsis-2"> {$vo.title}</p>
+                            </div>
+                        </div>
+                      <div class="coupon_progress">
+                                    <!--<div class="coupon_progress-done"><p class="coupon_progress-name">券</p><p>{$vo.quan}元</p></div>
+                                    <div class="coupon_progress-left"><p>月销 {$vo.volume}件</p></div>-->
+                                </div>
+                      	<div class="goods-mid">
+	                   <p class="f-12 c-999">现价 ￥{$vo.price}</p>
+	                   <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                   <p class="goods-share maincolor">返￥
+	                   		{:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}
+	                   </p>
+	                   </if>
+	               </div>
+                        <!--<div class="list-flex">
+                            <div class="list-main">
+                                <div class="am-cf"><p class="f-12 c-999 am-fl">现价¥{$vo.price}</p></div>-->
+                              <div class="goods-bot">
+                                <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+                   <if condition="$vo['quan']">  
+	                  <div class="goods-coupon">
+	                       <p class="f-10 c-white">{$vo.quan}元券</p>
+	                   </div>
+	                 </if> 
+                            </div></div>
+                            
+                   </a>
+                </div>
+
+
+            </if>
+
+        </volist>

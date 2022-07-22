@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<meta charset="UTF-8">
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}" />
+<meta name="description" content="{$page_seo.description}" />
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
+<link rel="stylesheet" href="__SKIN2__/static/home/css/topic.css?v=394">
+	</head>
+	<body class="bgcolor">
+		<div class="headbg">
+		<div class="layui-container">
+<include file="Topic:head" />	
+		</div>
+		</div>
+		
+		<div class="layui-container">
+			
+	<div class="head-title">
+		实时热销榜
+	</div>
+		<div class="line-50"></div>
+		<if condition="$topone">
+			<div class="block-pink">
+				
+	<div class="layui-row">
+	
+	
+	<div class="block-head">
+		  <div class="layui-btn layui-btn-radius share more-btn"><a href="{:U('topic/hotsale')}">查看更多</a></div>
+		<div>
+	   <div class="title">预售实时热销爆款 </div>
+	   <div class="stitle">2小时热销排行榜</div>
+	    </div>
+    </div>
+    
+    <div class="block-main">
+    	
+    	<volist name="topone" id="vo">
+    	<div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
+    		
+    		<div class="itemlist">
+    		<div class="item-pic" style="position: relative;">
+    			
+    			<if condition="$vo['presale_deposit']">
+    				<div class="tag_double-eleven">定金{$vo['presale_deposit']}元 {$vo.presale_discount_fee_text}</div>
+    			</if>	
+    				
+      	<a rel="nofollow" href="{:U('uland/index',array('q'=>$vo['coupon_amount'],'t'=>base64_encode(urlencode($vo['title'])),'u'=>base64_encode(urlencode($vo['coupon_share_url']?$vo['coupon_share_url']:$vo['item_url']))))}" >
+    		<img src="{$vo.pict_url}_400x400.jpg" width="100%">
+      	</a>
+    		</div>
+    		<div class="item-title"><i class="tmall-ico"></i>{$vo.title}</div>
+    		<div class="goods-num-type">
+    			<span class="old-price fl">原价 ￥<i>{$vo.reserve_price}</i></span><span class="goods-num fr">销量 <i>{$vo.volume}</i></span></div>
+    		
+    		<if condition="$vo['coupon_amount']">
+    		<div class="coupon-wrap clearfix"><span class="price"><div class="tip">券后</div><i>￥</i><span>{:$vo['zk_final_price']-$vo['coupon_amount']}</span></span>
+    		<b class="coupon fr"><i>{$vo.coupon_amount}</i> 元券</b>
+    		<if condition="$vo['presale_deposit']">
+    		<label class="yushou fr">预售</label>
+    		</if>
+    		</div>
+    		
+    		<else/>
+    		<div class="coupon-wrap clearfix"><span class="price"><div class="tip">价格</div><i>￥</i><span>{$vo.zk_final_price}</span></span>
+    		<if condition="$vo['presale_deposit']">
+    		<label class="yushou fr">预售</label>
+    		</if>
+    		</div>
+    		</if>
+    		
+    		
+    		</div>
+    		
+    	</div>
+    	
+    	</volist>
+    </div>
+				  </div>
+			</div>
+			<div class="line-50"></div>
+		    </if>	
+		<if condition="$toptwo">		
+			<div class="block-blue">
+		<div class="layui-row">		
+	<div class="block-head">
+		  <div class="layui-btn layui-btn-radius share more-btn"><a href="{:U('topic/sharpgoods')}">查看更多</a></div>
+		<div>
+	   <div class="title">实时热销爆款榜 </div>
+	   <div class="stitle">尖货爆款热销排行榜</div>
+	    </div>
+    </div>
+    
+     <div class="block-main">
+    	
+  	<volist name="toptwo" id="vo">
+     	<div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
+    		
+    		<div class="itemlist">
+    		<div class="item-pic" style="position: relative;">
+    			
+    			<if condition="$vo['presale_deposit']">
+    				<div class="tag_double-eleven">定金{$vo['presale_deposit']}元 {$vo.presale_discount_fee_text}</div>
+    			</if>	
+    				
+      		<a rel="nofollow" href="{:U('uland/index',array('q'=>$vo['coupon_amount'],'t'=>base64_encode(urlencode($vo['title'])),'u'=>base64_encode(urlencode($vo['coupon_share_url']?$vo['coupon_share_url']:$vo['item_url']))))}" >
+    		<img src="{$vo.pict_url}_400x400.jpg" width="100%">
+      	</a>
+    		</div>
+    		<div class="item-title"><i class="tmall-ico"></i>{$vo.title}</div>
+    		<div class="goods-num-type">
+    			<span class="old-price fl">原价 ￥<i>{$vo.reserve_price}</i></span><span class="goods-num fr">销量 <i>{$vo.volume}</i></span></div>
+    		
+    		<if condition="$vo['coupon_amount']">
+    		<div class="coupon-wrap clearfix"><span class="price"><div class="tip">券后</div><i>￥</i><span>{:$vo['zk_final_price']-$vo['coupon_amount']}</span></span>
+    		<b class="coupon fr"><i>{$vo.coupon_amount}</i> 元券</b>
+    		<if condition="$vo['presale_deposit']">
+    		<label class="yushou fr">预售</label>
+    		</if>
+    		</div>
+    		
+    		<else/>
+    		<div class="coupon-wrap clearfix"><span class="price"><div class="tip">价格</div><i>￥</i><span>{$vo.zk_final_price}</span></span>
+    		<if condition="$vo['presale_deposit']">
+    		<label class="yushou fr">预售</label>
+    		</if>
+    		</div>
+    		</if>
+    		
+    		
+    		</div>
+    		
+    	</div>
+    	
+    	</volist>
+    	
+    	
+    	</div>
+    	
+    	
+    	
+    </div>
+				
+				
+			</div>
+</if>
+
+<div class="line-50"></div>
+
+		</div>
+
+<div id="silde">
+	<a class="tqkup" href="/"><i class="layui-icon layui-icon-home" style="font-size: 22px;"></i></a>
+	<a class="tqkup" id="scroll"><i class="layui-icon layui-icon-top"></i></a></div>	
+<include file="Topic:foot" />	
+</body>
+</html>

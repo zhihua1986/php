@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<title>{$page_seo.title}</title>
+		<meta name="keywords" content="{$page_seo.keywords}" />
+		<meta name="description" content="{$page_seo.description}" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<link rel="stylesheet" href="__SKIN2__/ui/css/ui.css?v=32" />
+		<link rel="stylesheet" href="__SKIN2__/static/tqkwap/css/public.css?v=33" />
+		<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_2174615_hj5x1iepgcv.css" />
+		<script src="__SKIN2__/ui/js/ui.flexible.js?v=1"></script>
+		<style>
+	    .grids-icon{ padding-top: .3rem; height: auto;}
+		.tab-panel{ background-color:#F5F5F5;}
+		.tab-box .btn{height: .5rem; line-height: .5rem;}
+		.tab-box{margin: 0.08rem; background-color: #FFFFFF; padding: .15rem; border-radius: 0.12rem;margin-bottom: 0.36rem;}
+		.tab-box .tab-box-title{font-size: 0.36rem;}
+		.tab-box-img{margin-top: 0.2rem;}
+		.tab-box-img img{ width: 100%;}
+		.m-button{margin-bottom: 1.5rem;}
+		.canvas-layer.layui-layer{height: 100%;background: none;overflow: hidden;}
+		.canvas-layer.layui-layer .layui-layer-content{height: 100%;display: flex;flex-direction: column;}
+		.canvas-mask{flex: 1;display: flex;align-items: center;justify-content: center;width: 300px;margin: 0 auto;}
+		.canvas-container{width: 100%;padding: 0px;background: #fff;margin: auto;}
+		.canvas-wrap{width: 100%;background: #fff;box-shadow: 0 0 9px rgba(133, 75, 250, 0.23);}
+		.canvas-pics{width: 100%;}
+		.canvas-pic{width: 100%;}
+		.canvas-btn{display: inline-block;padding: 6px 14px;font-size: 14px;color: #FF4901;line-height: 16px;border: 1px dashed #FF4901;border-radius: 4px;text-align: center;}
+		.text-box{border: 0px dotted #ffffff;height: auto;}
+		.canvas-wrap .coupon-main:before,.canvas-wrap .coupon-main:after{display: none;}
+		/*canvas-nav*/
+		.canvas-nav{width: 100%;height: 40px;flex: 0 0 40px;}
+		.canvas-nav ul li{height: 40px;text-align: center;line-height: 40px;}
+		.canvas-nav ul li a{display: block;font-size: .34rem;color: #fff;}
+		.canvas-nav ul li a .iconfont{margin-right: 2px;}
+		.nav-orange{background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#FF4F2A), to(#FF734C));background-image: -webkit-linear-gradient(#FF4F2A, #FF734C);background-image: -moz-linear-gradient(#FF4F2A, #FF734C);background-image: -o-linear-gradient(#FF4F2A, #FF734C);background-image: linear-gradient(#FF4F2A, #FF734C);}
+		.nav-violet{background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#7D5AF2), to(#9374F8));background-image: -webkit-linear-gradient(#7D5AF2, #9374F8);background-image: -moz-linear-gradient(#7D5AF2, #9374F8);background-image: -o-linear-gradient(#7D5AF2, #9374F8);background-image: linear-gradient(#7D5AF2, #9374F8);}
+		.nav-green{background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#6FC33A), to(#89D757));background-image: -webkit-linear-gradient(#6FC33A, #89D757);background-image: -moz-linear-gradient(#6FC33A, #89D757);background-image: -o-linear-gradient(#6FC33A, #89D757);background-image: linear-gradient(#6FC33A, #89D757);}
+		.nav-blue{background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#1DA4F1), to(#47A6F2));background-image: -webkit-linear-gradient(#1DA4F1, #47A6F2);background-image: -moz-linear-gradient(#1DA4F1, #47A6F2);background-image: -o-linear-gradient(#1DA4F1, #47A6F2);background-image: linear-gradient(#1DA4F1, #47A6F2);}
+		#haibaoimg{ border-radius: 5px;box-shadow:0 5px 20px rgba(0,0,0,0.5)}
+		.tubiaozheng{ text-align: center; font-size: 0.35rem;}
+		.tubiaozheng i{font-size: 0.55rem;}
+		.btngroup{ width: 90%; margin: 0 auto; margin-top: 0.3rem;}
+		.Copywriting{ background-color: #f0f0f0; border-radius: 5px; padding: 0.3rem; min-height: 2.2rem;}
+		</style>
+	</head>
+	<body>
+		<div style="height:0px;overflow:hidden;z-index: -1; top: 0;">
+		    <div class="canvas-mask" style="height:auto; width: 750px; overflow: hidden; padding: 0;">
+				<div class="canvas-container" style="padding-top:0px ; margin-top: 0px;">
+							<div class="canvas-wrap">
+								<div class="canvas-pics" style="position:relative">
+			<div class="text-box" style="position:absolute; bottom: 0.9rem; width:100%; text-align: right;">
+			<label style="display:block; margin: 0 auto; float: right;">
+										<img width="160" height="160" src="{$data.wxapp}" />
+										</label>
+									</div>
+									<img src="{$data.img}" class="canvas-pic" />
+								</div>
+							</div>
+						</div>
+			</div>
+			
+			
+		</div>
+		
+		<header class="m-navbar navbar-fixed">
+			<a href="{:U('waimai/index',array('tab'=>$relation))}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">领红包下单</span></div>
+		</header>
+		
+		<section class="g-flexview" style="background-color: #FFFFFF;">
+		<section class="g-scrollview">
+        <div style="padding: .3rem;" class="demo-pitch">
+          <img id="haibaoimg" crossOrigin="anonymous" width="100%" src="{$data.img}"  style="min-height: 180px;" >
+        </div>
+		
+	<div class="tubiaozheng">
+		<i class="iconfont tqk-tubiaozhengli-531"></i>
+		长按图片识别或发送
+	</div>
+
+
+<div class="btngroup">
+	
+	<a href="{$data.click_url}" target="_blank" class="btn-block btn-warning">领红包下单</a>
+	<a href="{:U('waimai/index',array('tab'=>$relation))}" class="btn-block btn-hollow">返回上页</a>
+</div>
+			
+<include file="Public:tqk_foot_nav" />
+			</section>
+
+			<include file="Public:stat" />
+			<script src="__SKIN2__/ui/js/jquery.min.js"></script>
+			<script src="__SKIN2__/ui/js/ui.js?v=1"></script>
+			<script src="__SKIN2__/ui/js/html2canvas.js?v=1"></script>
+			<script>
+				! function(win, $) {
+				function $$(selector) {
+				        return document.querySelector(selector);
+				    }
+				  
+				 var main = {
+				        init:function(){
+				            main.setListener();
+				        },
+				        setListener:function(){
+				           // $(".canvasimg").on("click", function() {
+				               main.html2Canvas();
+				         //   });
+				        },
+				        getPixelRatio:function(context){
+				            var backingStore = context.backingStorePixelRatio ||
+				                    context.webkitBackingStorePixelRatio ||
+				                    context.mozBackingStorePixelRatio ||
+				                    context.msBackingStorePixelRatio ||
+				                    context.oBackingStorePixelRatio ||
+				                    context.backingStorePixelRatio || 1;
+				            return (window.devicePixelRatio || 1) / backingStore;
+				        },
+				        html2Canvas: function () {
+				            var shareContent = $$(".canvas-mask");
+				            var canvas = document.createElement('canvas'); 
+				            var context = canvas.getContext('2d');
+				            width="100%";
+				            height="auto";
+				            offsetTop=0;
+				            scaleBy=2;
+				            canvas.width = width * scaleBy; 
+				            canvas.height = (height + offsetTop) * scaleBy; 
+				            context.scale(scaleBy, scaleBy);
+				            var opts = {
+				                allowTaint:false,
+				                useCORS:true,
+				                tainttest:true, 
+				                scale:scaleBy, 
+				                canvas:canvas, 
+				               logging: false, 
+				                width:width,
+				                height:height
+				            };
+				            html2canvas(shareContent, opts).then(function (canvas) {
+				            	var dataUrl = canvas.toDataURL("image/png");
+				            	
+				            	$('#haibaoimg').attr('src',dataUrl);
+				            	
+				            });
+				        }
+				    };
+				  main.init();
+				  }(window, jQuery);
+			</script>
+		</section>
+	</body>
+</html>

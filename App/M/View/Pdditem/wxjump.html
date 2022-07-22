@@ -1,0 +1,347 @@
+<include file="Public:meta" />
+		<div style="height:0;overflow:hidden;z-index: -1">
+			<div class="canvas-mask" style="height: 461px; width: 300px; top: 0;">
+				<div class="canvas-container">
+					<div class="canvas-wrap">
+						<div class="canvas-pics">
+							<img src="{$item.goods_thumbnail_url}" class="canvas-pic" />
+							<p class="canvas-count">已售{$item.sold_quantity}件</p>
+						</div>
+						<div class="am-padding-xs">
+							<div class="am-padding-bottom-sm" style="width: 160px; float: left;">
+								<i class="icon-type pinduo"></i>
+			                    <p class="goods-name">{$item.goods_name}</p>
+							</div>
+						<div class="am-fr am-padding-sm" style="width:100px;height:110px;padding:2px;font-size: 12px;color: #ff4901;line-height: 12px;border: 1px solid #ff4901;border-radius: 4px;text-align: center;">
+										<img width="90" height="90" src="{:U('item/qrcode')}?dataurl={:urlencode($mdomain.'/index.php?m=m&c=pdditem&a=wxjump&r='.$item['r'].'&t='.$visitor['id'])}" />
+									<div style=" clear: both; padding-top: 2px;">长按识别二维码</div>
+								</div>
+							<div class="am-cf am-padding-bottom-sm">
+								<div class="am-fl">
+									<p class="f-14 c-999">原价：<del>￥{:$item['min_group_price']}</del></p>
+									<p class="f-14 maincolor lh-22">券后：￥<span class="f-21">{:($item['min_group_price']-$item['coupon_discount'])}</span></p>
+							
+								</div>
+								
+								<div class="am-fr am-padding-sm">
+									<div class="coupon-main">
+										<p>{:$item['coupon_discount']}元优惠券</p>
+									</div>
+								</div>
+								
+							</div>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+			<!--detail-->
+		<div class="detail wfg">
+		
+		<!--detail-slider-->
+		<div class="detail-slider">
+			<div data-am-widget="slider" class="am-slider am-slider-default" data-am-slider='{"controlNav":false,"directionNav":false}' >
+			 	<ul class="am-slides">
+			 		
+			 		  <li>
+				        	<img src="{$item.goods_thumbnail_url}" width="100%">
+				        </li>
+			 		
+					<volist name="item.goods_gallery_urls" key="k" id="img">
+				        <li>
+				        	<img src="{$img}" width="100%">
+				        	<div class="detail-slider-control"><span>{$k}</span>/{:count($item['goods_gallery_urls'])}</div>
+				        </li>
+		    		</volist> 	
+			    </ul>
+			</div>
+			<div class="detail-bill">
+				<div data-am-widget="slider" class="am-slider am-slider-default" data-am-flexslider='{controlNav:false,directionNav:false,direction:"vertical",slideshowSpeed:2000}' >
+				    <ul class="am-slides">
+				    	<volist name="buyer" id="vo">
+				        <li>
+				        	<p class="am-text-truncate"><img src="{$vo.avatar}" width="100%">{$vo.nickname} {$vo.time}分钟前购买本产品</p>
+				        </li>
+				  </volist>
+				    </ul>
+				</div>
+			</div>	
+			<a href="javascript:history.go(-1)" class="iconfont tqk-fanhui detail-back"></a>
+			<a href="javascript:;" class="detail-share canvasimg">分享</a>
+			<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                   <span class="share-info" >
+	     	预计返￥ {:Rebate1(($item['min_group_price']-$item['coupon_discount'])*$item['promotion_rate']/1000,$visitor['webmaster_rate'])}</span>
+	                   </if>
+		</div>
+	    <!--detail-info-->
+		<div class="detail-info">
+			<div class="am-cf">
+				<p class="f-15 maincolor am-fl">券后价<span class="f-21">{:($item['min_group_price']-$item['coupon_discount'])}</span>元</p>
+				<p class="f-12 c-333 am-fr am-margin-top-sm">已拼{$item.sold_quantity}件 · 2人拼单</p>
+			</div>
+			<div>
+				<i class="icon-type pinduo"></i>
+				<p class="goods-name am-text-truncate">{$item.goods_name}</p>
+			</div>
+			<div>
+				<p class="rights-item"><i class="iconfont tqk-duihao2"></i>全场包邮</p>
+				<p class="rights-item"><i class="iconfont tqk-duihao2"></i>7天退换</p>
+				<p class="rights-item"><i class="iconfont tqk-duihao2"></i>48小时发货</p>
+			</div>
+			<div class="am-cf am-padding-top-sm am-padding-bottom-sm">
+				<p class="f-12 c-333 am-fl am-margin-right">现价：<span class="c-pink">￥{:$item['min_normal_price']}</span></p>
+				
+				<if condition="$visitor['webmaster'] eq 1 && $visitor['webmaster_rate'] gt 0">
+	                   <!--<p class="goods-share">赚￥{:profits($item['promotion_rate'],($item['min_group_price']-$item['coupon_discount']),$visitor)}</p>-->
+	                    <p class="f-12 c-333 am-fl">拼团价：<span class="c-pink">￥{:$item['min_group_price']}</span></p>
+	                   <else/>
+	                  <p class="f-12 c-333 am-fl">拼团价：<span class="c-pink">￥{:$item['min_group_price']}</span></p>
+	                   </if>
+				
+				
+				
+				<p class="f-12 c-333 am-fr">还差<span class="maincolor">1</span>人成团</p>
+			</div>
+			<if condition="$islogin && !$visitor && $item['coupon_discount']">
+			<a  href="javascript:;" class="detail-coupon islogin">
+				<p><span>{:$item['coupon_discount']}</span>元优惠券</p>
+				<p>领券下单</p>
+			</a>
+			<elseif condition="$item['coupon_discount']"/>
+			<a target="_blank" href="{:U('pdditem/jumpout',array('id'=>$item['goods_sign'],'group'=>1,'search_id'=>$item['search_id']))}" class="detail-coupon">
+				<p><span>{:$item['coupon_discount']}</span>元优惠券</p>
+				<p>领券下单</p>
+			</a>
+			</if>
+			
+		</div>
+		<!--report-->
+		<!-- <div class="wbg card report am-cf">
+			<ul>
+				<li>
+					<a href="{:U('baoming/index')}"><i class="iconfont tqk-shangjia"></i>卖家报名</a>
+				</li>
+				<li>
+					<a href="{:U('baoming/jubao',array('num_iid'=>$item['num_iid']))}"><i class="iconfont tqk-jubao"></i>举报此商品</a>
+				</li>
+			</ul>
+		</div> -->
+		<!-- goods -->
+		<div class="picture card" id="details">
+			<div class="picture-wrap-">
+				<!--detail-shop-->
+				<div class="detail-wrap">
+					<div class="detail-title">
+						<img src="__STATIC__/wap/images/icon/title-l.png" width="18" height="20"/>
+						<p>图文详情</p>
+						<img src="__STATIC__/wap/images/icon/title-r.png" width="18" height="20"/>
+					</div>
+					<div class="picture-content" style="overflow: hidden;">
+						
+						<volist name="item.goods_image_url" id="vi" >
+						<img src="{$vi}" style="max-width: 800px;">
+						 </volist>
+						
+					</div>
+				</div>
+					
+			</div>
+		</div>
+	    <div class="goods-wrap" id="recommend">
+	       <div class="goods-title"><div class="btn-violet-gradient btn-tag btn-md">同类商品推荐</div><div class="f-12 c-666">百万商品实时更新</div></div>
+	       <div class="goods">
+	            
+	           <volist name="orlike" id="val">
+	                   <div class="goods-item">
+	                      <div class="goods-pic">
+	                      	<a href="{:U('item/index',array('id'=>$val['num_iid']))}{$trackurl}">
+	                          <img src="{$val.pic_url}_300x300.jpg" width="100%" class="goods-img">
+	                          </a>
+	                      <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                      <span class="share-info" >
+	           预计返￥ {:Rebate1($val['coupon_price']*$val['commission_rate']/10000,$visitor['webmaster_rate'])}</span>
+	                      </if>
+	                      </div>
+	                      <div class="goods-info">
+	                          <i class="icon-type <if condition="$val['shop_type'] eq 'B'">tmall<else/>taobao</if>"></i>
+	                          <p class="goods-name ellipsis-2">{$val.title}</p>
+	                      </div>
+	                      <div class="goods-mid">
+	                          <p class="f-12 c-999">现价 ￥{$val.price}</p>
+	                      <p class="goods-share maincolor">
+	                      		月销{$val.volume}件
+	                      </p>
+	                  </div>
+	                      <div class="goods-bot">
+	                          <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$val.coupon_price}</span></p>
+	                          <div class="goods-coupon">
+	                              <p class="f-10 c-white">{$val.quan}元券</p>
+	                          </div>
+	                      </div>
+	                   </div>
+	                   </volist>
+	       </div>
+	    </div>
+		</div>		
+		<!--footer-->
+		<div data-am-widget="navbar" class="am-navbar am-cf footer-action">
+			<a href="/" class="foot-cell"><i class="iconfont tqk-shouye"></i><span class="am-navbar-label">首页</span></a>
+			<a href="javascript:;" class="foot-cell canvasimg" id="share"><i class="iconfont tqk-iconfontzhizuobiaozhun20"></i><span class="am-navbar-label">分享</span></a>
+			<if condition="$islogin && !$visitor">
+				<a href="javascript:;" class="parity foot-pin islogin"><p class="am-text-lg lh-18"><span class="f-14">￥</span>{:($item['min_normal_price']-$item['coupon_discount'])}</p><p class="f-11 lh-12">单独购买</p></a>
+				<a href="javascript:;" class="collect foot-pin islogin"><p class="am-text-lg lh-18"><span class="f-14">￥</span>{:($item['min_group_price']-$item['coupon_discount'])}</span><p class="f-11 lh-12">领券拼单</p></a>
+			<else/>
+				<a href="{:U('pdditem/jumpout',array('id'=>$item['goods_sign'],'search_id'=>$item['search_id']))}" class="parity foot-pin"><p class="am-text-lg lh-18"><span class="f-14">￥</span>{:($item['min_normal_price']-$item['coupon_discount'])}</p><p class="f-11 lh-12">单独购买</p></a>
+				<a href="{:U('pdditem/jumpout',array('id'=>$item['goods_sign'],'group'=>1,'search_id'=>$item['search_id']))}" class="collect foot-pin"><p class="am-text-lg lh-18"><span class="f-14">￥</span>{:($item['min_group_price']-$item['coupon_discount'])}</span><p class="f-11 lh-12">领券拼单</p></a>
+			</if>
+		</div>
+        <div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+		    <a href="#top"><i class="iconfont tqk-top"></i><span>顶部</span></a>
+		</div>
+		<div class="save">
+			<div class="savemask">
+				<div class="savewrap">
+					<div class="saveline">
+						<img src="__STATIC__/wap/images/icon/icon-thumb.png" class="icon-thumb"/>
+						<p class="f-21 c-white savecopy">长按虚线区域可以<br/>保存图片或分享给好友</p>
+						<img src="__STATIC__/wap/images/icon/icon-wire.png" class="icon-wire"/>
+					</div>
+				</div>
+			</div>
+		</div>
+<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js,__STATIC__/wap/js/clipboard.min.js,__STATIC__/wap/layer/layer.js,__STATIC__/wap/js/html2canvas.js"/>
+<script type="text/javascript">
+function $$(selector) {
+        return document.querySelector(selector);
+    }
+	$('.islogin').on('click', function(e) {
+		layer.alert('请登录后再领券！',function(){
+		
+		window.location.href='{:U("login/index")}';
+			
+		});
+	});
+  var main = {
+        init:function(){
+            main.setListener();
+        },
+        setListener:function(){
+            $(".canvasimg").on("click", function() {
+            	$(".saveline").width($(".canvas-wrap").width())
+				$(".saveline").height($(".canvas-wrap").height())
+              var index = layer.msg('正在为您生成图片,请稍后！',{time:10000}); 
+               main.html2Canvas(index);
+            });
+        },
+        getPixelRatio:function(context){
+            var backingStore = context.backingStorePixelRatio ||
+                    context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;
+            return (window.devicePixelRatio || 1) / backingStore;
+        },
+        html2Canvas: function (index) {
+            var shareContent = $$(".canvas-mask");
+            var canvas = document.createElement('canvas'); 
+            var context = canvas.getContext('2d');
+            width=300;
+            height=461;
+            offsetTop=0;
+            scaleBy=2;
+            canvas.width = width * scaleBy; 
+            canvas.height = (height + offsetTop) * scaleBy; 
+            context.scale(scaleBy, scaleBy);
+            var opts = {
+                allowTaint:false,
+                useCORS:true,
+                tainttest:true, 
+                scale:scaleBy, 
+                canvas:canvas, 
+               logging: false, 
+                width:width,
+                height:height
+            };
+            html2canvas(shareContent, opts).then(function (canvas) {
+            	var dataUrl = canvas.toDataURL("image/png");
+            	var html = '<div class="canvas-mask" style="width:300px;height:461px;">'+
+								'<img width="300" src="'+dataUrl+'" class="kele-shared-modal">'+
+								'</div>'+
+								'<div class="canvas-nav">'+
+						        '<ul class="am-avg-sm-3">'+
+							    '<li class="nav-orange"><a href="javascript:;" id="canvasClose"><i class="iconfont icon-close_icon"></i>关闭</a></li>'+
+							    '<li class="nav-violet"><a href="javascript:;" id="canvasCopy"><i class="iconfont icon-wenjianxinxi"></i>复制文案</a></li>'+
+								'<li class="nav-green"><a href="javascript:;" id="canvasSave"><i class="iconfont icon-baocun"></i>保存图片</a></li>'+
+								'</ul>'+
+								'</div>';
+			    layer.close(index);
+             	layer.open({
+									type: 1,
+									title: false,
+									area: '100%',
+									shadeClose:true,
+									closeBtn: 0,
+									scrollbar: false,
+									fixed: true,
+									content: html,
+									skin:'canvas-layer',
+									success: function(layero, index){
+										$("html,body").addClass("lock")
+									    $("#canvasClose").on("click",function(){
+											layer.close(index)
+										})
+									    $(".canvas-mask").on("click",function(e){
+											var target  = $(e.target);
+											if(target.closest(".kele-shared-modal").length == 0){
+												layer.close(index)
+											};
+											e.stopPropagation();
+										})
+					
+									},
+									end: function(){
+										$("html,body").removeClass("lock")
+									}
+								});
+					$("#canvasSave").on("click",function(){
+									layer.open({
+										type: 1,
+										title: false,
+										area: '100%',
+										offset: '0px',
+										shadeClose:true,
+										closeBtn: 0,
+										scrollbar: false,
+										fixed: true,
+										content: $(".save"),
+										skin:'save-layer',
+										success: function(layero, index){
+											$("html,body").addClass("lock")
+											$(".save-layer").on("click",function(){
+												layer.close(index)
+											})
+										}
+									});
+								})
+								var clipboard = new ClipboardJS("#canvasCopy", {
+							        text: function() {
+							             return '{$item.goods_name}（包邮） \n 【原价】{:$item["min_group_price"]}元  \n  【券后】{:$item["min_group_price"]-$item["coupon_discount"]}元 \n 领券地址：{:$mdomain.U("pdditem/wxjump",array("r"=>$item["r"]))}?t={:I('t')}';
+							        }
+							    });
+							    $("#canvasCopy").on("click",function(){
+									layer.msg('复制成功',{time:1000});
+								})
+            	
+            });
+        }
+    };
+    
+    main.init();	
+		</script>
+<include file="Public:stat" />
+	</body>
+</html>

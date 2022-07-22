@@ -1,0 +1,32 @@
+  <volist name='list' id="vo"> 
+	           	<div class="goods-item">
+					<a href="javascript:jumpto('{$vo.coupon_price}','{$vo.jdd_num}','{$vo.oetime}','{$vo.num_iid}','{$vo.coupon_click_url}','{$vo.commission_rate}');">
+	               <div class="goods-pic">
+	                   <img src="{$vo.pic_url}_400x400.jpg" class="goods-pic">
+	    <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	    <span class="share-info" >
+	    	预计返￥ {:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}</span>
+	  </if>             
+	               </div>
+	               <div class="goods-info">
+	                   <i class="icon-type  <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
+	                   <p class="goods-name ellipsis-2">{$vo.title}</p>
+	               </div>
+	               <div class="goods-mid">
+	                   <p class="f-12 c-999"></p>
+	                   <p class="goods-share maincolor">
+	                 还有{$vo.oetime}小时结束
+	                   </p>
+	               </div>
+	               <div class="goods-bot">
+	                   <p class="f-12 c-111 lh-22">成团价&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+	                   <div class="goods-coupon">
+	                       <p class="f-10 c-white">{$vo.jdd_num}人团</p>
+	                   </div>
+	               </div>
+					</a>
+	            </div>
+
+</volist>
+	 
+  

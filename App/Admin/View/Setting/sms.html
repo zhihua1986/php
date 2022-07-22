@@ -1,0 +1,168 @@
+<include file="Public:header" />
+
+<include file="Setting:sub" />
+
+
+<div class="pad_lr_10">
+	<form id="info_form" action="{:u('setting/edit')}" method="post" enctype="multipart/form-data">
+	<table width="100%" class="table_form">
+		
+		<tr>
+        	<th>是否开启短信 :</th>
+        	<td>
+            	<label><input type="radio"  <if condition="C('yh_sms_status') eq '1'">checked="checked"</if> value="1" name="setting[sms_status]">腾讯云短信</label> &nbsp;&nbsp;
+				<label><input type="radio"  <if condition="C('yh_sms_status') eq '2'">checked="checked"</if> value="2" name="setting[sms_status]">阿里云短信</label> &nbsp;&nbsp;
+                <label><input type="radio"  <if condition="C('yh_sms_status') eq '0'">checked="checked"</if> value="0" name="setting[sms_status]"> {:L('close')}</label>
+            </td>
+      	</tr>
+		
+		
+		<tr>
+			<th width="10%">AppID :</th>
+        	<td width="40%">
+				<input type="text" name="setting[sms_appid]" class="input-text" size="45" value="{:C('yh_sms_appid')}" >
+           <span class="gray ml10">短信设置教程 <a href="http://www.tuiquanke.com/topics/svzwrqpm4roj" target="_blank">点这里</a> </span>     
+        	</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">AppKey :</th>
+        	<td width="40%">
+				<input type="password" name="setting[sms_appkey]" class="input-text" size="45" value="{:C('yh_sms_appkey')}" >
+        	</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">短信签名 :</th>
+        	<td width="40%">
+				<input type="text" name="setting[sms_sign]" class="input-text" size="45" value="{:C('yh_sms_sign')}" >
+        	</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">用户注册模板ID :</th>
+        	<td width="40%">
+				<input type="text" name="setting[sms_reg_id]" class="input-text" size="45" value="{:C('yh_sms_reg_id')}" >
+        	</td>
+		</tr>
+		<tr>
+			<th width="10%">找回密码模板ID :</th>
+        	<td width="40%">
+				<input type="text" name="setting[sms_fwd_id]" class="input-text" size="45" value="{:C('yh_sms_fwd_id')}" >
+        	</td>
+		</tr>
+		<tr>
+			<th width="10%">提现通知模板ID :</th>
+        	<td width="40%">
+				<input type="text" name="setting[sms_tixian_id]" class="input-text" size="45" value="{:C('yh_sms_tixian_id')}" >
+        	</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">接收通知手机号 :</th>
+        	<td width="40%">
+				<input type="text" name="setting[sms_my_phone]"  class="input-text" size="45" value="{:C('yh_sms_my_phone')}" >
+        <span class="gray ml10">如果不想接收请留空系统不会发送短信 </span>     
+        	</td>
+		</tr>
+		
+		
+		<tr>
+				<th width="10%">网站颜色:</th>
+		 	<td width="40%">
+				<div>
+				主色调：<input type="text" name="setting[maincolor]"  class="input-text J_color_picker" size="15" value="{:C('yh_maincolor')}" >
+				文字选中颜色：<input type="text" name="setting[maintextcolor]"  class="input-text J_color_picker" size="15" value="{:C('yh_maintextcolor')}" >
+				</div>
+				<br/>
+				<div>
+				导航菜单颜色
+				背景左：<input type="text" name="setting[menuleftcolor]"  class="input-text J_color_picker" size="15" value="{:C('yh_menuleftcolor')}" >
+				背景右：<input type="text" name="setting[menurightcolor]"  class="input-text J_color_picker" size="15" value="{:C('yh_menurightcolor')}" >
+				菜单选中：<input type="text" name="setting[menuselectcolor]"  class="input-text J_color_picker" size="15" value="{:C('yh_menuselectcolor')}" >
+				文字颜色：<input type="text" name="setting[textcolor]"  class="input-text J_color_picker" size="15" value="{:C('yh_textcolor')}" >
+				文字选中：<input type="text" name="setting[textselectcolor]"  class="input-text J_color_picker" size="15" value="{:C('yh_textselectcolor')}" >
+				</div>
+				
+		 	</td>
+		 </tr>
+		
+		
+	<!-- 		<tr>
+			<th width="10%">淘宝授权 :</th>
+        	<td width="40%">
+        		    <label><input type="radio"  <if condition="C('yh_bingtaobao') eq '2'">checked="checked"</if> value="2" name="setting[bingtaobao]"> 强制授权</label> &nbsp;&nbsp;
+				<label><input type="radio"  <if condition="C('yh_bingtaobao') eq '1'">checked="checked"</if> value="1" name="setting[bingtaobao]"> 自愿授权</label> &nbsp;&nbsp;
+                <label><input type="radio"  <if condition="C('yh_bingtaobao') eq '0'">checked="checked"</if> value="0" name="setting[bingtaobao]"> {:L('close')}</label>
+        <span class="gray ml10">可以通过授权实现订单与网站账号的关联。注：需要通过<a href="http://www.tuiquanke.com/article_view/2184" target="_blank"> <font color="blue">渠道管理</font></a>才可以开启</span>     
+        	</td>
+		</tr>
+		
+		<tr>
+		<th width="10%">渠道邀请码 :</th>
+        	<td width="40%">
+		<input type="text" name="setting[invitecode]"  class="input-text" size="45" value="{:C('yh_invitecode')}" >
+       <span class="gray ml10">邀请码如何获取？<a href="http://www.tuiquanke.com/article_view/2203" target="_blank"> <font color="blue">点这里</font></a></span>     
+        	</td>
+		</tr> -->
+		
+	  <tr>
+			<th width="10%">启用三方订单接口 :</th>
+        	<td width="40%">
+				<label><input type="radio"  <if condition="C('yh_ipban_switch') eq '1'">checked="checked"</if> value="1" name="setting[ipban_switch]"> {:L('open')}</label> &nbsp;&nbsp;
+                <label><input type="radio"  <if condition="C('yh_ipban_switch') eq '0'">checked="checked"</if> value="0" name="setting[ipban_switch]"> {:L('close')}</label>
+        <span class="gray ml10">如果您没有淘宝订单API权限,请联系推券客官方客服开通此功能(<font color="red">默认开启无效</font>)。</span>     
+        	</td>
+		</tr>
+		  <tr>
+            <th>搜索词屏蔽:</th>
+            <td>
+                <textarea rows="6" cols="80" name="setting[basklist]">{:C('yh_basklist')}</textarea> 
+				<span class="gray ml10"><br>每个词之间用户|分割 如：诱惑|电子书 注：支持按照商品ID屏蔽，禁止淘礼金助手转链接，</span>
+			</td>
+           
+      </tr>
+	  
+	  <tr>
+	  	<th width="150">电脑版淘宝商品详情 :</th>
+	  	<td>
+	      	<input type="radio" <if condition="C('yh_dn_item_desc') eq '0'">checked="checked"</if> value="0" name="setting[dn_item_desc]"> 开启 &nbsp;&nbsp;
+	      	<input type="radio" <if condition="C('yh_dn_item_desc') eq '1'">checked="checked"</if> value="1" name="setting[dn_item_desc]"> 关闭 &nbsp;&nbsp;
+	      	<span class="gray">是否开启电脑版淘宝商品的商品详情</span>
+	      </td>
+	  </tr>
+	<!--  <tr>
+	  	<th width="150">手机版淘宝商品详情 :</th>
+	  	<td>
+	      	<input type="radio" <if condition="C('yh_sj_item_desc') eq '0'">checked="checked"</if> value="0" name="setting[sj_item_desc]"> 开启 &nbsp;&nbsp;
+	      	<input type="radio" <if condition="C('yh_sj_item_desc') eq '1'">checked="checked"</if> value="1" name="setting[sj_item_desc]"> 关闭 &nbsp;&nbsp;<span class="gray">是否开启手机版淘宝商品的商品详情</span>
+	      </td>
+	  </tr> -->
+		
+        <tr>
+        	<th></th>
+        	<td><input type="hidden" name="menuid"  value="{$menuid}"/>
+        	<input type="hidden" name="setting[app_kehuduan]"  value="{:C('yh_app_kehuduan')}"/>
+        	<input type="submit" class="smt mr10" value="{:L('submit')}"/></td>
+    	</tr>
+	</table>
+	</form>
+</div>
+<include file="Public:footer" />
+<script src="__STATIC__/js/jquery/plugins/colorpicker.js?v=1"></script>
+<script>
+	//颜色选择器
+	
+	$(".J_color_picker").colorpicker({
+	fillcolor:true,
+	success:function(o,color){
+	$('.J_color_picker').css("color",'#333333');
+	}
+	});
+	
+
+</script>
+
+
+</body>
+</html>

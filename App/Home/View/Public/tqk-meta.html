@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{$page_seo.title}</title>
+		<meta name="keywords" content="{$page_seo.keywords}" />
+		<meta name="description" content="{$page_seo.description}" />
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=4">
+		<link rel="stylesheet" href="__SKIN2__/static/tqkpc/css/index.css?v=2.1.13">
+   <script type="text/javascript">
+	var system ={win : false,mac : false,xll : false};
+	var p = navigator.platform;
+	system.win = p.indexOf("Win") == 0;
+	system.mac = p.indexOf("Mac") == 0;
+	system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+	var wapurl=window.location.pathname.replace(/index.php\//, "");
+	if(system.win||system.mac||system.xll){}else{
+	window.location.href="{:C('yh_headerm_html')}" + wapurl}
+</script>
+<style type="text/css">
+.rank_num {background:{:C('yh_maincolor')};color: {:C('yh_maintextcolor')};}
+.pager .cur, .pager .current {background: {:C('yh_maincolor')};}
+.search-form .search-hd{background-color: {:C('yh_maincolor')};}
+.search-form .search-bd li.selected {color: {:C('yh_maintextcolor')};background-color: {:C('yh_maincolor')};}
+.search-form .search-hd .btn-search{color: {:C('yh_maintextcolor')};}
+.navbar a { color: {:C('yh_textcolor')};}
+.navbar a.current {background-color: {:C('yh_menuselectcolor')}; color: {:C('yh_textselectcolor')};}
+.navbar a:hover{background-color:{:C('yh_menuselectcolor')};color:{:C('yh_textselectcolor')};}
+.navwrap { 
+		background-image: -webkit-linear-gradient(to right,{:C('yh_menuleftcolor')},{:C('yh_menurightcolor')});
+	    background-image: -webkit-gradient(linear,left top, right top,from({:C('yh_menuleftcolor')}),to({:C('yh_menurightcolor')}));
+	    background-image: -webkit-linear-gradient(left,{:C('yh_menuleftcolor')},{:C('yh_menurightcolor')});
+	    background-image: -o-linear-gradient(left,{:C('yh_menuleftcolor')},{:C('yh_menurightcolor')});
+	    background-image: linear-gradient(to right,{:C('yh_menuleftcolor')},{:C('yh_menurightcolor')});
+}
+.quan-right .quan-right-btn {color:{:C('yh_maintextcolor')};background:{:C('yh_maincolor')};}
+.filter-items .row-channel .active { background: {:C('yh_maincolor')};}
+.filter-items .row-channel .active a {color: {:C('yh_maintextcolor')};}
+</style>
+</head>

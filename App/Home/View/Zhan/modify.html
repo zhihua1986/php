@@ -1,0 +1,131 @@
+<include file="Public:top" />
+<yh:load type="js" href="__STATIC__/tqkwap/js/jquery.validate.js,__STATIC__/tqkwap/js/validate-methods.js,__STATIC__/tqkwap/js/messages_zh.min.js,__STATIC__/tqkwap/js/jquery.form.min.js,__STATIC__/tqkpc/js/addclear.js"/>
+	</head>
+	<body>
+<include file="Public:head" />
+		<!--wrap-->
+		<div class="wrap">
+			<div class="container cl">
+<include file="nav" />	
+				<div class="mianbar">
+					<div class="profile">
+						<div class="row cl">
+						<form method="post" action="{:U('zhan/modify')}" id="mloginbox" enctype="multipart/form-data" >
+								<div class="col-sm-8">
+									
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">手机号</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											{$info.phone}
+										</div>
+									</div>
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">真实姓名</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											{$info.name}
+										</div>
+									</div>
+									
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">支付宝账号</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											{$info.alipay}
+										</div>
+									</div>
+									
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">用户昵称</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											<input type="text" class="input-text" name="nickname" value="{$info.nickname}" />
+										</div>
+									</div>
+									
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">联系QQ</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											<input type="text" class="input-text" name="qq" value="{$info.qq}" />
+										</div>
+									</div>
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">微信号</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											<input type="text" class="input-text" name="wechat" value="{$info.wechat}" />
+										</div>
+									</div>
+									
+									<div class="line mt-15"></div>
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">新密码</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											<input type="password" class="input-text" name="password" id="password"  />
+										</div>
+									</div>
+									<div class="row cl">
+										<label class="form-label col-xs-4 col-sm-3">确认密码</label>
+										<div class="formControls col-xs-8 col-sm-9">
+											<input type="password" class="input-text" name="password2" id="password2"  />
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="useravatar">
+										<img src="{$info.avatar|default="__STATIC__/images/default_photo.gif"}" id="input-image">
+										<span class="btn-upload">
+											<a href="javascript:void();" class="btn btn-default" id="input-button">更换头像</a>
+											<input type="file" name="avatar" class="input-file">
+										</span>
+									</div>
+								</div>
+								<div class="col-sm-8">
+									<div class="row cl">
+										<div class="col-xs-8 col-sm-9 col-offset-3">
+											<input type="submit" id='btn' class="btn btn-main radius" value="提交保存" />
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+<include file="Public:foot" />
+<script type="text/javascript" src="__STATIC__/tqkwap/js/preview.js"></script>	
+		<script>
+			$(function(){
+				$('input[name=avatar]').uploadPreview({ Img: "input-image", Width: 20, Height: 20 });
+				$('#password').validate({
+					rules:{
+						password2:{
+							equalTo:"#password",
+						}
+					}
+				})
+				$("#mloginbox").validate({
+					rules:{
+					},
+					submitHandler: function(form) 
+					{
+						$("#btn").html('数据保存中...');
+						$('#btn').attr('disabled',"true");
+						
+						$(form).ajaxSubmit({
+							success: function(json) {
+								$("#btn").html('确认提交');
+								$('#btn').removeAttr("disabled");
+								if(json.status == 1){
+										layer.msg(json.msg, {icon:6});
+					             	    setTimeout(function(){
+										location.reload()
+									},1000);
+								}else{
+								layer.msg(json.msg, {icon:5,time:1000});
+								}
+					    	   }
+						});     
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

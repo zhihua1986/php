@@ -1,0 +1,60 @@
+<div class="dialog_content">
+	<form id="info_form" action="{:U('pddorder/sync_order')}" onsubmit="return tqk_collect(1);" method="post">
+	<table width="100%" class="table_form">
+        <tr>
+			<th width="30%">特别提示：</th>
+			<td>
+			API同步订单是以时间分页，选择时间越长需要同步的页数就越多。
+			</td>
+		</tr>
+		 <tr>
+			<th>选择同步时间</th>
+			<td>
+				<php>
+				$time=time();
+				</php>
+			<select name="starttime" id="starttime">
+				<option value="{:$time-86400}">最近1天</option>
+				<option value="{:$time-86400*3}">最近3天</option>
+				<option value="{:$time-86400*7}">最近7天</option>
+				<option value="{:$time-86400*15}">最近15天</option>
+				<option value="{:$time-86400*30}">最近30天</option>
+			</select>
+			
+			<input type="hidden" id="type" value="{:$_GET['type']}" name="type" />
+			<input type="hidden" id="scene" value="{:$_GET['scene']}" name="scene" />
+          </td>
+           
+		</tr>
+	</table>
+	</form>
+</div>
+<script>
+	
+	
+function tqk_collect(p){
+	  var starttime=$("#starttime").val();
+	  var type = $("#type").val();
+	  var scene = $("#scene").val();
+        $.getJSON("{:U('pddorder/sync_order')}", {page:p?p:1,starttime:starttime,type:type,scene:scene}, function(result){
+            if(result.status == 1){
+            	if($.dialog.get('cmt_yhxia')){
+                	$.dialog.get('cmt_yhxia').content(result.data);
+            	}else{
+            		$.dialog({id:'cmt_yhxia', title:'提示', content:result.data, padding:'', lock:true});
+            	}
+                p = result.msg;
+                setTimeout("tqk_collect("+ p +")",1500);
+            }else{
+               if($.dialog.get('cmt_yhxia')){
+                $.dialog.get('cmt_yhxia').close();
+                $.yhxia.tip({content:result.msg});
+               }else{
+               	 $.yhxia.tip({content:result.msg});
+               }
+            }
+        });
+        return false;
+}	
+
+</script>

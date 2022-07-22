@@ -1,0 +1,163 @@
+<!DOCTYPE html>  
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="format-detection" content="email=no" />
+		<meta name="x5-orientation" content="portrait">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<title>超级搜券</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/wap/css/amazeui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/wap/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_725800_rzzl9wlrp6i.css" />
+<style>
+.n5jj_hdhd{position:absolute;left:0;bottom:-10px;height:40px;width:100%;z-index:1}@keyframes wave-animation-1{0%{background-position:0 top}100%{background-position:600px top}}@keyframes wave-animation-2{0%{background-position:0 top}100%{background-position:600px top}}.n5jj_hdhd_1{background:url(__STATIC__/wap/images/so/water-1.svg) repeat-x;background-size:600px;-webkit-animation:wave-animation-1 3.5s infinite linear;animation:wave-animation-1 3.5s infinite linear}.n5jj_hdhd_2{top:5px;background:url(__STATIC__/wap/images/so/water-2.svg) repeat-x;background-size:600px;-webkit-animation:wave-animation-2 6s infinite linear;animation:wave-animation-2 6s infinite linear}.n5jj_hdhd_1,.n5jj_hdhd_2{position:absolute;width:100%;height:30px}
+</style>
+	</head>
+	<body class="wbg am-with-fixed-navbar">
+		<div class="so-top">
+			<a href="javascript:history.go(-1);" class="iconfont tqk-fanhui back"></a>
+				<form action="" method="post" id="so">
+					<img src="__STATIC__/wap/images/so/so_top.jpg" width="100%"/>
+				<div style="position: absolute;bottom: 17%;width: 95%;padding-left:5%; padding-right: 5%;">
+				<div class="so-top-box">
+	    			<span class="iconfont tqk-search"></span>
+				  <input type="text" required="required" value="{$key}" name="key" id="search"  placeholder="请粘贴手淘分享内容到这里搜索">
+				</div>
+				<button type="submit" class="so-top-btn">搜索</button>
+				</div>
+				
+			</form>
+          <div class="n5jj_hdhd">
+    <div class="n5jj_hdhd_1"></div>
+    <div class="n5jj_hdhd_2"></div>
+  </div>
+		</div>
+
+
+      
+<if condition="$result eq 'yes' ">
+
+<div class="container list ">
+<volist id="val" name="list">
+		   			<div class="am-padding-top-sm">
+	   					<div class="list-pic">
+	   						<a href="javascript:;" data-quanurl="{$val.coupon_click_url}" data-type="{$val.user_type}" data-rate="{$val.commission_rate}"  data-quanid="{$val.Quan_id}"  data-quan="{$val.quan}" class="jumpto" data-numid="{$val.num_iid}">
+		   					<img src="{$val.pic_url}_220x220.jpg" width="120" height="120"/>
+		   					</a>
+		   					<span class="goods-mask">已售{$val.volume}件</span>
+		   				</div>
+	   					<div class="list-content am-margin-right-sm">
+	   						<div class="am-cf am-margin-bottom-sm">
+	   							<if condition="$val['user_type'] eq 'B'">
+		   						<i class="icon-type tmall"></i>
+		   						<else/>
+		   						<i class="icon-type taobao"></i>
+		   						</if>
+					            <p class="goods-name"><a href="javascript:;" data-quanurl="{$val.coupon_click_url}" data-rate="{$val.commission_rate}"  data-quanid="{$val.Quan_id}"  data-quan="{$val.quan}" class="jumpto c-333 ellipsis-2" data-numid="{$val.num_iid}">{$val.tongkuan}{$val.title}</a></p> 							
+	   						</div>
+                          <div class="goods-coupon"><a href="javascript:;" data-quanurl="{$val.coupon_click_url}" data-rate="{$val.commission_rate}"  data-quanid="{$val.Quan_id}"  data-quan="{$val.quan}" class="jumpto c-333 ellipsis-2" data-numid="{$val.num_iid}">
+	                       <p class="f-10 c-white">{$val.quan}元券</p></a>
+	                   </div>
+                      <div class="goods-mid"><a href="javascript:;" data-quanurl="{$val.coupon_click_url}" data-rate="{$val.commission_rate}"  data-quanid="{$val.Quan_id}"  data-quan="{$val.quan}" class="jumpto c-333 ellipsis-2" data-numid="{$val.num_iid}">
+	                   <p class="f-12 c-999">现价 ￥{$val['coupon_price']+$val['quan']}</p></a>
+	              <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                  <a href="javascript:;" data-quanurl="{$val.coupon_click_url}" data-rate="{$val.commission_rate}"  data-quanid="{$val.Quan_id}"  data-quan="{$val.quan}" class="jumpto c-333 ellipsis-2" data-numid="{$val.num_iid}"> <p class="goods-share maincolor">预计返￥
+	                   		{:Rebate1($val['coupon_price']*$val['commission_rate']/10000,$visitor['webmaster_rate'])}
+	                   </p></a>
+	                   </if>
+	               </div>
+	   						
+                          <div class="goods-bot"><a href="javascript:;" data-quanurl="{$val.coupon_click_url}" data-rate="{$val.commission_rate}"  data-quanid="{$val.Quan_id}"  data-quan="{$val.quan}" class="jumpto c-333 ellipsis-2" data-numid="{$val.num_iid}">
+	                   <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$val.coupon_price}</span></p></a>
+	                   
+                            <div class="am-cf am-margin-bottom-xs">
+	   							<div class="am-fr">
+	   								<a href="javascript:;" data-quanurl="{$val.coupon_click_url}" data-rate="{$val.commission_rate}"   data-quanid="{$val.Quan_id}"  data-quan="{$val.quan}" data-numid="{$val.num_iid}" class="jumpto btn btn-main radius btn-sm">立即抢购</a>
+	   							</div>
+	   						</div>
+	               </div>
+	   					</div>
+		   			</div>
+</volist><br><br>
+<if condition="$status eq 'no'">
+<div class="empty">
+	<img src="__STATIC__/wap/images/icon/empty.png" class="icon-empty"/>
+	<p class="f-14 c-999">抱歉！没有找到此商品的优惠信息。</p>
+</div>
+</if>		   			
+		   	</div>
+		
+		
+		
+	<else/>
+		<h4 class="so-explain">商品查券 教程说明</h4>
+		<div class="am-text-center">
+			<div class="so-title">
+	    		<p>如何查找淘宝/天猫商品是否有券？</p>
+	    	</div>
+		</div>
+	    <div class="so-step" style="padding: 0;">
+	    	<img src="__STATIC__/wap/images/so/so_step_1.png?v=2" width="100%"/>
+	    	<img src="__STATIC__/wap/images/so/so_step_2.png?v=2" width="100%"/>
+	    	<img src="__STATIC__/wap/images/so/so_step_3.png?v=2" width="100%"/>
+	    	<img src="__STATIC__/wap/images/so/so_step_4.png?v=2" width="100%"/>
+	    	<img src="__STATIC__/wap/images/so/so_step_5.png?v=2" width="100%"/>
+	    	<img src="__STATIC__/wap/images/so/so_step_6.png?v=2" width="100%"/>
+	    </div>
+	 
+	   	</if>  
+	    <tqkjs href="__STATIC__/wap/js/jquery.min.js"/> 
+	     <include file="Public:footer" />	
+	   <script type="text/javascript">
+	  $(function(){
+	  $('.jumpto').on('click',function(){
+	  var num_id=$(this).attr('data-numid');
+	  var quan=$(this).attr('data-quan');
+	  var quanurl=$(this).attr('data-quanurl');
+	  var quanid=$(this).attr('data-quanid');
+	   var rate=$(this).attr('data-rate');
+	    var user_type=$(this).attr('data-type');
+	  var trackurl='{$trackurl}';
+	  $.ajax({
+	  	type:"post",
+	  	data:{numid:num_id,quan:quan,quanurl:quanurl,quanid:quanid,commission_rate:rate,shop_type:user_type},
+	  	url:"{:U('jumpto/jumpclick')}",
+	  	dataType: 'json',
+	  	success:function(json){
+	  		if(json.status==1){
+	  			window.location.href=json.urls+trackurl;
+	  		}
+	  	}
+	  });
+	  	
+	  });
+	  })
+	    	
+	    </script>
+     <!-- <script type="text/javascript">	
+	document.oncontextmenu = function() {
+				return false;
+                };// 禁止选择
+ document.onkeydown = function(){
+
+    if(window.event && window.event.keyCode == 123) {
+        alert("禁止抄袭，请支持原创！");
+        event.keyCode=0;
+        event.returnValue=false;
+    }
+    if(window.event && window.event.keyCode == 13) {
+        window.event.keyCode = 505;
+    }
+    if(window.event && window.event.keyCode == 8) {
+        alert(str+"\n请使用Del键进行字符的删除操作！");
+        window.event.returnValue=false;
+    }
+
+}
+</script>  -->
+    </body>
+</html>

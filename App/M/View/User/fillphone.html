@@ -1,0 +1,131 @@
+<include file="Public:head_nosearch" />
+	<main>
+		<div class="form fillphone">
+			
+			<form action="{:U('login/fillphone')}"  method="post" id="register">
+					<h3>绑定手机号</h3>
+				<div class="inputbox">  
+					<span class="iconfont tqk-yonghu1"></span>
+					<input type="tel" name="phone" autocomplete="off" id="phone" placeholder="输入手机号(新号码自动注册)" />
+				</div>
+				<div class="inputbox">  
+					<span class="iconfont tqk-password"></span>
+					<input type="password" name="pwd" autocomplete="off" id="pwd" placeholder="输入登录密码(新注册为设置密码)" />
+				</div>
+				
+			<if condition="$sms_status">
+			<div class="inputbox code">
+				<span class="iconfont tqk-yanzhengma2"></span>
+				<input type="number" name="verify" id="verify" placeholder="请输入短信验证码" style="width: 49%;" />
+			 <label class="am-fr"><input type="button" style=" padding: 12px; width: 100%;" class="am-btn am-btn-block am-btn-default am-btn-lg" value="获取验证码" id="sendCode">
+			</div>
+			</if>
+			
+			<if condition="$sms_status">
+			<p class="am-fr forget" style="margin-bottom: 14px;"><a href="{:U('login/findpwd')}" target="_blank">忘记密码？</a></p>
+			<else/>
+			<p class="am-fr forget" style="margin-bottom: 14px;"><a href="{:U('help/index',array('id'=>'contactus'))}" target="_blank">忘记密码？联系管理员</a></p>
+			</if>
+			
+				<input type="submit" value="确认绑定" class="am-btn btn-main am-radius am-btn-block"/>
+			</form>
+		</div>
+	</main>
+<include file="Public:foot" />
+<script type="text/javascript">
+			$("#register").validate({
+				rules:{
+					phone:{
+						required: true,
+					},
+					pwd:{
+						required: true,
+					},<if condition="$sms_status">
+					verify:{
+						required: true,
+					}
+					</if>
+				},
+				messages:{
+					phone:{
+						required: "请输入手机号",
+					},
+					pwd:{
+						required: "请输入密码",
+					},<if condition="$sms_status">
+					verify:{
+						required: "请输入验证码",
+					}
+					</if>
+				},
+				submitHandler: function(form) 
+			    {
+					$(form).ajaxSubmit({
+						success: function(json) {
+							if(json.status == 1){
+								layer.msg(json.msg, {icon:6});
+								setTimeout(function(){
+								window.location.href = "{:U('user/ucenter')}";
+								},1000);
+							}else{
+								layer.msg(json.msg, {icon:5});
+							}
+			            }
+					});     
+			    }
+			})
+			
+<if condition="$sms_status">	
+ var countdown=60;
+		var timer;
+		function settime(obj) {
+		    if (countdown == 0) {
+		        obj.removeAttribute("disabled");
+		        obj.value="获取验证码";
+		       // obj.removeAttribute('style');
+		        countdown = 60;
+		        return;
+		    } else { 
+		        obj.setAttribute("disabled", true);
+		        obj.value="重新发送(" + countdown + ")";
+		        obj.style.backgroundColor= "#d1d1d1";
+		        obj.style.borderColor= "#d1d1d1";
+		        countdown--;
+		    } 
+		    timer = setTimeout(function() { 
+		    	settime(obj);
+		    },1000) 
+		}
+		
+		$('#sendCode').click(function(){
+			if($('input[name=phone]').val() == ''){
+				layer.msg('请输入手机号码', {icon:5});
+				return false;
+			}
+			settime(this);
+			var _this = this;
+			$.post('{:U('login/pwdcode')}',{
+				phone:$('input[name=phone]').val(),
+				tempid:'{:trim(C('yh_sms_reg_id'))}',
+				__hash__:$('input[name=__hash__]').val(),
+				ac:'fillphone'
+			}, function(json){
+			 if(json.status == 1){
+			  layer.msg(json.msg, {icon:6});
+			 }
+			 
+			 if(json.status != 1){
+					clearTimeout(timer);
+					_this.removeAttribute("disabled");
+					_this.value="获取验证码";
+					//_this.removeAttribute('style');
+			        countdown = 60;
+			        layer.msg(json.msg, {icon:5});
+				}
+			})
+		});
+</if>	
+			
+		</script>
+	</body>
+</html>

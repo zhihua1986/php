@@ -1,0 +1,141 @@
+	<!--foot-->
+		<div class="foot">
+			<div class="container cl">
+				<ul>
+					<li>
+						<dl>
+							<dt>关于我们</dt>
+							<dd><a href="{:U('help/index',array('id'=>1))}">关于{:C('yh_site_name')}</a></dd>
+							<dd><a href="{:U('help/index',array('id'=>3))}">免责声明</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>帮助中心</dt>
+							<dd><a href="{:U('help/index',array('id'=>4))}">新手指南</a></dd>
+							<dd><a href="{:U('help/index',array('id'=>2))}">联系我们</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>微信扫一扫</dt>
+							<dd>
+								<div class="public">
+									<img src="{:C('yh_site_flogo')}">
+									<p>关注公众号</p>
+								</div>
+							</dd>
+						</dl>
+					</li>
+					<li>
+
+<dl>
+<volist name="navlist" id="val" offset="0" length="5"> 
+<dd><a href="{$val.link}">{$val.name}</a></dd>
+</volist>
+						</dl>
+
+					</li>
+					<li>
+						<dl>
+							<dt>商家合作</dt>
+							<dd><a href="javascript:;" class="btn_baoming">商家报名</a></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+		</div>
+<!--bottom-->
+		<div class="bottom">
+			<div class="container cl">
+				<if condition="$link">
+				<ul>
+					<li>友情链接：</li>
+					<volist name="link" id="val">
+					<li><a href="{$val.url}" target="_blank">{$val.name}</a></li>
+				</volist>
+				</ul></if>
+				<p>Copyright © 2021-2022 {:C('yh_site_name')} 版权所有  <a target="_blank" href="http://beian.miit.gov.cn" rel="nofollow">{:C('yh_site_icp')}</a></p>
+				<p style="display: none;">{:C('yh_statistics_code')}</p>
+			</div>
+		</div>
+		<div id="back_top" class="back_top">
+			<a href="javascript:;" class="call-top" title="返回顶部" _hover-ignore="1" style="display: block;"></a>
+			<a id="checkTrap" rel="nofollow" class="checkTrap" target="_blank" href="https://wpa.qq.com/msgrd?v=3&uin={:C('yh_qq')}&site=qq&menu=yes"><span class="call-check" title="联系客服"></span></a>
+		</div>
+<tqkjs href="__STATIC__/tqkpc/js/jquery.min.js,__STATIC__/tqkpc/js/ui.js"/>
+<tqkjs href="__STATIC__/tqkpc/layer/layer.js,__STATIC__/tqkpc/js/jquery.lazyload.min.js,__STATIC__/tqkwap/js/jquery.validate.js"/>
+<tqkjs href="__STATIC__/tqkwap/js/validate-methods.js,__STATIC__/tqkwap/js/messages_zh.min.js,__STATIC__/tqkwap/js/jquery.form.min.js,__STATIC__/tqkpc/js/jquery.SuperSlide.2.1.1.js,__STATIC__/tqkpc/js/clipboard.min.js,__STATIC__/tqkpc/js/loimsg.js"/>
+<if condition="$alertwin">
+<div class="guide-all">
+	<div class="all-bg">
+		<div class="all-layout">
+			<a href="{$alertwin.url}" target="_blank">
+				<img src="{$alertwin.img}" width="450px">
+			</a>
+			<span class="guide-all-close"></span>
+		</div>
+	</div>
+</div>
+<style>
+.guide-hidden{overflow:hidden}
+.guide-all{display:none;width:100%;height:100%;position:fixed;left:0;top:0;z-index:1999; background:url(__STATIC__/images/tbg.png);}
+.guide-all .all-layout{width:400px;margin:0 auto;position:relative}
+.guide-all a{display:block;width:100%; margin-top: 10%;}
+.guide-all .guide-all-close{width:39px;height:39px;display:block;position:absolute;right:0px;top:0;cursor:pointer;background:url(__STATIC__/images/close_big.png) no-repeat center center}
+.guide-all .guide-all-close:hover{background:url(__STATIC__/images/close_big_opa6.png) no-repeat center center}
+.guide-bar{background:#472273;display:none}
+.guide-bar-layout{width:1000px;margin:0 auto;position:relative;height:55px}
+.guide-bar .guide-bar-close{display:block;position:absolute;right:0;top:10px;width:35px;height:35px;cursor:pointer;background:url(__STATIC__/images/close_big.png) no-repeat center center}
+.guide-bar .guide-bar-close:hover{background:url(__STATIC__/images/close_big_opa6.png) no-repeat center center}
+</style>
+<script type="text/javascript"  src="__STATIC__/js/tqktools.js?v=1"></script>
+</if>
+<script language="JavaScript">
+jQuery(function($) {
+				var backTop = jQuery(".call-top");
+				$(window).scroll(function() {
+					if($(window).scrollTop() > 150) {
+						backTop.css("display", "block");
+					} else {
+						backTop.css("display", "none");
+					}
+				})
+				$('#back_top .call-top').click(function() {
+					$('body,html').animate({
+						scrollTop: 0
+					}, 500);
+					return false;
+				})
+				$(".btn_baoming").click(function(){
+				layer.open({
+				  type: 2,
+				  title: '卖家入驻报名',
+				  shadeClose: true,
+				  shade: 0.8,
+				  area: ['600px', '520px'],
+				  content: ['{:U("baoming/index")}','no'] //iframe的url
+				}); 
+				
+				
+				});
+				
+				$("#jubao").click(function(){
+				var num_iid=$('#jubao').attr('rel');
+				layer.open({
+				  type: 2,
+				  title: '卖家违规举报',
+				  shadeClose: true,
+				  shade: 0.8,
+				  area: ['440px', '280px'],
+				  content: ['/index.php?m=home&c=baoming&a=jubao&num_iid='+num_iid,'no'] //iframe的url
+				});
+					
+				})
+
+$.get( "{:U('index/islogin')}", function( data ) {
+$( "#logintop" ).html( data );
+});
+				
+			})
+</script> 

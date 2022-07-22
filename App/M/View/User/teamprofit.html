@@ -1,0 +1,130 @@
+<include file="Public:user_head" />
+	<main>
+		<div style="padding-bottom: 10px;"> </div>
+	<div class="wbg m5">
+	
+
+<div class="accu-msg am-text-center">
+			<h2>本月结算金额</h2>
+			<div class="am-text-center">
+				<h3><span>￥</span>{:$allmoney?$allmoney:0.00}</h3>
+				<p>确认收货{:C('yh_ComputingTime')}天后结算到账</p>
+				<p>满{:C('yh_Quota')}元可提现</p>
+			</div>
+		</div>
+		
+	
+
+
+
+		<div class="report-money flexbox">
+			<div class="oval-item">
+				<div class="report-oval oval-1">
+					<h4><span>￥</span>{$yesterday_money?$yesterday_money:0}</h4>
+					<p>今日预估收入</p>
+				</div>
+			</div>
+			<div class="oval-item">
+				<div class="report-oval oval-3">
+					<h4><span>￥</span>{$this_month?$this_month:0}</h4>
+					<p>本月预估收入</p>
+				</div>
+			</div>	
+		</div>
+		<div class="report-num flexbox">
+			<div class="report-num-item">
+				<b>今日订单</b>
+				<h4>
+		<label class="am-cf"><span>淘宝：</span>{:$stat['today_count']?$stat['today_count']:0}<span>笔</span></label>
+		<label class="am-cf"><span>&nbsp;多多：</span>{:$stat['dd_today_count']?$stat['dd_today_count']:0}<span>笔</span></label>
+		<br/>
+		<label class="am-cf"><span> 京东：</span>{:$stat['jd_today_count']?$stat['jd_today_count']:0}<span>笔</span></label>
+		<if condition="C('yh_openmt') eq 1">
+		<label class="am-cf"><span>&nbsp; 美团：</span>{:$stat['mt_today_count']?$stat['mt_today_count']:0}<span>笔</span></label>
+		</if>
+		<if condition="C('yh_dmappkey') gt 1">
+		<label class="am-cf"><span>&nbsp; 其它：</span>{:$stat['dm_today_count']?$stat['dm_today_count']:0}<span>笔</span></label>
+		</if>
+		</h4>
+			</div>
+			<div class="report-num-item">
+				<b>本月订单</b>
+				<h4>
+			<label class="am-cf"><span>淘宝：</span> {:$stat['this_month_count']?$stat['this_month_count']:0}<span>笔</span></label>
+			<label class="am-cf"><span>&nbsp;多多：</span> {:$stat['dd_this_month_count']?$stat['dd_this_month_count']:0}<span>笔</span></label>
+			<br/>
+			<label class="am-cf"><span>京东：</span> {:$stat['jd_this_month_count']?$stat['jd_this_month_count']:0}<span>笔</span></label>
+			<if condition="C('yh_openmt') eq 1">
+			<label class="am-cf"><span>&nbsp;美团：</span> {:$stat['mt_this_month_count']?$stat['mt_this_month_count']:0}<span>笔</span></label>
+			</if>
+			<if condition="C('yh_dmappkey') gt 1">
+			<label class="am-cf"><span>&nbsp;其它：</span> {:$stat['dm_this_month_count']?$stat['dm_this_month_count']:0}<span>笔</span></label>
+			</if>
+			</h4>
+			</div>
+			<div class="report-num-item">
+				<b>上月订单</b>
+				<h4>
+		<label class="am-cf"><span>淘宝：</span> {:$stat['last_month_count']?$stat['last_month_count']:0}<span>笔</span></label>
+		<label class="am-cf"><span>&nbsp;多多：</span> {:$stat['dd_last_month_count']?$stat['dd_last_month_count']:0}<span>笔</span></label>
+		<br/>
+		<label class="am-cf"><span>京东：</span> {:$stat['jd_last_month_count']?$stat['jd_last_month_count']:0}<span>笔</span></label>
+		<if condition="C('yh_openmt') eq 1">
+		<label class="am-cf"><span>&nbsp;美团：</span> {:$stat['mt_last_month_count']?$stat['mt_last_month_count']:0}<span>笔</span></label>
+		</if>
+		<if condition="C('yh_dmappkey') gt 1">
+		<label class="am-cf"><span>&nbsp;其它：</span> {:$stat['dm_last_month_count']?$stat['dm_last_month_count']:0}<span>笔</span></label>
+		</if>
+							
+							</h4>
+			</div>
+		</div>
+
+
+	</div>
+	
+	
+<div class="wbg m5">	
+	<div class="am-btn-group am-btn-group-justify">
+    <a  class="am-btn am-btn-default" disabled="disabled" role="button">提现记录</a>
+</div>
+
+<if condition="$list">	
+	<div class="accu-state">
+			<ul>
+<volist name="list" id="vo">				
+				<li>
+					<div class="am-padding-sm am-cf">
+						<p>{$vo.money}元</p>
+						<span class="state state-warning">{$vo.create_time|frienddate}</span>
+					</div>
+				</li>	
+	</volist>
+			</ul>
+
+	</div>
+	
+
+			<else/>
+	<div class="no-order">
+				<i class="iconfont tqk-shouyi"></i>
+				<p>暂时还没有收入，多推广才能赚取奖励哟。</p>
+			</div>
+	
+	
+	
+	
+		</if>
+	
+	<div class="page am-margin-bottom-lg">
+				<if condition="$total_item gt 6">
+				{$page}
+				</if>
+			</div>
+	
+
+</div>
+	
+	</main>
+<include file="Public:foot" />
+</body></html>

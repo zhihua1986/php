@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<meta charset="UTF-8">
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}" />
+<meta name="description" content="{$page_seo.description}" />
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_725800_rzzl9wlrp6i.css" />
+<link rel="stylesheet" href="__SKIN2__/static/home/css/firstorder.css?v=1.46">
+<style type="text/css">
+	.copy-link{
+	border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;}
+	.am-navbar{border-top:1px solid #ccc;background-color:#fff;position:fixed;left:0;bottom:0;right:0;width:100%;height:49px;line-height:49px;z-index:1010;display:flex}
+	.am-navbar .am-navbar-nav{background-color:#fff;width:100%;display:flex;flex-wrap:nowrap;justify-content:space-between}
+	.am-navbar li{float:left}
+	.am-navbar .am-navbar-nav a .am-navbar-label{color:#646464;font-size:12px}
+	.am-navbar-nav a .am-navbar-label{padding-top:3px;line-height:1;font-size:12px;display:block;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+	.am-navbar-nav a{display:inline-block;width:100%;height:49px;line-height:20px}
+	.am-navbar-nav i{font-size:18px;display:block}
+	.am-navbar .am-navbar-nav{padding-left:8px;padding-right:8px;width: 88%;margin: 0 auto;text-align:center;position:relative;overflow:hidden}
+</style>
+</head>
+<body>
+<div class="layui-container" style="padding: 0; max-width: 750px;">
+<div class="layui-row">	
+ <div class="layui-col-xs12 layui-col-sm12">
+<div class="root">
+<div class="coupon-wrap flex-wrap">
+	<if condition="$back">
+	<a href="{$back}" class="layui-icon layui-icon-left back"></a>
+</if>
+<img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01viPBwk2MgYgu6pECr_!!3175549857.png" width="100%"/>
+	
+<div class="copy-link">
+	
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+	  <legend>【第一步领红包】</legend>
+	</fieldset>
+	
+	<p class="tqk-text-l tqk-line-20" style="padding: 10px;">
+		1.点下方[按钮]，复制淘口令打开手机淘宝APP领红包<br />
+		2.领取红包🧧后，返回当前页面进行第二步<br />
+		
+	</p>
+	
+	  <button type="button" id="hongbao" class="tqk-btn-size layui-btn layui-btn-radius">领新人红包</button>
+
+
+</div>
+
+
+
+<div class="copy-link">
+	
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+	  <legend>【第二步挑选商品】</legend>
+	</fieldset>
+	
+	<p class="tqk-text-l tqk-line-20" style="padding: 10px;">
+		1.点下方[按钮]，复制淘口令打开手机淘宝APP，
+		挑选自己喜欢的商品可直接抵扣。
+		
+		
+	</p>
+	
+	  <button type="button" id="kouling" class="tqk-btn-size layui-btn layui-btn-radius">复制淘口令下单</button>
+
+
+</div>
+  
+	
+
+	
+<div style="padding-top: 100px; display: block;"></div>
+
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+<include file="Public:footer" />
+
+<div id="silde">
+	<a class="tqkup" href="/"><i class="layui-icon layui-icon-home" style="font-size: 22px;"></i></a>
+	<a class="tqkup" id="scroll"><i class="layui-icon layui-icon-top"></i></a></div>	
+<script src="__SKIN2__/layui/layui.js?v=2.11"></script>
+<tqkjs  href="__STATIC__/wap/js/mescroll.min.js"/>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: '__SKIN2__/static/home/js/' 
+    ,version: 1.62
+    ,debug:false
+  }).use('tqk'); 
+
+ layui.use(['layer','ClipboardJS'], function(){ 
+var $ = layui.jquery
+,ClipboardJS = layui.ClipboardJS;
+
+
+  clipboard2 = new ClipboardJS('#hongbao', {
+                text: function(el) {
+                    return "{$hongbao}";
+                }
+            });
+            clipboard2.on('success', function(e) {
+                layer.msg('复制成功，现在去打开【手机淘宝】吧！',{time:2000});  
+				 e.clearSelection();
+            });
+
+
+    var pageCtrl = {
+       
+        _codeGenerator: function(el) {
+            $.ajax({
+                url: '{:U('tejia/create')}',
+                type: 'post',
+				dataType:"json",
+                // data: {
+                //     serviceId : el.data('id')
+                // },
+                async: false, 
+                success: function(res) {
+                        el.data('kouling', res);
+                }
+            });
+        },
+
+        _clip: function() {
+            var _self = this,
+            clipboard = new ClipboardJS('#kouling', {
+                text: function(el) {
+                    var $el = $(el);
+                    _self._codeGenerator($el); 
+                    return $el.data('kouling');
+                }
+            });
+            clipboard.on('success', function(e) {
+                layer.msg('复制成功，现在去打开【手机淘宝】吧！',{time:2000});  
+				 e.clearSelection();
+            });
+        },
+
+        init: function() {
+            this._clip();
+        }
+    };
+    $(function() {
+        pageCtrl.init();
+    });            
+
+
+ });
+</script>
+
+<include file="Public:stat" />
+</body>
+</html>
+
+

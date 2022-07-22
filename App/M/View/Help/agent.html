@@ -1,0 +1,74 @@
+
+<include file="Public:head_nosearch" />
+		<!--header-->
+		<style>
+		.mainbg{background: #feecb8; font-size: 1.4rem;}
+		.rand{padding: .5rem; width:90%; margin:0 auto;border-radius: .2rem;-webkit-box-shadow: 0 0 0.1rem #999;box-shadow: 0 0 0.1rem #999; background: #fff;}
+		.ac-need-right{font-size: .2rem;
+    color: #333;
+    text-align: center;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    width: 100%;}
+    .num{display: inline-block;
+    margin-bottom: .2rem;
+    width: 10.4rem;
+    height: 10.4rem;
+    line-height: 10.4rem;
+    text-align: center;
+    border-radius: 10.4rem;
+    background: #ffa548;
+    color: #fff;
+    font-size: 2.3rem;}
+    .an-header{    margin: .2rem 0;
+    width: 100%;
+    text-align: center;}
+    .tip{margin-bottom: .3rem;
+    width: 100%; font-size: 14px; text-align: left;}
+   .title{font-size: 1.2rem;}
+		</style>
+		<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+		    <div class="am-header-left am-header-nav">
+		        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>
+		    </div>
+		    <h1 class="am-header-title">代理介绍</h1>
+		</header>
+		<main>
+		<div class="mainbg">
+			<img src="__STATIC__/wap/images/static/yq.jpg?v=1" width="100%">
+		<div class="rand">
+		<h4 class="am-text-center">NO.1 自购省钱</h4>
+		<div>
+		注册{:C('yh_site_name')}账号，以后每笔订单都可以获得商家推广服务费。
+		</div>
+		
+		</div>
+		
+		<div class="am-padding-bottom-lg"></div>
+		
+		<div class="rand">
+		<h4 class="am-text-center">NO.2 分享赚钱</h4>
+		<div>
+		<div class="an-header"><span>满足以下条件即可自动成为代理</span></div>
+		<div class="ac-need-right"><p class="num"><strong >{:C('yh_agentcondition')}</strong>元</p> <p  class="title">个人累计下单金额</p> <p  class="title">需要确认收货并且交易成功</p></div>
+		<div  class="tip"><p>邀请规则</p></div>
+		<div>
+		1.你邀请了A注册{:C('yh_site_name')}会员，A下单你可以额外获得商家服务费的{:ceil(C('yh_bili2')/C('yh_bili1')*100)}%奖励。
+		<br />
+		2.A邀请了B注册{:C('yh_site_name')}会员，B下单你可以额外获得商家服务费的{:ceil(C('yh_bili3')/C('yh_bili1')*100)}%奖励。
+		</div>
+		
+		</div>
+		
+		<div class="am-padding-bottom-lg"></div>	
+		
+	
+		</div>
+			<div class="am-padding-bottom-lg"></div>	
+		</div>
+			
+			
+		</main>
+<include file="Public:foot" />
+</body></html>

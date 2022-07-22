@@ -1,0 +1,506 @@
+<include file="Public:header" />
+<include file="Setting:sub" />
+
+
+<div class="pad_lr_10">
+	<form id="info_form" action="{:u('setting/edit')}" method="post" enctype="multipart/form-data">
+	<table width="100%" class="table_form">
+    	<tr>
+        	<th>{:L('site_status')} :</th>
+        	<td>
+            	<label><input type="radio" class="J_change_status" <if condition="C('yh_site_status') eq '1'">checked="checked"</if> value="1" name="setting[site_status]"> {:L('open')}</label> &nbsp;&nbsp;
+                <label><input type="radio" class="J_change_status" <if condition="C('yh_site_status') eq '0'">checked="checked"</if> value="0" name="setting[site_status]"> {:L('close')}</label>
+            </td>
+    	</tr>
+    		<tr>
+        	<th>绑定手机号 :</th>
+        	 	<td>
+            	<input type="radio" <if condition="C('yh_index_ems') eq '0'">checked="checked"</if> value="0" name="setting[index_ems]"> 开启 &nbsp;&nbsp;
+            	<input type="radio" <if condition="C('yh_index_ems') eq '1'">checked="checked"</if> value="1" name="setting[index_ems]"> 关闭 &nbsp;&nbsp;
+            	<span class="gray">（可以解决网页、微信公众号、小程序会员账号统一问题）</span>
+            </td>
+    	</tr>
+    	    	<tr>
+        	<th>推券客采集线路 :</th>
+        	 	<td>
+   <select name="setting[api_line]" class="input-text radius valid" style="width: 120px;" >
+                   	<option <if condition="C('yh_api_line') eq 'http://api.tuiquanke.cn'">selected="selected"</if> value="http://api.tuiquanke.cn">华南</option>
+						<option <if condition="C('yh_api_line') eq 'http://api.tuiquanke.com'">selected="selected"</if> value="http://api.tuiquanke.com">华东</option>
+						<option <if condition="C('yh_api_line') eq 'http://hk.tuiquanke.cn'">selected="selected"</if> value="http://hk.tuiquanke.cn">香港</option>
+	</select>
+            	<span class="gray">（请根据你的服务器所在地选择对应的线路）</span>
+            </td>
+    	</tr>
+    	
+    	
+    	<tr>
+        	<th>淘口令符号 :</th>
+        	 	<td>
+   <select name="setting[dingdan]" class="input-text radius valid" style="width: 120px;" >
+						<option <if condition="C('yh_dingdan') eq '￥|￥'">selected="selected"</if> value="￥|￥">￥口令￥</option>
+						<option <if condition="C('yh_dingdan') eq '《|《'">selected="selected"</if> value="《|《">《口令《</option>
+						<option <if condition="C('yh_dingdan') eq '(|)'">selected="selected"</if> value="(|)">(口令)</option>
+						<option <if condition="C('yh_dingdan') eq '$|$'">selected="selected"</if> value="$|$">$口令$</option>
+						<option <if condition="C('yh_dingdan') eq '《|》'">selected="selected"</if> value="《|》">《口令》</option>
+						<option <if condition="C('yh_dingdan') eq '€|€'">selected="selected"</if> value="€|€">€口令€</option>
+						<option <if condition="C('yh_dingdan') eq '₴|₴'">selected="selected"</if> value="₴|₴">₴口令₴</option>
+	</select>
+            	<span class="gray">（1.设置后一定要测试是否能正常识别 2.修改后要清空商品重新采集）</span>
+            </td>
+    	</tr>
+    	
+        <tr>
+            <th width="150">{:L('site_name')} :</th>
+            <td><input type="text" name="setting[site_name]" class="input-text" size="30" value="{:C('yh_site_name')}"></td>
+        </tr>
+		<tr>
+            <th width="150">{:L('site_url')} :</th>
+            <td><input type="text" name="setting[site_url]" class="input-text" size="30" value="{:C('yh_site_url')}">
+				 <span class="gray ml10"><font class="red">⇑</font><span class="gray ml10">电脑版首页网址必须以 http:// 或 https://开头</span>
+			</td>
+       </tr> 
+        <tr>
+            <th width="150">WAP地址 :</th>
+            <td>
+                <input type="text" name="setting[headerm_html]" class="input-text" size="30" value="{:C('yh_headerm_html')}">
+				<span class="gray ml10"><font class="red">⇑</font> 手机版首页网址必须以 http://或 https:// 开头</span>
+			</td>
+        </tr>
+        <tr>
+            <th>{:L('site_icp')} :</th>
+            <td><input type="text" name="setting[site_icp]" class="input-text" size="30" value="{:C('yh_site_icp')}">
+				<span class="gray ml10">备案号如：苏ICP备05909090号 </span>
+            </td>
+        </tr>
+		<tr>
+            <th>QQ客服 :</th>
+            <td><input type="text" name="setting[qq]" class="input-text" size="30" value="{:C('yh_qq')}"></td>
+        </tr>
+        <tr>
+            <th>微信客服 :</th>
+            <td><input type="text" name="setting[zhibo_url]" class="input-text" size="30" value="{:C('yh_zhibo_url')}">
+               <span class="gray ml10">用于小程序端客服联系 </span>
+            </td>
+        </tr>
+		
+		
+		<tr>
+			<th width="150">推广海报文案:</th>
+			<td>
+				<textarea rows="3" cols="80" name="setting[taojindian_html]">{:C('yh_taojindian_html')}</textarea>
+				<span class="gray ml10"><br>设置后显示在手机站用户中心 推广海报上面 </span>
+			</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">阿里妈妈Appkey :</th>
+        	<td width="40%">
+				<input type="text" name="setting[taobao_appkey]" class="input-text" size="45" value="{:C('yh_taobao_appkey')}" placeholder="联盟合作网站API Appkey ">
+        <span class="gray ml10"> <font class="red">⇑</font> 首先网站需要通过阿里妈妈审核 申请步骤 <a href="https://www.tuiquanke.com/article_view/1820" target="_blank">点这里</a> </span>     
+        	</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">阿里妈妈App Secret :</th>
+        	<td width="40%">
+				<input type="text" name="setting[taobao_appsecret]" class="input-text" size="45" value="{:C('yh_taobao_appsecret')}" placeholder="联盟合作网站API App Secret">
+        <span class="gray ml10"><font class="red">⇑</font>Appkey和App Secret 如何获取 <a href="https://www.tuiquanke.com/article_view/1839" target="_blank">点这里</a> </span>     
+        	</td>
+		</tr>
+		
+     
+	   <tr>
+            <th width="150">阿里妈妈PID:</th>
+            <td>
+                <input type="text" name="setting[taobao_pid]" placeholder="填写阿里妈妈PID" class="input-text" size="50" value="{:C('yh_taobao_pid')}" />
+              <span class="gray ml10"><font class="red">⇑</font>此PID必须要和上面的appkey 属于同一站点下的，否则无法使用好券清单功能。 </span>
+	           </td>
+        </tr>
+        
+         <tr>
+            <th width="150">开启拼多多 :</th>
+            	<td>
+            	<label><input type="radio" class="J_change_status" <if condition="C('yh_openduoduo') eq '1'">checked="checked"</if> value="1" name="setting[openduoduo]"> {:L('open')}</label> &nbsp;&nbsp;
+                <label><input type="radio" class="J_change_status" <if condition="C('yh_openduoduo') eq '0'">checked="checked"</if> value="0" name="setting[openduoduo]"> {:L('close')}</label>
+         <label class="gray ml10">（如果你不想推广拼多多产品可以关闭此项）</label>
+        	</td>
+        </tr>
+        <tr>
+        	<th width="10%">拼多多client_id :</th>
+        	<td width="40%">
+        		<input type="text" name="setting[pddappkey]" class="input-text" size="45" value="{:C('yh_pddappkey')}">
+		<span class="gray ml10">client_id和client_secret如何获取 <a href="https://www.tuiquanke.com/view/20257892273" target="_blank">点这里</a> </span>     
+        	
+			</td>
+        </tr>
+        
+         <tr>
+        	<th width="10%">拼多多client_secret :</th>
+        	<td width="40%">
+        		<input type="text" name="setting[pddsecretkey]" class="input-text" size="45" value="{:C('yh_pddsecretkey')}">
+        	</td>
+        </tr>
+         <tr>
+            <th width="150">拼多多PID:</th>
+            <td>
+                <input type="text" name="setting[youhun_secret]" placeholder="如：1301235_12967987 (使用此功能必须要到推券客平台授权)" class="input-text" size="50" value="{:C('yh_youhun_secret')}" />
+                 <a href="{:U('uland/authority')}" target="_blank" class="blue btn btn-primary">授权备案</a>
+				<span class="gray ml10"><font class="red">⇑</font>如何获取拼多多PID <a href="https://www.tuiquanke.com/article_view/2129" target="_blank">点这里</a>。 </span>
+	           </td>
+        </tr>
+        
+          <tr>
+            <th width="150">开启京东 :</th>
+            	<td>
+            	<label><input type="radio" class="J_change_status" <if condition="C('yh_openjd') eq '1'">checked="checked"</if> value="1" name="setting[openjd]"> {:L('open')}</label> &nbsp;&nbsp;
+                <label><input type="radio" class="J_change_status" <if condition="C('yh_openjd') eq '0'">checked="checked"</if> value="0" name="setting[openjd]"> {:L('close')}</label>
+         <label class="gray ml10">（如果你不想推广京东产品可以关闭此项）</label>
+        	</td>
+        </tr>
+        
+        <tr>
+			<th width="10%">京东Appkey :</th>
+        	<td width="40%">
+				<input type="text" name="setting[jdappkey]" class="input-text" size="45" value="{:C('yh_jdappkey')}">
+        <span class="gray ml10">Appkey和京东Secretkey如何获取 <a href="https://www.tuiquanke.com/topics/23cyz24g3x0k4" target="_blank">点这里</a> </span>     
+        	</td>
+		</tr>
+		
+         <tr>
+			<th width="10%">京东Secretkey :</th>
+        	<td width="40%">
+				<input type="text" name="setting[jdsecretkey]" class="input-text" size="45" value="{:C('yh_jdsecretkey')}">
+        	</td>
+		</tr>
+		
+         <tr>
+			<th width="10%">京东授权Key :</th>
+        	<td width="40%">
+				<input type="text" name="setting[jdauthkey]" class="input-text" size="45" value="{:C('yh_jdauthkey')}">
+				 <span class="gray ml10"><font class="red">⇑</font>如何获取京东授权KEY <a href="https://www.tuiquanke.com/view/18247569533" target="_blank">点这里</a>。 </span>
+        	</td>
+		</tr>
+        
+         <tr>
+            <th width="150">京东PID:</th>
+            <td>
+                <input type="text" name="setting[jdpid]" placeholder="如：526930_2239949_22661343 " class="input-text" size="50" value="{:C('yh_jdpid')}" />
+                <span class="gray ml10">如何获取京东PID <a href="https://www.tuiquanke.com/topics/23cyz24g3x0k4" target="_blank">点这里</a>。 </span>
+	           </td>
+        </tr>
+		
+		<tr>
+			<th width="10%">多麦appkey :</th>
+			<td width="40%">
+				<input type="text" name="setting[dmappkey]" class="input-text" size="45" value="{:C('yh_dmappkey')}"> <span class="gray ml10"><font class="red">⇑</font>
+		<span class="gray ml10">多麦appkey和密钥如何获取 <a href="https://www.tuiquanke.com/view/96286044273" target="_blank">点这里</a> </span>     
+			</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">多麦AppSecret :</th>
+			<td width="40%">
+				<input type="text" name="setting[dmsecret]" class="input-text" size="45" value="{:C('yh_dmsecret')}"> <span class="gray ml10"><font class="red">⇑</font>
+			</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">多麦推广位ID :</th>
+			<td width="40%">
+				<input type="text" name="setting[dm_pid]" class="input-text" size="45" value="{:C('yh_dm_pid')}"> <span class="gray ml10"><font class="red">⇑</font>
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<th width="10%">开启多麦产品:</th>
+			<td width="40%">
+<label class="mr10">
+<input type="hidden" id="didi" name="setting[dm_cid_dd]"  value="{:C('yh_dm_cid_dd')?1:0}" />
+<input type="checkbox" rel="didi" class="J_checkitem"  <if condition="C('yh_dm_cid_dd') eq '1'">checked="checked"</if> > 滴滴
+</label>
+<label class="mr10">
+<input type="hidden" id="meituan" name="setting[dm_cid_mt]"  value="{:C('yh_dm_cid_mt')?1:0}" />
+<input type="checkbox" rel="meituan" class="J_checkitem"  <if condition="C('yh_dm_cid_mt') eq '1'">checked="checked"</if> > 美团
+</label>
+<label class="mr10">
+<input type="hidden" id="kfc" name="setting[dm_cid_kfc]"  value="{:C('yh_dm_cid_kfc')?1:0}" />
+<input type="checkbox" rel="kfc" class="J_checkitem"  <if condition="C('yh_dm_cid_kfc') eq '1'">checked="checked"</if> > 肯德基
+</label>
+<label class="mr10">
+<input type="hidden" id="qianzhu" name="setting[dm_cid_qz]"  value="{:C('yh_dm_cid_qz')?1:0}" />
+<input type="checkbox" rel="qianzhu" class="J_checkitem"   <if condition="C('yh_dm_cid_qz') eq '1'">checked="checked"</if> > 千猪电影票
+</label>
+<label class="mr10">
+	<input type="hidden" id="douyin" name="setting[dm_cid_dy]"  value="{:C('yh_dm_cid_dy')?1:0}" />
+<input type="checkbox" rel="douyin" class="J_checkitem"   <if condition="C('yh_dm_cid_dy') eq '1'">checked="checked"</if> > 抖音精选
+</label>
+			
+			</td>
+		</tr>
+        
+		<tr>
+		    <th width="150">开启美团 :</th>
+		    	<td>
+		    	<label><input type="radio" class="J_change_status" <if condition="C('yh_openmt') eq '1'">checked="checked"</if> value="1" name="setting[openmt]"> 开启</label> &nbsp;&nbsp;
+		        <label><input type="radio" class="J_change_status" <if condition="C('yh_openmt') eq '0'">checked="checked"</if> value="0" name="setting[openmt]"> {:L('close')}</label>
+		 <label class="gray ml10">（只能对接美团联盟，需要企业资质，没企业建议用多麦联盟）</label>
+			</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">美团appkey :</th>
+			<td width="40%">
+				<input type="text" name="setting[mtappkey]" class="input-text" size="45" value="{:C('yh_mtappkey')}">
+		<span class="gray ml10">美团appkey和密钥如何获取 <a href="https://www.tuiquanke.com/view/85264415159" target="_blank">点这里</a> </span>     
+			</td>
+		</tr>
+		
+		<tr>
+			<th width="10%">美团签名密钥 :</th>
+			<td width="40%">
+				<input type="text" name="setting[mtsecret]" class="input-text" size="45" value="{:C('yh_mtsecret')}">
+			</td>
+		</tr>
+		<tr>
+			<th width="10%">美团回调密钥 :</th>
+			<td width="40%">
+				<input type="text" name="setting[mtsign]" class="input-text" size="45" value="{:C('yh_mtsign')}">
+			</td>
+		</tr>
+	
+		<tr>
+			<th width="150">通行密钥 :</th>
+			<td><input type="text" name="setting[gongju]"  placeholder="请从推券客官网站点设置中获取" class="input-text" size="50" value="{:C('yh_gongju')}" /><span class="gray ml10">请复制推券客官网用户中心“<a href="http://www.tuiquanke.com/guest/site" target="_blank">站点设置</a>”中的通行密钥填写</span></td>
+		</tr>
+		
+        <tr>
+            <th width="150">百度主动推送(提交百度收录) :</th>
+            <td><input type="text" name="setting[zhunru]" placeholder="如：http://data.zz.baidu.com/urls?site=www.tqk.com&token=xxxxxx" class="input-text" size="50" value="{:C('yh_zhunru')}" /><span class="gray ml10"> 	在<a href="https://ziyuan.baidu.com" target="_blank">百度站长平台</a>
+            	获取 链接提交=>接口调用地址获取 链接提交=>接口调用地址</span></td>
+        </tr>
+        
+          <tr>
+            <th width="150">百度快速收录推送链接 :</th>
+            <td><input type="text" name="setting[robots_key]" class="input-text" size="50" value="{:C('yh_robots_key')}" />
+            <span class="gray ml10">到百度站长资源平台获取 <a href="http://www.tuiquanke.com/article_view/2220" target="_blank">看这里</a> </span></td>
+        </tr>
+
+		<tr>
+			<th width="150">积分兑换比例 :</th>
+			<td><input type="text" placeholder="请填写积分兑换红包的比例 如：30" name="setting[fanxian]" class="input-text" size="50" value="{:C('yh_fanxian')?C('yh_fanxian'):0}" /><span class="gray ml10">如：用户通过参加晒单或者活动得到100积分兑换比例是30%（兑换公式100*30%=30元） </span></td>
+		</tr>
+     <!--   <tr>
+            <th width="150">精品晒单积分 :</th>
+            <td><input type="text" placeholder="用户晒的精品帖，将获得的积分 如：15" name="setting[jingpintie]" class="input-text" size="50" value="{:C('yh_jingpintie')?C('yh_jingpintie'):0}" />
+           <span class="gray ml10">计算公式：15(精品晒单获得积分) * 30%(积分兑换比例)= 4.5 元 (用户晒单成功可获得金额) </span></td>
+		</tr>
+        <tr>
+            <th width="150">普通晒单积分 :</th>
+            <td><input type="text" placeholder="用户晒的普通帖，将获得的积分 如：10" name="setting[putongtie]" class="input-text" size="50" value="{:C('yh_putongtie')?C('yh_putongtie'):0}" /></td>
+        </tr> -->
+        
+        <tr>
+            <th width="150">注册送积分 :</th>
+            <td><input type="text" placeholder="新用户注册送积分 如：10" name="setting[reinte]" class="input-text" size="50" value="{:C('yh_reinte')?C('yh_reinte'):0}" />
+               <span class="gray ml10">如果不赠送积分请设置为0</span>
+            </td>
+       
+        </tr>
+        
+         <tr>
+            <th width="150">签到送现金 :</th>
+            <td><input type="text" placeholder="用户签到最多送 如：1" name="setting[item_hit]" class="input-text" size="50" value="{:C('yh_item_hit')}" />
+               <span class="gray ml10">用户签到<font color="#FF0000">最多送</font> 如：1  如果不赠送请设置为0</span>
+            </td>
+       
+        </tr>
+        
+         <tr>
+            <th width="150">开启登录后领券 :</th>
+            	<td>
+            	<label><input type="radio" class="J_change_status" <if condition="C('yh_islogin') eq '1'">checked="checked"</if> value="1" name="setting[islogin]"> {:L('open')}</label> &nbsp;&nbsp;
+                <label><input type="radio" class="J_change_status" <if condition="C('yh_islogin') eq '0'">checked="checked"</if> value="0" name="setting[islogin]"> {:L('close')}</label>
+         <label class="gray ml10">（开启后所有用户需要注册并且登录后才可以领券）</label>
+        	</td>
+        </tr>
+        
+        <tr>
+            <th width="150">开启返利显示 :</th>
+            	<td>
+            	<label><input type="radio" class="J_change_status" <if condition="C('yh_isfanli') eq '1'">checked="checked"</if> value="1" name="setting[isfanli]"> 登录后显示</label> &nbsp;&nbsp;
+                <label><input type="radio" class="J_change_status" <if condition="C('yh_isfanli') eq '0'">checked="checked"</if> value="0" name="setting[isfanli]">直接显示</label>&nbsp;&nbsp;
+                  <label><input type="radio" class="J_change_status" <if condition="C('yh_isfanli') eq '2'">checked="checked"</if> value="2" name="setting[isfanli]">不显示</label>
+         <label class="gray ml10">（控制前台商品显示预计返利金额）</label>
+        	</td>
+        </tr>
+        
+         <tr>
+            <th width="150">开启邀请码 :</th>
+            	<td>
+            	<label><input type="radio" class="J_change_status" <if condition="C('yh_invocode') eq '1'">checked="checked"</if> value="1" name="setting[invocode]"> {:L('open')}</label> &nbsp;&nbsp;
+                <label><input type="radio" class="J_change_status" <if condition="C('yh_invocode') eq '0'">checked="checked"</if> value="0" name="setting[invocode]"> {:L('close')}</label>
+         <label class="gray ml10">（开启后代理可以通过邀请码推广关联用户）</label>
+        	</td>
+        </tr>
+        
+        <tr>
+            <th width="150">淘宝、京东、多多结算周期 :</th>
+            <td><input type="number" style="width: 180px;" placeholder="如：15" name="setting[ComputingTime]" class="input-text" size="80" value="{:C('yh_ComputingTime')?C('yh_ComputingTime'):0}" />
+            <span class="gray ml10">订单确认收货后多少天结算，建议不低于15天</span>
+            </td>
+        </tr>
+		
+		<tr>
+		    <th width="150">外卖结算周期 :</th>
+		    <td><input type="number" style="width: 180px;" placeholder="如：3" name="setting[wm_settle]" class="input-text" size="80" value="{:C('yh_wm_settle')?C('yh_wm_settle'):0}" />
+		    <span class="gray ml10">订单确认收货后多少天结算，0表示交易成功后立即结算</span>
+		    </td>
+		</tr>
+        
+        <tr>
+            <th width="150">用户提现门槛 :</th>
+            <td><input type="number" style="width: 180px;" placeholder="填0表示不限定提现金额" name="setting[Quota]" class="input-text" size="80" value="{:C('yh_Quota')?C('yh_Quota'):0}" />元
+            <span class="gray ml10">代理或者普通用户需要账户余额满足设定的金额才可以提现</span>
+            </td>
+        </tr>
+        
+         <tr>
+            <th width="150">成为代理条件 :</th>
+            <td><input type="number" style="width: 180px;" placeholder="如：300" name="setting[agentcondition]" class="input-text" size="80" value="{:C('yh_agentcondition')?C('yh_agentcondition'):0}" />元
+            <span class="gray ml10">通过平台累计下单且<font color="#0000FF">已结算</font>达指定金额即可自动成为代理或者在用户列表手工设置为代理 <label style="color: red;">[设置为0注册即可成为代理]</label></span>
+            </td>
+        </tr>
+        
+         <tr>
+            <th width="150">一级代理和普通用户返 :</th>
+            <td><input type="number" style="width: 180px;" placeholder="建议设置30-50之间 如：35" name="setting[bili1]" class="input-text" size="80" value="{:C('yh_bili1')?C('yh_bili1'):0}" />%
+            <span class="gray ml10"><font class="red">⇑</font>示例：假如返现比例为35% 100元订单有20元佣金 ， 公式：20*0.35=7元 (代理或用户可得返利) </span>
+            </td>
+        </tr>
+         <tr>
+            <th width="150">二级下单一级获得奖励 :</th>
+            <td><input type="number" style="width: 180px;" max="50" placeholder="如：10" name="setting[bili2]" class="input-text" size="80" value="{:C('yh_bili2')?C('yh_bili2'):0}" />%
+             <span class="gray ml10"><font class="red">⇑</font>示例：假如提成比例为10%  100元订单有20元佣金 ， 公式：二级获得 20*0.35= 7元 + 一级奖励 20*0.1=2元 总计返给用户 9元 </span>
+            
+            </td>
+        </tr>
+         <tr>
+            <th width="150">三级下单一级获得奖励 :</th>
+            <td><input type="number" style="width: 180px;" max="30" placeholder="如：5" name="setting[bili3]" class="input-text" value="{:C('yh_bili3')?C('yh_bili3'):0}" />%
+             <span class="gray ml10"><font class="red">⇑</font>示例：假如提成比例为5% 100元订单有20元佣金 ， 公式：三级获得20*0.35=7元 + 二级获得奖励 20*0.1= 2元 + 一级获得奖励 20*0.05=1元 总计返给用户 10元</span>
+            </td>
+        </tr>
+        
+         <tr>
+            <th width="150">淘礼金红包补贴:</th>
+            <td><input type="number" style="width: 180px;" max="100" placeholder="如：30" name="setting[taolijin]" class="input-text" value="{:C('yh_taolijin')?C('yh_taolijin'):0}" />%
+             <span class="gray ml10">说明：假如设置比例30%，如果商品佣金为10元，当用户查询淘礼金时会创建3元淘礼金红包</span>
+            </td>
+        </tr>
+		<tr>
+		       <th width="150">淘礼金补贴限额 :</th>
+		       <td><input type="text" placeholder=" 如：15" name="setting[jingpintie]" class="input-text" size="50" value="{:C('yh_jingpintie')?C('yh_jingpintie'):0}" />
+		      <span class="gray ml10">不限制最高补贴额度请填数字0 </span></td>
+				</tr>
+        <tr>
+            <th width="150">淘礼金专属PID:</th>
+            <td>
+            	 <input type="text" name="setting[taolijin_pid]" placeholder="要和上面的阿里妈妈PID属于同一媒体下" class="input-text" size="50" value="{:C('yh_taolijin_pid')}" />
+             <span class="gray ml10"><font class="red">⇑</font>说明：填写PID后淘礼金订单不会给用户返利</span>
+            </td>
+        </tr>
+        
+         <tr>
+            <th width="150">允许上传的文件格式 :</th>
+            <td><input type="text"  name="setting[attr_allow_exts]" class="input-text" size="50" value="{:C('yh_attr_allow_exts')}" /></td>
+        </tr>
+        
+        <tr>
+            <th width="150">允许上传的文件大小 :</th>
+            <td><input type="text"  name="setting[attr_allow_size]" class="input-text" size="50" value="{:C('yh_attr_allow_size')}" /> KB (1024kb=1M)</td>
+        </tr>
+		
+     <tr>
+			<th width="10%">pc版头部文字 :</th>
+        	<td width="40%">
+        		 <textarea rows="3" cols="80" name="setting[app_key]">{:C('yh_app_key')}</textarea> 
+				
+            </td>
+		</tr>
+
+        <tr>
+            <th>{:L('statistics_code')} :</th>
+            <td>
+                <textarea rows="6" cols="80" name="setting[statistics_code]">{:C('yh_statistics_code')}</textarea> 
+				<span class="gray ml10"><br>统计代码需要你自己去CNZZ 或 百度 申请 <a href="http://www.cnzz.com/" target="_blank">http://www.cnzz.com/</a>  <a href="http://tongji.baidu.com" target="_blank">http://tongji.baidu.com</a></span>
+			</td>
+           
+      </tr>
+        <tr id="J_closed_reason" <if condition="C('yh_site_status') eq 1">class="hidden"</if>>
+        	<th>{:L('closed_reason')} :</th>
+        	<td><textarea rows="4" cols="50" name="setting[closed_reason]" id="closed_reason">{:C('yh_closed_reason')}</textarea></td>
+    	</tr>
+        <tr>
+        	<th></th>
+        	<td><input type="hidden" name="menuid"  value="{$menuid}"/>
+        	<input type="hidden" name="setting[app_kehuduan]"  value="{:C('yh_app_kehuduan')}"/>
+        	 	<input type="submit" class="smt mr10" value="{:L('submit')}"/>
+        	 	<br />
+        	 	  <div class="gray mt-20 clear">特别说明：为减少不必要的重复设置标记了<font class="red">⇑</font>符号的选项会自动同步到<a href="https://www.tuiquanke.com/data/upload/article/2020-09-28/5f71f0d88f01f.jpg" target="_blank">推券客官网站点设置</a> </div>
+        	</td>
+    	</tr>
+    	  <tr>
+        	<th></th><td></td>
+       </tr>
+	</table>
+	</form>
+</div>
+<include file="Public:footer" />
+<script>
+$(function(){
+	
+	$('.J_checkitem').live('click',function(){
+		
+	var id = $(this).attr('rel');	
+	if($(this).attr('checked')) {
+		$('#'+id).val(1);
+	   }else{
+		 $('#'+id).val(0);  
+		   
+	   }
+		
+		
+	})
+	
+	
+    $('.J_change_status').live('click', function(){
+        if($(this).val() == '0'){
+            $('#J_closed_reason').fadeIn();
+        }else{
+            $('#J_closed_reason').fadeOut();
+        }
+    });
+});
+
+$("#ressl").on('click',function(){
+   	
+$.ajax({ 
+url: "{:U('setting/ressl')}",  
+type:'get',
+dataType: "text",
+async: true,  
+success: function(data){
+	if(data=='ok'){
+	 alert('替换完成！');
+		}else{
+		alert('替换失败！');
+		}
+	}  
+});
+
+   	
+});
+</script>
+</body>
+</html>

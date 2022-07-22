@@ -1,0 +1,129 @@
+<include file="Public:top" />
+	<body>
+<include file="Public:head" />
+<script src="__STATIC__/tqkpc/laydate/laydate.js"></script>
+<script src="__STATIC__/tqkpc/js/clipboard.min.js"></script>
+		<!--wrap-->
+		<div class="wrap">
+			<div class="container cl">
+			<include file="nav" />
+				<div class="mianbar">
+					<div class="subnav mb-20">
+						<div class="report-money flexbox">
+							<div class="report-oval oval-1">
+								<h4><span>￥</span>{$yesterday}</h4>
+								<p>昨日预估收入</p>
+							</div>
+							<div class="report-oval oval-2">
+								<h4><span>￥</span>{$month}</h4>
+								<p>本月预估收入</p>
+							</div>
+							<div class="report-oval oval-3">
+								<h4><span>￥</span>{:$pre_month?$pre_month:0}</h4>
+								<p>上月收入</p>
+							</div>
+						</div>
+						<div class="report-num flexbox">
+							<div class="report-num-item">
+								<p>昨日订单数量：</p>
+								<h4>{$yesterday_count}<span>笔</span></h4>
+							</div>
+							<div class="report-num-item">
+								<p>本月订单数量：</p>
+								<h4>{$month_count}<span>笔</span></h4>
+							</div>
+							<div class="report-num-item">
+								<p>上月订单数量：</p>
+								<h4>{$pre_count}<span>笔</span></h4>
+							</div>
+						</div>
+					</div>
+					<div class="subnav">
+						<div class="share-wrap">
+							<div class="share-tit">
+								<h4>分享流程及方式</h4>
+							</div>
+							<div class="share-flow flexbox">
+								<div class="share-flow-step">
+									<span class="iconfont icon-share-copy"></span>
+									<p>1.分享专属链接/二维码</p>
+								</div>
+								<div class="share-flow-arr"><i class="iconfont icon-right2"></i></div>
+								<div href="" class="share-flow-step">
+									<span class="iconfont icon-visit"></span>
+									<p>2.买家访问平台</p>
+								</div>
+								<div class="share-flow-arr"><i class="iconfont icon-right2"></i></div>
+								<div href="" class="share-flow-step">
+									<span class="iconfont icon-coupon"></span>
+									<p>3.买家领取优惠券并下单</p>
+								</div>
+								<div class="share-flow-arr"><i class="iconfont icon-right2"></i></div>
+								<div href="" class="share-flow-step">
+									<span class="iconfont icon-integral"></span>
+									<p>4.买家确认收货你获得商家奖励</p>
+								</div>
+							</div>
+							<div class="share-way form form-horizontal">
+								<div class="row cl">
+									<div class="share-way-tit mt-5">
+										<label class="form-label">方式一推广链接</label>
+									</div>
+									<div class="formControls col-xs-7 col-sm-7">
+										<input type="text" readonly="readonly" class="input-text" value="{:C('yh_site_url')}/?t={$visitor.id}" id="foo" />
+										
+									</div>
+									<div class="col-xs-2 col-sm-2">
+										<button class="btn btn-primary size-L radius copy_key" data-clipboard-action="copy" data-clipboard-target="#foo">一键复制</button>
+									</div>
+								</div>
+								<div class="row cl">
+									<div class="share-way-tit mt-5">
+										<label class="form-label">方式二推广二维码</label>
+									</div>
+									<div class="formControls col-xs-2 col-sm-2 text-c">
+										<img src="{:U('zhan/qrcode')}" width="120" height="120" class="show qr_img">
+										<!-- <a href="{:U('zhan/downfile')}" class="btn btn-primary radius down_qr">下载二维码</a> -->
+									</div>
+								</div>
+							</div>
+							<div class="share-rules">
+								<span class="c-main">常见问题与规则</span>
+								<p>
+									<strong>（1）怎样才能获得商家奖励？</strong><br />
+									买家通过你分享的专属链接或二维码购买站内任意商品你都可以获得商家奖励。 买家进入你分享的站点后，再次分享站点任意商品链接，有人下单你任然可以获得奖励。
+								</p>		
+								<p>	
+									<strong>（2）商家奖励如何查看？</strong> <br />
+									平台会自动追踪你的用户购买订单记录，每一笔订单的付款金额、状态、商家奖励金额都会直观显示在订单列表。
+								</p>		
+								<p>
+									<strong>（3）获得奖励如何提现？</strong><br />
+									每月<font color="red">20号</font>结算上月奖励，本月获得奖励则在下月20号结算。会自动提现至本账户绑定的支付宝账号。
+									
+								</p>
+									<p>
+									<strong>（4）以下情况将无法获得奖励？</strong><br />
+									a、买家没有通过你分享的链接或二维码下单。    b、买家付款后，又申请退款了。
+									
+								</p>
+								<p>
+									<strong>（5）为什么会扣除用户返现？<br /></strong>
+									如果你的买家提交有效订单到平台，会获得平台的积分返现。平台会自动按照商家奖励金额<font color="red">{:C('yh_fanxian')}%</font>的比例扣除，返还给买家用户。
+									
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<include file="Public:foot" />	
+	<script type="text/javascript">
+		var clipboard = new Clipboard('.copy_key');
+	    clipboard.on('success', function(e) {
+	        layer.msg('成功复制推广链接！', {time:2000});
+	    });
+	</script>
+	</body>
+</html>

@@ -1,0 +1,77 @@
+<include file="Public:header" />
+<div class="subnav">
+
+</div>
+<div class="pad_lr_10">
+    <div class="J_tablelist">
+        <form action="{:U('uland/index')}" method="post" id="info_form">
+            <table width="100%" class="table_form contentWrap">
+                <thead>
+                    <tr>
+                        <th colspan="2">中间页生成 (淘宝活动页无法在微信内打开，可借助此中间页完成跳转)</th>
+                    </tr>
+                </thead>
+                 <tr>
+                    <th>活动标题 :</th>
+                    <td><input type="text" name="title" required="required"  class="input-text" value="" style="width: 400px;" /></td>
+                </tr>
+                
+                 <tr>
+                    <th>活动链接 :</th>
+                    <td><input type="text" name="link" required="required"  class="input-text" value="" style="width: 400px;" /></td>
+                </tr>
+                
+                 <tr>
+                    <th>活动淘口令 :</th>
+                    <td><input type="text" name="kouling" placeholder="如: 8(er28DF1l):/" required="required"   class="input-text" value="" style="width: 400px;" /></td>
+                </tr>
+                <tr>
+                    <th>活动图片 :</th>
+                    <td><input type="text" name="img"  class="input-text" value="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01eF4IZk2MgYgkh3vCp_!!3175549857.png"  style="width: 400px;" /> (建议尺寸:800像素X450像素)</td>
+                </tr>
+				<tr id="dataurl" style="display: none;">
+				    <th>中间页链接 :</th>
+				    <td>
+						<div id="midpage" style="width: 400px; overflow: hidden;"></div>
+						<div> <input type="button" class="d-button d-state-highlight" value="复制"/></div>
+					</td>
+				</tr>
+                <tr>
+                    <th width="150"></th>
+                    <td><input type="submit" id="dosubmit"  class="smt" name="do" value="确认生成"/></td>
+                </tr>
+            </table>
+
+        </form>
+    </div>
+</div>
+<include file="Public:footer" />
+<tqkjs  href="__STATIC__/wap/js/clipboard.min.js"/>	
+<script>
+var data = '';
+$('#info_form').ajaxForm({success:complate,dataType:'json'});
+	function complate(result){
+		
+		if(result.status == 1){
+			data = result.data;
+			$('#midpage').html(data);
+			$('#dataurl').css('display','');
+			
+		}
+	}
+	
+
+var clipboard2 = new ClipboardJS('.d-button', {
+	        text: function() {
+	            return  data ;
+	        }
+	    });
+		$('.d-button').on('click', function(e) {
+			 $.yhxia.tip({content:'复制成功'});
+		});
+
+	
+
+</script>
+</body>
+</html>

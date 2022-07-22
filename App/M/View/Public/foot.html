@@ -1,0 +1,63 @@
+<div data-am-widget="navbar" class="am-navbar am-cf footer foot-cell am-no-layout" style="height:45px;line-height: 0px; padding-top:5px;">
+    <ul class="am-navbar-nav am-cf am-avg-sm-5">
+        <li>
+        <if condition="C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL')==2">
+        <a href="/">
+        <else/>
+         <a href="/index.php/m">	
+        </if>
+              <i class="iconfont tqk-shouye"></i>
+                <span class="am-navbar-label">首页</span>
+            </a>
+        </li>
+        <li>
+            <a href="{:U('jiu/index')}{$trackurl}">
+              <i class="iconfont tqk-kuai"></i>
+                <span class="am-navbar-label">9块9包邮</span>
+            </a>
+        </li>
+        <if condition="C('yh_openjd') eq 1">
+        <li>
+            <a href="{:U('jd/index')}{$trackurl}">
+              <i class="iconfont tqk-jingdong4"></i>
+                <span class="am-navbar-label">京东券</span>
+            </a>
+        </li>
+        <else/>
+         <li>
+            <a href="{:U('top100/index')}{$trackurl}">
+              <i class="iconfont tqk-hot_light"></i>
+                <span class="am-navbar-label">热销榜</span>
+            </a>
+        </li>
+        </if>
+        <if condition="$openduoduo eq 1">
+        <li>
+            <a href="{:U('pdd/index')}{$trackurl}">
+                <i class="iconfont tqk-pinduoduo" style="font-size: 30px;"></i>
+                <span class="am-navbar-label">拼多多券</span>
+            </a>
+        </li>
+        <else/>
+         <li>
+            <a href="{:U('brand/index')}{$trackurl}">
+                <i class="iconfont tqk-pinpaiguan" style="font-size: 20px;"></i>
+                <span class="am-navbar-label">品牌券</span>
+            </a>
+        </li>
+        
+        </if>
+        
+        
+        <li>
+            <a href="{:U('user/ucenter')}">
+                  <i class="iconfont tqk-yonghu"></i>
+                <span class="am-navbar-label">我的</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<tqkjs href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js"/>
+<tqkjs href="__STATIC__/wap/js/jquery.form.min.js,__STATIC__/wap/js/clipboard.min.js,__STATIC__/wap/js/jquery.validate.js"/>
+<tqkjs href="__STATIC__/wap/js/validate-methods.js,__STATIC__/wap/layer/layer.js,__STATIC__/wap/js/html2canvas.js"/>
+<include file="Public:stat" />

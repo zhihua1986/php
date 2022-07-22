@@ -1,0 +1,38 @@
+<div class="layui-btn-group tqk-pt-5 tqk-pb-5 tqk-pr-5 tqk-f-r">
+	
+	<if condition="$fuid eq 1">
+		
+		<a href="{:U('user/teamorder',array('fuid'=>1))}" class="layui-btn">淘宝订单</a>
+		   <if condition="C('yh_openjd') eq 1">
+		<a href="{:U('jindong/teamorder',array('fuid'=>1))}" class="layui-btn ">京东订单</a>
+		   </if>
+		 <if condition="C('yh_openduoduo') eq 1">
+		<a href="{:U('duoduo/teamorder',array('fuid'=>1))}" class="layui-btn ">拼多多订单</a>
+		   </if>
+		<if condition="C('yh_openmt') eq 1">
+		<a href="{:U('meituan/teamorder',array('fuid'=>1))}" class="layui-btn ">美团订单</a>
+		   </if>
+		   
+	   <if condition="C('yh_dmappkey') gt 1">
+	   <a href="{:U('third/teamorder',array('fuid'=>1))}" class="layui-btn ">其它订单</a>
+		</if>
+		
+		<else/>
+		
+		<a href="{:U('user/teamorder',array('guid'=>1))}" class="layui-btn">淘宝订单</a>
+		   <if condition="C('yh_openjd') eq 1">
+		<a href="{:U('jindong/teamorder',array('guid'=>1))}" class="layui-btn ">京东订单</a>
+		   </if>
+		 <if condition="C('yh_openduoduo') eq 1">
+		<a href="{:U('duoduo/teamorder',array('guid'=>1))}" class="layui-btn ">拼多多订单</a>
+		   </if>
+		<if condition="C('yh_openmt') eq 1">
+		<a href="{:U('meituan/teamorder',array('guid'=>1))}" class="layui-btn ">美团订单</a>
+		   </if>
+		 <if condition="C('yh_dmappkey') gt 1">
+		<a href="{:U('third/teamorder',array('guid'=>1))}" class="layui-btn ">其它订单</a>
+		   </if>
+		
+	</if>
+	
+  </div>	

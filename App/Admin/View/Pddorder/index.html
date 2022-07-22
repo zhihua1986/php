@@ -1,0 +1,171 @@
+<include file="Public:header" />
+<!--商品列表-->
+<div class="subnav">
+	<div class="content_menu ib_a blue line_x">
+	<include file="Order:nav" />
+	</div>
+</div>
+<div class="pad_10" >
+    <table width="100%" cellspacing="0" class="search_form">
+        <tbody>
+            <tr>
+                <td>
+                <div class="explain_col">
+                	    <form name="searchform" method="get" >
+                    <input type="hidden" name="m" value="admin" />
+                    <input type="hidden" name="c" value="order" />
+                    <input type="hidden" name="a" value="index" />
+                    <input type="hidden" name="menuid" value="{$menuid}" />
+                    &nbsp;&nbsp;拼多多订单号 :
+                    <input name="keyword" type="text" class="input-text" size="25" value="{$search.keyword}" />
+                    &nbsp;&nbsp;拼多多商品名称 :
+                    <input name="goods_name" type="text" class="input-text" size="25" value="{$search.goods_name}" />
+                    
+                    &nbsp;&nbsp;状态 :
+                    <select name="status">
+                    <option value="">-{:L('all')}-</option>
+                    <option value="0" <if condition="$search.status eq '0'">selected="selected"</if>>已支付</option>
+                    <option value="1" <if condition="$search.status eq '1'">selected="selected"</if>>已成团</option>
+                    <option value="2" <if condition="$search.status eq '2'">selected="selected"</if>>已收货</option>
+                    <option value="3" <if condition="$search.status eq '3'">selected="selected"</if>>审核通过</option>
+                     <option value="4" <if condition="$search.status eq '4'">selected="selected"</if>>审核失败</option>
+                      <option value="5" <if condition="$search.status eq '5'">selected="selected"</if>>已结算</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    <input type="submit" name="search" class="btn" value="搜索" />
+                 </form>
+                   <div class="bk8"></div>                
+                 <form name="export" action="{:U('pddorder/pddexport')}" method="post" target="_blank" >
+                    按时间导出 :
+			<input type="text" name="time_start" id="J_time_start" class="date" size="12" value="{$search.time_start}">
+			-
+			<input type="text" name="time_end" id="J_time_end" class="date" size="12" value="{$search.time_end}">
+			&nbsp;&nbsp;状态:
+			<select name="status" class="J_cate_select mr10">
+				 <option value="" >所有状态</option>
+	               <option value="0" >已支付</option>
+                    <option value="1" >已成团</option>
+                    <option value="2" >已收货</option>
+                    <option value="3" >审核通过</option>
+                     <option value="4" >审核失败</option>
+                      <option value="5" >已结算</option>
+			</select>
+			 <input type="submit" name="search" class="btn" value="导出Excel" />
+<a href="javascript:;" data-uri="{:U('pddorder/sync', array('type'=>'12'))}" data-title="同步订单" data-id="12" data-width="360" data-height="100"  class="J_showdialog btn" style="color: #0000FF;">同步订单</a>
+ </form>
+                    <div class="bk8"></div>               
+                 如果不能正常同步订单，请到<a href="https://www.tuiquanke.com" target="_blank">推券客官网</a> =》站点设置 检查拼多多授权是否过期。
+         &nbsp;&nbsp;    
+                   
+                </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="J_tablelist table_list" data-acturi="{:U('pddorder/ajax_edit')}">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                <th width="360"><span>商品名称</span></th>
+                <th><span>用户/返利</span></th>
+                <th><span>返利比例</span></th>
+                <th><span data-field="item_name">订单号</span></th>
+                <th width="120"><span data-field="item_num">付款/佣金</span></th>
+                <th width="120"><span data-field="add_time">下单时间</span></th>
+                 <th width="120"><span data-field="add_time">结算时间</span></th>
+                 <th width="200"><span  data-field="add_time">推广位</span></th>
+                 <th width="60"><span data-field="status">分成</span></th>
+                <th width="60"><span data-field="status">{:L('status')}</span></th>
+                <th width="120">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="orderlist" id="val" >
+            <tr>
+                <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+               <td align="center"><a href="http://mobile.yangkeduo.com/goods2.html?goods_id={:$val['goods_id']}" target="_blank">{$val.goods_name}</a></td>
+                <td align="center"><a href="{:U('user/index',array('uid'=>$val['uid']))}" target="_blank">{$val.nickname}</a>
+                	{:$val['nickname']?'(￥'.$val['promotion_amount']*($val['leve1']/100).')':''}</td>
+                 <td align="center">{:$val['leve1']?$val['leve1']:0}%</td>
+                <td align="center">{$val.order_sn}</td>
+                <td align="center">
+                	<if condition="$val['order_amount']">
+                	￥{$val.order_amount} ({$val.promotion_amount}元)
+                	<else/>
+                	--
+                	</if>
+                
+                </td>
+                <td align="center">{$val.order_pay_time|frienddate}</td>  
+                <td align="center">{$val.order_settle_time|frienddate}</td> 
+                 <td align="center">{$val.p_id}
+                 </td>    
+             <td align="center">
+             	<if condition="$val['settle'] eq 1">
+                		是
+                	<else/>
+                		否
+                	</if>
+                </td>
+                <td align="center">
+                {$val.order_status}
+                </td>
+               
+               <td align="center">
+			  <a href="javascript:void(0);" class="J_showdialog" data-uri="{:u('pddorder/editorder', array('id'=>$val['id']))}" data-title="编辑订单号{$val.orderid}" data-id="edit" data-width="520" data-height="250">编辑</a>
+	          | <a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('pddorder/pdd_delete_f', array('id'=>$val['id']))}" data-acttype="ajax" data-msg="{:sprintf(L('confirm_delete_one'),$val['title'])}">{:L('delete')}</a></td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('pddorder/pdd_delete_f')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="Public:footer" />
+
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script>
+Calendar.setup({
+	inputField : "J_time_start",
+	ifFormat   : "%Y-%m-%d",
+	showsTime  : false,
+	timeFormat : "24"
+});
+Calendar.setup({
+	inputField : "J_time_end",
+	ifFormat   : "%Y-%m-%d",
+	showsTime  : false,
+	timeFormat : "24"
+});
+
+ function tqk_pddcollect(p){
+        $.getJSON("{:U('pddjiesuan')}", {page:p?p:1}, function(result){
+            if(result.status == 1){
+            	if($.dialog.get('cmt_yhxia')){
+                	$.dialog.get('cmt_yhxia').content(result.data);
+            	}else{
+            		$.dialog({id:'cmt_yhxia', title:'提示', content:result.data, padding:'', lock:true});
+            	}
+                p = result.msg;
+                setTimeout("tqk_pddcollect("+ p +")",1500);
+            }else{
+               if($.dialog.get('cmt_yhxia')){
+                $.dialog.get('cmt_yhxia').close();
+                $.yhxia.tip({content:result.msg});
+               }else{
+               	 $.yhxia.tip({content:result.msg});
+               }
+            }
+        });
+    } 
+
+</script>
+</body>
+</html>

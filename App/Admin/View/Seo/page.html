@@ -1,0 +1,492 @@
+<include file="Public:header" />
+<style>
+	.content_list{clear: both;}
+</style>
+<!--SEO设置-->
+<div class="pad_lr_10">
+    <div class="col_tab">
+
+        <ul class="tip_list clearfix ml20">
+            <li>网站标题 <span class="highlight">{site_name}</span></li>
+            <li>站点设置里面的Title <span class="highlight">{site_title}</span></li>
+            <li>站点设置里面的Keywords <span class="highlight">{site_keywords}</span></li>
+            <li>站点设置里面的Description <span class="highlight">{site_description}</span></li>
+        </ul>
+
+        <ul class="J_tabs tab_but cu_li mt10">
+            <li class="current">首页</li>
+            <li>淘宝列表首页</li>
+            <li>淘宝详情页面</li>
+			<li>京东详情页面</li>
+			<li>拼多多详情页面</li>
+            <li>今日新品</li>
+            <li>九块九页面</li>
+			<li>小程序标题</li>
+            <li>特卖精选</li>
+			<li>超级人气榜</li>
+			<li>拼多多列表首页</li>
+			<li>京东列表首页</li>
+			<li>优惠券头条</li>
+			<li>品牌券</li>
+			<li>淘宝搜索结果页</li>
+			<li>京东搜索结果页</li>
+			<li>多多搜索结果页</li>
+			<li>超划算页</li>
+        </ul>
+    
+        <form id="info_form" action="{:u('seo/page')}" method="post">
+        <div class="J_panes">
+            <div class="content_list pad_10">
+                <table width="100%" class="table_form">
+                    <tr>
+                        <th>Title</th>
+                        <td><textarea name="seo_config[index][title]" cols="80" rows="2">{$seo_config.index.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[index][keywords]" cols="80" rows="2">{$seo_config.index.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[index][description]" cols="80" rows="3">{$seo_config.index.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <tr>
+                        <td width="80"></td>
+                        <td>
+                            <ul class="tip_list clearfix">
+                                <li>分类名称 <span class="highlight">{cate_name}</span></li>
+                                <li>分类Title <span class="highlight">{seo_title}</span></li>
+                                <li>分类Keywords<span class="highlight">{seo_keywords}</span></li>
+                                <li>分类Description<span class="highlight">{seo_description}</span></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <td><textarea name="seo_config[cate][title]" cols="80" rows="2">{$seo_config.cate.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[cate][keywords]" cols="80" rows="2">{$seo_config.cate.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[cate][description]" cols="80" rows="3">{$seo_config.cate.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+
+
+			<div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <tr>
+                        <td width="80"></td>
+                        <td>
+                            <ul class="tip_list clearfix">
+                                <li>商品名称 <span class="highlight">{title}</span></li>
+								<li>商品简介 <span class="highlight">{intro}</span></li>
+								<li>原价 <span class="highlight">{price}</span></li>
+								<li>券后价 <span class="highlight">{coupon_price}</span></li>
+								<li>商品标签 <span class="highlight">{tags}</span></li>
+								<li>店铺类型 <span class="highlight">{shop_type}</span></li>
+                                <li>Title <span class="highlight">{seo_title}</span></li>
+                                <li>Keywords<span class="highlight">{seo_keywords}</span></li>
+                                <li>Description<span class="highlight">{seo_description}</span></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>淘宝Title</th>
+                        <td><textarea name="seo_config[item][title]" cols="80" rows="2">{$seo_config.item.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[item][keywords]" cols="80" rows="2">{$seo_config.item.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[item][description]" cols="80" rows="3">{$seo_config.item.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+			
+			<div class="content_list pad_10" style="display:none;">
+			    <table width="100%" class="table_form">
+			        <tr>
+			            <td width="80"></td>
+			            <td>
+			                <ul class="tip_list clearfix">
+			                    <li>商品名称 <span class="highlight">{title}</span></li>
+								<li>商品简介 <span class="highlight">{intro}</span></li>
+								<li>原价 <span class="highlight">{price}</span></li>
+								<li>券后价 <span class="highlight">{coupon_price}</span></li>
+								<li>商品标签 <span class="highlight">{tags}</span></li>
+			                </ul>
+			            </td>
+			        </tr>
+			        <tr>
+			            <th>京东Title</th>
+			            <td><textarea name="seo_config[jditem][title]" cols="80" rows="2">{$seo_config.jditem.title}</textarea></td>
+			        </tr>
+			        <tr>
+			            <th>Keywords</th>
+			            <td><textarea name="seo_config[jditem][keywords]" cols="80" rows="2">{$seo_config.jditem.keywords}</textarea></td>
+			        </tr>
+			        <tr>
+			            <th>Description</th>
+			            <td><textarea name="seo_config[jditem][description]" cols="80" rows="3">{$seo_config.jditem.description}</textarea></td>
+			        </tr>
+			    </table>
+			</div>
+			
+			<div class="content_list pad_10" style="display:none;">
+			    <table width="100%" class="table_form">
+			        <tr>
+			            <td width="80"></td>
+			            <td>
+			                <ul class="tip_list clearfix">
+			                    <li>商品名称 <span class="highlight">{title}</span></li>
+								<li>商品简介 <span class="highlight">{intro}</span></li>
+								<li>原价 <span class="highlight">{price}</span></li>
+								<li>券后价 <span class="highlight">{coupon_price}</span></li>
+								<li>商品标签 <span class="highlight">{tags}</span></li>
+			                </ul>
+			            </td>
+			        </tr>
+			        <tr>
+			            <th>拼多多Title</th>
+			            <td><textarea name="seo_config[pdditem][title]" cols="80" rows="2">{$seo_config.pdditem.title}</textarea></td>
+			        </tr>
+			        <tr>
+			            <th>Keywords</th>
+			            <td><textarea name="seo_config[pdditem][keywords]" cols="80" rows="2">{$seo_config.pdditem.keywords}</textarea></td>
+			        </tr>
+			        <tr>
+			            <th>Description</th>
+			            <td><textarea name="seo_config[pdditem][description]" cols="80" rows="3">{$seo_config.pdditem.description}</textarea></td>
+			        </tr>
+			    </table>
+			</div>
+
+
+			<div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+					<thead>
+                    <tr>
+                        <th colspan="2" align="left">今日新品页面</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th>Title</th>
+                        <td><textarea name="seo_config[xinpin][title]" cols="80" rows="2">{$seo_config.xinpin.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[xinpin][keywords]" cols="80" rows="2">{$seo_config.xinpin.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[xinpin][description]" cols="80" rows="3">{$seo_config.xinpin.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+
+
+			<div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+					<thead>
+                    <tr>
+                        <th colspan="2" align="left">九块九页面</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th>Title</th>
+                        <td><textarea name="seo_config[jiu][title]" cols="80" rows="2">{$seo_config.jiu.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[jiu][keywords]" cols="80" rows="2">{$seo_config.jiu.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[jiu][description]" cols="80" rows="3">{$seo_config.jiu.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+
+
+            <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">小程序首页</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[ershi][title]" cols="80" rows="2">{$seo_config.ershi.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[ershi][keywords]" cols="80" rows="2">{$seo_config.ershi.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[ershi][description]" cols="80" rows="3">{$seo_config.ershi.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+
+			
+			
+			<div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+					<thead>
+                    <tr>
+                        <th colspan="2" align="left">特卖精选</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th>Title</th>
+                        <td><textarea name="seo_config[jingxuan][title]" cols="80" rows="2">{$seo_config.jingxuan.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[jingxuan][keywords]" cols="80" rows="2">{$seo_config.jingxuan.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[jingxuan][description]" cols="80" rows="3">{$seo_config.jingxuan.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+
+
+            <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">超级人气榜</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[top100][title]" cols="80" rows="2">{$seo_config.top100.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[top100][keywords]" cols="80" rows="2">{$seo_config.top100.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[top100][description]" cols="80" rows="3">{$seo_config.top100.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+            
+             <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">拼多多</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[pinduoduo][title]" cols="80" rows="2">{$seo_config.pinduoduo.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[pinduoduo][keywords]" cols="80" rows="2">{$seo_config.pinduoduo.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[pinduoduo][description]" cols="80" rows="3">{$seo_config.pinduoduo.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+            
+             <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">京东</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[jindong][title]" cols="80" rows="2">{$seo_config.jindong.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[jindong][keywords]" cols="80" rows="2">{$seo_config.jindong.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[jindong][description]" cols="80" rows="3">{$seo_config.jindong.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">优惠券头条</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[toutiao][title]" cols="80" rows="2">{$seo_config.toutiao.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[toutiao][keywords]" cols="80" rows="2">{$seo_config.toutiao.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[toutiao][description]" cols="80" rows="3">{$seo_config.toutiao.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+             <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">品牌券</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[brand][title]" cols="80" rows="2">{$seo_config.brand.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[brand][keywords]" cols="80" rows="2">{$seo_config.brand.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[brand][description]" cols="80" rows="3">{$seo_config.brand.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+            
+             <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">搜索词 <span class="highlight">{key}</span></th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[search][title]" cols="80" rows="2">{$seo_config.search.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[search][keywords]" cols="80" rows="2">{$seo_config.search.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[search][description]" cols="80" rows="3">{$seo_config.search.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+                 <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">搜索词 <span class="highlight">{key}</span></th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[searchjd][title]" cols="80" rows="2">{$seo_config.searchjd.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[searchjd][keywords]" cols="80" rows="2">{$seo_config.searchjd.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[searchjd][description]" cols="80" rows="3">{$seo_config.searchjd.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+                 <div class="content_list pad_10" style="display:none;">
+                <table width="100%" class="table_form">
+                    <thead>
+                    <tr>
+                        <th colspan="2" align="left">搜索词 <span class="highlight">{key}</span></th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <th width="80">Title</th>
+                        <td><textarea name="seo_config[searchduoduo][title]" cols="80" rows="2">{$seo_config.searchduoduo.title}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td><textarea name="seo_config[searchduoduo][keywords]" cols="80" rows="2">{$seo_config.searchduoduo.keywords}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><textarea name="seo_config[searchduoduo][description]" cols="80" rows="3">{$seo_config.searchduoduo.description}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+			
+			<div class="content_list pad_10" style="display:none;">
+			    <table width="100%" class="table_form">
+					<thead>
+			        <tr>
+			            <th colspan="2" align="left">超划算页面</th>
+			        </tr>
+			        </thead>
+			        <tr>
+			            <th>Title</th>
+			            <td><textarea name="seo_config[chaohuasuan][title]" cols="80" rows="2">{$seo_config.chaohuasuan.title}</textarea></td>
+			        </tr>
+			        <tr>
+			            <th>Keywords</th>
+			            <td><textarea name="seo_config[chaohuasuan][keywords]" cols="80" rows="2">{$seo_config.chaohuasuan.keywords}</textarea></td>
+			        </tr>
+			        <tr>
+			            <th>Description</th>
+			            <td><textarea name="seo_config[chaohuasuan][description]" cols="80" rows="3">{$seo_config.chaohuasuan.description}</textarea></td>
+			        </tr>
+			    </table>
+			</div>
+			
+            
+
+        </div>
+        
+        <div class="mt10">
+            <input type="hidden" name="menuid"  value="{$menuid}"/>
+            <input type="submit" class="smt mr10" name="do" value="{:L('submit')}"/>
+        </div>
+        </form>
+    </div>
+</div>
+<include file="Public:footer" />
+<script>
+$(function(){
+    $('ul.J_tabs').tabs('div.J_panes > div');
+});
+</script>
+</body>
+</html>

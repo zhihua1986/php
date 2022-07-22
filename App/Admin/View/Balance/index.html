@@ -1,0 +1,111 @@
+<include file="Public:header" />
+<style>
+.lt_input_text{
+	min-width:50px;
+}
+</style>
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+    	<a href="javascript:;" class="on"><em>余额提现</em></a>
+		
+		特别提示：如果开启了微信自动转账功能，点击“确认提现”按钮后会自动转款到用户微信零钱包
+		
+    </div>
+	
+	
+	
+</div>
+<!--菜单列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list" data-acturi="{:U('charge/ajax_edit')}">
+        <table width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th width="40"><!-- <input type="checkbox" name="checkall" class="J_checkall"> --></th>
+      			<th width="80" align="left">用户(冻结资金)</th>
+                <th width="80" align="left">提现金额</th>
+                <th width="40" align="left">姓名</th>
+                <th width="80" align="left">提现方式</th>
+                <th width="40" align="left">账号</th>
+                <th width="160">说明</th>
+                 <th width="80" align="left">时间</th>
+                <th width="80">状态</th>
+               
+                <th width="160">{:L('operations_manage')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="val">
+            <tr>
+               <td align="center">
+                	 <!-- <if condition="$val['status'] eq 0">
+                	<input type="checkbox" class="J_checkitem" value="{$val.id}">
+                	</if> -->
+                </td>
+                <td>
+                	<php>
+                	$nickname=getUserInfo('',$val['uid'],'username');
+                	</php>
+                	<a target="main" href="{:U('user/index',array('uid'=>$val['uid']))}">
+                	{$nickname}(<span style="color: red;">￥{:getUserInfo('',$val['uid'],'frozen')}</span>)
+                </a>
+                </td>
+                <td><span>￥{$val.money}</span></td>
+                
+                <td align="left">
+                	<span>{$val.name}</span>
+                </td>
+                <td align="left">
+                	<if condition="$val['method'] eq 1">
+                	<span>微信</span>
+                	<else />
+                	<span>支付宝</span>
+                	</if>
+                </td>
+                <td align="left">
+                	<span>{$val.allpay}</span>
+                </td>
+                <td align="center">
+                	<span data-tdtype="" data-field="content" data-id="{$val.id}" class="">{$val.content}</span>
+                </td>
+                <td align="left">
+                	<span>{$val.create_time|frienddate}</span>
+                </td>
+                
+                <td align="center">
+                	<if condition="$val['status'] eq 0">
+                	<span style="color: red;">待处理</span>
+               		<else/>
+               		<span style="color: green;">已处理</span>
+               		</if>
+                </td>
+                
+                <td align="center">
+                	<if condition="$val['status'] eq 0">
+                		<a href="javascript:void(0);" class="J_confirmurl" data-uri="{:U('balance/balance_status', array('id'=>$val['id'],'status'=>1,'money'=>$val['money'],'method'=>$val['method'],'uid'=>$val['uid']))}"  data-msg="是否真的确认付款？" data-acttype="ajax">确认提现</a>  |
+                   	<else/>
+                   	<span style="color: gray;">已付款</span>
+                	</if>
+                <if condition="$val['status'] eq 0">
+                  |  <a href="javascript:;" class="J_confirmurl" data-acttype="ajax" data-uri="{:U('balancedelete', array('id'=>$val['id']))}" data-msg="确定要删除吗？<br/>删除后冻结资金会自动返还给用户。"><span>{:L('delete')}</span></a>
+                 </if>
+                </td>
+            </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <!-- <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label> -->
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="Public:footer" />
+<script>
+	$('.img-referer').click(function(){
+		window.open('javascript:window.name;', '<script>location.replace("'+$(this).attr('href')+'")<\/script>');
+		return false;
+	});
+</script>
+</body>
+</html>

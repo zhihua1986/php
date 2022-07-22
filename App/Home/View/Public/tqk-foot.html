@@ -1,0 +1,43 @@
+<footer class="footer tqk-pt-20">
+	<div class="container-fluid">
+		<nav> <a href="/">网站首页</a> <span class="pipe">|</span>  <a href="{:U('help/index',array('id'=>'aboutus'))}" target="_blank">关于我们</a> <span class="pipe">|</span> 
+			<a href="{:U('help/index',array('id'=>'disclaimer'))}" target="_blank">免责声明</a> 
+			<span class="pipe">|</span> <a href="{:U('help/index',array('id'=>'pc'))}" target="_blank">新手指南</a> 
+				<span class="pipe">|</span> <a href="{:U('help/index',array('id'=>'contactus'))}" target="_blank">联系我们</a>
+				<span class="pipe">|</span> <a href="/sitemap.txt" target="_blank">网站地图</a> 
+		</nav>
+		<p>Copyright © 2021-2022 {:C('yh_site_name')}  版权所有 <br>
+		<if condition="C('yh_gaico')">
+		<label class="tqk-pr-20"><img src="{:C('yh_gaico')}"	width="16" height="16">  {:C('yh_gaicp')} </label>
+		</if>
+			<a href="http://beian.miit.gov.cn" target="_blank" rel="nofollow">{:C('yh_site_icp')}</a>
+		<br>
+		</p>
+	{:C('yh_statistics_code')}
+	</div>
+</footer>
+
+<if condition="$alertwin">
+<div class="guide-all">
+	<div class="all-bg">
+		<div class="all-layout">
+			<a href="{$alertwin.url}" target="_blank">
+				<img src="{$alertwin.img}" width="450px">
+			</a>
+			<span class="guide-all-close"></span>
+		</div>
+	</div>
+</div>
+</if>
+<script src="__SKIN2__/layui/layui.js?v=10"></script>
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+	layui.config({
+		base: '/Public/skin2/static/tqkpc/js/',
+		version: 1.87,
+		debug: false
+	}).use(['tqk','tqktools','cookie']);
+</script>

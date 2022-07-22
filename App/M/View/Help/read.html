@@ -1,0 +1,32 @@
+<include file="Public:head_nosearch" />
+		<!--header-->
+		<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+		    <div class="am-header-left am-header-nav">
+		        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>
+		    </div>
+		    <h1 class="am-header-title">{$help.title}</h1>
+		</header>
+		<main>
+		<div class="headlines">
+		<div class="am-slider am-slider-default"  data-am-widget="slider" data-am-slider="{animationLoop: false,slideshow: false,controlNav: false,directionNav: false,itemWidth: 80,itemMargin: 10}" >
+					<ul class="am-tabs-nav am-nav am-nav-tabs am-slides">
+						
+<li class="<if condition="$cateid eq 'aboutus'"> am-active</if>"><a href="{:U('help/index',array('id'=>'aboutus'))}">关于我们</a></li>
+<li class="<if condition="$cateid eq 'contactus'"> am-active</if>"><a href="{:U('help/index',array('id'=>'contactus'))}">联系我们</a></li>
+<li class="<if condition="$cateid eq 'wap'"> am-active</if>"><a href="{:U('help/index',array('id'=>'wap'))}">新手指南</a></li>
+<li class="<if condition="$cateid eq 'disclaimer'"> am-active</if>"><a href="{:U('help/index',array('id'=>'disclaimer'))}">免责声明</a></li>
+					
+					</ul>
+				</div>	
+			</div>
+			
+			<div class="article">
+				<div class="content">
+					{:htmlspecialchars_decode($help['info'])}
+				</div>
+			</div>
+		</main>
+<include file="Public:foot" />
+</body></html>
+
+

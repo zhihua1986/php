@@ -1,0 +1,113 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+
+
+			<div class="mianbar">
+				
+	<div class="subnav mb-20">
+						<div class="report-money flexbox">
+							<div class="report-oval oval-1">
+								<h4><span></span>{$stat['allperson']?$stat['allperson']:0}</h4>
+								<p>总成员</p>
+							</div>
+							<div class="report-oval oval-2">
+								<h4><span></span>{$stat['person1']?$stat['person1']:0}</h4>
+								<p>直属成员</p>
+							</div>
+							<div class="report-oval oval-3">
+								<h4><span></span>{$stat['person2']?$stat['person2']:0}</h4>
+								<p>直属成员下级</p>
+							</div>
+						</div>
+						<div class="report-num flexbox">
+							<div class="report-num-item">
+								<p>今日加入：</p>
+								<h4>{$stat['todayperson']?$stat['todayperson']:0}<span>人</span></h4>
+							</div>
+							<div class="report-num-item">
+								<p>昨日加入：</p>
+								<h4>{$stat['lastperson']?$stat['lastperson']:0}<span>人</span></h4>
+							</div>
+							<div class="report-num-item">
+								<p>本月加入：</p>
+								<h4>{$stat['thismonthperson']?$stat['thismonthperson']:0}<span>人</span></h4>
+							</div>
+						</div>
+					</div>
+				
+
+<div class="layui-tab layui-tab-brief tqk-bg-white">
+  <ul class="layui-tab-title">
+    <li <if condition="$fuid eq 1">class="layui-this"</if> >
+   <a href="{:U('user/myteam',array('fuid'=>1))}" >直属成员</a></li>
+    <li  <if condition="$guid eq 1">class="layui-this"</if> ><a href="{:U('user/myteam',array('guid'=>1))}" >直属成员下级</a></li>
+  </ul>
+</div> 
+
+			
+				<div class="subnav">
+					<table class="layui-table" lay-skin="nob">
+						<thead>
+							<tr>
+						<th>昵称</th>
+						<th>是否绑定订单</th>
+						<th>注册时间</th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="info" id="vo">
+								<tr>
+							<td width="30%">{$vo.nickname}</td>
+							<td width="50%">{$vo['oid']?'<font color="red">是</font>':'否'}</td>
+							<td width="20%"><span>{$vo.reg_time|frienddate}</span></td>
+									
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<div class="page cl">
+					<div class="tqk-f-r tqk-pd-10">
+						<if condition="$total_item gt 10">
+				{$page}
+				</if>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+
+
+    </div>
+    
+   </div>
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+
+</body>
+</html>

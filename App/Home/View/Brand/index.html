@@ -1,0 +1,59 @@
+<include file="Public:tqk-meta" />
+	<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+<div class="tqk-bg-white">
+
+
+<div class="flexbox">
+	
+	   <div class="layui-col-md12">
+
+<div id="dtk_mian">
+		
+		<div class="container cl">
+			<div class="fwrap">
+			<volist name="brand" key="k" id="bo">	
+				<div class="fbrand indexblock tqk-mb-10" id="floor1">
+					<ul class="cl">
+						<li><div class="floor"><h2>{$k}F</h2><h4>{$bo.name}</h4></div></li>
+<?php
+$brandlist=$bo['brandlist'];	
+?>
+<volist name="brandlist" offset="0" id="child">	
+<li><a  target="_blank" href="{:U('/cate/',array('k'=>$child['brand']))}"><div class="brandcell"><img src="{$child.logo}"/><span>{$child.brand}</span></div></a></li>
+</volist> 	
+					</ul>
+				</div>
+				</volist> 
+			</div>
+		</div>
+	</div>
+
+
+    </div>
+  </div>
+	
+</div>
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+</body>
+</html>

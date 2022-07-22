@@ -1,0 +1,187 @@
+<include file="Public:header" />
+<!--商品列表-->
+
+<div class="subnav">
+	<div class="content_menu ib_a blue line_x">
+<include file="Order:nav" />
+	</div>
+
+</div>
+
+<div class="pad_10" >
+
+    <table width="100%" cellspacing="0" class="search_form">
+        <tbody>
+            <tr>
+                <td>
+                <div class="explain_col">
+                	    <form name="searchform" method="get" >
+                    <input type="hidden" name="m" value="admin" />
+                    <input type="hidden" name="c" value="order" />
+                    <input type="hidden" name="a" value="index" />
+                    <input type="hidden" name="menuid" value="{$menuid}" />
+                    &nbsp;&nbsp;淘宝订单号 :
+                    <input name="keyword" type="text" class="input-text" size="25" value="{:$_GET['keyword']}" />
+                    &nbsp;&nbsp;标题 :
+                    <input name="goods_name" type="text" class="input-text" size="25" value="{:$_GET['goods_name']}" />
+                    &nbsp;&nbsp;查询状态 :
+                    <select name="status">
+                    <option value="">-{:L('all')}-</option>
+                    <option value="0" <if condition="$_GET['status'] eq '0'">selected="selected"</if>>待处理</option>
+                    <option value="2" <if condition="$_GET['status'] eq '2'">selected="selected"</if>>失效订单</option>
+                    <option value="1" <if condition="$_GET['status'] eq '1'">selected="selected"</if>>已付款</option>
+                    <option value="3" <if condition="$_GET['status'] eq '3'">selected="selected"</if>>已结算</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    查询代理ID:
+                   <input name="agentid" type="text" placeholder="代理用户的ID" class="input-text" size="10" value="{:$_GET['agentid']}" />
+                   
+                    &nbsp;&nbsp;
+                   渠道关系ID:
+                   <input name="relation_id" type="text" placeholder="渠道关系ID" class="input-text" size="10" value="{:$_GET['relation_id']}" />
+                   &nbsp;
+                    <input type="submit" name="search" class="btn" value="搜索" />
+                 </form>
+                   <div class="bk8"></div>                
+                 <form name="export" action="{:U('order/export')}" method="post" target="_blank" >
+                    按时间导出 :
+			<input type="text" name="time_start" id="J_time_start" class="date" size="12" value="{$search.time_start}">
+			-
+			<input type="text" name="time_end" id="J_time_end" class="date" size="12" value="{$search.time_end}">
+			
+			&nbsp;&nbsp;导出状态:
+			
+			<select name="status" class="J_cate_select mr10">
+				<option value="0">所有</option>
+				<option value="1">已付款</option>
+				<option value="3">已结算</option>
+				<option value="2">已失效</option>
+				
+			</select>
+			 导出用户ID: <input name="agentid" type="text" placeholder="根据用户的ID查询" class="input-text" size="25" value="{:$_GET['agentid']}" />
+			 <input type="submit" name="search" class="btn" value="导出Excel" />
+                        </form>
+        <div class="bk8"></div>   
+      <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/export_payed', array('menuid'=>$menuid))}" data-title="导入阿里妈妈已付款订单" data-id="export_payed" data-width="420" data-height="130" style="color: #0000FF;">导入已付款订单</a>
+     &nbsp;&nbsp;
+     <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/export_sus', array('menuid'=>$menuid))}" data-title="导入阿里妈妈已结算订单" data-id="export_sus" data-width="420" data-height="130" style="color: #0000FF;">导入已结算订单</a>
+      &nbsp;&nbsp;
+       <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/export_weiquan', array('menuid'=>$menuid))}" data-title="导入阿里妈妈维权订单" data-id="export_weiquan" data-width="420" data-height="130" style="color: #0000FF;">导入维权订单</a>
+      &nbsp;&nbsp;
+     <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'12','scene'=>1))}" data-title="同步常规付款订单" data-id="12" data-width="480" data-height="130" style="color: #0000FF;">API同步常规付款订单</a>
+           &nbsp;&nbsp;
+     <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'12','scene'=>2))}" data-title="同步渠道付款订单" data-id="12" data-width="480" data-height="130" style="color: #0000FF;">API同步渠道付款订单</a>
+           &nbsp;&nbsp;
+     <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'3','scene'=>1))}" data-title="同步已结算订单" data-id="3" data-width="480" data-height="130" style="color: #0000FF;">API同步已结算订单</a>
+       &nbsp;&nbsp;
+     <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'13','scene'=>1))}" data-title="同步失效订单" data-id="13" data-width="480" data-height="130" style="color: #0000FF;">API同步失效订单</a>
+                   <div class="bk8"></div>   
+							 采用Excel手工导入(注：一次导入不要超过500条，否则可能因为运行超时而失败)
+                </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="J_tablelist table_list" data-acturi="{:U('order/ajax_edit')}">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                <th width="360"><span>标题</span></th>
+                <th width="130"><span>用户/返利</span></th>
+                <th width="60"><span>返利比例</span></th>
+                <th><span data-tdtype="order_by" data-field="item_name">订单号</span></th>
+                <th width="120"><span data-tdtype="order_by" data-field="item_num">付款/佣金</span></th>
+        <!--        <th width="60"><span data-tdtype="order_by" data-field="order_score">返积分</span></th>-->
+                <th width="100"><span data-tdtype="order_by" data-field="add_time">下单时间</span></th>
+                 <th width="100"><span data-tdtype="order_by" data-field="add_time">结算时间</span></th>
+                 <th width="100"><span data-tdtype="order_by" data-field="add_time">推广位</span></th>
+                 <th width="50"><span data-field="status">分成</span></th>
+                <th width="50"><span data-tdtype="order_by" data-field="status">{:L('status')}</span></th>
+                <th width="120">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="orderlist" id="val" >
+            <tr>
+                <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+                  <td align="left"><a target="_blank" href="https://item.taobao.com/item.htm?id={$val.goods_iid}">{$val.goods_title}</a></td>
+                <td align="center"><a href="{:U('user/index',array('uid'=>$val['uid']))}" target="_blank">{:$val['nickname']?$val['nickname']:'--'}</a>
+                	{:$val['nickname']?' (￥'.$val['income']*($val['leve1']/100).')':''}
+                </td>
+                <td align="center">{$val.leve1}%</td>
+                <td align="center">{$val.orderid}
+                	<if condition="$val['relation_id']">
+                		<label style="color: #F15134; display: inline-block;">渠</label>
+                	</if>
+                </td>
+                <td align="center">
+                	<if condition="$val['price']">
+                	￥{$val.price} ({$val.income}元)
+                	<else/>
+                	--
+                	</if>
+                
+                </td>
+                <!--<td align="center">
+                	 <if condition="$val['integral']">
+                	{$val.integral}
+                	<else/>
+                	--
+                	</if>
+               </td>  -->
+                <td align="center">{$val.add_time}</td>  
+                <td align="center">{:$val['up_time']?$val['up_time']:'--'}</td> 
+                 <td align="center">
+                 	{$val.ad_name}
+                 <!--	<font color="red">{$val.webmaster}</font>-->
+                 </td>    
+                 
+                <td align="center">
+                	<if condition="$val['settle'] eq 1">
+                		是
+                	<else/>
+                		否
+                	</if>
+                </td>
+                 
+                <td align="center">
+              {$val.status}
+                </td>
+               
+               <td align="center">
+			  <a href="javascript:void(0);" class="J_showdialog" data-uri="{:u('order/editorder', array('id'=>$val['id']))}" data-title="编辑订单号{$val.orderid}" data-id="edit" data-width="520" data-height="250">编辑</a>
+	          <a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('order/delete_f', array('id'=>$val['id']))}" data-acttype="ajax" data-msg="{:sprintf(L('confirm_delete_one'),$val['title'])}">{:L('delete')}</a></td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('order/delete_f')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="Public:footer" />
+
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script>
+Calendar.setup({
+	inputField : "J_time_start",
+	ifFormat   : "%Y-%m-%d",
+	showsTime  : false,
+	timeFormat : "24"
+});
+Calendar.setup({
+	inputField : "J_time_end",
+	ifFormat   : "%Y-%m-%d",
+	showsTime  : false,
+	timeFormat : "24"
+});
+
+</script>
+</body>
+</html>

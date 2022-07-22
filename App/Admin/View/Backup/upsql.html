@@ -1,0 +1,34 @@
+<include file="Public:header" />
+
+<div class="subnav">
+	<div class="content_menu ib_a blue line_x">
+	<a href="javascript:void(0);" class="fb add J_confirmurl" data-uri="{:U('backup/repair',array('ac'=>1))}" data-acttype="ajax" data-msg="你确定要执行修复数据表操作吗？" style="background:#FF1F1F;"><em style="background:#FF1F1F;">修复数据表</em></a>
+	<a href="javascript:void(0);" class="fb add J_confirmurl" data-uri="{:U('backup/repair')}" data-acttype="ajax" data-msg="你确定要执行优化数据表操作吗？" style="background:#ec971f;"><em style="background:#ec971f;">优化数据表</em></a>
+
+	说明：数据表损坏请点击"修复数据表"按钮,如果页面打开缓慢可以点击"优化数据表"按钮(不需要经常优化表，一般1个月优化一次即可)<br />
+	</div>
+
+</div>
+
+<div class="subnav">
+    <h1 class="title_2 line_x">执行sql语句</h1>
+</div>
+<div class="pad_lr_10">
+	<form action="{:U('backup/upsql')}" method="post">
+	<table width="100%" cellspacing="0">
+		<tr>
+			<td colspan="2"><textarea cols="120" rows="20" name="queries" id="queries" type="text"  ></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2"><span class="gray">注意: 为确保升级成功，请不要修改 SQL 语句的任何部分</span></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="r"><input  type="submit" name="submit" class="smt mr10" value="提 交" onClick="return confirm('该操作需要慎重操作,请确定是否执行!')">
+			<input  class="smt mr10" type="reset" name="Input" value="重 置" > </td>
+		</tr>           
+	</table>
+	</form> 
+</div>
+<include file="Public:footer" />
+</body>
+</html>

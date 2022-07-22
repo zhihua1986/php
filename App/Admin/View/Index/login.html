@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <title>推券客联盟-管理平台-管理员登陆</title>
+    <link href="__PUBLIC__/static/install/static/css/bootstrap.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/static/install/static/font-awesome/css/font-awesome.css" rel="stylesheet" >
+    <!-- 字体不能跨域问题 -->
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="__PUBLIC__/static/install/static/font-awesome/css/font-awesome-ie7.css">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/install/static/login.css?v=11">
+    <style>
+.login_ipt{opacity:0.6;width:240px;height:20px;color:#999;font-weight:400;font-family:Microsoft Yahei;outline:none;padding:10px;line-height:20px;border:0;color:#333;font-size:13px;margin-top:20px;box-shadow:1px 1px 1px rgba(0,0,0,0.3);background:#FAFAFA;}.input-box{position:relative;}
+.input-box label.error{position:absolute;right:5px;bottom:10px;color:#ec0a0a; background:none; border: none; padding-left: 5px;}
+.input-box.code label.error{right:105px;}
+ div { display: block;}
+    </style>
+</head>
+<body>
+    <div class="background" style="background-image:url('__PUBLIC__/static/install/static/img/7.jpg?v=3')"></div><!-- 背景图片 -->
+    <div class="loginbox" >
+        <div class="title">
+            <div class="logo"><i class="icon-cloud"></i>推券客联盟</div>
+            <div class='info'>——推券客CMS{:TQK_VERSION}网站后台</div>
+        </div>
+            <form action="{:U('index/login')}" method="post" id="login" class="login-form">
+        <div class="form">
+            <div class="inputs">
+                	<div class="input-box clearfix">
+                	<input id="username" name="username" class="login_ipt"  type="text" placeholder="请输入用户名" required/> </div> 
+                
+               	<div class="input-box clearfix">
+              </span><input id="password" name='password' class="login_ipt" type="password" placeholder="请输入密码" required /></div>
+                
+              
+               	<div class="input-box clearfix">
+                    <input name="code" id="code" style="width: 100px;" class="login_ipt" type="text" placeholder="验证码" required /> 
+                    <img id="codeimg" title="点击图片切换验证码" width="120" src='{:U('/Public/verify')}?random={:time()}' onclick="this.src='{:U('/Public/verify')}?random='+Math.random()" />
+                    <div style="clear:both;"></div>
+                </div>
+               
+                
+                  <input type="submit"  class="btn btn-primary" value="登录" style="width: 94%; margin: 0 auto; height: 40px;" />
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        </form>
+    </div>
+<div class="common_footer">Powered by 推券客CMS_{:TQK_VERSION} | Copyright © www.tuiquanke.com All rights reserved.</div>
+<tqkjs href="__STATIC__/tqkwap/js/jquery.min.js,__STATIC__/tqkwap/js/jquery.validate.js,__STATIC__/tqkwap/js/validate-methods.js,__STATIC__/tqkwap/js/messages_zh.min.js,__STATIC__/tqkwap/js/jquery.form.min.js"/>
+<script>
+	$(function(){
+		$("#login").validate({
+			rules:{
+				username:{
+					required: true,
+				},
+				password:{
+					required: true,
+				},
+				code:{
+					required: true,
+				}
+			},
+			messages:{
+				username:{
+					required: "请输入用户名",
+				},
+				password:{
+					required: "请输入密码",
+				},
+				code:{
+					required: "请输入验证码",
+				}
+			},
+			submitHandler: function(form)
+			{
+				$(form).ajaxSubmit({
+					success: function(json) {
+						json = json.status;
+						if(json.status == 1){
+							location.href = "{:U('index/index')}";
+						}else{
+							$('#codeimg').attr("src", "{:U('/Public/verify')}?random={:time()}");
+							$('#code').val("");
+							alert(json.info);
+						}
+			        }
+				});     
+			}
+		})
+	});
+</script>
+
+</body>
+</html>

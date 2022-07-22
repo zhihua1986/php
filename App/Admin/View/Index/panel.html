@@ -1,0 +1,85 @@
+<include file="Public:header" />
+<script src="__STATIC__/js/jquery/jquery.js"></script>
+<script src="__STATIC__/js/yhxia.js"></script>
+<script src="__STATIC__/js/admin.js"></script>
+<div class="pad_10">
+	<div class="clearfix">
+		
+		<if condition="$admin_pid">
+		<div style="background-color: #FA0000; padding: 10px; color: #FFFFFF; margin-bottom: 10px;"> 
+		注意：您还没有设置淘宝PID,或者添加的PID数量不足。
+		<a href="{:U('pid/index')}"  style="color: #FFFFFF;">
+			[点这里去设置]</a>
+		</div>
+		</if>
+		
+		<if condition="$TimeData">
+		<div style="background-color: #ff7d00; padding: 10px; color: #FFFFFF; margin-bottom: 10px;"> 
+		注意：您的服务器时间需要校正，否则可能会影响数据的同步。
+		准确时间:{$TimeData.tbtime} , 您的服务器时间:{$TimeData.serverTime}
+		</div>
+		</if>
+
+		<div class="col-2 fl mr10" style="width:48%">
+			<h6>个人信息</h6>
+			<div class="content" style="height:80px;">
+				您好，<b style="color:#06C"> {$my_admin.username}</b> &nbsp;[超级管理员]<br />
+				登录IP： {$ip} [ {$time}]<br />
+				<div class="bk20 hr"><hr /></div>
+				余额提现：<a href="{:U('balance/index')}"><span><font color="green">{:$count?$count:0}</font></span></a><br />
+			</div>
+		</div>
+		<div class="col-2 col-auto">
+				<h6>授权信息</h6>
+			<div class="content" style="height:80px;">
+				授权域名：<span><font color="green">{:C('yh_site_url')}</font></span><br />
+				<div class="bk20 hr"><hr /></div>
+			交流群<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=b270129c484606942f69304bf655dedfe9eb022b23e5daf9d5ec04306ab17bdb"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="推券客联盟技术支持群" title="推券客联盟技术支持群"></a>
+			
+			&nbsp;&nbsp;<a target="_blank" href="http://www.tuiquanke.com/topics">使用教程文档</a>
+			
+			</div>
+			
+		</div>
+
+		<div class="bk10"></div>
+
+		<div class="col-2 fl mr10" style="width:48%">
+			<h6>系统信息</h6>
+			<div class="content" style="height:113px;">
+				{:L('yhxia_version')}：v{:TQK_VERSION}  {$system_info.yhxia_version} <br/>
+				{:L('server_os')}：{$system_info.server_os}<br />
+				{:L('web_server')}：{$system_info.web_server}<br />
+				{:L('php_version')}：{$system_info.php_version}<br />
+				支持函数：<span class="{$system_info.curl}">远程读取</span>
+				<span class="onCorrect">编码转换</span>
+				<span class="{$system_info.zlib}">页面压缩</span>
+				<br />
+			</div>
+		</div>
+		<div class="col-2 col-auto">
+<h6>特别声明</h6>
+			<div class="content" style="height:113px;">
+			1.在未经推券客书面明确授权不得，出售、出租、出借、散布、转移或转授权软件和服务或相关的链接或从使用软件和服务或软件和服务的条款中获利， 无论以上使用是否为直接经济或金钱收益。<br />
+			2.使用本“软件”由用户自己承担风险，推券客及合作单位对本“软件”不作任何类型的担保，不论是明示的 、默示的或法令的保证和条件，包括但不限于本“软件”的适销性、适用性、无病毒、无疏忽或无技术瑕疵问题、所有权和无侵权的明示或默示担保和条件， 对在任何情况下因使用或不能使用本软件所产生的直接、间接、偶然、特殊及后续的损害及风险，推券客及合作单位不承担任何责任。
+				
+				
+			</div>
+		</div>
+<script src="__STATIC__/js/index.js?v=1"></script>
+<script language="JavaScript">
+	$('#version_update').on('click',function(){
+if(confirm("升级前请认真阅读《新版本说明》并做好数据备份，是否继续升级？"))
+ {
+	     $.ajax({
+                url: '{:U('upgrade/version')}',
+                type: 'get',
+                success: function(res) {
+               $.yhxia.tip({content:res.msg});
+                }
+            });
+ }
+		
+	})
+	
+</script>

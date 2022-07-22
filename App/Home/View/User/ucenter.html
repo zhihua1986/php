@@ -1,0 +1,267 @@
+<include file="Public:tqk-meta" />
+<style>
+.footer_kf { height:60px; width:100%; position:fixed; background-color: rgba(0,0,0,0.8); bottom:0; left:0; z-index:8888;}
+.fd_box { height:50px; position:fixed; width:100%; bottom:0; left:0; z-index:666;}
+.fd_box01 { width:100%; height:50px; position:fixed; bottom:10px;}
+.fd_box02 { margin:0 auto; width:694px; position:relative; padding-bottom: 30px; z-index:888;}
+</style>
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+     
+     			<div class="mianbar tqk-bg-white tqk-pt-5">
+			<!-- <if condition="!$user['oid'] and C('yh_bingtaobao') eq 0">
+			<blockquote class="layui-elem-quote">
+						<a class="layui-btn layui-btn-warm layui-btn-xs" href="{:U('user/suborder')}">点击认领</a> 您的淘宝订单，
+						下单享现金奖励。(注：每个淘宝账号所产生的订单只可以绑定一个{:C('yh_site_name')}账号 且不可修改)</blockquote>
+			</if> -->
+			<!--<if condition="$user['webmaster']">
+					<div class="Huialert Huialert-error">
+						<a href="{:U('zhan/ucenter')}"> 进入老的代理用户中心</a>
+					</div>
+			</if>-->
+			
+					<div class="user-center">
+						<ul>
+							<li>
+								<h3>我的余额</h3>
+								<h4><span class="tqk-c-red">{:$user['money']?$user['money']:0}</span>元</h4>
+								<a href="{:U('user/tixian')}" class="layui-btn layui-btn-sm layui-btn-danger">我要提现</a>
+								<p>下单、积分兑换</p>
+									<p>都可用获得现金奖励哦</p>
+							</li>
+							<li>
+								<h3>可用积分</h3>
+								<h4><span class="tqk-c-success">{:$user['score']?$user['score']:0}</span>分</h4>
+								<a href="{:U('user/jifen')}" class="layui-btn layui-btn-sm layui-btn-danger">积分兑换</a>
+								<p>100积分={:(C('yh_fanxian')/100)*100}元红包</p>
+								<p>积分兑换的红包可提现到支付宝</p>
+							</li>
+							<li>
+								<h3>淘宝订单</h3>
+								<h4><span class="tqk-c-primary">{$integral}</span>笔</h4>
+								
+								<a href="{:U('user/suborder')}" class="layui-btn layui-btn-sm layui-btn-danger">找回订单</a>	
+								<p>下单后，用户中心“订单列表”没显示</p>
+								<p>请把订单号提交给我们</p>
+							</li>
+						</ul>
+					</div>
+					
+					
+					
+					
+					<div class="laba cl">
+						<p class="tqk-c-red">公告通知：<i class="layui-icon layui-icon-notice"></i></p>
+						<div class="bd layui-carousel carouse_picture" id="notice" lay-filter="notice">
+							<div carousel-item>
+<div><a>确认收货{:C('yh_ComputingTime')}天后结算到账,余额满{:C('yh_Quota')}元可提现。</a></div>
+<volist name="article" id="art">
+<div><a target="_blank" href="<if condition="C('URL_MODEL') eq 2">/article/view_{$art.id}<else/>{:U('/article/read',array('id'=>$art['id']))}</if>">{$art.title}</a></div>
+</volist>	
+							</div>
+						</div>
+					</div>
+					
+	 <if condition="$isagent">				
+	<div class="subnav" style="margin-top: 10px;">
+						<div class="share-wrap">
+							<div class="">
+								<h4>代理中心</h4>
+							</div>
+
+<div class="usercenter-container" style="background: none;">
+<div class="usercenter-header">
+            <div class="avaiable intro">
+              <a href="{:U('user/myorder')}"> <p class="score iconfont tqk-suoyoujiesuandan" style="font-size: 42px;"></p>
+                 <div class="category">我的订单</div></a> 
+            </div>
+              <div class="avaiable intro">
+             <a href="{:U('user/teamorder')}"> <p class="score iconfont tqk-list_hetongjiesuan" style="font-size: 42px;"></p>
+                 <div class="category">团队订单</div></a> 
+            </div>
+                <div class="avaiable intro">
+             <a href="{:U('user/myteam')}"> <p class="score iconfont tqk-tuandui" style="font-size: 42px;"></p>
+                 <div class="category">我的团队</div></a> 
+            </div>
+             <div class="avaiable intro" style="margin-right: 0;">
+              <a href="{:U('user/teamprofit')}"> <p class="score iconfont tqk-leijishouyi" style="font-size: 42px;"></p>
+                 <div class="category">我的收益</div></a> 
+            </div>
+         
+        </div>							
+	</div>		
+	
+	<div class="am-line" style="clear: both;"></div>
+							
+							<div class="share-flow flexbox">
+								<div class="share-flow-step">
+									<span class="iconfont tqk-fenxiao"></span>
+									<p>1.分享专属链接</p>
+								</div>
+								<div class="share-flow-arr"><i class="iconfont tqk-xiangyoujiantou"></i></div>
+								<div href="" class="share-flow-step">
+									<span class="iconfont tqk-faxian"></span>
+									<p>2.买家访问平台</p>
+								</div>
+								<div class="share-flow-arr"><i class="iconfont tqk-xiangyoujiantou"></i></div>
+								<div href="" class="share-flow-step">
+									<span class="iconfont tqk-gouwuchetianjia"></span>
+									<p>3.买家领取优惠券并下单</p>
+								</div>
+								<div class="share-flow-arr"><i class="iconfont tqk-xiangyoujiantou"></i></div>
+								<div href="" class="share-flow-step">
+									<span class="iconfont tqk-shouyi"></span>
+									<p>4.买家确认收货您获得商家奖励</p>
+								</div>
+							</div>
+							<div class="share-way form form-horizontal">
+								<div class="layui-form-item">
+										 <label class="layui-form-label">推广链接</label>
+									 <div class="layui-input-inline" style="width: 400px;">
+										<input type="text" readonly="readonly" class="layui-input" value="{:C('yh_site_url')}/?t={$visitor.id}" id="foo" />
+									</div>
+									 <div class="layui-word-aux"><button class="layui-btn layui-btn-normal copy_key"  data-clipboard-action="copy" data-clipboard-target="#foo">一键复制</button></div>
+								</div>
+								
+							<if condition="$openinvocode">
+								
+								<div class="layui-form-item">
+										 <label class="layui-form-label">邀请码</label>
+									 <div class="layui-input-inline" style="width: 400px;">
+										<input type="text" readonly="readonly" class="layui-input" value="{$visitor.invocode}" id="foo2" />
+									</div>
+									 <div class="layui-word-aux">
+									 	<button class="layui-btn layui-btn-normal copy_key" data-clipboard-action="copy" data-clipboard-target="#foo2">一键复制</button></div>
+								</div>
+							</if>
+							
+							</div>
+						</div>
+					</div>	
+					
+			<else/>		
+					
+					
+					<div class="subnav">
+						<div class="subtop">
+							<p class="c-main">最近订单</p>
+						</div>
+						<table class="layui-table" lay-skin="nob">
+							<thead>
+								<tr>
+									<th>付款时间</th>
+									<th>订单编号</th>
+									<th>付款金额</th>
+									<th>预计收益</th>
+									<th>状态</th>
+									<th>结算时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<volist name="list" id="vo">
+								<tr>
+									<td>{$vo.add_time|frienddate}</td>
+									<td>{$vo.orderid}</td> 
+									<td><b class="c-main">
+							 <if condition="$vo['price']">
+								{$vo.price}
+								<else/>
+							--
+								</if>
+									</b></td>
+									<td><if condition="$vo['integral']">
+								{$vo.integral}
+								<else/>
+							--
+								</if></td>
+								<td>
+									{$vo.status}
+								</td>
+								<td><if condition="$vo['up_time']">
+								{$vo.up_time|frienddate}
+								<else/>
+								--
+								</if></td>
+								</tr>
+								</volist>
+							</tbody>
+						</table>
+						
+						</div>
+						
+					</if>	
+						
+						
+						
+				</div>
+			
+			
+     
+     
+    </div>
+    
+   </div>
+	
+
+	
+
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+
+<if condition="C('yh_bingtaobao') gt 0 and !$user['webmaster']">
+<div class="keifu">
+	<div class="footer_kf keifu_box">
+		<div class="fd_box">
+			<div class="fd_box01">
+				<div class="fd_box02">
+				<div class="fd_tu">
+					<label  style="font-size: 22px;color: #FFFFFF; display: inline-block; padding-top: 5px;" >完成淘宝授权，立享自购省钱分享赚钱</label>
+					<a href="{:U('bindtb/index')}" class="layui-btn layui-btn-danger layui-btn-sm">立即授权</a>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</if>
+
+<include file="Public:tqk-foot" />
+<script src="__SKIN2__/static/tqkpc/js/clipboard.min.js"></script>
+<script>
+var clipboard = new ClipboardJS('.copy_key');
+clipboard.on('success', function(e) {
+layer.msg('复制成功');
+    e.clearSelection();
+});
+clipboard.on('error', function(e) {
+	layer.msg('复制失败');
+});
+  </script>
+</body>
+</html>

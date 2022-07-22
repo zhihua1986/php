@@ -1,0 +1,94 @@
+<include file="Public:head_nosearch" />
+<style type="text/css">
+	html,body{height: 100%;}
+</style>
+		<div class="form">
+			<h3>用户登录</h3>
+			<form action="{:U('login/login')}" method="post" id="login">
+				<div class="inputbox">
+					<span class="iconfont tqk-yonghu1"></span>
+					<input type="text" name="username" id="phone" placeholder="请输入您的手机号" />
+				</div>
+				<div class="inputbox">
+					<span class="iconfont tqk-password"></span>
+					<input type="password" name="password" id="password" placeholder="请输入您的密码" />
+				</div>
+				<!--<div class="inputbox code">
+					<span class="iconfont tqk-yanzhengma2"></span>
+					<input type="text" name="verify" id="verify" placeholder="请输入验证码" style="width: 49%;" />
+					<img src="{:U('login/verify')}" id="verifyImg" width="98" height="43" class="am-fr">
+				</div>-->
+				<div class="am-cf">
+					<label><input type="checkbox" value="1" checked="" />记住密码</label>
+					<if condition="$sms_status">
+					<p class="am-fr forget"><a href="{:U('login/findpwd')}" target="_blank">忘记密码？</a></p>
+				
+					<else/>
+					<p class="am-fr forget"><a href="{:U('help/index',array('id'=>'contactus'))}" target="_blank">忘记密码？联系管理员</a></p>
+					</if>
+				</div>
+				<input type="submit" value="登录" class="am-btn am-btn-block am-btn-danger am-radius am-btn-lg"/>
+				<input type="hidden" name="callback" value="{$_SERVER['HTTP_REFERER']}"/>
+					<a class="am-btn am-btn-block am-btn-default am-radius am-btn-lg" href="{:U('login/register')}{$trackurl}">新用户注册</a>
+				<div style="background: #fff;height: 30px;">
+					
+				</div>
+			</form>
+		</div>
+<include file="Public:foot" />
+	<script type="text/javascript">
+	$(function(){
+//			function changeVerify(){
+//				 document.getElementById('verifyImg').src='{:U("login/verify")}';
+//			}
+//		$("#verifyImg").on('click',function(){
+//			changeVerify();
+//		});
+		
+		$("#login").validate({
+				rules:{
+					username:{
+						required: true,
+						//isMobile:true,
+					},
+					password:{
+						required: true,
+					}
+//					verify:{
+//						required: true,
+//					}
+				},
+				messages:{
+					username:{
+						required: "请输入手机号",
+						//isMobile:"请输入正确格式的手机号",
+					},
+					password:{
+						required: "请输入密码",
+					}
+//					verify:{
+//						required: "请输入验证码",
+//					}
+				},
+				submitHandler: function(form) 
+			    {
+					$(form).ajaxSubmit({
+						success: function(json) {
+							if(json.status == 1){
+								layer.msg(json.msg, {icon:6});
+								setTimeout(function(){
+									location.href = json.data;
+								},1000);
+							}else{
+								layer.msg(json.msg, {icon:5});
+							}
+			            }
+					});     
+			    }
+			})
+//changeVerify();
+	});
+		</script>
+		
+	</body>
+</html>

@@ -1,0 +1,79 @@
+<include file="Public:header" />
+<!--会员列表-->
+<div class="pad_10" >
+    <form name="searchform" method="get" >
+        <table width="100%" cellspacing="0" class="search_form">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="explain_col">
+                            <input type="hidden" name="m" value="admin" />
+                            <input type="hidden" name="c" value="user" />
+                            <input type="hidden" name="a" value="index" />
+                            <input type="hidden" name="menuid" value="{$menuid}" />
+                            &nbsp;真实姓名 :
+                            <input name="keyword" type="text" class="input-text" size="25" value="{$search.keyword}" />
+                            <input type="submit" name="search" class="btn" value="搜索" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <div class="J_tablelist table_list" data-acturi="{:U('user/ajax_edit')}">
+        <table width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                    <th><span data-tdtype="order_by" data-field="id">ID</span></th>
+                    <th align="left"><span data-tdtype="order_by" data-field="username">用户手机号</span></th>
+                    <th width="100" align="left"><span data-tdtype="order_by" data-field="email">支付宝</span></th>
+                    <th width="100" align="right"><span data-tdtype="order_by" data-field="score">真实姓名</span></th>
+                    <th width="150" align="right"><span data-tdtype="order_by" data-field="score">联系QQ</span></th>
+                    <th width="150"><span data-tdtype="order_by" data-field="reg_time">申请时间</span></th>
+                    <th width="80"><span data-tdtype="order_by" data-field="status">状态</span></th>
+                    <th width="140">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="val" >
+                    <tr>
+                        <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+                        <td align="center">{$val.id}</td>
+                        <td align="left"><span data-tdtype="" data-field="username" data-id="{$val.id}" class="">{$val.phone}</span></td>
+                        <td align="right"><span data-tdtype="" data-field="money" data-id="{$val.id}" class="">{$val.alipay}</span></td>
+                        <td align="right"><span data-tdtype="" data-field="frozen" data-id="{$val.id}" class="">{$val.name}</span></td>
+                        <td align="right"><span data-tdtype="" data-field="score" data-id="{$val.id}" class="">{$val.qq}</span></td>
+                        <td align="center">
+                          <if condition="$val['status'] eq 0">
+                             待审核
+                             <else/>
+                             已审核
+                         </if>
+                         
+                     </td>
+                     <td align="center">{$val.add_time|frienddate}</td>
+                     
+                     <td align="center">
+                        <if condition="$val['status'] eq 0">
+                          <a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('apply/status', array('id'=>$val['id']))}" data-acttype="ajax" data-msg="您确定审核通过吗？">确认处理</a> | 
+                      </if>
+                      <a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('apply/delete', array('id'=>$val['id']))}" data-acttype="ajax" data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">{:L('delete')}</a></td>
+                  </tr>
+              </volist>
+          </tbody>
+      </table>
+      <div class="btn_wrap_fixed">
+        <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('apply/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+
+</div>
+</div>
+<include file="Public:footer" />
+</body>
+</html>
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script type="text/javascript" src="__STATIC__/js/calendar/calendar.js"></script>

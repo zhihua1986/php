@@ -1,0 +1,23 @@
+  	<volist name="list" id="vo">
+    	<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+    		<div class="itemlist">
+    		<div class="item-pic" style="position: relative;">
+    		<div class="tag_double-eleven">{$vo.author_name}</div>
+      	<a class="jump getlink" rel="{$vo.author_openid}" href="javascript:;" >
+    		<img src="{$vo.author_pic}" width="100%" height="180px">
+      	</a>
+    		</div>
+			<div class="goods-num-type">
+				<span class="old-price fl">粉丝：<i>{$vo.fans_num|floatNumber}</i></span></div>
+    		<div class="coupon-wrap2 clearfix"> 
+			<if condition="$vo['is_live']">
+			<span class="layui-badge">直播中</span>
+			</if>
+			<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+			<span class="layui-badge layui-bg-orange fr">下单返利</span>
+    		</if>
+    		</div>
+    		</div>
+    	</div>
+    	
+    	</volist>

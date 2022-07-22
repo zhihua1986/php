@@ -1,0 +1,35 @@
+<if condition="$alertadv">
+<style type="text/css">
+/*activity*/
+.layui-layer-nobg{background: transparent!important;box-shadow: none!important;}
+#activity {position: relative;}
+#activity .cancel{position: absolute;top: 0;width: 100%; height: 30%; right: 0;}
+.actcopy{position: absolute;left: 50%;margin-left: -28%;bottom: 14%;width: 60%;height: 50%;background: none;border: none;}
+</style>
+<div id="activity">
+<img src="{$alertadv.img}" width="100%"/>
+<label class="cancel"></label>
+<button class="actcopy" data-clipboard-action="copy" data-clipboard-text="{$alertadv.url}"></button>  
+</div>
+<script language="JavaScript">
+layer.open({
+  type: 1,
+  title: false,
+  closeBtn: 0,
+  area: '80%',
+  offset:'80px',
+  skin: 'layui-layer-nobg', //没有背景色
+  shadeClose: true,
+  content: $('#activity'), 
+  success: function(layero, index){
+	$('.cancel').click(function(){
+	layer.close(index);
+	})
+  },
+});
+new ClipboardJS('.actcopy');
+$('.actcopy').on('click',function(){
+  layer.msg('淘口令复制成功，打开淘宝App即可拆红包', {time:2000});	
+})
+</script>
+</if>

@@ -1,0 +1,12 @@
+    <div class="scrollx mescroll-touch-x">
+				<div id="scrollxContent" class="scrollx-content">
+					<ul id="nav" class="nav">
+	<li i="0"><a href="{:U('cate/index')}{$trackurl}" class="menu-item <empty name="cid">active</empty>">全部商品</a></li>
+	<volist name="catetree" id="tree" key="i">
+	 <li i="{$i}">
+	 <a class="menu-item <if condition="$cid eq $tree['id']">active</if>" href="{:U('cate/index',array('cid'=>$tree['id']))}{$trackurl}">{$tree.name}</a>
+	 </li>
+	  </volist>
+	</ul>
+				</div>
+			</div>

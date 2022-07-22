@@ -1,0 +1,44 @@
+<include file="Public:header" />
+
+<div class="subnav">
+	<div class="content_menu ib_a blue line_x">
+        <a href="/?m=admin&c=pid&a=index&menuid=350" class="on"><em>Pid列表</em></a>  
+	   </div>
+    </div>
+	<!--添加文章-->
+	<form id="info_form" action="{:U('pid/add')}" method="post" enctype="multipart/form-data">
+		<div class="pad_lr_10">
+			<div class="col_tab">
+				<ul class="J_tabs tab_but cu_li">
+					<li class="current">{:L('article_basic')}</li>
+				</ul>
+				<div class="J_panes">
+					<div class="content_list pad_10">
+						<table width="100%" cellspacing="0" class="table_form">
+							<tr>
+								<th width="10%">PID :</th>
+								<td>
+登录淘宝联盟后，<a href="https://pub.alimama.com/openapi/param2/1/gateway.unionpub/record.adzone.listQuery.json?t=1633702421317&queryKey=&pageNo=1&pageSize=100&siteSceneCode=&siteId=" target="_blank">点这里查看PID</a>	
+，<a href="https://www.tuiquanke.com/view/34277723812" target="_blank">查看教程</a>
+<br/><br/>
+<textarea required="required" placeholder="粘贴查看到的页面信息到这里"  style="width:80%; height: 200px;" name="pid"></textarea>
+								
+								</td>
+							</tr>
+							<tr>
+								<th>启用 :</th>
+								<td>
+									<label><input type="radio" name="status" class="radio_style" checked="checked" value="1"> {:L('yes')} </label>&nbsp;&nbsp;
+									<label><input type="radio" name="status" class="radio_style" value="0" > {:L('no')}</label>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="mt10"><input type="submit" value="{:L('submit')}" id="dosubmit" name="dosubmit" class="smt mr10" style="margin:0 0 10px 100px;"><br /><br /><br /></div>
+			</div>
+		</div>
+	</form>
+	<include file="Public:footer" />
+</body>
+</html>

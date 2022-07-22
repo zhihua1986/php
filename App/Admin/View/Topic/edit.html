@@ -1,0 +1,47 @@
+<include file="Public:header" />
+
+<div class="subnav">
+ 	<div class="content_menu ib_a blue line_x">
+        <a href="/?m=admin&c=topic&a=index&menuid=350" class="on"><em>关键词列表</em></a><span>|</span>        <a href="/?m=admin&c=topic&a=add&menuid=350" class="on"><em>添加关键词</em></a>     
+	   </div>
+    </div>
+<form id="info_form" action="{:u('topic/edit')}" method="post" enctype="multipart/form-data">
+<div class="pad_lr_10">
+	<div class="col_tab">
+		<ul class="J_tabs tab_but cu_li">
+			<li class="current">{:L('article_basic')}</li>
+		</ul>
+		<div class="J_panes">
+			<div class="content_list pad_10">
+				<table width="100%" cellspacing="0" class="table_form">
+		            <tr>
+						<th>关键字 :</th>
+						<td>
+		                    <input type="text" name="name" id="J_title" rel="title_color" class="input-text iColorPicker" size="60" value="{$info.name}" style="color:{$info.colors}">
+		                </td>
+					</tr>
+					<tr>
+								<th>链接 :</th>
+								<td>
+									<input type="text" name="url"  value="{$info.url}" class="input-text" size="50" />
+								</td>
+							</tr>
+					<tr>
+						<th>启用 :</th>
+		 				<td>
+		                	<label><input type="radio" name="status" class="radio_style" value="1" <if condition="$info.status eq '1'">checked="checked"</if>> {:L('yes')}</label>&nbsp;&nbsp;
+							<label><input type="radio" name="status" class="radio_style" value="0" <if condition="$info.status eq '0'">checked="checked"</if>> {:L('no')}</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+        </div>
+		<div class="mt10"><input type="submit" value="{:L('submit')}" id="dosubmit" name="dosubmit" class="btn btn_submit" style="margin:0 0 10px 100px;"><br /><br /><br /></div>
+	</div>
+</div>
+<input type="hidden" name="id" id="id" value="{$info.id}" />
+</form>
+<include file="Public:footer" />
+</body>
+</html>

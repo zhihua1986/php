@@ -1,0 +1,28 @@
+<if condition="$alertadv">
+<style type="text/css">
+/*activity*/
+.activity {background: transparent!important;box-shadow: none!important;}
+#activity {position: relative;display: none;}
+.activity .actbtn {background: transparent;border: none;}
+.activity .cancel {cursor: pointer;position: absolute;width: 30px;height: 30px;right: 50px;top: 0;}
+</style>
+<div id="activity">
+<a href="{$alertadv.url}" rel="nofollow" target="_blank">
+<img src="{$alertadv.img}" width="100%"/>
+</a>
+</div>
+<script type="text/javascript">
+$(function(){
+	layer.open({
+	  type: 1,
+	  title: false,
+	  closeBtn: 0,
+	  area: '360px',
+  offset:'25%',
+  shadeClose: true,
+  content: $('#activity'), 
+  skin: 'activity'
+	});
+});
+</script>
+</if>

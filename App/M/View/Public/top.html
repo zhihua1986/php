@@ -1,0 +1,11 @@
+<form action="{:U('cate/index')}" id="so" method="get">
+    <div class="topbar btn-pink-gradient">
+        <div class="search">
+            <i class="iconfont tqk-search icon-search"></i>
+            <input type="text" value="{$sokey}" onblur="$('#so').submit()" name="k" placeholder="输入商品名或粘贴手淘分享信息查询" class="input-text" />
+        </div>
+        <div class="sign"><button type="submit">搜索</button></div>
+        <!--<div class="sign"><img class="icon-sign"  width="100%"  src="__STATIC__/wap/images/icon/icon-sign.png"></div>-->
+    </div>
+</form>
+<include file="Public:cate" />

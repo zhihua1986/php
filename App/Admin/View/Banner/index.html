@@ -1,0 +1,88 @@
+<include file="Public:header" />
+
+<div class="subnav">
+	<div class="content_menu ib_a blue line_x">
+	<a class="add fb J_showdialog" href="javascript:void(0);" data-uri="{:U('banner/add')}" data-title="添加广告" data-id="add" data-width="520" data-height="151"><em>添加广告</em></a>
+	<!-- <a class="add fb J_showdialog" style="background:none;" href="javascript:void(0);" data-uri="{:U('banner/hongbao')}" data-title="获取拼多多红包链接" data-id="add" data-width="520" data-height="151"><em style="background:#FF1F1F;">拼多多红包</em></a> -->
+	</div>
+
+</div>
+<!--广告列表-->
+<div class="pad_lr_10">    
+    <div class="J_tablelist table_list" data-acturi="{:U('banner/ajax_edit')}">
+		<table width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th width="25"><input type="checkbox" name="checkall" class="J_checkall"></th>
+            <th>ID</th>
+            <th  align="left"><span data-tdtype="order_by" data-field="name">{:L('ad_name')}</span></th>
+            <th width="100">开始/结束时间</th>
+            <th>广告图</th>
+            <th width="60"><span data-tdtype="order_by" data-field="ordid">{:L('sort_order')}</span></th>
+            <th width="100"><span data-tdtype="order_by" data-field="status">位置</span></th>
+             <th width="25">状态</th>
+            <th width="80">{:L('operations_manage')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <volist name="board_list" id="val" >
+          <tr>
+            <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+            <td align="center">{$val.id}</td>
+            <td>
+			<if condition="$val['type'] eq 3">
+			<a href="javascript:;" title="{$val.url}">[口令] {$val.name}</a>	
+				<elseif condition="$val['type'] eq 2"/>
+				  <a href="javascript:;" title="{$val.url}">[小程序]{$val.name}</a>	
+			 <else/>
+			 	 <a href="{$val.url}" target="_blank">{$val.name}</a>	
+				</if>
+			
+			</td>
+             <td align="center">{:date('Y-m-d H:i',$val['beginTime'])}
+			 <br/>
+			 {:date('Y-m-d H:i',$val['endTime'])}
+			 </td>
+            <td align="center"><span class="attachment_icon J_attachment_icon" file-type="image" file-rel="{$val.img}" ><img src="__STATIC__/images/filetype/image_s.gif" /></span><span data-tdtype="edit" data-field="img" data-id="{$val.id}" class="tdedit">{$val.img}</span></td>
+            <td><span data-tdtype="edit" data-field="ordid" data-id="{$val.id}" class="tdedit">{$val.ordid}</span></td>
+            <td align="center">
+   <if condition="$val.status eq 0">电脑站焦点图
+   	<elseif condition="$val.status eq 2"/>电脑站头部
+   	<elseif condition="$val.status eq 3"/>电脑弹窗
+   	<elseif condition="$val.status eq 4"/>手机站弹窗
+   	<elseif condition="$val.status eq 5"/>小程序焦点图
+   	<elseif condition="$val.status eq 6"/>手机站首页广告位
+   	<elseif condition="$val.status eq 7"/>电脑站首页焦点图右侧
+	<elseif condition="$val.status eq 8"/>电脑站首页焦点图下
+   <else/>
+   手机站焦点图
+   </if>
+            </td>
+            
+            <td>
+ <img data-tdtype="toggle" data-field="add_time" data-id="{$val.id}" data-value="{$val.add_time}" src="__STATIC__/images/admin/toggle_<if condition="$val.add_time eq 1">disabled<else/>enabled</if>.gif" />	
+            </td>
+            <td align="center">
+            <a href="javascript:;" class="J_showdialog" data-uri="{:U('banner/edit', array('id'=>$val['id']))}" data-title="{:L('edit')} - {$val.name}"  data-id="edit" data-width="500" data-height="200">{:L('edit')}</a> |
+            	<a href="javascript:void(0);" class="J_confirmurl" data-acttype="ajax" data-uri="{:u('banner/delete', array('id'=>$val['id']))}" data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">{:L('delete')}</a></td>
+          </tr>
+          </volist>
+        </tbody>
+      	</table>
+		<div class="btn_wrap_fixed">
+    		<label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        
+        
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('banner/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+    		
+    		
+    		
+    		<div id="pages">{$page}</div>
+    	</div>
+    </div>
+</div>
+<include file="Public:footer" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script type="text/javascript" src="__STATIC__/js/calendar/calendar.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+     
+     		<div class="mianbar">
+					<div class="taobaonum cl tqk-text-c">
+		
+     <legend class="tqk-mb-40"><label name="hr">找回淘宝订单</label></legend>
+		
+						
+						 <form class="layui-form layui-form-pane" action="">
+							<div class="layui-form-item">
+								 <div class="layui-input-block">
+								<input type="text" style="width: 80%" autocomplete="off" lay-verType='tips' lay-verify="required|number" class="layui-input" name="orderid" placeholder="请输入您的淘宝订单编号（注：提交约15分钟后，到订单列表页面查看）" />
+							</div>
+								 </div>
+						  <button lay-submit lay-filter="TqkSuborder" class="layui-btn layui-btn-danger">确认提交</button>
+						</form>
+					</div>
+					<div class="suborder cl">
+						<h3>如何查看订单号？</h3>
+						<p>步骤：【登录淘宝】<i class="iconfont tqk-jiantou"></i>【已购买的商品】<i class="iconfont tqk-jiantou"></i>
+							【订单编号】<i class="iconfont tqk-jiantou"></i>【复制】
+						</p>
+						<p>详细图文：<a href="{:U('user/vieworder')}">如何在淘宝网站和淘宝APP上查看订单编号？</a></p>
+					</div>
+				</div>
+			
+     
+    </div>
+    
+   </div>
+	
+
+	
+
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+</body>
+</html>

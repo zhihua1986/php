@@ -1,0 +1,21 @@
+{
+  "name": "duomai/cps-client",
+  "description": "cps开放服务api客户端",
+  "version" : "1.0.1",
+  "autoload" : {
+    "psr-4": {
+      "Duomai\\CpsClient\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "real",
+      "email": "real@duomai.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^6.5",
+    "ext-json": "*"
+  },
+  "license": "MIT"
+}

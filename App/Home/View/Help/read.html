@@ -1,0 +1,79 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row etao-88db-guide-newer">
+    <div class="layui-col-xs3">
+     
+     <div class="etao-88db-sidebar">
+						<div id="magix_vf_sidebar">
+							<div class="etao-2927-guide-nav">
+								<ul class="etao-2927-side-nav">
+									<li <if condition="$id eq 'aboutus'"> class="etao-2927-active"</if>>
+										<a href="{:U('help/index',array('id'=>'aboutus'))}">关于我们</a>
+									</li>
+									<li <if condition="$id eq 'contactus'"> class="etao-2927-active"</if>>
+										<a href="{:U('help/index',array('id'=>'contactus'))}">联系我们</a>
+									</li>
+									<li <if condition="$id eq 'pc'"> class="etao-2927-active"</if>>
+										<a href="{:U('help/index',array('id'=>'pc'))}">新手指南</a>
+									</li>
+									<li <if condition="$id eq 'disclaimer'"> class="etao-2927-active"</if>>
+										<a href="{:U('help/index',array('id'=>'disclaimer'))}">免责声明</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+     
+    </div>
+    
+     <div class="layui-col-xs9">
+     
+     		<div class="mianbar tqk-bg-white">
+					
+<div class="tqk-pl-20 tqk-pt-20">
+							<div class="etao-c282-guide-main-container">
+								{$help.info}
+						
+						
+						<div class="layui-clear"></div>
+						
+							</div>
+						</div>
+					
+					
+				</div>
+			
+     
+    </div>
+    
+   </div>
+	
+
+	
+
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+</body>
+</html>

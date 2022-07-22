@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<meta charset="UTF-8">
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}" />
+<meta name="description" content="{$page_seo.description}" />
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
+<style>
+html{font-size:80px}
+body{font-size:14px;line-height:1.8;background:#e80d3b}
+.coupon-wrap{width:100%;position:relative}
+.root{width:100%;overflow:hidden}
+.coupon-wrap .title{height:.63rem;padding-top:.43rem}
+.coupon-wrap .title p{text-align:center;color:#fff;font-size:.28rem;line-height:.32rem}
+.coupon-wrap .content .coupon-con .amount-num{color:#ff5540;font-size:.52rem;font-weight:400;position:relative}
+.coupon-wrap .content{width:95%;height:4.7rem;background:#fff;border-radius:.12rem;padding-top:.29rem;box-sizing:border-box;margin:0 auto;box-shadow:0 0 2px 0 rgba(0,0,0,.5);text-align:center}
+.coupon-wrap .content .time{font-size:.24rem;line-height:.32rem;color:#9b9b9b;text-align:center;margin-bottom:.3rem;height:.3rem}
+.coupon-wrap .content .center{text-align:center}
+.rule-title{color:#4a4a4a;font-size:.26rem;text-align:center;line-height:.6rem;margin-top:.2rem}
+.rule-list{padding:0 .33rem}
+.coupon-wrap .content .hr{height:1px;background:#d2d2d2;margin:0 auto;-webkit-transform:scaleY(.5);transform:scaleY(.5)}
+.coupon-wrap .bottom-img{position:absolute;bottom:-.05rem;left:.04rem;height:.14rem;width:7.41rem;background:url(/Public/skin2/static/home/images/dot-741-14.png) no-repeat;background-size:cover}
+.coupon-wrap .content .shop-link{height:.98rem;width:100%;display:block;overflow:hidden}
+.coupon-wrap .content .btn{height:.7rem;border-radius:.35rem;box-sizing:border-box;font-size:.26rem;line-height:.65rem;background:#ff5540;color:#fff;border:1px solid;margin-bottom:.3rem;outline:0;display:inline-block;padding:0 .55rem}
+.coupon-wrap .content .normal{background:url(/Public/skin2/static/home/images/Xa-302-143.png) no-repeat;background-size:cover}
+.coupon-wrap .content .coupon-con .tip{font-size:.24rem;color:#ff5540;text-align:center;line-height:1.2}
+.coupon-wrap .content .coupon-con{width:3.02rem;height:1.43rem;padding-top:.2rem;margin:0 auto .32rem;box-sizing:border-box}
+@media screen and (min-width:768px){.flex-wrap{width:600px;margin:0 auto}
+}
+.copy-link{margin:.12rem;padding:.15rem;border-radius:8px;font-size:.24rem;text-align:center;background:#fff;color:#474747}
+.copy-link .code{width:264px;resize:none;margin:0 auto;padding:0 10px;height:40px;line-height:40px;font-size:.24rem;background-color:#ededed;border:none;overflow:hidden;box-sizing:border-box;text-align:center}
+.copy-link button{margin:12px 0;width:100px;height:36px;line-height:36px;font-size:14px}
+.copy-link p{margin-bottom:5px;font-size:.2rem}
+.koubei-btn{padding:.12rem}
+#silde{width: 40px; position: absolute; right: 15px; z-index: 999;}
+.tqkup {
+    background: #9F9F9F;
+}
+.tqkup i{font-size: 40px;}
+#silde{position: fixed; bottom: 50px;}
+#silde a{display: block;width: 40px;height: 40px;border-radius: 40px; text-align: center; line-height: 40px; color: #FFF; margin-bottom: 1px; cursor: pointer;}
+</style>
+</head>
+<body>
+	
+		<div class="layui-container" style="padding: 0;">
+			
+	<div class="layui-row">	
+ <div class="layui-col-xs12 layui-col-sm12">
+<div class="root">
+<div class="coupon-wrap flex-wrap">
+<img src="__SKIN2__/static/home/images/k01.png" width="100%"/>
+<div class="koubei-btn">
+<img src="__SKIN2__/static/home/images/k02.png?v=1"  width="100%"/>
+</div>
+<div class="copy-link">
+<p>复制下方淘口令，打开【手机淘宝】领口碑渠道专享红包</p>
+ <div class="code-android">
+ <textarea class="code" >{$kouling}</textarea>
+ <div style="margin-left: -600px; height: 1px; overflow: hidden;">
+<input id="code" value="{$kouling}" readonly="readonly" />
+</div>
+ </div>
+  <button  data-clipboard-target="#code" data-clipboard-action="copy" class="layui-btn layui-btn-radius layui-btn-danger copycode">一键复制</button>
+</div>
+
+<div style="padding-bottom: 0.3rem;">
+<a href="javascript:;" data-clipboard-target="#code" data-clipboard-action="copy" class="copycode" ><img src="__SKIN2__/static/home/images/koubei.png" width="100%" /></a>
+</div>
+
+	
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<div id="silde">
+	<a class="tqkup" href="/"><i class="layui-icon layui-icon-home" style="font-size: 22px;"></i></a>
+	<a class="tqkup" id="scroll"><i class="layui-icon layui-icon-top"></i></a></div>	
+<script src="__SKIN2__/layui/layui.js?v=2.11"></script>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: '__SKIN2__/static/home/js/' 
+    ,debug:false
+  }).use('tqk'); 
+</script>
+<p style="display: none;">{:C('yh_statistics_code')}</p>
+</body>
+</html>
+
+

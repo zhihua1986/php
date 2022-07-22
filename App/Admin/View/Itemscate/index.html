@@ -1,0 +1,33 @@
+<include file="Public:header" />
+<!--栏目列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list" data-acturi="{:U('itemscate/ajax_edit')}">
+    <table width="100%" cellspacing="0" id="J_cate_tree">
+        <thead>
+            <tr>
+                <th width="30"><span data-tdtype="order_by" data-field="id">ID</span></th>
+                <th>{:L('item_cate_name')}</th>
+              	<th width="60"><span data-tdtype="order_by" data-field="ordid">{:L('sort_order')}</span></th>
+                <th width="60"><span data-tdtype="order_by" data-field="status">{:L('show_index')}</span></th>
+                <th width="180">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+    	<tbody>
+        {$list}
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+    </div>
+</div>
+<include file="Public:footer" />
+<script src="__STATIC__/js/jquery/plugins/jquery.treetable.js"></script>
+<script>
+$(function(){
+    //initialState:'expanded'
+    $("#J_cate_tree").treeTable({indent:20,treeColumn:1});
+    $(".J_preview").preview();
+});        
+</script> 
+</body>
+</html>

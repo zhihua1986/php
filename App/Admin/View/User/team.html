@@ -1,0 +1,81 @@
+<include file="Public:header" />
+<!--会员列表-->
+<div class="pad_10" >
+
+
+    <div class="J_tablelist table_list" data-acturi="{:U('user/ajax_edit')}">
+        <table width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th width="50"><span data-tdtype="order_by" data-field="id">ID</span></th>
+                    <th width="40">头像</th>
+                    <th align="left"  width="220"><span data-tdtype="order_by" data-field="username">用户名</span></th>
+                      <th align="left" width="80"><span data-tdtype="order_by" data-field="username">下单数</span></th>
+                    <th width="120" align="left"><span data-tdtype="order_by" data-field="email">手机</span></th>
+                    <th width="60" align="right"><span data-tdtype="order_by" data-field="score">账户余额</span></th>
+                    <th width="60" align="right"><span data-tdtype="order_by" data-field="score">冻结资金</span></th>
+                    <th width="60" align="right"><span data-tdtype="order_by" data-field="score">积分</span></th>
+                    <th width="120"><span data-tdtype="order_by" data-field="reg_time">注册时间</span></th>
+                    <th width="40"><span data-tdtype="order_by" data-field="status">{:L('status')}</span></th>
+                      <th width="140">{:L('operations_manage')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="userlist" id="val" >
+                    <tr>
+                        <td align="center">{$val.id}</td>
+                        <td align="center"><img src="{$val.avatar}" style="width: 20px;height: 20px;"/></td>
+                        <td align="left"><span data-tdtype="" data-field="username" data-id="{$val.id}" class="">{$val.nickname}
+                        </span>
+                        	<if condition="$val['oid']"><span style="color: red;">[已绑订单]</span></if>
+                        </td>
+                         <td align="left J_lmenu" >
+                       	
+						淘宝：
+						<if condition="$val['ordercount']">
+						<a target="_blank" href="{:u('order/index', array('id'=>$val['id']))}" >{:$val['ordercount']}</a>
+						<else/>
+						0
+						</if> 
+						京东：
+						<if condition="$val['jdordercount']">
+						<a target="_blank" href="{:u('jdorder/index', array('id'=>$val['id']))}" >{:$val['jdordercount']}</a>
+						<else/>
+						0
+						</if><br/> 
+						美团：
+						<if condition="$val['mtordercount']">
+						<a target="_blank" href="{:u('mtorder/index', array('id'=>$val['id']))}" >{:$val['mtordercount']}</a>
+						<else/>
+						0
+						</if> 
+						拼多多：
+						<if condition="$val['pddordercount']">
+						<a target="_blank" href="{:u('pddorder/index', array('id'=>$val['id']))}" >{:$val['pddordercount']}</a>
+						<else/>
+						0
+						</if> 
+						
+						
+                         </td>
+                        <td align="left"><span data-tdtype="" data-field="email" data-id="{$val.id}" class="">{$val.phone}</span></td>
+                        <td align="right"><span data-tdtype="" data-field="money" data-id="{$val.id}" class="">{$val.money}</span></td>
+                        <td align="right"><span data-tdtype="" data-field="frozen" data-id="{$val.id}" class="">{$val.frozen}</span></td>
+                        <td align="right"><span data-tdtype="" data-field="score" data-id="{$val.id}" class="">{$val.score}</span></td>
+                        <td align="center">{$val.reg_time|frienddate}</td>
+                        <td align="center"><img data-tdtype="toggle" data-id="{$val.id}" data-field="status" data-value="{$val.status}" src="__STATIC__/images/admin/toggle_<if condition="$val.status eq 0">disabled<else/>enabled</if>.gif" /></td>
+                     <td align="center">
+                           <a href="javascript:;" class="J_showdialog" data-uri="{:u('user/edit', array('id'=>$val['id'], 'menuid'=>$menuid))}" data-title="编辑-{$val.username}" data-id="edit" data-width="520" data-height="330">编辑</a> | <a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('user/delete', array('id'=>$val['id']))}" data-acttype="ajax" data-msg="{:sprintf(L('confirm_delete_one'),$val['username'])}">{:L('delete')}</a></td>
+                       </tr>
+                   </volist>
+               </tbody>
+           </table>
+           <div class="btn_wrap_fixed">
+            <div id="pages">{$page}</div>
+        </div>
+
+    </div>
+</div>
+<include file="Public:footer" />
+</body>
+</html>

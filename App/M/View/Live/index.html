@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<meta charset="UTF-8">
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}" />
+<meta name="description" content="{$page_seo.description}" />
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_725800_rzzl9wlrp6i.css" />
+<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
+<link rel="stylesheet" href="__SKIN2__/static/home/css/firstorder.css?v=1.46">
+<style>
+	body{background:none}
+	.layui-container{background-color:#ff521e}
+	.am-navbar{border-top:1px solid #ccc;background-color:#fff;position:fixed;left:0;bottom:0;right:0;width:100%;height:49px;line-height:49px;z-index:1010;display:flex}
+	.am-navbar .am-navbar-nav{background-color:#fff;width:100%;display:flex;flex-wrap:nowrap;justify-content:space-between}
+	.am-navbar li{float:left}
+	.copy-link{margin:.12rem;height:auto;padding:.15rem;border-top-left-radius:8px;border-top-right-radius:8px;font-size:.24rem;text-align:center;background:#fff;color:#474747}
+	.copy-link .code{width:264px;resize:none;margin:0 auto;padding:0 10px;height:40px;line-height:40px;font-size:.24rem;background-color:#ededed;border:none;overflow:hidden;box-sizing:border-box;text-align:center}
+	.copy-link p{margin-bottom:5px;font-size:.2rem}
+	.box-kouling{width:90%;text-align:center;position:relative;overflow:hidden;margin:0 auto;height:4rem}
+	.coupon-wrap2 .price{font-size: 0.175rem;}
+	.am-navbar .am-navbar-nav a .am-navbar-label{color:#646464;font-size:12px}
+	.am-navbar-nav a .am-navbar-label{padding-top:3px;line-height:1;font-size:12px;display:block;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+	.am-navbar-nav a{display:inline-block;width:100%;height:49px;line-height:20px}
+	.am-navbar-nav i{font-size:18px;display:block}
+	.am-navbar .am-navbar-nav{padding-left:8px;padding-right:8px;width: 88%;margin: 0 auto;text-align:center;position:relative;overflow:hidden}
+</style>
+</head>
+<body id="getlink">
+<div class="layui-container" style="padding: 0; max-width: 750px;">
+<div class="layui-row">	
+ <div class="layui-col-xs12 layui-col-sm12">
+<div class="root">
+<div class="coupon-wrap flex-wrap">
+	<if condition="$back">
+	<a href="{$back}" class="layui-icon layui-icon-left back"></a>
+</if>
+<img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01neAAQD2MgYl7dQmnf_!!3175549857.jpg" width="100%"/>
+    <div class="block-main flow-default">
+    	<div>
+    	<volist name="list" id="vo">
+    	<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+    		<div class="itemlist">
+    		<div class="item-pic" style="position: relative;">
+    		<div class="tag_double-eleven">{$vo.author_name}</div>
+      	<a class="jump getlink" rel="{$vo.author_openid}" href="javascript:;" >
+    		<img src="{$vo.author_pic}" width="100%" height="180px">
+      	</a>
+    		</div>
+			<div class="goods-num-type">
+				<span class="old-price fl">粉丝：<i>{$vo.fans_num|floatNumber}</i></span></div>
+    		<div class="coupon-wrap2 clearfix"> 
+			<if condition="$vo['is_live']">
+			<span class="layui-badge">直播中</span>
+			</if>
+			<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+			<span class="layui-badge layui-bg-orange fr">下单返利</span>
+			</if>
+    		
+    		</div>
+    		</div>
+    	</div>
+    	
+    	</volist>
+    	
+    	<div id="dataList">
+    </div>
+    	
+    	
+    	</div>
+   
+
+    </div>
+	
+
+	<div id="silde">
+		<!-- <a class="tqkup" href="/"><i class="layui-icon layui-icon-home" style="font-size: 22px;"></i></a> -->
+		<a class="tqkup" id="scroll"><i class="layui-icon layui-icon-top"></i></a></div>
+
+
+
+</div>
+
+</div>
+</div>
+</div>
+
+
+</div>
+<include file="Public:footer" />
+<script src="__SKIN2__/layui/layui.js?v=2.11"></script>
+<tqkjs  href="__STATIC__/wap/js/mescroll.min.js"/>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: '__SKIN2__/static/home/js/' 
+    ,version: 1.62
+    ,debug:false
+  }).use('tqk'); 
+</script>
+<script>
+
+layui.use(['layer','ClipboardJS'], function(){ 
+var form = layui.form
+,$ = layui.jquery
+,ClipboardJS = layui.ClipboardJS;
+var isFirst = true;
+var issave=false;
+var ispage=1;
+var posname="pos_{$cid}_{$sort}_{$sokey}_{:CONTROLLER_NAME}";
+var htname="ht_{$cid}_{$sort}_{$sokey}_{:CONTROLLER_NAME}";
+var pgname="pg_{$cid}_{$sort}_{$sokey}_{:CONTROLLER_NAME}";
+var pgnum = parseInt(sessionStorage.getItem(pgname));
+if(pgnum>0){
+var pageIndex = pgnum;		
+}else{
+var pageIndex = 0;	
+}
+page = {num:1};
+var mescroll = new MeScroll("body", {
+            up: {
+            	    use:true,
+                auto:true,
+                callback: getListData,
+                isBounce: false,
+                lazyLoad:{
+                	use:true
+                },
+                hardwareClass:'mescroll-hardware',
+                	warpClass: "mescroll-upwarp",
+                clearEmptyId: "dataList",
+                htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
+                onScroll:function(mescroll){
+                <if condition="$isweixin">
+                	if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
+                 var pos=mescroll.getScrollTop();
+                 sessionStorage.setItem(posname,pos); 
+                 var datahtml =$('#dataList').html();
+                 sessionStorage.setItem(htname,datahtml);
+                 issave = true; 
+                 sessionStorage.setItem(pgname,ispage); 
+                 }
+                	</if>
+                 
+                }
+            }
+        });
+    function getListData(page){
+                getListDataFromNet(page.num+pageIndex,function(curPageData){
+                    mescroll.endByPage(20, {$page_size});
+                    setListData(curPageData);
+                }, function(){
+                    mescroll.endErr();
+                });
+            }
+    function getListDataFromNet(pageNum,successCallback,errorCallback) {
+                   ispage=pageNum;
+                    $.ajax({
+                        type: 'GET',
+                        url:"{:U('live/pagelist')}?page="+ pageNum,
+                        dataType: 'html',
+                        success: function(data){
+                            successCallback(data);
+                        },
+                        error: errorCallback
+                    });
+         
+            }
+			
+$('#getlink').on('click','.jump',function(){
+
+ var openid = $(this).attr('rel');
+ 
+ 	<if condition="$islogin && !$visitor">
+ 	
+ 	layer.confirm('需要登录后才可以领券哟!', {
+ 	  btn: ['立即登录', '我知道啦'] 
+ 	}, function(index, layero){
+ 	window.location.href="{:U('login/index')}";
+ 	}, function(index){
+ 	layer.closeAll();
+ 	return false
+ 	});
+ 	
+ 	 <else/>
+ 	 
+ 	var loadIndex=layer.load(1,{shade:[0.5,'#000']});
+ 	 $.ajax({
+ 	             url: "{:U('live/getlink')}",
+ 	             type: 'post',
+ 	             dataType : 'json',
+ 	 			data:{
+ 	 				openid:openid  
+ 	 			   },
+ 	             async: false, 
+ 	             success: function(res) {
+					 
+
+var copyhtml = '<div class="box-kouling" style="background: #FFFFFF; padding-top: 20px;border-radius: 10px;">'+
+'<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01WuxVqM2MgYl5SPcjw_!!3175549857.jpg" width="100%" />'+
+'<div class="copy-link">'+
+ '<div class="code-android">'+
+ '<textarea class="code" id="content" >'+res.link+'</textarea>'+
+ '<div style="margin-left: -600px; height: 1px; overflow: hidden;">'+
+'<input id="code" value="'+res.link+'" readonly="readonly" />'+
+'</div>'+
+ '</div>'+
+'<button  data-clipboard-target="#code" data-clipboard-action="copy" class="layui-btn layui-btn-radius layui-btn-danger copycode2">一键复制</button>'+
+'</div>'+
+'</div>';
+
+ layer.open({
+  type: 1,
+  title: false,
+  closeBtn: 2,
+  shade: 0.8,
+  skin: 'myskin',
+  area: ['90%', 'auto'],
+  shadeClose: true,
+  content: copyhtml,
+  success: function(layero, index){
+
+var clipboard2 = new ClipboardJS('.copycode2');
+clipboard2.on('success', function(e) {
+layer.msg('复制口令成功，现在去打开【抖音APP】看直播吧！'); 
+    e.clearSelection();
+});
+clipboard2.on('error', function(e) {
+layer.msg('复制失败'); 
+});
+	
+  }
+})	
+	 
+ layer.close(loadIndex);	
+ 	               
+ 	             },
+ 	         error: function (jqXHR, textStatus, errorThrown) {
+ 	         layer.alert('TA还没有开播哟！', {
+ 	            // skin: 'layui-layer-molv' //样式类名  自定义样式
+ 	             closeBtn: 1    // 是否显示关闭按钮
+ 	             ,anim: 1 //动画类型
+ 	             ,btn: ['知道啦'] //按钮
+ 	             ,icon: 2    // icon
+ 	             ,yes:function(){
+ 	               layer.closeAll();
+ 	             }
+ 	            });
+ 	 	
+ 	 		
+ 	 		 layer.close(loadIndex);	
+ 	         }
+ 	         });
+ 	 
+ 	 
+ 	 
+ 	 </if>
+ 	
+ })		
+function setListData(curPageData){
+                var listDom=document.getElementById("dataList");
+                var liDom=document.createElement("div");
+                liDom.className = 'goods';  
+                liDom.innerHTML=curPageData;
+                listDom.appendChild(liDom);
+                
+<if condition="$isweixin">             
+ if(isFirst){ 
+ var tops = parseInt(sessionStorage.getItem(posname));
+ var htmldata = sessionStorage.getItem(htname);
+ if(htmldata){
+ $('#dataList').html(htmldata);
+ mescroll.scrollTo(tops,0);
+ }
+sessionStorage.removeItem(posname);
+sessionStorage.removeItem(htname);
+sessionStorage.removeItem(pgname);
+sessionStorage.clear();
+isFirst = false;
+ }
+ </if>
+ 
+ 
+}
+
+
+
+});
+</script>
+<include file="Public:stat" />
+</body>
+</html>
+
+

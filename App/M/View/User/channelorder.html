@@ -1,0 +1,53 @@
+<include file="Public:user_head" />
+	<main>
+		
+<div class="am-btn-group am-btn-group-justify">
+  <a href="{:U('user/channelorder')}" class="am-btn am-btn-default" <if condition="$status eq 0">disabled="disabled"</if> role="button">全部订单</a>
+    <a href="{:U('user/channelorder',array('status'=>'1'))}" <if condition="$status eq 1">disabled="disabled"</if> class="am-btn am-btn-default" role="button">已付款</a>
+      <a href="{:U('user/channelorder',array('status'=>'3'))}" <if condition="$status eq 3">disabled="disabled"</if> class="am-btn am-btn-default" role="button">已结算</a>
+     <a href="{:U('user/channelorder',array('status'=>'2'))}" <if condition="$status eq 2">disabled="disabled"</if> class="am-btn am-btn-default" role="button">已失效</a>
+</div>
+		<!--list-->
+		<div class="wallet">
+		
+		<if condition="$list">
+			
+			<ul>
+				<volist name="list" id="vo">
+					<li>
+						<div class="am-cf">
+							<p class="am-serif">{$vo.goods_title}</p>
+							<if condition="$vo['price']">
+								<p class="am-fl"><em>付款金额</em><span class="c-main">￥{$vo.price}</span></p>
+							</if>
+							<p class="am-fr"><em>状态</em><span class="c-primary">{$vo.status}</span></p>
+						</div>
+						<div class="am-cf">
+							<p class="am-fl"><em>付款时间</em>{$vo.add_time|frienddate}</p>
+						</div>
+					
+						<p><em>订单编号</em>{$vo.orderid}</p>
+							<p><em>预计返</em>￥{$vo.income}</p>
+						<if condition="$vo['up_time']">
+							<p><em>更新时间</em>{$vo.up_time|frienddate}</p>
+						</if>
+					</li>
+				</volist>	
+			</ul>
+			<div class="page">
+				<if condition="$total_item gt 6">
+					{$page}
+				</if>
+			</div>
+			
+			<else/>
+			<div class="no-order">
+				<i class="iconfont tqk-icondd1"></i>
+				<p>没有相关订单数据</p>
+			</div>
+		</if>
+			
+		</div>
+	</main>
+<include file="Public:foot" />
+</body></html>

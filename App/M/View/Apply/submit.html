@@ -1,0 +1,104 @@
+<include file="Public:head_nosearch" />
+<!--header-->
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav">
+        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>
+    </div>
+    <h1 class="am-header-title">申请代理站长</h1>
+</header>
+<main>
+	<form action="{:U('apply/submit')}"  method="post" id="data">
+		<div class="wbg m5">
+			<div class="input-row">  
+				<label>真实姓名</label>
+				<div class="formControls">
+					<input type="text" name="name" class="input-text" autocomplete="off" placeholder="请输入您的真实姓名与支付宝一致" />
+				</div>
+			</div>
+			<div class="input-row">  
+				<label>支付宝账号</label>
+				<div class="formControls">
+					<input type="text" name="alipay" class="input-text" autocomplete="off" placeholder="请输入您的支付宝账号用于收款，务必填写正确" />
+				</div>
+			</div>
+			<div class="input-row">  
+				<label>QQ号码</label>
+				<div class="formControls">
+					<input type="tel" name="qq" class="input-text" autocomplete="off" placeholder="请输入您的QQ号码，方便平台联系您" />
+				</div>
+			</div>
+			<div class="input-row">  
+				<label>验证码</label>
+				<div class="formControls">
+					<input type="text" class="input-text" autocomplete="off" name="codes" id="codes" placeholder="请输入验证码" style="width: 200px;" />
+					<img src="{:U('login/verify')}" id="verifyImg" height="40" class="f-r" onclick="changeVerify()">
+				</div>
+			</div>
+		</div>
+		<div class="am-container">
+			<input type="submit" class="am-btn btn-main am-radius am-btn-block am-margin-top-lg" value="提交申请资料"/>
+		</div>
+	</form>
+</main>
+<include file="Public:foot" />
+<script type="text/javascript">
+	function changeVerify(){
+		 var timenow = new Date().getTime();
+		 document.getElementById('verifyImg').src='{:U("login/verify")}?'+timenow; 
+	}
+	$(function(){
+		
+		$(function(){
+			$("#data").validate({
+				rules:{
+					name:{
+						required:true
+					},
+					alipay:{
+						required:true,
+						isAlipay:true
+					},
+					qq:{
+						required:true,
+						isQq:true,
+					},
+					codes:{
+						required: true,
+					}
+				},
+				messages:{
+					name:{
+						required:"请输入您的真实姓名"
+					},
+					alipay:{
+						required:"请输入您的支付宝账号"
+					},
+					qq:{
+						required:"请输入您的QQ号码",
+					},
+					codes:{
+						required: "请输入验证码",
+					}
+				},
+				submitHandler: function(form){
+					$(form).ajaxSubmit({
+						success: function(json) {
+							if(json.status == 1){
+								layer.msg(json.msg, {icon:6});
+								setTimeout(function(){
+									location.href = json.data;
+								},1000);
+							}else{
+								layer.msg(json.msg, {icon:5});
+							}
+						}
+					});     
+				}
+			})
+		});
+
+	});
+</script>
+
+</body>
+</html>

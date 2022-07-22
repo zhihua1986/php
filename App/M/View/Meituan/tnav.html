@@ -1,0 +1,15 @@
+<div class="am-btn-group am-btn-group-justify am-margin-top-sm">
+    <a href="{:U('user/teamorder')}" class="am-btn am-btn-default am-round" <if condition="CONTROLLER_NAME eq 'User'">disabled="disabled"</if> role="button">淘宝订单</a>
+     <if condition="C('yh_openjd') eq 1">
+	 <a href="{:U('jindong/teamorder')}" class="am-btn am-btn-default am-round" <if condition="CONTROLLER_NAME eq 'Jindong'">disabled="disabled"</if> role="button">京东订单</a>
+	   </if>
+	 <if condition="C('yh_openduoduo') eq 1">
+    <a href="{:U('duoduo/teamorder')}" class="am-btn am-btn-default am-round" <if condition="CONTROLLER_NAME eq 'Duoduo'">disabled="disabled"</if> role="button">拼多多订单</a>
+	  </if>
+	   <if condition="C('yh_openmt') eq 1">
+	  <a href="{:U('meituan/teamorder')}" class="am-btn am-btn-default am-round" <if condition="CONTROLLER_NAME eq 'Meituan'">disabled="disabled"</if> role="button">美团订单</a>
+	    </if>
+		<if condition="C('yh_dmappkey') gt 1">
+		<a href="{:U('third/teamorder')}" class="am-btn am-btn-default am-round" <if condition="CONTROLLER_NAME eq 'Third'">disabled="disabled"</if> role="button">其它订单</a>
+		  </if>
+</div>

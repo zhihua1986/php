@@ -1,0 +1,13 @@
+<if condition="$visitor">
+<div class="login">
+<a href="{:U('user/ucenter')}"><img src="{$visitor.avatar}" class="round"></a>
+<p>欢迎，<a href="{:U('user/ucenter')}" class="c-main">{$visitor.nickname}</a></p>
+<a href="{:U('user/ucenter')}" class="btn btn-pink">个人中心</a>
+</div>
+<else/>	
+<div class="login">
+<img src="__STATIC__/tqkpc/images/default.png" class="round">
+<p>晒单赚积分</p>
+<a href="{:U('login/index')}{$trackurl}" class="btn btn-pink">立即登录</a>
+</div>
+</if>

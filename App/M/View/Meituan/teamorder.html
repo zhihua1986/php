@@ -1,0 +1,154 @@
+<include file="Public:user_head" />
+	<main>
+		
+<div class="am-btn-group am-btn-group-justify">
+    <a href="{:U('meituan/teamorder',array('fuid'=>1))}" class="am-btn am-btn-default" <if condition="$fuid eq 1">disabled="disabled"</if> role="button">直属成员</a>
+    <a href="{:U('meituan/teamorder',array('guid'=>1))}" <if condition="$guid eq 1">disabled="disabled"</if> class="am-btn am-btn-default" role="button">直属成员下级</a>
+</div>
+
+<include file="Meituan:tnav" />
+
+		<!--list-->
+		<div class="wallet">
+		
+		<if condition="$list">
+			
+			<ul>
+				<volist name="list" id="vo">
+					<li>
+						<div class="am-cf">
+				<p class="am-serif">{$vo.smstitle}</p>
+							<if condition="$vo['payprice']">
+								<p class="am-fl"><em>付款金额</em><span class="c-main">￥{$vo.payprice}</span></p>
+							</if>
+							<p class="am-fr"><em>状态</em><span class="c-primary">
+								<if condition="$vo['settle'] eq 1">
+									 已结算
+									<else/>
+									{$vo.statustxt}
+								</if>
+							</span></p>
+						</div>
+						<div class="am-cf">
+							<p class="am-fl"><em>付款时间</em>{$vo.paytime|frienddate}</p>
+						</div>
+						<p><em>订单编号</em>{$vo.orderid}</p>
+						
+						<if condition="$guid">
+							<p><em>预计返</em>￥{:Orebate3(array('price'=>$vo['profit'],'leve'=>$vo['leve3']))}</p>
+							
+						<else/>
+							<p><em>预计返</em>￥{:Orebate2(array('price'=>$vo['profit'],'leve'=>$vo['leve2']))}</p>
+						</if>
+							<if condition="$vo['settle_time'] and $vo['status'] eq 8">
+							<p id="order_time_{$vo.id}" data-id="{$vo.id}" data-starttime="{:date('Y-m-d H:i:s',time())}" data-endtime="{:date('Y-m-d H:i:s',$ComputingTime+$vo['settle_time'])}" class="remain-time"><em>更新时间</em>{$vo.settle_time|frienddate}</p>
+						</if>
+					</li>
+				</volist>	
+			</ul>
+			<div class="page">
+				<if condition="$total_item gt 6">
+					{$page}
+				</if>
+			</div>
+			
+			<else/>
+			<div class="no-order">
+				<i class="iconfont tqk-icondd1"></i>
+				<p>没有相关订单数据！</p>
+			</div>
+		</if>
+			
+		</div>
+	</main>
+<include file="Public:foot" />
+<script> 
+
+  var jsq = {
+        startdata: [],
+        enddata: [],
+        addStart: function (key, value) {
+            if (typeof (jsq.startdata[key]) == 'undefined') {
+                jsq.startdata[key] = value;
+            }
+        },
+        addEnd: function (key, value) {
+            if (typeof (jsq.enddata[key]) == 'undefined') {
+                jsq.enddata[key] = value;
+            }
+        },
+        addAll: function () {
+            $(".remain-time").each(function (i) {
+                var key = $(this).attr("data-id");
+                var startValue = $(this).attr("data-starttime");
+                var endValue = $(this).attr("data-endtime");
+                if (typeof (jsq.startdata[key]) == 'undefined') {
+                    jsq.addStart(key, startValue);
+                    jsq.addEnd(key, endValue);
+                }
+            });
+            jsq.subAll();
+        },
+        subAll: function () {
+            for (var index in jsq.startdata) {
+                var nowTime = new Date();
+                var startTime = new Date(jsq.startdata[index].toString().replace(/-/g, '/'));
+                var endTime = new Date(jsq.enddata[index].toString().replace(/-/g, '/'));
+
+                var S_timestamp = startTime.getTime() - nowTime.getTime();
+                var E_timestamp = endTime.getTime() - nowTime.getTime();
+                if (E_timestamp <= 1000) //小1秒
+                {
+//                  $('#order_time_' + index).text('已结算 >' + jsq.enddata[index].toString());
+//                  $('#order_time_' + index).css("color", "red");
+//                  //$("#order_time_" + key).parent().parent().parent().parent().remove(); //删除
+                }
+                else if (E_timestamp > 0 && S_timestamp >= 1000) //大1秒 
+                {                    
+                    var _day = Math.floor(S_timestamp / 1000 / 60 / 60 / 24);
+                    var _hour = Math.floor(S_timestamp / 1000 / 60 / 60 % 24);
+                    var _min = Math.floor(S_timestamp / 1000 / 60 % 60);
+                    var _sec = Math.floor(S_timestamp / 1000 % 60);
+
+                    if (_hour < 10) {
+                        _hour = "0" + _hour;
+                    }
+                    if (_min < 10) {
+                        _min = "0" + _min;
+                    }
+                    if (_sec < 10) {
+                        _sec = "0" + _sec;
+                    }
+                    $('#order_time_' + index).text("距离结算："+_day + "天" + _hour + "时" + _min + "分" + _sec + "秒");
+                    $('#order_time_' + index).css("color", "red");
+                }
+                else {
+                    var _day = Math.floor(E_timestamp / 1000 / 60 / 60 / 24);
+                    var _hour = Math.floor(E_timestamp / 1000 / 60 / 60 % 24);
+                    var _min = Math.floor(E_timestamp / 1000 / 60 % 60);
+                    var _sec = Math.floor(E_timestamp / 1000 % 60);
+
+                    if (_hour < 10) {
+                        _hour = "0" + _hour;
+                    }
+                    if (_min < 10) {
+                        _min = "0" + _min;
+                    }
+                    if (_sec < 10) {
+                        _sec = "0" + _sec;
+                    }
+                    $('#order_time_' + index).text("距离结算："+_day + "天" + _hour + "时" + _min + "分" + _sec + "秒");
+                    $('#order_time_' + index).css("color", "red");
+                }
+            }
+        }
+    };
+$(function(){
+      setInterval(function(){
+      	jsq.addAll();
+      }, 1000);
+ })
+    
+
+  </script>
+</body></html>

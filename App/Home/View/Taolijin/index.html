@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<meta charset="UTF-8">
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}" />
+<meta name="description" content="{$page_seo.description}" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
+<link rel="stylesheet" href="__SKIN2__/static/tqkwap/css/public.css?v=1">
+<script type="text/javascript">
+var system ={win : false,mac : false,xll : false};
+var p = navigator.platform;
+system.win = p.indexOf("Win") == 0;
+system.mac = p.indexOf("Mac") == 0;
+system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+var wapurl=window.location.pathname.replace(/index.php\//, "");
+if(system.win||system.mac||system.xll){}else{
+window.location.href="{:C('yh_headerm_html')}" + wapurl}
+</script>
+<style>
+html{font-size:50px}
+body{font-size:14px;line-height:1.8;background:#feeed6}
+.layui-container{ max-width: 700px; margin: 0 auto; background-color: transparent;box-shadow: 0 0 0 rgba(0,0,0,0);}
+.soinput{ margin: 0 auto; width: 100%; padding-top: 6%;}
+.layui-textarea{background:transparent;border-style:none; resize: none; height: 80px; min-height: auto; max-height:68px;}
+.pos-textarea{position: absolute;top: 30%;width: 69%; margin-left: 16%; margin-right: 16%;}
+.back{position:absolute;left:0;top:12px;display:block;width:40px;height:30px;background:rgba(0,0,0,.7);text-align:center;line-height:30px;color:#fff;border-bottom-right-radius:10%;border-top-right-radius:10%;font-size:24px}
+.so-btn{position:absolute;text-align:center;width:100%;bottom:12%}
+#silde{width:40px;position:absolute;right:15px;z-index:999}
+.tqkup{background:#9f9f9f}
+.tqkup i{font-size:40px}
+#silde{position:fixed;bottom:50px}
+#silde a{display:block;width:40px;height:40px;border-radius:40px;text-align:center;line-height:40px;color:#fff;margin-bottom:1px;cursor:pointer}
+.rule-title{color:#4a4a4a;font-size:.26rem;text-align:center;line-height:.6rem;margin-top:.2rem}
+.rule-list{padding:0 .33rem}
+.copy-link{margin:.12rem;height:auto;padding:.15rem;border-top-left-radius:8px;border-top-right-radius:8px;font-size:.24rem;text-align:center;background:#fff;color:#474747}
+.copy-link .code{width:264px;resize:none;margin:0 auto;padding:0 10px;height:40px;line-height:40px;font-size:.24rem;background-color:#ededed;border:none;overflow:hidden;box-sizing:border-box;text-align:center}
+.copy-link p{margin-bottom:5px;font-size:.2rem}
+.box-kouling{width:6rem;text-align:center;position:relative;overflow:hidden;margin:0 auto;height:4.5rem}
+.fuli-bao-wrap .fuli-bao-content .title{text-align:center;line-height:.33rem;font-size:.24rem;color:#fff;padding-top:.18rem}
+.fuli-bao-wrap .fuli-bao-content .coupon-info .info-left{width:4rem;height:.76rem;display:flex;display:-webkit-box;display:-webkit-flex;flex-direction:row;-webkit-flex-direction:row;align-items:center;float:left;-webkit-align-items:center;justify-content:center;-webkit-justify-content:center}
+.icon-redbag{background:url(https://gw.alicdn.com/tfs/TB1yyW6jxtnkeRjSZSgXXXAuXXa-60-60.png) no-repeat;-webkit-background-size:100% 100%;-moz-background-size:100% 100%;background-size:100% 100%}
+.icon-normal{width:.6rem;height:.6rem}
+.fuli-bao-wrap .fuli-bao-content .coupon-info .info-left .detail{flex:1;-webkit-box-flex:1;-webkit-flex:1;text-align:left;margin-left:.15rem}
+.fuli-bao-wrap .fuli-bao-content .coupon-info .info-right span.big{font-size:.48rem}
+.icon-coupon{background:url(https://gw.alicdn.com/tfs/TB1QNeBtFkoBKNjSZFEXXbrEVXa-60-60.png) no-repeat;-webkit-background-size:100% 100%;-moz-background-size:100% 100%;background-size:100% 100%}
+.icon-normal{width:.6rem;height:.6rem}
+.fuli-bao-wrap .fuli-bao-content .coupon-info .info-left .validate{line-height:.33rem;font-size:.24rem;color:#999}
+.fuli-bao-wrap .fuli-bao-content .use-btn{background-image:-webkit-gradient(linear,left top,left bottom,from(#ffe276),to(#ffa44c));background-image:-webkit-linear-gradient(top,#ffe276,#ffa44c);background-image:-moz-linear-gradient(top,#ffe276 0,#ffa44c 100%);background-image:-o-linear-gradient(top,#ffe276 0,#ffa44c 100%);background-image:linear-gradient(-180deg,#ffe276,#ffa44c);-webkit-border-radius:1rem;-moz-border-radius:1rem;border-radius:1rem;width:4.06rem;height:.8rem;text-align:center;margin:0 auto;position:relative;-webkit-box-shadow:0 5px 5px 2px rgba(0,0,0,.1);-moz-box-shadow:0 5px 5px 2px rgba(0,0,0,.1);box-shadow:0 5px 5px 2px rgba(0,0,0,.1);-webkit-tap-highlight-color:transparent!important}
+.fuli-bao-wrap .fuli-bao-content .use-btn .btn-text{line-height:.8rem;font-size:.3rem;font-weight:700;color:#d0021b}
+.fuli-bao-wrap .fuli-bao-content .product-info{width:6.8rem;height:3.81rem;background:#fff;padding:.35rem .22rem .24rem;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;font-size:.24rem;position:relative;-webkit-border-bottom-left-radius:.14rem;-moz-border-radius-bottomleft:.14rem;border-bottom-left-radius:.14rem;-webkit-border-bottom-right-radius:.14rem;-moz-border-radius-bottomright:.14rem;border-bottom-right-radius:.14rem;-webkit-box-shadow:0 5px 5px -3px rgba(0,0,0,.1);-moz-box-shadow:0 5px 5px -3px rgba(0,0,0,.1);box-shadow:0 5px 5px -3px rgba(0,0,0,.1)}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-title{line-height:.33rem;color:#d0021b}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-detail img{width:2.2rem;height:2.2rem}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-detail .detail-right{flex:1;-webkit-box-flex:1;-webkit-flex:1;margin-left:.16rem}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-detail .short-name{line-height:.4rem;font-size:.26rem;text-align:left;color:#333;-webkit-line-clamp:2;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-detail .basic-info{display:flex;display:-webkit-box;display:-webkit-flex;flex-direction:row;-webkit-flex-direction:row;align-items:center;-webkit-align-items:center;justify-content:space-between;-webkit-justify-content:space-between;margin:.2rem 0;text-align:left;color:#9b9b9b}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-detail .coupon-price{color:#ff4345}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-detail .coupon-price .num{line-height:.48rem;font-size:.36rem}
+.fuli-bao-wrap .fuli-bao-content .product-info .product-info-detail{outline:0;-webkit-tap-highlight-color:transparent!important;margin-top:.24rem;display:flex;display:-webkit-box;display:-webkit-flex;flex-direction:row;-webkit-flex-direction:row;align-items:center;-webkit-align-items:center;justify-content:center;-webkit-justify-content:center;text-align:left;line-height:.26rem}
+.fuli-bao-wrap .fuli-bao-content .coupon-info .info-right{display:flex;display:-webkit-box;display:-webkit-flex;flex-direction:row;-webkit-flex-direction:row;align-items:baseline;-webkit-align-items:baseline;justify-content:center;-webkit-justify-content:center;width:1.2rem;line-height:.6rem;height:.6rem;margin-left:.2rem;text-align:left}
+.fuli-bao-wrap .fuli-bao-content {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 6.8rem;
+    background: #fff;
+    -webkit-border-radius: .14rem;
+    -moz-border-radius: .14rem;
+    border-radius: .14rem;
+    margin: .2rem auto 0;
+    text-align: center;
+}
+.fuli-bao-content .rights-info{background-image:-webkit-linear-gradient(330deg,#ff8456,#ff243c);background-image:-moz-linear-gradient(330deg,#ff8456,#ff243c);background-image:-o-linear-gradient(330deg,#ff8456,#ff243c);background-image:linear-gradient(120deg,#ff8456,#ff243c);-webkit-border-top-left-radius:.14rem;-moz-border-radius-topleft:.14rem;border-top-left-radius:.14rem;-webkit-border-top-right-radius:.14rem;-moz-border-radius-topright:.14rem;border-top-right-radius:.14rem;padding-bottom:.4rem;position:relative}
+.fuli-bao-wrap .fuli-bao-content .coupon-info-tip{font-size:.24rem;opacity:.56;color:#fff;margin:.1rem 0}
+.fuli-bao-wrap .fuli-bao-content .coupon-info{width:5.85rem;height:1.16rem;background:#ffffe9;border-radius:.14rem;margin:.24rem auto 0;padding:.2rem .15rem;box-sizing:border-box;flex-direction:row;-webkit-flex-direction:row;font-size:.3rem;position:relative;color:#f05040}
+body .myskin{background-color: transparent;box-shadow: 0 0 0 rgba(0,0,0,0);}
+</style>
+</head>
+<body>
+		<div class="layui-container" style="padding: 0;">
+<if condition="$back">
+	<a href="{$back}" class="layui-icon layui-icon-left back"></a>
+</if>
+	<div class="layui-row topbg">
+		 <form class="layui-form layui-form-pane" action="">
+		<div class="layui-col-xs12 tqk-mt-30">
+			<img src="__SKIN2__/static/tqkpc/images/tljzs.png?v=1" width="100%">
+		</div>
+        <div class="layui-col-xs12 ">
+  <div class="tqk-pt-20 soinput">
+  	<img src="/Public/skin2/static/tqkpc/images/solijin.png?v=21" width="100%">
+  <div class="pos-textarea">
+    <textarea lay-verify="required" id="content" name="content" lay-verType='tips' placeholder="请粘贴淘宝商品链接或者淘口令到这里" class="layui-textarea">
+    </textarea>
+   </div>
+    </div>
+           <div class="tqk-text-c so-btn">
+           	<button lay-submit lay-filter="TqkSoTaolijin" style="width: 2.5rem;" class="layui-btn layui-btn-warm layui-btn-radius">立即查询</button>
+           </div>
+           
+        </div>
+        
+   </form>     
+        
+         <div class="layui-col-xs12 tqk-pb-20">
+<div class="rule flex-wrap">
+<p class="rule-title" >使用说明</p>
+<ol class="rule-list"><li>1.每天最多可以领3次淘礼金红包，不下单请不要领取。</li>
+<li>2.淘礼金红包仅限单品使用，即淘礼金红包仅可用于指定同一商品的付款。</li>
+<li>3.淘礼金红包仅限在领取当天使用，逾期未用作废。</li>
+<li>4.淘礼金红包不得提现，不得转赠他人，不得为他人付款。</li>
+<li>5.淘礼金红包仅可用于抵扣商品货款金额（不包括税费以及运费），不支持抵扣运费险以及服务费。</li>
+</ol>
+</div>
+         	
+         </div>
+        
+
+    </div>
+		
+		
+	</div>
+
+<div id="silde">
+	<a class="tqkup" href="/"><i class="layui-icon layui-icon-home" style="font-size: 22px;"></i></a>
+	<a class="tqkup" id="scroll"><i class="layui-icon layui-icon-top"></i></a></div>	
+<script src="__SKIN2__/layui/layui.js?v=1"></script>
+<script>
+  layui.config({
+    base: '__SKIN2__/static/home/js/' 
+    ,version: 1.97
+    ,debug:false
+  }).use('tqk'); 
+</script>
+<include file="Public:stat" />
+</body>
+</html>
+
+

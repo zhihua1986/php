@@ -1,0 +1,130 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+     
+     		<div class="mianbar">
+					<div class="taobaonum tqk-text-c">
+		
+     <legend class="tqk-mb-40"></legend>
+		
+						
+<form class="layui-form tqk-pr-20" action="">
+							
+<div class="layui-form-item">
+    <label class="layui-form-label">可用积分</label>
+    <div class="layui-form-mid layui-word-aux tqk-c-red">
+    {$user.score}
+    </div>
+  </div>
+  
+  
+   <div class="layui-form-item">
+    <label class="layui-form-label">积分兑换</label>
+     <div class="layui-input-inline">
+     <input type="text" class="layui-input" lay-verType='tips' required  lay-verify="required|number" id="count" name="count" placeholder="请输入您要兑换的数量" />	
+     </div>
+      <div class="layui-form-mid layui-word-aux">
+	</div>
+     
+  </div>
+  
+     <div class="layui-form-item">
+    <label class="layui-form-label">金额</label>
+     <div class="layui-input-inline">
+     <input type="text" class="layui-input" readonly="readonly" id="money" value="0" lay-verType='tips' required  lay-verify="required|number" name="money"/>	
+     </div>
+      <div class="layui-form-mid layui-word-aux">元红包 
+<label id="calc" class="layui-hide">{:(C('yh_fanxian')/100)*100}</label>
+	</div>
+     
+  </div>
+  
+		<button lay-submit lay-filter="Tqkjifen" class="layui-btn layui-btn-danger">立即兑换</button>
+						</form>
+					</div>
+					
+				</div>
+			
+     
+    </div>
+    
+   </div>
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+<script language="JavaScript">
+
+ layui.use(['layer','form'], function(){ 
+  var $ = layui.jquery
+  ,form = layui.form;
+
+form.on('submit(Tqkjifen)',function(data){
+$.ajax({
+            url:'/index.php?c=user&a=jifen',
+            type:'post',
+            data:data.field,
+            dataType:"json",
+            success:function(data){
+              if(data.status == 1){
+                layer.msg(data.msg, {icon:6});
+								setTimeout(function(){
+									window.location.href = data.data;
+								},1000);
+                }
+                else{
+                   layer.msg(data.msg)
+                }
+            },
+            error:function(e){
+            layer.alert("操作失败,请刷新页面重试！")
+            },
+            
+        });
+   	 return false; 
+   
+  });
+
+$('#count').on('input propertychange', function(){
+		if($(this).val() == ''){
+			$("#money").val(0);
+		}
+		calc_money();
+	});
+	
+	function calc_money()
+	{
+		var count = parseFloat($('#count').val());
+		var calc = parseFloat($('#calc').text());
+		var money = (calc/100)*count || 0;
+		$('#money').val(money.toFixed(2));
+	}
+	
+})
+</script>
+
+</body>
+</html>

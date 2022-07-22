@@ -1,0 +1,167 @@
+<include file="Public:header" />
+<!--会员列表-->
+<div class="pad_10" >
+    <form name="searchform" method="get" >
+        <table width="100%" cellspacing="0" class="search_form">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="explain_col">
+                            <input type="hidden" name="m" value="admin" />
+                            <input type="hidden" name="c" value="user" />
+                            <input type="hidden" name="a" value="index" />
+                            <input type="hidden" name="menuid" value="{$menuid}" />
+                            &nbsp;手机号/用户名搜索 :
+                            <input name="keyword" type="text" class="input-text" size="25" value="{$keyword}" />
+                             &nbsp;
+                            <input name="tbname" <if condition="$tbname">checked="checked"</if> type="checkbox" value="1" />
+                            查看代理
+                             &nbsp;
+                             <input name="webmaster" <if condition="$webmaster">checked="checked"</if> type="checkbox" value="1" />
+                            查看授权
+                             &nbsp;
+                            <input type="submit" name="search" class="btn" value="搜索" />
+							<a href="javascript:void(0);" class="btn J_confirmurl" data-uri="{:U('user/clearopid')}" data-acttype="ajax" data-msg="你确定要清空吗？">清空OPENID</a>
+							<a href="https://www.tuiquanke.com/view/59283081213" target="_blank">什么时候需要清空OPENID？</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <div class="J_tablelist table_list" data-acturi="{:U('user/ajax_edit')}">
+        <table width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                    <th><span data-tdtype="order_by" data-field="id">ID</span></th>
+                    <th width="40">头像</th>
+                    <th align="left"><span>用户名/QQ</span></th>
+                    <th align="left" width="140"><span>下单数量</span></th>
+                     <th align="center"><span>直属成员</span></th>
+                      <th align="center"><span>直属成员下级</span></th>
+                     <th align="left"><span>上级</span></th>
+                      <th align="left"><span>上级直属</span></th>
+                      <th align="left"><span>渠道ID</span></th>
+                    <th width="120" align="left"><span>手机</span></th>
+                    <th width="80" align="left"><span>余额/积分</span></th>
+                    <th width="60" align="right"><span>冻结资金</span></th>
+                    <th width="80"><span data-tdtype="order_by" data-field="reg_time">注册时间</span></th>
+                    <th width="80"><span data-tdtype="order_by" data-field="last_time">登录时间</span></th>
+                   <!--  <th width="30"><span>虚拟</span></th> -->
+                     <th width="30"><span>授权</span></th>
+                     <th width="30"><span>代理</span></th>
+                    <th width="30"><span>{:L('status')}</span></th>
+                    <th width="100">{:L('operations_manage')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="userlist" id="val" >
+                    <tr>
+                        <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+                        <td align="center">{$val.id}</td>
+                        <td align="center"><img src="{$val.avatar}" style="width: 20px;height: 20px;"/></td>
+                        <td align="left"><span data-tdtype="" data-field="username" data-id="{$val.id}" class="">{$val.nickname}
+                        	{:$val['qq']?'('.$val['qq'].')':''}
+                        </span>
+                        	<if condition="$val['oid']"><span style="color: red;">绑</span></if>
+                        </td>
+                         <td align="left">
+						淘宝：
+                        <if condition="$val['ordercount']">
+                        <a target="_blank" href="{:u('order/index', array('id'=>$val['id']))}" >{:$val['ordercount']}</a>
+                        <else/>
+                        0
+                        </if> 
+						京东：
+						<if condition="$val['jdordercount']">
+						<a target="_blank" href="{:u('jdorder/index', array('id'=>$val['id']))}" >{:$val['jdordercount']}</a>
+						<else/>
+						0
+						</if><br/> 
+						美团：
+						<if condition="$val['mtordercount']">
+						<a target="_blank" href="{:u('mtorder/index', array('id'=>$val['id']))}" >{:$val['mtordercount']}</a>
+						<else/>
+						0
+						</if> 
+						拼多多：
+						<if condition="$val['pddordercount']">
+						<a target="_blank" href="{:u('pddorder/index', array('id'=>$val['id']))}" >{:$val['pddordercount']}</a>
+						<else/>
+						0
+						</if> 
+                         </td>
+                         <td align="center">
+                        <if condition="$val['fcount']">
+                        <a target="_blank" href="{:u('user/team', array('fuid'=>$val['id']))}" >{:$val['fcount']}</a>
+                        <else/>
+                        0
+                        </if>
+                         </td>
+                         
+                         <td align="center">
+                         	 <if condition="$val['gcount']">
+                        <a target="_blank" href="{:u('user/team', array('guid'=>$val['id']))}" >{:$val['gcount']}</a>
+                        <else/>
+                        0
+                        </if>
+                         </td>
+                         <td align="left">
+                         	<if condition="$val['fnickname']">
+                         	<a href="{:U('user/index',array('uid'=>$val['fuid']))}">{:$val['fnickname']}</a>
+                            <else/> --
+                         	</if>
+                         </td>
+                          <td align="left J_lmenu">
+                          	<if condition="$val['gnickname']">
+                         	<a href="{:U('user/index',array('uid'=>$val['guid']))}">{:$val['gnickname']}</a>
+                            <else/> --
+                         	</if>
+                            <td align="left">{$val.webmaster_pid}</td>
+                        <td align="left"><span data-tdtype="" data-field="email" data-id="{$val.id}" class="">{$val.phone}</span></td>
+                        <td align="left">
+						余额：<span data-tdtype="" data-field="money" data-id="{$val.id}" class="">
+                     <a href="javascript:;" class="J_showdialog" data-uri="{:u('user/editmoney', array('id'=>$val['id'], 'menuid'=>$menuid))}" data-title="修改-{$val.username}账户余额" data-id="edit" data-width="320" data-height="200">{$val.money}</a> 
+                        </span>
+						<br/>
+						积分：<span data-tdtype="" data-field="score" data-id="{$val.id}" class="">
+						<a href="javascript:;" class="J_showdialog" data-uri="{:u('user/editscore', array('id'=>$val['id'], 'menuid'=>$menuid))}" data-title="修改-{$val.username}账户积分" data-id="edit" data-width="320" data-height="200">{$val.score}</a> 
+						 </span>
+						
+						</td>
+                        <td align="right"><span data-tdtype="" data-field="frozen" data-id="{$val.id}" class="">{$val.frozen}</span></td>
+                        <td align="center">{$val.reg_time|frienddate}</td>
+                         <td align="center">{$val.last_time|frienddate}</td>
+                         <!-- <td align="center">{:$val['state']==1?'否':'<font color="red">是</font>'}</td> -->
+                        <td align="center">{:$val['webmaster']==1?'<font color="red">是</font>':'否'}</td>
+                         <td align="center">{:$val['tbname']==1?'<font color="red">是</font>':'否'}</td>
+                        <td align="center"><img data-tdtype="toggle" data-id="{$val.id}" data-field="status" data-value="{$val.status}" src="__STATIC__/images/admin/toggle_<if condition="$val.status eq 0">disabled<else/>enabled</if>.gif" /></td>
+                        <td align="center">
+                           <a href="javascript:;" class="J_showdialog" data-uri="{:u('user/edit', array('id'=>$val['id'], 'menuid'=>$menuid))}" data-title="编辑-{$val.username}" data-id="edit" data-width="520" data-height="330">编辑</a> | <a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('user/delete', array('id'=>$val['id']))}" data-acttype="ajax" data-msg="{:sprintf(L('confirm_delete_one'),$val['username'])}">{:L('delete')}</a></td>
+                       </tr>
+                   </volist>
+               </tbody>
+           </table>
+           <div class="btn_wrap_fixed">
+            <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+            <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('user/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+						<label>总计：{:$total_item} </label>
+            <div id="pages">{$page}</div>
+        </div>
+        
+    </div>
+</div>
+<include file="Public:footer" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/calendar/calendar-blue.css"/>
+ <script src="__STATIC__/js/calendar/calendar.js"></script>
+ <script src="__STATIC__/js/jquery/plugins/listTable.js"></script>
+ <script>
+ $(function(){
+ 	$('.J_tablelist').listTable();
+ });
+ </script>
+</body>
+</html>
+

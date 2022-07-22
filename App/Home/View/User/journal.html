@@ -1,0 +1,96 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+     	<div class="mianbar">
+					<div class="exchange cl">
+						<div class="exchange-l tqk-f-l cl">
+							<div class="ex-wrap tqk-f-l">
+								<div class="ex-pic">
+									<img src="__SKIN2__/static/tqkpc/images/dollar.png">
+								</div>
+							</div>
+							<div class="ex-wrap tqk-f-l">
+								<div class="ex-txt">
+									<p>账户余额：<span class="c-main">{$user.money}</span>元</p>
+									<p>累计提现：<span class="c-main">{$balance}</span>元</p>
+								</div>
+							</div>
+							<div class="ex-wrap tqk-f-l">
+								<div class="ex-pic">
+									<a href="{:U('user/tixian')}" class="layui-btn layui-btn-sm layui-btn-danger">我要提现</a>
+								</div>
+							</div>
+						</div>
+						<div class="exchange-r tqk-f-l">
+							<div class="ex-pic">
+								<b class="c-main">注：</b>
+								<p>1、下单签到可获得现金奖励</p>
+								<p>2、100个积分可以兑换{:(C('yh_fanxian')/100)*100}元</p>
+							</div>
+						</div>
+					</div>
+					<div class="subnav">
+						<table class="layui-table"  lay-skin="nob">
+							<thead>
+								<tr>
+									<th>日期</th>
+									<th>项目</th>
+									<th>金额</th>
+									<th>备注</th>
+								</tr>
+							</thead>
+							<tbody>
+								<volist name="info" id="vo">
+								<tr>
+									<td>{$vo.create_time|frienddate}</td>
+									<td>{$vo.type}</td>
+									<td><b class="c-main">{$vo.money}</b></td>
+									<td>{$vo.remark}</td>
+								</tr>
+								</volist>
+							</tbody>
+						</table>
+						<div class="page cl">
+							<div class="tqk-f-r tqk-pd-10">
+						<if condition="$total_item gt $page_size">
+						{$page}
+						</if>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+     
+    </div>
+    
+   </div>
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+
+</body>
+</html>

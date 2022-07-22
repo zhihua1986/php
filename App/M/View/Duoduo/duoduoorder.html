@@ -1,0 +1,62 @@
+<include file="Public:user_head" />
+	<main>
+<include file="Meituan:nav" />
+
+<div class="am-btn-group am-btn-group-justify am-margin-top-sm">
+    <a href="{:U('duoduo/duoduoorder')}" class="am-btn am-btn-default am-round" <if condition="$status eq 0">disabled="disabled"</if> role="button">全部订单</a>
+    <a href="{:U('duoduo/duoduoorder',array('status'=>'10'))}" <if condition="$status eq 10">disabled="disabled"</if> class="am-btn am-btn-default am-round" role="button">已付款</a>
+      <a href="{:U('duoduo/duoduoorder',array('status'=>'2'))}" <if condition="$status eq 2">disabled="disabled"</if> class="am-btn am-btn-default am-round" role="button">已收货</a>
+     <a href="{:U('duoduo/duoduoorder',array('status'=>'4'))}" <if condition="$status eq 4">disabled="disabled"</if> class="am-btn am-btn-default am-round" role="button">已失效</a>
+</div>
+
+		<!--list-->
+		<div class="wallet">
+		
+		<if condition="$list">
+			
+			<ul>
+				<volist name="list" id="vo">
+					<li>
+						<div class="am-cf">
+							<p class="am-serif">{$vo.goods_name}</p>
+							<if condition="$vo['order_amount']">
+								<p class="am-fl"><em>付款金额</em><span class="c-main">￥{$vo.order_amount}</span></p>
+							</if>
+							<p class="am-fr"><em>状态</em><span class="c-primary">
+								<if condition="$vo['settle'] eq 1">
+									 已结算
+									<else/>
+									{$vo.status}
+								</if>
+								
+							</span></p>
+						</div>
+						<div class="am-cf">
+							<p class="am-fl"><em>付款时间</em>{$vo.order_pay_time|frienddate}</p>
+						</div>
+					
+						<p><em>订单编号</em>{$vo.order_sn}</p>
+							<p><em>预计返</em>￥{$vo.income}</p>
+						<if condition="$vo['order_settle_time']">
+							<p id="order_time_{$vo.id}" data-id="{$vo.id}" data-starttime="{:date('Y-m-d H:i:s',time())}" data-endtime="{:date('Y-m-d H:i:s',$ComputingTime+$vo['up_time'])}" class="remain-time"><em>结算时间</em>{$vo.order_settle_time|frienddate}</p>
+						</if>
+					</li>
+				</volist>	
+			</ul>
+			<div class="page">
+				<if condition="$total_item gt 6">
+					{$page}
+				</if>
+			</div>
+			
+			<else/>
+			<div class="no-order">
+				<i class="iconfont tqk-icondd1"></i>
+				<p>没有相关订单数据,<br/> 一般下单后15分钟后会显示。</p>
+			</div>
+		</if>
+			
+		</div>
+	</main>
+<include file="Public:foot" />
+</body></html>

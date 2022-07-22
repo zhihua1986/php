@@ -1,0 +1,207 @@
+<!--添加广告-->
+<div class="dialog_content">
+<form id="info_form" action="{:u('banner/edit')}" method="post">
+<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+    <tr>
+      <th width="80">{:L('ad_name')} :</th>
+      <td><input type="text" name="name" id="name"  value="{$info.name}" class="input-text" size="40"></td>
+    </tr>
+     <tr>
+        <th>位置 :</th>  
+        <td>
+        	<select id="setstatus" name="status" class="J_cate_select mr10" data-pid="0"  data-selected="1">
+        	<option value="0" <if condition="$info['status'] eq 0"> selected="selected" </if> >电脑站首页焦点图(674*300)</option>
+			<option value="8" <if condition="$info['status'] eq 8"> selected="selected" </if>>电脑站首页焦点图下(220*180)</option>
+        	<option value="7" <if condition="$info['status'] eq 7"> selected="selected" </if>>电脑站首页焦点图右侧(283*137)</option>
+        <option value="1" <if condition="$info['status'] eq 1"> selected="selected" </if> >手机站首页焦点图(640*300)</option>
+        	<option value="5" <if condition="$info['status'] eq 5"> selected="selected" </if>>小程序焦点图(640*300)</option>
+        	<option value="2" <if condition="$info['status'] eq 2"> selected="selected" </if>>电脑站头部(1920*90)</option>
+        	<option value="3" <if condition="$info['status'] eq 3"> selected="selected" </if>>电脑站弹窗</option>
+        	<option value="4" <if condition="$info['status'] eq 4"> selected="selected" </if>>手机站弹窗</option>
+        	<option value="6" <if condition="$info['status'] eq 6"> selected="selected" </if>>手机站首页广告位</option>
+        	</select>
+        </td>
+    </tr>
+     <tr>
+      <th width="80">展示时间:</th>
+      <td>
+    <label>开始 
+    	<input type="text" class="date" id="J_time_start"  size="20" name="beginTime"  value="{:date('Y-m-d H:i',$info['beginTime'])}"></label>
+    <br />  <br />
+    <label> 结束 <input type="text" class="input-text date" id="J_time_end" size="20"  name="endTime" value="{:date('Y-m-d H:i',$info['endTime'])}"></label>	
+      	
+      </td>
+    </tr>
+     <tr>
+        <th>广告类型 :</th>  
+        <td>
+        	<select name="type" class="J_cate_select mr10" data-pid="0"  data-selected="1">
+        	<option value="1" <if condition="$info['type'] eq 1"> selected="selected" </if> >网页链接</option>
+        <option value="2" class="miapp" disabled="disabled" <if condition="$info['type'] eq 2"> selected="selected" </if>>小程序页面</option>
+        <option value="3" class="miapp" disabled="disabled" <if condition="$info['type'] eq 3"> selected="selected" </if> >小程序口令复制</option>
+        	</select>
+        </td>
+    </tr>
+    <tr>
+      <th>文案链接 :</th>
+      <td><input id="url" value="{$info.url}" placeholder="请根据广告类型填写对应的链接或文案" type="text" name="url" class="input-text" size="40"></td>
+    </tr>
+    <tr id="ad_image" class="bill_media">
+      <th>{:L('ad_image')} :</th>
+      <td>
+          <input type="text" value="{$info.img}" name="img" id="J_img" class="input-text fl mr10" size="30">
+          <div id="J_upload_img" class="upload_btn"><span>{:L('upload')}</span></div>
+      </td>
+    </tr>
+    <tr id="ad_code" class="bill_media" style="display:none;">
+      <th>{:L('ad_code')} :</th>
+      <td><textarea rows="3" cols="50" name="code" id="code">{$info.code}</textarea></td>
+    </tr>
+
+    <tr id="ad_text" class="bill_media" style="display:none;">
+      <th>{:L('ad_text')} :</th>
+      <td><textarea rows="3" cols="50" name="text" id="text">{$info.text}</textarea></td>
+    </tr>
+    
+    <tr>
+        <th>状态 :</th>  
+        <td>
+            <label>
+            	  <input name="id" type="hidden" value="{$info.id}">
+            	<input type="radio" name="add_time" value="0" <if condition="$info['add_time'] eq 0"> checked="checked" </if> >启用</label>&nbsp;&nbsp;
+            <label><input type="radio"  name="add_time" <if condition="$info['add_time'] eq 1"> checked="checked" </if> value="1">关闭</label>
+        </td>
+    </tr>
+   
+</table>
+</form>
+</div>
+<script src="__STATIC__/js/fileuploader.js"></script>
+<script>
+$(function(){
+	
+	selectmiapp();
+	
+	Calendar.setup({
+	inputField : "J_time_start",
+	ifFormat   : "%Y-%m-%d %H:%M",
+	showsTime  : true,
+	timeFormat : "24"
+});
+Calendar.setup({
+	inputField : "J_time_end",
+	ifFormat   : "%Y-%m-%d %H:%M",
+	showsTime  : true,
+	timeFormat : "24"
+});
+
+    $("#setstatus").change(function(){
+		
+	 selectmiapp();
+  
+    });
+	
+	function selectmiapp(){
+		
+		if($("#setstatus").val()==5){
+		$('.miapp').attr('disabled',false);
+		 $('#url').attr('placeholder','只支持在小程序平台添加过业务域名的链接')
+		 }else{
+		$('.miapp').attr('disabled','disabled'); 
+		 }
+		
+	}
+   
+    //获取版块允许的广告类型
+    $("#board_id").change(function(){
+        var allowtype = $("#board_id option:selected").attr('allowtype');
+        var allowtype_arr = allowtype.split("|");
+        $("#type option").attr('selected', false).hide();
+        $("#type option").each(function(){
+            for(i=0; i<allowtype_arr.length; i++) {
+                if($(this).val() == allowtype_arr[i]){
+                    $(this).show();
+                }
+            }
+        });
+        $('#type option:visible:first').attr('selected', true);
+        $("#type").change();
+    });
+    $("#board_id").change(); 
+    $.formValidator.initConfig({formid:"info_form",autotip:true});
+    $("#name").formValidator({onempty:"请填写广告名称"}).inputValidator({min:1,onerror:"请填写广告名称"});
+    $('#info_form').ajaxForm({success:complate,dataType:'json'});
+    function complate(result){
+        if(result.status == 1){
+            $.dialog.get(result.dialog).close();
+            $.yhxia.tip({content:result.msg});
+            window.location.reload();
+        } else {
+            $.yhxia.tip({content:result.msg, icon:'alert'});
+        }
+    }
+    
+    //上传图片
+    var img_uploader = new qq.FileUploaderBasic({
+        allowedExtensions: ['jpg','gif','jpeg','png','bmp','pdg'],
+        button: document.getElementById('J_upload_img'),
+        multiple: false,
+        action: "{:U('banner/ajax_upload_img')}",
+        inputName: 'img',
+        forceMultipart: true, //用$_FILES
+        messages: {
+            typeError: lang.upload_type_error,
+            sizeError: lang.upload_size_error,
+            minSizeError: lang.upload_minsize_error,
+            emptyError: lang.upload_empty_error,
+            noFilesError: lang.upload_nofile_error,
+            onLeave: lang.upload_onLeave
+        },
+        showMessage: function(message){
+            $.yhxia.tip({content:message, icon:'error'});
+        },
+        onSubmit: function(id, fileName){
+            $('#J_upload_img').addClass('btn_disabled').find('span').text(lang.uploading);
+        },
+        onComplete: function(id, fileName, result){
+            $('#J_upload_img').removeClass('btn_disabled').find('span').text(lang.upload);
+            if(result.status == '1'){
+                $('#J_img').val(result.data);
+            } else {
+                $.yhxia.tip({content:result.msg, icon:'error'});
+            }
+        }
+    });
+
+    var extimg_uploader = new qq.FileUploaderBasic({
+        allowedExtensions: ['jpg','gif','jpeg','png','bmp','pdg'],
+        button: document.getElementById('J_upload_extimg'),
+        multiple: false,
+        action: "{:U('banner/ajax_upload_img', array('type'=>'extimg'))}",
+        inputName: 'extimg',
+        forceMultipart: true, //用$_FILES
+        messages: {
+            typeError: lang.upload_type_error,
+            sizeError: lang.upload_size_error,
+            minSizeError: lang.upload_minsize_error,
+            emptyError: lang.upload_empty_error,
+            noFilesError: lang.upload_nofile_error,
+            onLeave: lang.upload_onLeave
+        },
+        showMessage: function(message){
+            $.yhxia.tip({content:message, icon:'error'});
+        },
+        onSubmit: function(id, fileName){
+            $('#J_upload_extimg').addClass('btn_disabled').find('span').text(lang.uploading);
+        },
+        onComplete: function(id, fileName, result){
+            $('#J_upload_extimg').removeClass('btn_disabled').find('span').text(lang.upload);
+            if(result.status == '1'){
+                $('#J_extimg').val(result.data);
+            } else {
+                $.yhxia.tip({content:result.msg, icon:'error'});
+            }
+        }
+    });
+})
+</script>

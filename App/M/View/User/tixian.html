@@ -1,0 +1,152 @@
+<include file="Public:head_nosearch" />
+	<main>
+		<div class="user-bg">
+			<div class="nav">
+				<a href="javascript:history.go(-1);" class="iconfont tqk-fanhui back"></a>
+				<h3>我要提现</h3>
+			</div>
+			<div class="panel-wrap">
+				<div class="panel">
+					<div class="item">
+						<h4><span>{$user.money}</span>元</h4>
+						<p>账户余额</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<form method="post" action="{:U('user/tixian')}" id="mloginbox">
+			<div class="am-container">
+				<div class="input-box">
+					
+					<if condition="C('yh_payment_wechat') eq 1 ">
+							<div style="padding: 5px; color: #F05040;">如果您关注过我们的公众号，提现金额会优先转入您的微信零钱包。</div>
+					</if>
+					
+					<div class="input-row">
+				        <label>提现金额</label>
+				        <div class="formControls">
+				        	<input type="text" class="input-text" name="money" placeholder="单笔提现金额最小为{:C('yh_Quota')}元" />
+				        </div>
+				    </div>
+					<div class="input-row">
+					    <label>提现方式</label>
+					    <div class="formControls">
+					     <if condition="C('yh_payment_wechat') eq 1">
+							  <label style="text-align: center;">
+							    <input type="radio" id="wechat" name="method" value="1">
+							  微信
+							  </label>
+							</if>
+							 <if condition="C('yh_payment_alipay') eq 1">
+						      <label style="text-align: center;">
+						        <input type="radio" id="alipay" name="method" value="2" checked>
+						      支付宝
+						      </label>
+							  </if>
+						
+						</div>
+					</div>
+				    <div class="input-row J_closed_reason" style="display: none;">
+				        <label>真实姓名</label>
+				        <div class="formControls">
+				        	<if condition="$user['realname']">
+										<span class="am-text-left" style="font-size: 1.4rem;">{$user.realname}	</span>
+										<else/>
+				    		<input type="text" class="input-text" name="name" placeholder="请输入真实姓名（很重要，提交后不可修改）" />
+				    		</if>
+				    	</div>
+				    </div>								    
+				    <div class="input-row J_closed_reason" style="display: none;">
+				        <label id="payname">支付宝账号</label>
+				        <div class="formControls">
+						<input type="text" class="input-text" name="allpay" value="{$user.alipay}" placeholder="请输入账号">
+				    	</div>
+					</div>	
+					<div class="input-row">
+						<label>备注</label>
+						<div class="formControls">
+							<textarea class="textarea" name="content"></textarea>
+				    	</div>
+					</div>
+				</div>
+				<button type="submit" class="am-btn btn-main am-btn-block am-radius">立即申请</button>
+			</div>
+		</form>	
+	</main>
+<include file="Public:foot" />
+<script>	
+	$(function() {
+		if($('#alipay').is(':checked')){
+				$('.J_closed_reason').fadeIn(); 
+		}
+		$("input[name='method']").click(function(){
+			
+			var value = $('input:radio:checked').val();
+			if(value == '1'){
+				$('#payname').html('微信账号');
+				 $('.J_closed_reason').fadeOut();
+			}else{
+				$('#payname').html('支付宝账号');
+				 $('.J_closed_reason').fadeIn();
+			}
+			
+			
+		})
+		
+		$("#mloginbox").validate({
+			rules:{
+					money:{
+						required:true,
+						number:true,
+						max:{$user.money},
+						min:{:C('yh_Quota')},
+					},<if condition="!$user['alipay']">	
+					name:{
+						required:true,
+					},
+	      allpay:{
+						required:true,
+					}
+					</if>
+				},
+			messages:{
+			money:{
+				required: "请输入提现金额",
+				min:"单笔提现金额最小为{:C('yh_Quota')}元",
+				max:"提现最大金额不要超过{$user.money}元",
+			},<if condition="!$user['alipay']">	
+			name:{
+				required: "请输入真实姓名",
+			},
+			allpay:{
+				required: "请输入账号",
+			}</if>
+			
+		},
+			submitHandler: function(form) {
+				
+				$(':button').attr('disabled', 'disabled'); 
+				
+				$(form).ajaxSubmit({
+					success: function(json) {
+						if(json.status == 1) {
+							layer.msg(json.msg, {
+								icon: 6
+							});
+							setTimeout(function() {
+								window.location.href = "{:U('user/record')}";
+							}, 1000);
+						} else {
+							$(':button').removeAttr('disabled');
+							layer.msg(json.msg, {
+								icon: 5,
+								time: 1000
+							});
+						}
+					}
+				});
+			}
+		});
+	});
+</script>
+</body></html>

@@ -1,0 +1,11 @@
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<form action="{:U('cate/index')}" id="so" method="get">
+    <div class="topbar btn-pink-gradient">
+	    <a href="javascript:history.go(-1)" class="back"><i class="iconfont tqk-fanhui c-white"></i></a>
+        <div class="search">
+            <i class="iconfont tqk-search icon-search"></i>
+            <input type="text" value="{$sokey}" onblur="$('#so').submit()" name="k" placeholder="输入商品名或粘贴手淘分享信息查询" class="input-text" />
+        </div>
+    </div>
+</form>
+</header>

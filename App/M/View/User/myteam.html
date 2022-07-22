@@ -1,0 +1,77 @@
+<include file="Public:user_head" />
+	<main>
+		<div style="padding-bottom: 10px;"> </div>
+	<div class="wbg m5">
+		<div class="report-money flexbox">
+			<div class="oval-item">
+				<div class="report-oval oval-1">
+					<h4><span></span>{$stat['allperson']?$stat['allperson']:0}</h4>
+					<p>总成员</p>
+				</div>
+			</div>
+			<div class="oval-item">
+				<div class="report-oval oval-3">
+					<h4><span></span>{$stat['person1']?$stat['person1']:0}</h4>
+					<p>直属成员</p>
+				</div>
+			</div>	
+		</div>
+		<div class="report-num flexbox">
+			<div class="report-num-item">
+				<p>今日加入：</p>
+				<h4>{$stat['todayperson']?$stat['todayperson']:0}<span>人</span></h4>
+			</div>
+			<div class="report-num-item">
+				<p>昨日加入：</p>
+				<h4>{$stat['lastperson']?$stat['lastperson']:0}<span>人</span></h4>
+			</div>
+			<div class="report-num-item">
+				<p>直属成员下级：</p>
+				<h4>{$stat['person2']?$stat['person2']:0}<span>人</span></h4>
+			</div>
+		</div>
+	</div>
+	
+	<div class="am-btn-group am-btn-group-justify">
+    <a href="{:U('user/myteam',array('fuid'=>1))}" class="am-btn am-btn-default" <if condition="$fuid eq 1">disabled="disabled"</if> role="button">直属成员</a>
+    <a href="{:U('user/myteam',array('guid'=>1))}" <if condition="$guid eq 1">disabled="disabled"</if> class="am-btn am-btn-default" role="button">直属成员下级</a>
+</div>
+
+<if condition="$info">
+	<div class="list">
+			<table>
+				<thead>
+					<tr>
+						<th>昵称</th>
+						<th>是否绑定订单</th>
+						<th>注册时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="info" id="vo">
+						<tr>
+							<td width="30%">{$vo.nickname}</td>
+							<td width="50%">{$vo['oid']?'<font color="red">是</font>':'否'}</td>
+							<td width="20%"><span>{$vo.reg_time|frienddate}</span></td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+			<div class="page">
+				<if condition="$total_item gt 10">
+				{$page}
+				</if>
+			</div>
+		</div>
+		
+		
+     <else/>
+			<div class="no-order">
+				<i class="iconfont tqk-tuanduixiezuo"></i>
+				<p>你还没有下级用户！</p>
+			</div>
+		</if>
+	
+	</main>
+<include file="Public:foot" />
+</body></html>

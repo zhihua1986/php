@@ -1,0 +1,44 @@
+  <volist name='list' id="vo">
+        <div class="post">
+        	<a href="{$vo.linkurl}{$trackurl}">
+            <div class="list-pic">
+	   					<img src="{$vo.pic_url}" width="110" height="110"/>
+	   					<span class="goods-mask">已售{$vo.volume}件</span>
+	   				</div>
+   					<div class="list-content">
+   						<div class="am-cf am-margin-bottom-xs">
+	   						 	<i class="icon-type pinduo"></i>
+				          <p class="goods-name ellipsis-2">{$vo.title}</p>			
+   						</div>
+   						<div class="goods-mid">
+   							<div class="am-fl">
+   								<p class="f-12 c-999">单价 ¥{$vo.price}</p>
+   								<p class="f-12 maincolor">拼团 ¥{$vo.group_price}</p>
+   							</div>
+   							
+   							
+   								<div class="am-fr">
+   									
+               <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                   <label class="f-12 c-pink am-margin-right-xs">返￥
+	                   		{:Rebate1($vo['coupon_price']*$vo['promotion_rate']/1000,$visitor['webmaster_rate'])}
+	                   </label>
+	                   </if>
+   								</div>
+   						</div>
+   						<div class="goods-bot">
+   							<!--<div class="am-fl lh-22"><h4 class="am-text-lg maincolor am-fl am-margin-right-xs"><span class="f-12">¥</span>{$vo.coupon_price}</h4><p class="f-12 c-999 am-fl">券后</p></div>
+   							<div class="coupon-main am-fr am-margin-right-xs">
+   							   <p>{$vo.quan}元券</p>
+   							
+   							</div>-->
+                           <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+	                   <div class="goods-coupon">
+	                       <p class="f-10 c-white">{$vo.quan}元券</p>
+                         </div>
+   						</div>
+   					</div>
+          </a>
+        </div>
+
+        </volist>

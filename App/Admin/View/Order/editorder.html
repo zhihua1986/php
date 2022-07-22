@@ -1,0 +1,57 @@
+
+<!--编辑会员-->
+<div class="dialog_content">
+	<form id="info_form" action="{:u('order/editorder')}" method="post">
+	<table width="100%" class="table_form">
+		<tr>
+			<th width="100">订单号 :</th>
+			<td>{$info.orderid}</td>
+		</tr>
+        <tr>
+			<th width="100">订单状态 :</th>
+			<td>
+				<select name="status">
+					<option value="0">请选择</option>
+					<option value="1" <if condition="$info.status eq 1">selected="selected" </if>>已付款</option>
+					<option value="2" <if condition="$info.status eq 2">selected="selected" </if>>已失效</option>
+					<option value="3" <if condition="$info.status eq 3">selected="selected" </if>>已结算</option>
+				</select>
+				
+			</td>
+		</tr>
+        
+		
+        <tr>
+			<th>所属用户 :</th>
+			<td><input type="uid" name="uid" AUTOCOMPLETE="off" value="{$info.uid}" placeholder="请填写用户的ID（到用户列表中获取）" class="input-text" size="30">
+            </td>
+		</tr>
+		
+		
+		 <tr>
+			<th>渠道ID:</th>
+			<td><input type="text"  name="relation_id" value="{$info.relation_id}" AUTOCOMPLETE="off" class="input-text" size="30">
+            </td>
+		</tr>
+		
+	</table>
+	<input type="hidden" name="id" value="{$info.id}" />
+	<input type="hidden" name="up_time" value="{$info.up_time}" />
+	</form>
+</div>
+<script>
+$(function(){
+	$.formValidator.initConfig({formid:"info_form",autotip:true});
+	
+	$('#info_form').ajaxForm({success:complate,dataType:'json'});
+	function complate(result){
+		if(result.status == 1){
+            $.yhxia.tip({content:result.msg});
+            window.location.reload();
+		} else {
+			$.yhxia.tip({content:result.msg, icon:'alert'});
+		}
+	}
+	
+});
+</script>

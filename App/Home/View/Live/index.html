@@ -1,0 +1,128 @@
+<include file="Public:tqk-meta" />
+	<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+<div>
+		<legend class="tqk-bg-white"><span class="tqk-pl-10 tqk-c-333">抖音直播间</span> <span class="tqk-f-14 tqk-pl-10">特惠好货专场</span>
+		</legend>
+
+
+<div class="flexbox tqk-mt-20 tqk-ml-15">
+												<ul class="haoquan itemlist">
+													<volist name="list" id="vo">
+										 <li>
+															<div class="goods_list">
+																<a class="Getlink" href="javascript:;" rel="{$vo.author_openid}">
+																	<div class="goods_img">
+																		<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+																			<span class="rank_num">下单返利</span>
+																		</if>
+																		<img width="240" height="240" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.author_pic}" alt="{$vo.author_name}">
+																	</div>
+																	<div class="tqk-pl-20 tqk-pr-20">
+																	<p class="layui-elip tqk-hiden-25 tqk-pl-10">{$vo.author_name}</p>
+																	<div>
+																		<if condition="$vo['is_live']">
+																		<label class="coupon-price">直播中</label> 
+																		</if>
+																		<span class="price">粉丝：<i>{$vo.fans_num|floatNumber}</i></span>
+																	</div>
+																	</div>
+																</a>
+															</div>
+														</li>
+														
+														
+													</volist>
+												</ul>
+</div>
+<div class="tqk-mt-30">
+	<div id="yw0" class="pager">
+	{$page}
+	</div>
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+<script type="text/javascript">
+ layui.use(['layer'], function(){ 
+  var $ = layui.jquery;
+ <if condition="$islogin && !$visitor">
+ $('.Getlink').on('click',function(){
+layer.confirm('需要登录后才可以领券哟!', {
+  btn: ['立即登录', '我知道啦'] 
+}, function(index, layero){
+window.location.href="{:U('login/index')}";
+}, function(index){
+layer.closeAll();
+return false
+});
+})
+ <else/>
+$('.Getlink').on('click',function(){
+var openid = $(this).attr('rel');
+	var loadIndex=layer.load(1,{shade:[0.5,'#000']});
+$.ajax({
+            url: "{:U('live/getlink')}",
+            type: 'post',
+            dataType : 'json',
+			data:{
+				openid:openid  
+			   },
+            async: false, 
+            success: function(res) {
+if(res.link && res.type == 3){
+	layer.open({
+	type: 1,
+	title:'请使用抖音APP扫码看直播',
+	skin: 'layui-layer-rim', //加上边框
+	area: ['300px', '240px'], //宽高
+	content: '<div style="margin:20px auto;width:120px;"><img src="'+ res.link +'" width="120" height="120"></div>',
+	});
+	
+}
+layer.close(loadIndex);	
+              
+            },
+        error: function (jqXHR, textStatus, errorThrown) {
+        layer.alert('TA还没有开播哟！', {
+           // skin: 'layui-layer-molv' //样式类名  自定义样式
+            closeBtn: 1    // 是否显示关闭按钮
+            ,anim: 1 //动画类型
+            ,btn: ['知道啦'] //按钮
+            ,icon: 2    // icon
+            ,yes:function(){
+              layer.closeAll();
+            }
+           });
+	
+		
+		 layer.close(loadIndex);	
+        }
+        });
+  
+  	
+  	
+  })
+ 
+
+</if>
+
+
+})
+
+</script>
+</body>
+</html>

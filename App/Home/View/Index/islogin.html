@@ -1,0 +1,10 @@
+<if condition="$visitor">
+<p>欢迎，<a href="{:U('user/ucenter')}" class="tqk-c-red">{$visitor.nickname}</a>
+ |<a href="{:U('login/logout')}" class="c-main">退出登录</a>
+  |<a target="_blank" rel="nofollow" href="{:U('help/index',array('id'=>'contactus'))}">联系客服</a>
+</p>
+<else/>	
+<a class="tqk-c-red" href="{:U('login/index')}">亲,请登录</a> 或
+					<a href="{:U('login/register')}">免费注册</a> |
+					<a target="_blank" rel="nofollow" href="{:U('help/index',array('id'=>'contactus'))}">联系客服</a>
+</if>

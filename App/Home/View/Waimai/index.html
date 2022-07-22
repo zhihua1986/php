@@ -1,0 +1,120 @@
+<include file="Public:tqk-meta" />
+	<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+<div>
+
+
+
+<div class="tqk-bg-white">
+					<legend><span class="tqk-pl-10 tqk-c-333">本地生活券</span> <span class="tqk-f-14 tqk-pl-10">先领券再下单能省钱</span>
+					</legend>
+					<div class="flexbox" style="background-color: #f5f5f5;">
+						<ul class="quan-ul">
+							
+					<volist name="takeout" id="vo">
+						             <li class="quan-item J_feed_za" >
+						                <a href="javascript:;" class="Getlink" rel="{$vo.url}" >
+						                    <div class="quan-left">
+						                        <div class="quan-img">
+						                            <img width="200" height="100" src="{$vo.img}" title="{$vo.name}">
+						                        </div>
+						                    </div>
+						                    <div class="quan-right">
+						                        <div class="quan-circle">
+						                            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+						                        </div>
+						                                                    <div class="quan-right-title">{$vo.name}</div>
+						                            <div class="quan-right-btn ">立即领取</div>
+						                                            </div>
+						                </a>
+						            </li>
+						</volist>		
+									
+											
+						            </ul>
+									<div class="layui-clear"></div>	
+					</div>
+
+				</div>	
+					
+
+
+
+</div>
+
+	
+<div class="layui-clear tqk-pb-20"></div>	
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+<script type="text/javascript">
+ layui.use(['layer'], function(){ 
+  var $ = layui.jquery;
+ <if condition="$islogin && !$visitor">
+ $('.Getlink').on('click',function(){
+layer.confirm('需要登录后才可以领券哟!', {
+  btn: ['立即登录', '我知道啦'] 
+}, function(index, layero){
+window.location.href="{:U('login/index')}";
+}, function(index){
+layer.closeAll();
+return false
+});
+})
+ <else/>
+$('.Getlink').on('click',function(){
+var Pageurl = $(this).attr('rel');
+	var loadIndex=layer.load(1,{shade:[0.5,'#000']});
+$.ajax({
+            url: Pageurl,
+            type: 'get',
+            dataType : 'json',   
+            async: false, 
+            success: function(res) {
+				
+if(res.link && res.type == 1){
+	
+	layer.open({
+	type: 2,
+	title:'请使用微信扫码领券下单',
+	skin: 'layui-layer-rim', //加上边框
+	area: ['300px', '240px'], //宽高
+	content: ['{:U('pdditem/jumpout')}?dataurl='+ res.link, 'no'],
+	});
+	
+}	
+			
+if(res.link && res.type == 3){
+	layer.open({
+	type: 1,
+	title:'请使用微信扫码领券下单',
+	skin: 'layui-layer-rim', //加上边框
+	area: ['300px', '240px'], //宽高
+	content: '<div style="margin:20px auto;width:120px;"><img src="'+ res.link +'" width="120" height="120"></div>',
+	});
+	
+}
+
+layer.close(loadIndex);	
+              
+            }
+        });
+  
+  	
+  	
+  })
+ 
+
+</if>
+
+
+})
+
+</script>
+</body>
+</html>

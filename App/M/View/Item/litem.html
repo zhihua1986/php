@@ -1,0 +1,441 @@
+<include file="Public:meta" />
+<style>
+	.picture-content img{max-width: 750px;}
+</style>
+		<div style="height:0;overflow:hidden;z-index: -1">
+			<div class="canvas-mask" style="height: 461px; width: 300px; top: 0;">
+				<div class="canvas-container">
+					<div class="canvas-wrap">
+						<div class="canvas-pics">
+							<img crossOrigin="anonymous" src="{$item.pic_url}_480x480.jpg" class="canvas-pic" />
+							<p class="canvas-count">已售{$item.volume}件</p>
+						</div>
+						<div class="am-padding-xs">
+							<div class="am-padding-bottom-sm" style="width: 160px; float: left;">
+								<i class="icon-type <if condition="$item['shop_type'] eq 'B'">tmall <else/>taobao</if>"></i>
+			                    <p class="goods-name">{$item.title}</p>
+							</div>
+							<div class="am-fr am-padding-sm" style="width:100px; height:110px;padding:2px;font-size: 12px;color: #ff4901;line-height: 12px;border: 1px solid #ff4901;border-radius: 4px;text-align: center;">
+                           <img width="90" height="90" src="{:U('item/qrcode')}?dataurl={:urlencode($mdomain.U('litem/index',array('id'=>$item['num_iid'])))}?t={$visitor.id}" />
+									<div style=" clear: both; padding-top: 2px;">长按识别二维码</div>
+								</div>
+							<div class="am-cf am-padding-bottom-sm">
+								<div class="am-fl">
+									<p class="f-14 c-999">原价：<del>￥{$item.price}</del></p>
+									<p class="f-14 maincolor lh-22">专享价：￥<span class="f-21">{$item.zhuanxiang}</span></p>
+									
+								</div>
+<div class="am-fr am-padding-sm">
+									<div class="coupon-main">
+										<p>{:$item['quan']?$item['quan']:0}元优惠券</p>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="detail wfg">
+		<!--detail-->
+		
+			<div class="detail-slider">
+		<if condition="$item['pic_urls']">
+		<div data-am-widget="slider" class="am-slider am-slider-default" data-am-slider='{"controlNav":false,"directionNav":false}' >
+			 	<ul class="am-slides">
+					<volist name="item.pic_urls" key="k" id="img">
+				        <li>
+				        	<img src="{$img}_480x480.jpg" width="100%">
+				        	<div class="detail-slider-control"><span>{$k}</span>/{:count($item['pic_urls'])}</div>
+				        </li>
+		    		</volist> 	
+			    </ul>
+			</div>
+			<else/>
+			<img src="{$item.pic_url}_480x480.jpg" width="100%">
+			</if>
+				<div class="detail-bill">
+					<div data-am-widget="slider" class="am-slider am-slider-default" data-am-flexslider='{controlNav:false,directionNav:false,direction:"vertical",slideshowSpeed:2000}' >
+					    <ul class="am-slides">
+					    	<volist name="buyer" id="vo">
+					        <li>
+					        	<p class="am-text-truncate"><img src="{$vo.avatar}" width="100%">{$vo.nickname} {$vo.time}分钟前购买本产品</p>
+					        </li>
+					  </volist>
+					    </ul>
+					</div>
+				</div>	
+				<a href="javascript:window.history.back(-1)" class="iconfont tqk-fanhui detail-back"></a>
+				<a href="javascript:;" class="detail-share canvasimg">分享</a>
+			<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                   <span class="share-info" >
+	    	淘礼金补贴￥ {$item.taolijin}</span>
+	                   </if>
+			</div>
+		    <!--detail-info-->
+			<div class="detail-info">
+				<if condition="C('yh_site_flogo')">
+					<p class="buy-count" style="width: 95px; text-align: center; display:block; position: absolute; right: 0.8rem; margin-top: 1.8rem;">
+						<img width="80" src="{:C('yh_site_flogo')}"><br/>
+						长按关注公众号查券更方便 </p>
+				</if>
+				<div>
+					<i class="icon-type <if condition="$item['shop_type'] eq 'B'">tmall <else/>taobao</if>"></i>
+					<p class="goods-name ellipsis-2">{$item.title}</p>
+				</div>
+				<div class="detail-num">
+					<div class="detail-price">
+						<p class="quanhou">专享价</p>
+						<p class="price-present">￥{$item.zhuanxiang}</p>
+					</div>
+				</div>
+					<div class="f-14 c-666">原价：￥{$item.price} &nbsp;&nbsp; {$item.volume}人已购买</div>
+				</div>
+				<div>
+				<p class="rights-item am-padding-left-xs"><i class="iconfont tqk-duihao2"></i>7天无理由退换</p>
+					<p class="rights-item"><i class="iconfont tqk-duihao2"></i>运费险</p>
+					<p class="rights-item"><i class="iconfont tqk-duihao2"></i>集分宝</p>
+					<p class="rights-item"><i class="iconfont tqk-duihao2"></i>花呗</p>
+				</div>
+	  <div style="background:#ffffff;height:8px;"></div>	  
+ <if condition="$islogin && !$visitor">
+	<a href="javascript:;" class="detail-coupon islogin">
+<else/>
+
+<a href="javascript:;" class="detail-coupon getcoupon">
+	
+	</if>
+					<p><span>{:$item['quan']?$item['quan']:0}</span>元优惠券</p>
+					<p>立即下单</p>
+				</a>
+			</div>
+			
+			<!--picture-->
+			<div class="picture card" id="details">
+				<div class="picture-wrap">
+					<!--detail-shop-->
+					<div class="detail-wrap">
+						<div class="detail-title">
+							<img src="__STATIC__/wap/images/icon/title-l.png" width="18" height="20"/>
+							<p>图文详情</p>
+							<img src="__STATIC__/wap/images/icon/title-r.png" width="18" height="20"/>
+						</div>
+						<div class="picture-content" style="overflow: hidden;">
+							
+						</div>
+					</div>
+						
+				</div>
+				<p id="showdetail" class="picture-tit f-16 maincolor am-text-center"><i class="iconfont tqk-xiangqing am-text-lg am-margin-right-xs"></i>查看商品详情</p>
+			</div>
+			<!-- goods -->
+		    <div class="goods-wrap" id="recommend">
+		       <div class="goods-title"><div class="btn-violet-gradient btn-tag btn-md">同类商品推荐</div><div class="f-12 c-666">百万商品实时更新</div></div>
+              	  <div style="background:#ffffff;height:8px;"></div>	  
+		       <div class="goods">
+		       	
+		       	<volist name="orlike" id="val">
+		            <div class="goods-item">
+		               <div class="goods-pic">
+		               	<a href="{:U('item/index',array('id'=>$val['num_iid']))}{$trackurl}">
+		                   <img src="{$val.pic_url}_300x300.jpg" width="100%" class="goods-img">
+		                   </a>
+		               <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                   <span class="share-info" >
+	    	预计返￥ {:Rebate1($val['coupon_price']*$val['commission_rate']/10000,$visitor['webmaster_rate'])}</span>
+	                   </if>
+		               </div>
+		               <div class="goods-info">
+		                   <i class="icon-type <if condition="$val['shop_type'] eq 'B'">tmall<else/>taobao</if>"></i>
+		                   <p class="goods-name ellipsis-2">{$val.title}</p>
+		               </div>
+		               <div class="goods-mid">
+		                   <p class="f-12 c-999">现价 ￥{$val.price}</p>
+	                   <p class="goods-share maincolor">
+	                   		月销{$val.volume}件
+	                   </p>
+	               </div>
+		               <div class="goods-bot">
+		                   <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$val.coupon_price}</span></p>
+		                   <div class="goods-coupon">
+		                       <p class="f-10 c-white">{$val.quan}元券</p>
+		                   </div>
+		               </div>
+		            </div>
+		            </volist>
+		            
+		       </div>
+		    </div>
+		
+		<!--footer-->
+		<div data-am-widget="navbar" class="am-navbar am-cf footer-action">
+			<a href="/" class="foot-cell"><i class="iconfont tqk-shouye"></i><span class="am-navbar-label">首页</span></a>
+			<a href="javascript:;" class="foot-cell canvasimg" id="share"><i class="iconfont tqk-iconfontzhizuobiaozhun20"></i><span class="am-navbar-label">分享</span></a>
+			<a href="{:U('so/index')}?key={$item.title}" class="foot-cell" id="photo"><i class="iconfont tqk-paizhao"></i><span class="am-navbar-label">同款比价</span></a>
+		
+		<if condition="$islogin && !$visitor">
+			<a href="javascript:;" class="collect islogin">立即下单</a>
+		<else/>
+		<a href="javascript:;" class="collect getcoupon">立即下单</a>
+		</if>
+		</div>
+        <div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+		    <a href="#top"><i class="iconfont tqk-top"></i><span>顶部</span></a>
+		</div>
+		
+		<div class="save">
+			<div class="savemask">
+				<div class="savewrap">
+					<div class="saveline">
+						<img src="__STATIC__/wap/images/icon/icon-thumb.png" class="icon-thumb"/>
+						<p class="f-21 c-white savecopy">长按虚线区域可以<br/>保存图片或分享给好友</p>
+						<img src="__STATIC__/wap/images/icon/icon-wire.png" class="icon-wire"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="am-modal am-modal-no-btn lightbox amoybuy" tabindex="-1" id="amoybuy">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">淘口令购买
+					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+				</div>
+				<div class="am-modal-bd">
+					<div class="fq-goods-border">
+						<div class="fq-explain">长按框内 &gt; 拷贝</div>
+						<div class="copy_key" id="copy_key_ios">{$item.quankouling}</div>
+						<button class="copy" >一键复制</button>
+					</div>
+					<div class="fq-instructions">
+						<span>
+							<span>温馨提示：</span>
+							手机无【手机淘宝】者，可选择浏览器购买方式哦~
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js"/>	
+<tqkjs  href="__STATIC__/wap/js/clipboard.min.js,__STATIC__/wap/layer/layer.js,__STATIC__/wap/js/html2canvas.js"/>	
+   <script type="text/javascript">
+  var QuanUrl = '{$item.quanurl}';
+  var Kouling = '{$item.quankouling}';
+  
+	$('.getcoupon').on('click',function(){
+		
+		$.ajax({
+			url: "{:U('litem/gconvert')}",  
+			type:'post',
+			dataType: "json",
+			timeout :3000,
+			data: {num_iid:"{$item.num_iid}"},
+			success: function(data){
+				if(data.status=='200'){
+					Kouling = data.result
+					$("#copy_key_ios").html(data.result);
+					
+					$('#amoybuy').modal({
+						
+					});
+					
+					
+				}else{
+					
+					layer.msg(data.result,{time:2000});
+					
+				}
+			}  
+		});
+		
+		
+		
+	});				
+								
+
+      	var clipboard2 = new ClipboardJS('.copy', {
+	        text: function() {
+	            return  Kouling ;
+	        }
+	    });
+		$('.copy').on('click', function(e) {
+			layer.msg('复制成功',{time:1000});
+		});
+		
+		$('.islogin').on('click', function(e) {
+			layer.alert('请登录后再领券！',function(){
+			
+			window.location.href='{:U("login/index")}';
+				
+			});
+		});
+
+		$(".picture-tit").on("click",function(){
+		if(!$(this).hasClass("active")){
+		$.ajax({
+        url:"{:U('item/productinfo',array('numiid'=>$item['num_iid']))}",
+        type:'get',
+        dataType:'json',
+        success: function(data){
+        	var imglist=data.content;
+        $('.picture-content').html(imglist);
+        }
+   })
+					$(".picture-wrap").stop(true, false).slideDown(1000)
+					$(this).addClass("active")
+				}else{
+					$(".picture-wrap").stop(true, false).slideUp()
+					$(this).removeClass("active")
+				}
+			})
+			
+			
+  function $$(selector) {
+        return document.querySelector(selector);
+    }
+  var main = {
+        init:function(){
+            main.setListener();
+        },
+        setListener:function(){
+            $(".canvasimg").on("click", function() {
+            	$(".saveline").width($(".canvas-wrap").width())
+				$(".saveline").height($(".canvas-wrap").height())
+              var index = layer.msg('正在为您生成图片,请稍后！',{time:10000}); 
+               main.html2Canvas(index);
+            });
+        },
+          _codeGenerator: function(el) {
+            $.ajax({
+                url: '{:U('dwz/create')}',
+                type: 'post',
+                dataType : 'json',    
+                data: {
+                    url : QuanUrl
+                },
+                async: false, 
+                success: function(res) {
+                  el.data('url', res.result);
+                }
+            });
+        },
+        getPixelRatio:function(context){
+            var backingStore = context.backingStorePixelRatio ||
+                    context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;
+            return (window.devicePixelRatio || 1) / backingStore;
+        },
+        html2Canvas: function (index) {
+            var shareContent = $$(".canvas-mask");
+            var canvas = document.createElement('canvas'); 
+            var context = canvas.getContext('2d');
+            width=300;
+            height=461;
+            offsetTop=0;
+            scaleBy=2;
+            canvas.width = width * scaleBy; 
+            canvas.height = (height + offsetTop) * scaleBy; 
+            context.scale(scaleBy, scaleBy);
+            var opts = {
+                allowTaint:false,
+                useCORS:true,
+                tainttest:true, 
+                scale:scaleBy, 
+                canvas:canvas, 
+               logging: false, 
+                width:width,
+                height:height
+            };
+            html2canvas(shareContent, opts).then(function (canvas) {
+            	var dataUrl = canvas.toDataURL("image/png");
+            	var html = '<div class="canvas-mask" style="width:300px;height:461px;">'+
+								'<img crossOrigin="anonymous" width="300" src="'+dataUrl+'" class="kele-shared-modal">'+
+								'</div>'+
+								'<div class="canvas-nav">'+
+						        '<ul class="am-avg-sm-3">'+
+							    '<li class="nav-orange"><a href="javascript:;" id="canvasClose"><i class="iconfont icon-close_icon"></i>关闭</a></li>'+
+							    '<li class="nav-violet"><a href="javascript:;" id="canvasCopy"><i class="iconfont icon-wenjianxinxi"></i>复制文案</a></li>'+
+								'<li class="nav-green"><a href="javascript:;" id="canvasSave"><i class="iconfont icon-baocun"></i>保存图片</a></li>'+
+								'</ul>'+
+								'</div>';
+			    layer.close(index);
+             	layer.open({
+									type: 1,
+									title: false,
+									area: '100%',
+									shadeClose:true,
+									closeBtn: 0,
+									scrollbar: false,
+									fixed: true,
+									content: html,
+									skin:'canvas-layer',
+									success: function(layero, index){
+										$("html,body").addClass("lock")
+									    $("#canvasClose").on("click",function(){
+											layer.close(index)
+										})
+									    $(".canvas-mask").on("click",function(e){
+											var target  = $(e.target);
+											if(target.closest(".kele-shared-modal").length == 0){
+												layer.close(index)
+											};
+											e.stopPropagation();
+										})
+									},
+									end: function(){
+										$("html,body").removeClass("lock")
+									}
+								});
+				       	$("#canvasSave").on("click",function(){
+									layer.open({
+										type: 1,
+										title: false,
+										area: '100%',
+										offset: '0px',
+										shadeClose:true,
+										closeBtn: 0,
+										scrollbar: false,
+										fixed: true,
+										content: $(".save"),
+										skin:'save-layer',
+										success: function(layero, index){
+											$("html,body").addClass("lock")
+											$(".save-layer").on("click",function(){
+												layer.close(index)
+											})
+										}
+									});
+								})
+								var clipboard = new ClipboardJS("#canvasCopy", {
+							        text: function(el) {
+                                     //var $el = $(el);
+                                   //    main._codeGenerator($el); 
+							            return  Kouling ;
+							        }
+							    });
+							    $("#canvasCopy").on("click",function(){
+									layer.msg('复制成功',{time:1000});
+								})
+            	
+            });
+        }
+    };
+    
+    main.init();
+			
+			$("#more").on("click",function(){
+				$(".review-wrapper").addClass("show")
+				$("body").addClass("fixed")
+			})
+			$("#back").on("click",function(){
+				$(".review-wrapper").removeClass("show")
+				$("body").removeClass("fixed")
+			})
+		</script>
+<include file="Public:stat" />
+	</body>
+</html>

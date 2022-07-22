@@ -1,0 +1,91 @@
+		<div class="layui-fluid tqk-head">
+			<div class="layui-container container">
+				<div class="tqk-f-l tqk-f-12">
+					{:C('yh_app_key')}
+				</div>
+				<div class="tqk-f-r tqk-f-12" id="islogin">
+					<a class="tqk-c-red" href="{:U('login/index')}">亲,请登录</a> 或
+										<a href="{:U('login/register')}">免费注册</a> |
+										<a target="_blank" rel="nofollow" href="{:U('help/index',array('id'=>'contactus'))}">联系客服</a>
+				</div>
+			</div>
+		</div>
+		<div class="layui-container container">
+			<div class="layui-row tqk-pt-20 tqk-pb-10">
+				<div class="layui-col-xs3">
+					<a href="{:C('yh_site_url')}"><img alt="{:C('yh_site_name')}" src="{:C('yh_site_logo')}" height="70" /></a>
+				</div>
+				<div class="layui-col-xs7 tqk-pl-20">
+<form class="layui-form" action="">
+					<div class="search-form">
+						<div id="search-bd" class="search-bd">
+							<ul>
+								<li <if condition="CONTROLLER_NAME neq 'Jd' and CONTROLLER_NAME neq 'Pdd' and CONTROLLER_NAME neq 'Jditem' and CONTROLLER_NAME neq 'Pdditem'">class="selected"</if>>搜淘宝</li>
+								<if condition="C('yh_openjd') eq 1">
+								<li <if condition="CONTROLLER_NAME eq 'Jd' or CONTROLLER_NAME eq 'Jditem'">class="selected"</if>>搜京东</li>
+								</if>
+								<if condition="C('yh_openduoduo') eq 1">
+								<li <if condition="CONTROLLER_NAME eq 'Pdd' or CONTROLLER_NAME eq 'Pdditem'">class="selected"</if>>搜拼多多</li>
+								</if>
+							</ul>
+						</div>
+						<div id="search-hd" class="search-hd">
+							<div class="search-bg"></div>
+							<input type="text" name="tb" placeholder="输入商品名称或粘贴淘宝商品标题" class="search-input <if condition="CONTROLLER_NAME eq 'Pdditem' or CONTROLLER_NAME eq 'Jditem' or CONTROLLER_NAME eq 'Jd' or CONTROLLER_NAME eq 'Pdd'">s2</if>">
+							<if condition="C('yh_openjd') eq 1">
+							<input type="text" name="jd" placeholder="输入商品名称或粘贴京东商品标题" class="search-input <if condition="CONTROLLER_NAME neq 'Jditem' and CONTROLLER_NAME neq 'Jd'">s2</if>">
+							</if>
+							<if condition="C('yh_openduoduo') eq 1">
+							<input type="text" name="pdd" placeholder="输入商品名称或粘贴拼多多商品标题" class="search-input <if condition="CONTROLLER_NAME neq 'Pdditem' and CONTROLLER_NAME neq 'Pdd'">s2</if>">
+							</if>
+							<button lay-submit lay-filter="SoSo" class="btn-search" value="搜索">搜索</button>
+						</div>
+					</div>
+</form>
+					<div class="so-tags tqk-f-12">
+						今日热搜：
+						<volist name="hotkey" id="ht">
+							<a href="{:U('/cate/',array('k'=>$ht))}">{$ht}</a>
+						</volist>
+					</div>
+
+				</div>
+				<div class="layui-col-xs2">
+
+					<div class="tqk-f-r">
+						<div class="tqk-f-l tqk-mr-5"><img src="{:C('yh_site_flogo')}" width="80" height="80"></div>
+						<div class="tqk-f-l tqk-text-c tqk-va-m tqk-f-14">
+							<h5 class="tqk-c-red">微信扫一扫</h5>
+							<p>关注微信公众号<br>查券更方便</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="layui-fluid" id="mynav">
+			<div class="header-wrap">
+				<div class="navwrap">
+					<div id="nav">
+						<div class="navbar clearfix">
+							<a <if condition="strlen($request_url) elt 1 || stripos($request_url,'item') || stripos($request_url,'chaohuasuan') || stripos($request_url,'jump') || stripos($request_url,'user') || stripos($request_url,'help') || stripos($request_url,'login')">class="current"</if> href="/">首页</a>
+							<volist name="navlist" id="val">
+								<if condition="$val['alias'] eq 'activity'">
+								<a style="width: 60px; background: none;" <if condition="$val.target eq 1">target="_blank"</if> href="{$val.link}">
+								<img style="position:absolute; width:110px; height:60px; margin-top:-11px; margin-left:-50px;" src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01OzFeD22MgYmEGIpR9_!!3175549857.gif"/>
+								</a>
+								<else/>
+								<a <if condition="strtolower(CONTROLLER_NAME) eq $val['alias']">class="current"</if> <if condition="$val.target eq 1">target="_blank"</if> href="{$val.link}">
+								{$val.name}
+								<if condition="$val.type eq 1"><img style="position:absolute; width:19px; height:23px; margin-top: -10px;" src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01CxCQBE2MgYl7NeCsE_!!3175549857.gif"/>	</if>
+									</a>
+								</if>	
+									
+							</volist>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

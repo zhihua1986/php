@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<title>{$page_seo.title}</title>
+		<meta name="keywords" content="{$page_seo.keywords}" />
+		<meta name="description" content="{$page_seo.description}" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<link rel="stylesheet" href="__SKIN2__/ui/css/ui.css?v=32" />
+		<link rel="stylesheet" href="__SKIN2__/static/tqkwap/css/public.css?v=3" />
+		<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_2174615_wec35lammfj.css" />
+		<script src="__SKIN2__/ui/js/ui.flexible.js?v=1"></script>
+		<style>
+	    .grids-icon{ padding-top: .3rem; height: auto;}
+		.tab-panel{ background-color:#F5F5F5;}
+		.tab-box .btn{height: .5rem; line-height: .5rem;}
+		.tab-box{margin: 0.08rem; background-color: #FFFFFF; padding: .15rem; border-radius: 0.12rem;margin-bottom: 0.36rem;}
+		.tab-box .tab-box-title{font-size: 0.36rem;}
+		.tab-box-img{margin-top: 0.2rem;}
+		.tab-box-img img{ width: 100%;}
+		.m-button{margin-bottom: 1.5rem;}
+		</style>
+	</head>
+	<body>
+		<section class="g-flexview">
+			<header class="m-navbar navbar-fixed">
+				<a href="javascript:history.go(-1);" class="navbar-item"><i class="back-ico"></i></a>
+				<div class="navbar-center"><span class="navbar-title">本地生活</span></div>
+			</header>
+			<section class="g-scrollview">
+				<div id="J_Tab" class="m-tab demo-pitch" data-ydui-tab>
+					<ul class="tab-nav">
+						<li class="tab-nav-item <if condition="!$tab">tab-active</if>">
+							<div class="grids-icon">
+								<img style="width: .9rem; height: .9rem;"
+									src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN0193HGnv2MgYhCVjpYy_!!3175549857.png" />
+							</div>
+							<a href="javascript:;">全部</a>
+						</li>
+						<if condition="C('yh_openmt') eq 1">
+						<li class="tab-nav-item <if condition="$tab eq 'mt'">tab-active</if>">
+							<div class="grids-icon">
+								<img style="width: .9rem; height: .9rem;"
+									src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01v7HDtL2MgYhOcDcvh_!!3175549857.png" />
+							</div>
+							<a href="javascript:;">美团红包</a>
+						</li>
+						</if>
+						<li class="tab-nav-item <if condition="$tab eq 'elm'">tab-active</if>"">
+							<div class="grids-icon">
+								<img style="width: .9rem; height: .9rem;"
+									src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01NusLwu2MgYhMMsZ8E_!!3175549857.png" />
+							</div>
+							<a href="javascript:;">饿了么红包</a>
+						</li>
+						<li class="tab-nav-item <if condition="$tab eq 'kb'">tab-active</if>"" >
+							<div class="grids-icon">
+								<img style="width: .9rem; height: .9rem;"
+									src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01qq2XbJ2MgYeTtiemQ_!!3175549857.png" />
+							</div>
+							<a href="javascript:;">口碑生活</a>
+						</li>
+						<if condition="C('yh_openduoduo') eq 1">
+							<li class="tab-nav-item <if condition="$tab eq 'cz'">tab-active</if>"">
+								<div class="grids-icon">
+									<img style="width: .9rem; height: .9rem;"
+										src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01s3ISxW2MgYhNyid2T_!!3175549857.png" />
+								</div>
+								<a href="javascript:;">92折充话费</a>
+							</li>
+						</if>
+					</ul>
+
+
+					<div class="tab-panel">
+						<div class="tab-panel-item <if condition="!$tab">tab-active</if>">
+
+							<if condition="C('yh_openduoduo') eq 1">
+								<div class="tab-box">
+									<div class="tab-box-title">
+										92折充话费
+										<a href="{:U('chong/index')}" target="_blank"
+											class="btn btn-danger tqk-f-r">{$btn}</a>
+									</div>
+									<div class="tab-box-img">
+										<a href="{:U('chong/index')}" target="_blank"> <img
+												src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01S6ZVoa2MgYhPPzvp4_!!3175549857.jpg">
+										</a>
+									</div>
+								</div>
+							</if>
+
+<if condition="C('yh_openmt') eq 1">
+							<div class="tab-box getlink">
+								<div class="tab-box-title">
+									美团外卖红包天天领
+									<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>33))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+								</div>
+								<div class="tab-box-img">
+									<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>33))}"><img
+										src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01OIOMJ02MgYhQvfKXk_!!3175549857.jpg"></a>
+								</div>
+							</div>
+
+
+							<div class="tab-box getlink" relation="mt" activityid="4">
+								<div class="tab-box-title">
+									美团商超红包天天领
+									<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>4))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+								</div>
+								<div class="tab-box-img">
+									<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>4))}"><img
+										src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01uHgOl92MgYhPtcnTD_!!3175549857.jpg"></a>
+								</div>
+							</div>
+							<div class="tab-box getlink" relation="mt" activityid="105">
+								<div class="tab-box-title">
+									美团优选 特价菜场便宜有好货
+									<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>105))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+								</div>
+								<div class="tab-box-img">
+									<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>105))}"><img
+										src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01FL4RCB2MgYhxgRXBz_!!3175549857.png"></a>
+								</div>
+							</div>
+
+</if>
+							<div class="tab-box getlink" >
+								<div class="tab-box-title">
+									饿了么外卖红包
+									<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>8877))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+								</div>
+								<div class="tab-box-img">
+									<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>8877))}"><img
+										src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01zsJKeN2MgYhJugg0j_!!3175549857.jpg"></a>
+								</div>
+							</div>
+
+
+							<div class="tab-box getlink" relation="elm" activityid="4441">
+								<div class="tab-box-title">
+									饿了么果蔬商超红包
+									<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>4441))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+								</div>
+								<div class="tab-box-img">
+									<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>4441))}" ><img
+										src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01jW5rMB2MgYhPKYqZh_!!3175549857.jpg"></a>
+								</div>
+							</div>
+
+							<div class="tab-box getlink" relation="elm" activityid="1583739244161">
+								<div class="tab-box-title">
+									口碑生活大牌美食5折起
+									<a href="{:U('koubei/index')}" class="btn btn-danger tqk-f-r">{$btn}</a>
+								</div>
+								<div class="tab-box-img">
+									<a href="{:U('koubei/index')}" ><img
+										src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01pjhoUr2MgYhSPuRtQ_!!3175549857.jpg"></a>
+								</div>
+							</div>
+
+
+						</div>
+							
+							<if condition="C('yh_openmt') eq 1">
+								<div class="tab-panel-item <if condition="$tab eq 'mt'">tab-active</if>"">
+														<div class="tab-box getlink">
+															<div class="tab-box-title">
+																美团外卖红包天天领
+																<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>33))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+															</div>
+															<div class="tab-box-img">
+																<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>33))}"><img
+																	src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01OIOMJ02MgYhQvfKXk_!!3175549857.jpg"></a>
+															</div>
+														</div>
+							
+							
+														<div class="tab-box getlink" relation="mt" activityid="4">
+															<div class="tab-box-title">
+																美团商超红包天天领
+																<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>4))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+															</div>
+															<div class="tab-box-img">
+																<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>4))}"><img
+																	src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01uHgOl92MgYhPtcnTD_!!3175549857.jpg"></a>
+															</div>
+														</div>
+														<div class="tab-box getlink" relation="mt" activityid="22">
+															<div class="tab-box-title">
+																美团优选 特价菜场便宜有好货
+																<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>22))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+															</div>
+															<div class="tab-box-img">
+																<a href="{:U('waimai/getlink',array('type'=>'mt','id'=>22))}"><img
+																	src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01FL4RCB2MgYhxgRXBz_!!3175549857.png"></a>
+															</div>
+														</div>
+								</div>
+							</if>
+							
+					
+						
+						<div class="tab-panel-item <if condition="$tab eq 'elm'">tab-active</if>"">
+							
+						<div class="tab-box getlink" >
+							<div class="tab-box-title">
+								饿了么外卖红包
+								<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>8877))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+							</div>
+							<div class="tab-box-img">
+								<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>8877))}"><img
+									src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01zsJKeN2MgYhJugg0j_!!3175549857.jpg"></a>
+							</div>
+						</div>
+						
+						
+						<div class="tab-box getlink" relation="elm" activityid="4441">
+							<div class="tab-box-title">
+								饿了么果蔬商超红包
+								<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>4441))}" class="btn btn-danger tqk-f-r">{$btn}</a>
+							</div>
+							<div class="tab-box-img">
+								<a href="{:U('waimai/getlink',array('type'=>'elm','id'=>4441))}" ><img
+									src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01jW5rMB2MgYhPKYqZh_!!3175549857.jpg"></a>
+							</div>
+						</div>
+							
+							</div>
+						<div class="tab-panel-item <if condition="$tab eq 'kb'">tab-active</if>"">
+							
+							<div class="tab-box getlink" relation="elm" activityid="1583739244161">
+								<div class="tab-box-title">
+									口碑生活大牌美食5折起
+									<a href="{:U('koubei/index')}" class="btn btn-danger tqk-f-r">{$btn}</a>
+								</div>
+								<div class="tab-box-img">
+									<a href="{:U('koubei/index')}" ><img
+										src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01pjhoUr2MgYhSPuRtQ_!!3175549857.jpg"></a>
+								</div>
+							</div>
+							
+						</div>
+						<div class="tab-panel-item <if condition="$tab eq 'cz'">tab-active</if>"">
+
+							<if condition="C('yh_openduoduo') eq 1">
+								<div class="tab-box">
+									<div class="tab-box-title">
+										92折充话费
+										<a href="{:U('chong/index')}" target="_blank"
+											class="btn btn-danger tqk-f-r">{$btn}</a>
+									</div>
+									<div class="tab-box-img">
+										<a href="{:U('chong/index')}" target="_blank"> <img
+												src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01S6ZVoa2MgYhPPzvp4_!!3175549857.jpg">
+										</a>
+									</div>
+								</div>
+							</if>
+
+						</div>
+
+
+
+						<div class="m-button">
+							<if condition="$isfanli neq 2">
+								<bottom class="btn-block btn-danger" id="share">分享赚钱</bottom>
+							</if>
+						</div>
+
+
+					</div>
+
+
+
+
+				</div>
+
+
+
+
+
+
+			<include file="Public:tqk_foot_nav" />
+
+			</section>
+
+			<include file="Public:stat" />
+			<script src="__SKIN2__/ui/js/jquery.min.js"></script>
+			<script src="__SKIN2__/static/tqkpc/js/clipboard.min.js"></script>
+			<script src="__SKIN2__/ui/js/ui.js?v=1"></script>
+			<script>
+				! function(win, $) {
+					var dialog = win.YDUI.dialog;
+					var $tab = $('#J_Tab');
+					$tab.tab({
+						nav: '.tab-nav-item',
+						panel: '.tab-panel-item',
+						activeClass: 'tab-active'
+					});
+					$('#share').on('click', function() {
+
+						<if condition = "!$visitor" >
+
+							dialog.alert('登录后，才可以分享哟！');
+
+						return false; 
+						</if>
+
+						var clipboard = new ClipboardJS("#share", {
+							text: function() {
+								return "{:str_replace('/index.php/m','',C('yh_headerm_html'))}/?m=m&c=waimai&a=index&t={$visitor.id}";
+							}
+						});
+						clipboard.on('success', function(e) {
+							dialog.alert('复制成功，分享给好友就可以赚钱啦！');
+							e.clearSelection();
+						});
+						clipboard.on('error', function(e) {
+							dialog.alert('复制失败');
+						});
+
+					});
+					
+				}(window, jQuery);
+			</script>
+		</section>
+	</body>
+</html>

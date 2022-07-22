@@ -1,0 +1,95 @@
+<include file="Public:header" />
+<!--文章列表-->
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+          <a href="?m=admin&c=topic&a=add&menuid=350" class="on"><em>添加关键词</em></a>   
+		   功能：自动为文章内容添加站点内链，提升网站的SEO效果。
+		 </div>
+    </div>
+    <div class="pad_lr_10" >
+        <form name="searchform" method="get" >
+            <table width="100%" cellspacing="0" class="search_form">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="explain_col">
+                                <input type="hidden" name="m" value="admin" />
+                                <input type="hidden" name="c" value="topic" />
+                                <input type="hidden" name="a" value="index" />
+                                <input type="hidden" name="menuid" value="{$menuid}" />
+                                &nbsp;&nbsp;{:L('keyword')} :
+                                <input name="keyword" type="text" required="required" class="input-text" size="25" value="{$search.keyword}" />
+                                <input type="submit" name="search" class="btn" value="{:L('search')}" />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <div class="J_tablelist table_list" data-acturi="{:U('topic/ajax_edit')}">
+            <table width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                        <th><span data-tdtype="order_by" data-field="id">ID</span></th>
+                        <th align="left">关键字</th>
+						<th align="left">链接</th>
+                        <th width="80">{:L('status')}</th>
+                        <th width="120">{:L('operations_manage')}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name="list" id="val" >
+                        <tr>
+                            <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+                            <td align="center">{$val.id}</td>
+                            <td align="left"><span data-tdtype="edit" data-field="title" data-id="{$val.id}" class="tdedit" style="color:{$val.colors};">{$val.name}</span><notempty name="val['pic']"><span class="attachment_icon J_attachment_icon" file-type="image" file-rel="{$img_dir}{$val.img}"><img src="__STATIC__/images/filetype/image_s.gif" /></span></notempty></td>
+                           <td align="left">{$val.url}</td>
+							<td align="center"><img data-tdtype="toggle" data-id="{$val.id}" data-field="status" data-value="{$val.status}" src="__STATIC__/images/admin/toggle_<if condition="$val.status eq 0">disabled<else/>enabled</if>.gif" /></td>
+                            <td align="center">
+                            	<a href="{:u('topic/edit', array('id'=>$val['id'], 'menuid'=>$menuid))}">{:L('edit')}</a> | <a href="javascript:void(0);" class="J_confirmurl" data-acttype="ajax" data-uri="{:u('topic/delete', array('id'=>$val['id']))}" data-msg="{:sprintf(L('confirm_delete_one'),$val['title'])}">{:L('delete')}</a></td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+
+            <div class="btn_wrap_fixed">
+                <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+                <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('topic/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+                <div id="pages">{$page}</div>
+            </div>
+
+        </div>
+    </div>
+    <include file="Public:footer" />
+    
+    
+    <script language="JavaScript">
+    	$('.xzhang').on('click', function() {
+ var id =$(this).attr('rel');
+ var s_name =$(this).attr('data-field');
+ var s_id =$(this).attr('data-id');
+ $.ajax({
+  url: "{:U('topic/xiongzhang')}",
+  data:{id:s_id},
+  success: function(json){
+  if(json.status == 1){
+  $.yhxia.tip({content:json.msg});
+  $('a[data-field="'+s_name+'"][data-id="'+s_id+'"]').text("");
+  return;
+  }else{
+     $.yhxia.tip({content:json.msg, icon:'error'});
+  }
+  	
+  },
+  dataType: 'json'
+});
+    		
+    		
+    	});
+    	
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,84 @@
+<include file="Public:head_nosearch" />
+<style>
+.content img{
+	max-width: 750px;
+}
+</style>
+		<!--header-->
+		<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+		    <div class="am-header-left am-header-nav">
+		        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>
+		    </div>
+		    <h1 class="am-header-title">优惠头条</h1>
+		</header>
+		<main>
+			<!--read-->
+			<div class="headlines">
+							<div class="am-slider am-slider-default"  data-am-widget="slider" data-am-slider="{animationLoop: false,slideshow: false,controlNav: false,directionNav: false,itemWidth: 80,itemMargin: 10}" >
+					<ul class="am-tabs-nav am-nav am-nav-tabs am-slides">
+					    <li class="<if condition="$cateid eq ''"> am-active</if>"><a href="{:U('article/index')}{$trackurl}">全部</a></li>
+					    <volist name="articlecate" id="cate">
+							<li class="<if condition="$cateid eq $cate['id']"> am-active</if>"><a href="{:U('article/index/',array('cateid'=>$cate['id']))}{$trackurl}">{$cate.name}</a></li>
+						</volist>
+					</ul>
+				</div>	
+			</div>
+			
+			<div class="article">
+				<div class="title">
+					<h3 class="ellipsis-2">{$info.title}</h3>
+					<div class="am-cf">
+						<a href="{:U('article/index/',array('cateid'=>$info['cate_id']))}{$trackurl}"><span class="mark">{$info.catename}</span></a>
+						<p class="time">{:date('Y-m-d',$info['add_time'])}</p>
+					</div>
+				</div>
+				<div class="content" style="overflow: hidden;">
+<php>
+$str = content_strip($info['info']);
+</php>
+					
+					{:htmlspecialchars_decode($str)}
+				</div>
+				<!--更多商品-->
+				<if condition="$sellers">
+					<div class="recommend">
+						<h3>【好物推荐】</h3>
+						<ul>
+							<volist name="sellers" id="val" >
+							<li class="item">
+								<a href="<if condition="C('APP_SUB_DOMAIN_DEPLOY') eq false">{:U('/m/item',array('id'=>$val['num_iid']))}{$trackurl}<else/>{:U('/item',array('id'=>$val['num_iid']))}{$trackurl}</if>">
+									<img src="{$val.pic_url}_480x480" width="100%">
+									<span>券后价：￥{$val.coupon_price}</span>
+								</a>
+								<p class="ellipsis-2"><i class="iconfont icon-triangle-arrow-u"></i>{$val.title}</p>
+							</li>
+							</volist>
+						</ul>
+					</div>
+				</if>
+				<if condition="$articlelike">
+					<div class="relevant">
+						<h3>推荐相关文章</h3>
+						<ul>
+							<volist name="articlelike" id="art" >	
+							    <li>
+							    	<a href="{$art.linkurl}">
+								    	<img src="{$art.pic}"/>
+								    	<div>
+							                <h4 class="ellipsis">{$art.title}</h4>
+							                <div class="am-cf">
+							             		<span>{$art.catename}</span>
+							                	<p class="time">{:date('Y-m-d',$art['add_time'])}</p>
+							                </div>
+							            </div>
+							        </a>
+							    </li>
+							 </volist>
+						</ul>
+					</div>
+				</if>
+			</div>
+		</main>
+<include file="Public:foot" />
+<include file="Public:alertad_noscript" />
+</body></html>

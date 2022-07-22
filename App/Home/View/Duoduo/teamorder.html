@@ -1,0 +1,129 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="User:nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+     
+  <div class="mianbar">
+
+<div class="layui-tab layui-tab-brief tqk-bg-white">
+  <ul class="layui-tab-title">
+    <li <if condition="$fuid eq 1">class="layui-this"</if> >
+   <a href="{:U('duoduo/teamorder',array('fuid'=>1))}" >直属成员</a></li>
+    <li  <if condition="$guid eq 1">class="layui-this"</if> ><a href="{:U('duoduo/teamorder',array('guid'=>1))}" >直属成员下级</a></li>
+  </ul>
+</div> 
+				<div class="subnav">
+					
+<span class="layui-breadcrumb tqk-f-l tqk-pl-10 tqk-pt-15">
+  <a href="javascript:;">当前位置</a>
+  <a><cite>拼多多订单</cite></a>
+</span>
+ <include file="Meituan:tnav"/>	
+					
+					<table class="layui-table">
+						<thead>
+							<tr>
+								<th>付款时间</th>
+								<th width="30%">商品名/订单编号</th>
+								<th>付款金额</th>
+								<th>预计收益</th>
+								<th>状态</th>
+								<th>结算时间<a id="help" class="layui-icon layui-icon-about tqk-f-20"></a></th>
+							
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="list" id="vo">
+								<tr>
+									<td>{$vo.order_pay_time|frienddate}</td>
+									<td>{$vo.goods_name}<br/>
+										<div class="tqk-c-999">订单号:{$vo.order_sn}</div></td> 
+									<td><b class="c-main">
+										<if condition="$vo['order_amount']">
+											￥{$vo.order_amount}
+											<else/>
+											--
+										</if>
+									</b></td>
+									<td>
+										
+						<if condition="$guid">
+							￥{:Orebate3(array('price'=>$vo['promotion_amount'],'leve'=>$vo['leve3']))}
+							
+						<else/>
+							￥{:Orebate2(array('price'=>$vo['promotion_amount'],'leve'=>$vo['leve2']))}
+						</if>
+										
+										
+									</td>
+									<td>
+								<if condition="$vo['settle'] eq 1">
+									 已结算
+									<else/>
+									{$vo.status}
+								</if>
+									</td>
+									<td ><if condition="$vo['order_settle_time']">
+										{$vo.order_settle_time|frienddate}
+										<else/>
+										--
+									</if></td>
+									
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<div class="page cl">
+					<div class="tqk-f-r tqk-pd-10">
+						<if condition="$total_item gt $page_size">
+							{$page}
+						</if>
+					</div>
+				</div>
+			</div>
+		</div>
+     
+    </div>
+    
+   </div>
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+
+<script> 
+;!function(){
+  $ = layui.jquery;
+
+$(function(){
+	$('#help').on('click',function(){
+	layer.msg('确认收货后有15天审核期，审核通过时间为当月15号之前,当月20号结算到账。当月15号之后审核通过,下个月20号结算到账。'); 
+	}) 
+ })
+    
+}();
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<include file="Public:head_nosearch" />
+		<!--header-->
+		<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+		    <div class="am-header-left am-header-nav">
+		        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>
+		    </div>
+		    <h1 class="am-header-title">首单礼金领取教程</h1>
+		</header>
+		<main>
+		<div class="headlines">
+		<div class="am-slider am-slider-default"  data-am-widget="slider" data-am-slider="{animationLoop: false,slideshow: false,controlNav: false,directionNav: false,itemWidth: 80,itemMargin: 10}" >
+					<ul class="am-tabs-nav am-nav am-nav-tabs am-slides">
+					    <volist name="helps" id="cate">
+							<li class="<if condition="$cateid eq $cate['id']"> am-active</if>"><a href="{:U('help/index',array('id'=>$cate['id']))}">{$cate.title}</a></li>
+						</volist>
+					</ul>
+				</div>	
+			</div>
+			
+			<div class="article">
+				<div class="content">
+  <div data-am-widget="slider" class="am-slider am-slider-b2" data-am-slider='{"controlNav":false}' >
+  <ul class="am-slides">
+	 <li><img src="__SKIN2__/static/home/firstorder/images/f1.jpeg" ></li>
+					 <li><img src="__SKIN2__/static/home/firstorder/images/f2.jpeg"> </li>
+					 <li><img src="__SKIN2__/static/home/firstorder/images/f3.jpeg"></li> 
+					 <li><img src="__SKIN2__/static/home/firstorder/images/f4.jpeg"> </li>
+					 <li><img src="__SKIN2__/static/home/firstorder/images/f5.jpeg"> </li>
+					 <li><img src="__SKIN2__/static/home/firstorder/images/f6.jpeg"></li> 
+					 <li><img src="__SKIN2__/static/home/firstorder/images/f7.jpeg"> </li>
+					 <li><img src="__SKIN2__/static/home/firstorder/images/f8.jpeg"> </li>
+  </ul>
+</div>
+					
+				</div>
+			</div>
+		</main>
+<include file="Public:foot" />
+</body></html>
+
+

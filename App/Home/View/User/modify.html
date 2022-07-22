@@ -1,0 +1,171 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+     
+     		<div class="mianbar">
+					<div class="taobaonum tqk-text-c">
+		
+     <legend class="tqk-mb-40"></legend>
+		
+						
+<form class="layui-form tqk-pr-20" action="">
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs8">
+
+
+<div class="layui-form-item">
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-form-mid layui-word-aux tqk-c-red">
+		<if condition="$info['phone']">
+    	{$info.phone}
+		<else/>
+		<a href="{:U('login/fillphone')}">点击绑定</a>
+		</if>
+    </div>
+  </div>
+  
+  
+   <div class="layui-form-item">
+    <label class="layui-form-label">用户昵称</label>
+     <div class="layui-input-block">
+     <input type="text" class="layui-input" lay-verType='tips' required  lay-verify="required" name="nickname" value="{$info.nickname}"  />	
+     </div>
+  </div>
+  
+     <div class="layui-form-item">
+    <label class="layui-form-label">联系QQ</label>
+     <div class="layui-input-block">
+     <input type="text" class="layui-input" lay-verType='tips' required  lay-verify="required|number"  name="qq" value="{$info.qq}" />	
+     </div>
+  </div>
+  
+  <div class="layui-form-item">
+    <label class="layui-form-label">新密码</label>
+     <div class="layui-input-block">
+     <input type="password" class="layui-input" lay-verType='tips' required  name="password" />	
+     </div>
+  </div>
+  
+  <div class="layui-form-item">
+    <label class="layui-form-label">确认密码</label>
+     <div class="layui-input-block">
+     <input type="password" class="layui-input" lay-verType='tips' required  name="password2" />	
+     </div>
+  </div>
+
+</div>
+<div class="layui-col-xs4">
+	 <div class="layui-upload-list">
+    <img class="layui-upload-img" width="120" height="120"  src="{$info.avatar|default="/static/images/default_photo.gif"}" id="avatar">
+    <p id="demoText"></p>
+    <input type="text" name="avatar" id="save_avatar" class="layui-hide">
+  </div>
+    <button type="button" class="layui-btn layui-btn-normal" id="upload_avatar">更换图像</button>
+</div>
+
+</div>
+  
+		<button lay-submit lay-filter="Tqkmodify" class="layui-btn layui-btn-danger">提交保存</button>
+						
+
+
+</form>
+					</div>
+					
+				</div>
+			
+     
+    </div>
+    
+   </div>
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+<script language="JavaScript">
+ layui.use(['upload','form'], function(){
+  var $ = layui.jquery
+  ,form = layui.form
+  ,upload = layui.upload;
+
+form.on('submit(Tqkmodify)',function(data){
+$.ajax({
+            url:'/index.php?c=user&a=modify',
+            type:'post',
+            data:data.field,
+            dataType:"json",
+            success:function(data){
+              if(data.status == 1){
+                layer.msg(data.msg, {icon:6});
+								setTimeout(function(){
+									window.location.href = data.data;
+								},1000);
+                }
+                else{
+                   layer.msg(data.msg)
+                }
+            },
+            error:function(e){
+            layer.alert("操作失败,请刷新页面重试！")
+            },
+            
+        });
+   	 return false; 
+   
+  });
+
+
+  var uploadInst = upload.render({
+    elem: '#upload_avatar'
+    ,url: "{:U('user/uploadimg')}"
+    ,before: function(obj){
+      obj.preview(function(index, file, result){
+        $('#avatar').attr('src', result);
+        
+      });
+    }
+    ,done: function(res){
+      if(res.status == 1){
+       $('#save_avatar').val(res.msg);
+      }else{
+      return layer.msg('上传失败');	
+      }
+    }
+    ,error: function(){
+      var demoText = $('#demoText');
+      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+      demoText.find('.demo-reload').on('click', function(){
+        uploadInst.upload();
+      });
+    }
+  });
+  });
+</script>
+
+</body>
+</html>

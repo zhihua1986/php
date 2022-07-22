@@ -1,0 +1,201 @@
+<include file="Public:header" />
+<style>
+.J_closed_reason{display: none;}
+</style>
+<include file="Setting:sub" />
+
+
+<div class="pad_lr_10">
+	
+	<div style="color: #F05040;">特别提示：必须是认证的服务号并且获得了“商家转账到零钱 ”或“企业付款到零钱”的权限才可以使用微信转账</div>
+	
+	<form id="info_form" action="{:u('setting/edit')}" method="post" enctype="multipart/form-data">
+	<table width="100%" class="table_form">
+<tr>
+        	<th>提现方式 :</th>
+<td>
+	<label class="mr10">
+	<input type="hidden" id="alipay" name="setting[payment_alipay]"  value="{:C('yh_payment_alipay')?1:0}" />
+	<input type="checkbox" rel="alipay" class="J_checkitem"  <if condition="C('yh_payment_alipay') eq '1'">checked="checked"</if> > 支付宝
+	</label>
+	<label class="mr10">
+	<input type="hidden" id="wechat" name="setting[payment_wechat]"  value="{:C('yh_payment_wechat')?1:0}" />
+	<input type="checkbox" rel="wechat" class="J_checkitem tqk_change_status"  <if condition="C('yh_payment_wechat') eq '1'">checked="checked"</if> > 微信
+	</label>
+	
+ <span class="gray ml10">关于提现方式的说明请看 <a href="https://www.tuiquanke.com/view/28265757640" target="_blank">这里</a> </span>  
+
+</td>
+    	</tr>
+		
+		<tr class="J_closed_reason">
+				<th>微信转账方式:</th>
+				<td>
+			    	<label><input type="radio" class="J_change_status" <if condition="C('yh_payment') eq '2'">checked="checked"</if> value="2" name="setting[payment]"> 自动转账</label> &nbsp;&nbsp;
+			        <label><input type="radio" class="J_change_status" <if condition="C('yh_payment') eq '1'">checked="checked"</if> value="1" name="setting[payment]"> 审核后转账</label>
+				</td>
+		</tr> 
+		
+<tr class="J_closed_reason">
+		<th>接口类型:</th>
+		<td>
+	    	<label><input type="radio" class="J_change_status" <if condition="C('yh_apitype') eq '1'">checked="checked"</if> value="1" name="setting[apitype]"> 商家转账到零钱</label> &nbsp;&nbsp;
+	        <label><input type="radio" class="J_change_status" <if condition="C('yh_apitype') eq '2'">checked="checked"</if> value="2" name="setting[apitype]"> 企业付款到零钱</label>
+	       &nbsp;&nbsp;<span class="gray ml10">（请根据获得的权限，选择对应的接口）</span>
+		</td>
+</tr> 
+	
+<tr class="J_closed_reason">
+		<th>商户账号类型:</th>
+		<td>
+	    	<label><input type="radio" class="J_change_status" <if condition="C('yh_site_secret') eq '1'">checked="checked"</if> value="1" name="setting[site_secret]"> 公众号</label> &nbsp;&nbsp;
+	        <label><input type="radio" class="J_change_status" <if condition="C('yh_site_secret') eq '2'">checked="checked"</if> value="2" name="setting[site_secret]"> 小程序</label>
+	       &nbsp;&nbsp;<span class="gray ml10">（根据微信支付平台关联账号类型选择）</span>
+		</td>
+</tr> 
+		
+		<tr class="J_closed_reason">
+			<th width="10%">商户账号AppID :</th>
+        	<td width="40%">
+				<input type="text" name="setting[mch_appid]" class="input-text" size="45" value="{:C('yh_mch_appid')}" >
+        	</td>
+		</tr>
+		
+		<tr class="J_closed_reason">
+			<th width="10%">商户号 :</th>
+        	<td width="40%">
+				<input type="text" name="setting[mchid]" class="input-text" size="45" value="{:C('yh_mchid')}" >
+        	</td>
+		</tr>
+		
+	<tr class="J_closed_reason">
+			<th width="10%">API密钥 :</th>
+        	<td width="40%">
+				<input type="password"  name="setting[apikey]" class="input-text" size="45" value="{:C('yh_apikey')}" >
+        	</td>
+		</tr>
+		
+	<tr class="J_closed_reason">
+			<th width="10%">Cert证书文件 :</th>
+			<td>	
+			<input type="text" name="setting[cert_pem]" id="cert_pem" class="input-text fl mr10" size="30" value="{:C('yh_cert_pem')}">
+		    	<div id="J_upload_img" class="upload_btn"><span>{:L('upload')}</span></div> </td>
+		</tr>
+	<tr class="J_closed_reason">
+			<th width="10%">KEY秘钥文件 :</th>
+			<td>	
+			<input type="text" name="setting[key_pem]" id="key_pem" class="input-text fl mr10" size="30" value="{:C('yh_key_pem')}">
+		    	<div id="J_upload_img2" class="upload_btn"><span>{:L('upload')}</span></div> </td>
+		</tr>
+		
+      <tr>
+        	<th></th>
+        	<td><input type="hidden" name="menuid"  value="{$menuid}"/>
+        	<input type="hidden" name="setting[app_kehuduan]"  value="{:C('yh_app_kehuduan')}"/>
+        	<input type="submit" class="smt mr10" value="{:L('submit')}"/></td>
+    	</tr>
+	</table>
+	</form>
+</div>
+<include file="Public:footer" />
+<script src="__STATIC__/js/fileuploader.js"></script>
+<script>
+
+$(function(){
+	
+	var reason = "{:C('yh_payment_wechat')}";
+	
+	if(reason == '1'){
+		 $('.J_closed_reason').fadeIn();
+	}
+	
+	$('.J_checkitem').live('click',function(){
+		
+	var id = $(this).attr('rel');	
+	if($(this).attr('checked')) {
+		$('#'+id).val(1);
+	   }else{
+		 $('#'+id).val(0);  
+		   
+	   }
+		
+	})
+	
+	$('.tqk_change_status').live('click', function(){
+		
+	    if($(this).is(':checked')){
+	        $('.J_closed_reason').fadeIn();
+	    }else{
+	        $('.J_closed_reason').fadeOut();
+	    }
+	});
+	
+	//上传图片
+    var uploader = new qq.FileUploaderBasic({
+    	allowedExtensions: ['pem'],
+        button: document.getElementById('J_upload_img'),
+        multiple: false,
+        action: "{:U('setting/ajax_upload_pem')}",
+        inputName: 'img',
+        forceMultipart: true, //用$_FILES
+        messages: {
+        	typeError: lang.upload_type_error,
+        	sizeError: lang.upload_size_error,
+        	minSizeError: lang.upload_minsize_error,
+        	emptyError: lang.upload_empty_error,
+        	noFilesError: lang.upload_nofile_error,
+        	onLeave: lang.upload_onLeave
+        },
+        showMessage: function(message){
+        	$.yhxia.tip({content:message, icon:'error'});
+        },
+        onSubmit: function(id, fileName){
+        	$('#J_upload_img').addClass('btn_disabled').find('span').text(lang.uploading);
+        },
+        onComplete: function(id, fileName, result){
+        	$('#J_upload_img').removeClass('btn_disabled').find('span').text(lang.upload);
+            if(result.status == '1'){
+        		$('#cert_pem').val(result.data);
+        	} else {
+        		$.yhxia.tip({content:result.msg, icon:'error'});
+        	}
+        }
+    });	
+	
+	
+	var nuploader = new qq.FileUploaderBasic({
+		allowedExtensions: ['pem'],
+	    button: document.getElementById('J_upload_img2'),
+	    multiple: false,
+	    action: "{:U('setting/ajax_upload_pem')}",
+	    inputName: 'img',
+	    forceMultipart: true, //用$_FILES
+	    messages: {
+	    	typeError: lang.upload_type_error,
+	    	sizeError: lang.upload_size_error,
+	    	minSizeError: lang.upload_minsize_error,
+	    	emptyError: lang.upload_empty_error,
+	    	noFilesError: lang.upload_nofile_error,
+	    	onLeave: lang.upload_onLeave
+	    },
+	    showMessage: function(message){
+	    	$.yhxia.tip({content:message, icon:'error'});
+	    },
+	    onSubmit: function(id, fileName){
+	    	$('#J_upload_img2').addClass('btn_disabled').find('span').text(lang.uploading);
+	    },
+	    onComplete: function(id, fileName, result){
+	    	$('#J_upload_img2').removeClass('btn_disabled').find('span').text(lang.upload);
+	        if(result.status == '1'){
+	    		$('#key_pem').val(result.data);
+	    	} else {
+	    		$.yhxia.tip({content:result.msg, icon:'error'});
+	    	}
+	    }
+	});	
+	
+	 
+});
+</script>
+</body>
+</html>

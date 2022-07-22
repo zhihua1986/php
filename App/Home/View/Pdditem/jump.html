@@ -1,0 +1,241 @@
+<include file="Public:tqk-meta" />
+	<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+		<div class="layui-row">
+						<div class="layui-col-xs9">
+							<div class="tqk-bg-white main-index">
+								<div class="layui-tab layui-tab-brief">
+	<div class="tqk-pl-20 tqk-pt-10">
+<br />
+</div>
+
+									<div class="layui-tab-content">
+										<div class="layui-tab-item layui-show">
+
+  <div class="layui-row">
+    <div class="layui-col-xs5 tqk-text-c">
+     <img src="{$item.goods_thumbnail_url}" width="280" alt="{$item.goods_name}">
+    </div>
+    <div class="layui-col-xs7">
+    <div class="tqk-f-16"><i class="pdd-ico"></i>{$item.goods_name}</div>
+    <div class="itemprice">
+						<span class="tqk-c-red tqk-f-18">
+							{:($item['min_group_price']-$item['coupon_discount'])}元</span>
+						
+						<del class="tqk-c-999">￥{$item.min_group_price}</del>	
+						
+							<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+	                   <span class="tqk-c-danger tqk-pl-15" style="text-decoration: none;">预计返￥
+	                   		{:Rebate1(($item['min_group_price']-$item['coupon_discount'])*$item['promotion_rate']/1000,$visitor['webmaster_rate'])}
+	                  </span>
+	                   </if>
+						
+						
+					<if condition="$item['coupon_discount']">	<span class="quan">{$item.coupon_discount}元券</span></if>
+						
+					</div>
+	<div class="time-num"><span class="time">活动结束时间：{$item.coupon_end_time|date="m-d H:i",###}</span>
+                        <span class="tqk-f-r">
+                            累计销量                            ：
+                            <label style="color:#FF2E54 ">{$item.sold_quantity}</label>件                        </span>
+      </div>
+      
+      	<div>
+		TAG标签： 
+								<volist name="tag" id="vo">
+								<span class="layui-badge layui-bg-gray tqk-mr-10 tqk-mt-15"><a href="{:U('/pdd/index',array('k'=>$vo))}">{$vo}</a></span>
+								</volist>
+	</div>
+      
+      
+       <div class="layui-row">
+<div class="layui-col-xs9 tqk-pt-20" style="padding-top: 50px;">
+ 
+ <if condition="$islogin && !$visitor">
+<a rel="nofollow" style="width: 120px;" class="layui-btn layui-btn-fluid signin"  href="javascript:;" >立即领券</a>
+<else/>
+<a rel="nofollow" class="layui-btn layui-btn-fluid"  style="width: 120px;" 
+href="javascript:;" url="" id="Getlink" >立即领券</a>
+</if>
+
+<a rel="nofollow" style="width: 120px;" id="copy" class="layui-btn layui-btn-primary tqk-ml-30"  href="javascript:;" >复制优惠</a>
+ 
+    </div>
+     <div class="layui-col-xs3">
+      <br />
+    </div>
+    </div>
+    	
+
+    </div>
+  </div>
+
+
+
+
+										</div>
+							
+									</div>
+
+								</div>
+								
+<div class="layui-clear tqk-pd-10">
+
+</div>	
+							</div>
+							
+			
+							
+<div class="layui-tab tqk-bg-white">
+  <ul class="layui-tab-title">
+    <li class="layui-this">商品详情</li>
+  </ul>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show tqk-text-c">
+ <volist name="item.goods_image_url" id="vi" >
+<img src="{$vi}" style="max-width: 800px;">
+ </volist>
+    </div>
+  </div>
+</div>
+						</div>
+						
+						<div class="layui-col-xs3">
+
+
+							<div class="tqk-bg-white tqk-ml-10 tqk-mt-10 layui-tab-brief">
+								
+								<ul class="layui-tab-title">
+									<li class="layui-this">特别推荐</li>
+									
+								</ul>
+<div class="bestseller">
+<volist name="orlike" id="vo" key="i" mod="3">
+<div class="tqk-f-l best-left">
+<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><img width="90" height="90" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.pic_url}_200x200"/></a></div>
+<div class="tqk-f-l best-right">
+<div class="overflow tqk-f-12">
+<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><i class="<if condition="$vo.shop_type eq 'B'">tm-ico<else/>tb-ico</if>"></i>{$vo.title}</a>
+</div>
+<div>
+		<span class="dec tqk-pl-10">原价￥{$vo.price|formatprice} </span> <span class="num tqk-pl-10">{$vo.volume}</span> 件
+		</div>
+		<div>
+		<label class="coupon-price">{$vo.quan}元券</label> <span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span>
+		</div>
+</div>	
+<div class="tqk-pb-20 layui-clear"></div>
+</volist>
+</div>
+				<div class="layui-clear"></div>		
+							</div>
+
+
+						</div>
+
+				
+					</div>
+
+
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+<script src="__SKIN2__/static/tqkpc/js/clipboard.min.js"></script>
+<script type="text/javascript">
+ layui.use(['layer'], function(){ 
+  var $ = layui.jquery;
+ <if condition="$islogin && !$visitor">
+ $('#copy').on('click',function(){
+layer.confirm('需要登录后才可以领券哟!', {
+  btn: ['立即登录', '我知道啦'] 
+}, function(index, layero){
+window.location.href="{:U('login/index')}";
+}, function(index){
+layer.closeAll();
+return false
+});
+})
+ 
+ <else/>
+ ;(function() {
+    var pageCtrl = {
+        _clip: function() {
+            var _self = this,
+            clipboard = new ClipboardJS('#copy', {
+                text: function(el) {
+                    var $el = $(el);
+return '{$item.goods_name}【包邮】\n'+
+'【拼多多价】{:$item['min_group_price']}元\n'+
+'【专享价】{:($item['min_group_price']-$item['coupon_discount'])}元 \n'+
+'【下单链接】{:C('yh_site_url')}{:U('/pdditem/jump/'.$item['goods_sign'])}\n'+
+'';
+                }
+            });
+            clipboard.on('success', function(e) {
+            	  layer.msg('复制成功,快去分享吧！',{time:1000});
+                      
+            });
+        },
+        init: function() {
+            this._clip();
+        }
+    };
+    $(function() {
+        pageCtrl.init();
+    });            
+})();
+ 
+$('#Getlink').on('click',function(){
+$.ajax({
+            url: '{:U('pdditem/shortlink')}',
+            type: 'post',
+            dataType : 'json',    
+            data: {
+                id : '{$item.goods_sign}',
+                search_id:'{$item.search_id}'
+            },
+            async: false, 
+            success: function(res) {
+  layer.open({
+  type: 2,
+  title:'拼多多APP或微信扫码领券下单',
+  skin: 'layui-layer-rim', //加上边框
+  area: ['300px', '240px'], //宽高
+  content: ['{:U('pdditem/jumpout')}?dataurl='+ res.result, 'no'],
+  });	
+              
+            }
+        });
+  
+  	
+  	
+  })
+ 
+
+</if>
+
+
+})
+
+</script>
+</body>
+</html>

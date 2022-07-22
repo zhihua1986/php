@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<meta charset="UTF-8">
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}" />
+<meta name="description" content="{$page_seo.description}" />
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_725800_rzzl9wlrp6i.css" />
+<link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
+<link rel="stylesheet" href="__SKIN2__/static/home/css/firstorder.css?v=1.47">
+<style>
+	body{background:none}
+	.layui-container{background-color:#5900FC}
+	.am-navbar{border-top:1px solid #ccc;background-color:#fff;position:fixed;left:0;bottom:0;right:0;width:100%;height:49px;line-height:49px;z-index:1010;display:flex}
+	.am-navbar .am-navbar-nav{background-color:#fff;width:100%;display:flex;flex-wrap:nowrap;justify-content:space-between}
+	.am-navbar li{float:left}
+	.am-navbar .am-navbar-nav a .am-navbar-label{color:#646464;font-size:12px}
+	.am-navbar-nav a .am-navbar-label{padding-top:3px;line-height:1;font-size:12px;display:block;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+	.am-navbar-nav a{display:inline-block;width:100%;height:49px;line-height:20px}
+	.am-navbar-nav i{font-size:18px;display:block}
+	.yushou{display:inline-block;margin:11px 10px;margin-left:5px;padding:0 2px;width:auto;height:auto;border-color:#7e62f4;border-style:solid;border-width:1px;border-radius:4px;border-image:initial;background-size:contain;background-repeat:no-repeat;color:#7e62f4;font-family:PingFangSC-Medium}
+	.am-navbar .am-navbar-nav{padding-left:8px;padding-right:8px;width: 88%;margin: 0 auto;text-align:center;position:relative;overflow:hidden}
+</style>
+</head>
+<body>
+<div class="layui-container" style="padding: 0; max-width: 750px;">
+<div class="layui-row">	
+ <div class="layui-col-xs12 layui-col-sm12">
+<div class="root">
+<div class="coupon-wrap flex-wrap">
+	<if condition="$back">
+	<a href="{$back}" class="layui-icon layui-icon-left back"></a>
+</if>
+<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01xVUkLS2MgYmGkYvpJ_!!3175549857.jpg" width="100%"/>
+<div class="copy-link">
+
+<div class="sort">
+	
+	<form action="{:U('activity/index')}#so" method="get">
+	<div class="search"><div class="search-box"><i class="layui-icon layui-icon-search search-icon"></i>
+		<input type="text" required="required" autocomplete="off" name="k" value="{$sokey}" placeholder="输入商品名称查询">
+	<if condition="$sokey">
+	<a href="{:U('activity/index')}#so" class="layui-icon layui-icon-close-fill search-icon"></a>
+	</if>	
+	</div> 
+		  <button class="search-btn" type="submit">搜索</button>
+	</div></form>
+	
+	<ul class="sort-list">
+		<li class="">
+              <a href="{:U('activity/index',array('sort'=>'new','k'=>$sokey))}#so">最新</a>
+                  <span><i <if condition="$sort eq 'new'">class="arrow-active"</if>></i> <i class=""></i></span></li>
+				  <li>
+				  <a href="{:U('activity/index',array('sort'=>'price','k'=>$sokey))}#so">价格</a>
+				    <span><i <if condition="$sort eq 'price'">class="arrow-active"</if>></i> <i class=""></i></span></li>
+				  <li class="">
+           <a href="{:U('activity/index',array('sort'=>'hot','k'=>$sokey))}#so">销量</a>
+                  <span><i <if condition="$sort eq 'hot'">class="arrow-active"</if>></i> <i class=""></i></span></li><li class="">
+          <a href="{:U('activity/index',array('sort'=>'rate','k'=>$sokey))}#so"> 大额券</a>
+                  <span><i <if condition="$sort eq 'rate'">class="arrow-active"</if>></i> <i class=""></i></span></li></ul>
+</div>
+
+</div>
+    <div class="block-main flow-default">
+    	<div>
+    	<volist name="list" id="vo">
+    	<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+    		<div class="itemlist">
+    		<div class="item-pic" style="position: relative;">
+				<if condition="$vo['yushou']">
+				<div class="tag_double-eleven">{$vo.yushou}</div>
+				</if>  
+      	<a rel="nofollow" class="jump" href="{:U('activity/create',array('id'=>$vo['num_iid']))}" >
+    		<img src="{$vo.pic_url}_400x400.jpg" width="100%">
+      	</a>
+    		</div>
+    		<div class="item-title"><i class="tmall-ico"></i>{$vo.title}</div>
+    		<div class="goods-num-type">
+    			<span class="old-price fl">￥<i>{$vo.price|formatprice}</i></span><span class="goods-num fr"><i>{$vo.volume}</i>件</span></div>
+    		<div class="coupon-wrap2 clearfix"><span class="price"><div class="tip"> </div><i>￥</i><span>{$vo.coupon_price|formatprice}</span></span>
+    		<label class="yushou fr">预售</label>
+			<b class="coupon fr"><i>{$vo.quan}</i> 元券</b>
+    		</div>
+    		</div>
+    	</div>
+    	
+    	</volist>
+    	
+    	<div id="dataList">
+    </div>
+    	
+    	
+    	</div>
+   
+
+    </div>
+	
+
+	<div id="silde">
+		<!-- <a class="tqkup" href="/"><i class="layui-icon layui-icon-home" style="font-size: 22px;"></i></a> -->
+		<a class="tqkup" id="scroll"><i class="layui-icon layui-icon-top"></i></a></div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+</div>
+
+<include file="Public:footer" />
+
+
+	
+<script src="__SKIN2__/layui/layui.js?v=2.11"></script>
+<tqkjs  href="__STATIC__/wap/js/mescroll.min.js"/>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: '__SKIN2__/static/home/js/' 
+    ,version: 1.62
+    ,debug:false
+  }).use('tqk'); 
+</script>
+<script>
+;!function(){
+var form = layui.form
+ ,$ = layui.jquery;
+var isFirst = true;
+var issave=false;
+var ispage=1;
+var posname="pos_{$cid}_{$sort}_{$sokey}_{:CONTROLLER_NAME}";
+var htname="ht_{$cid}_{$sort}_{$sokey}_{:CONTROLLER_NAME}";
+var pgname="pg_{$cid}_{$sort}_{$sokey}_{:CONTROLLER_NAME}";
+var pgnum = parseInt(sessionStorage.getItem(pgname));
+if(pgnum>0){
+var pageIndex = pgnum;		
+}else{
+var pageIndex = 0;	
+}
+page = {num:1};
+var mescroll = new MeScroll("body", {
+            up: {
+            	    use:true,
+                auto:true,
+                callback: getListData,
+                isBounce: false,
+                lazyLoad:{
+                	use:true
+                },
+                hardwareClass:'mescroll-hardware',
+                	warpClass: "mescroll-upwarp",
+                clearEmptyId: "dataList",
+                htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
+                onScroll:function(mescroll){
+                <if condition="$isweixin">
+                	if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
+                 var pos=mescroll.getScrollTop();
+                 sessionStorage.setItem(posname,pos); 
+                 var datahtml =$('#dataList').html();
+                 sessionStorage.setItem(htname,datahtml);
+                 issave = true; 
+                 sessionStorage.setItem(pgname,ispage); 
+                 }
+                	</if>
+                 
+                }
+            }
+        });
+    function getListData(page){
+                getListDataFromNet(page.num+pageIndex,function(curPageData){
+                    mescroll.endByPage(20, {$page_size});
+                    setListData(curPageData);
+                }, function(){
+                    mescroll.endErr();
+                });
+            }
+    function getListDataFromNet(pageNum,successCallback,errorCallback) {
+                   ispage=pageNum;
+                    $.ajax({
+                        type: 'GET',
+                        url:"{:U('activity/pagelist',array('sort'=>$sort,'k'=>$sokey))}?page="+ pageNum,
+                        dataType: 'html',
+                        success: function(data){
+                            successCallback(data);
+                        },
+                        error: errorCallback
+                    });
+         
+            }
+    
+function setListData(curPageData){
+                var listDom=document.getElementById("dataList");
+                var liDom=document.createElement("div");
+                liDom.className = 'goods';  
+                liDom.innerHTML=curPageData;
+                listDom.appendChild(liDom);
+                
+<if condition="$isweixin">             
+ if(isFirst){ 
+ var tops = parseInt(sessionStorage.getItem(posname));
+ var htmldata = sessionStorage.getItem(htname);
+ if(htmldata){
+ $('#dataList').html(htmldata);
+ mescroll.scrollTo(tops,0);
+ }
+sessionStorage.removeItem(posname);
+sessionStorage.removeItem(htname);
+sessionStorage.removeItem(pgname);
+sessionStorage.clear();
+isFirst = false;
+ }
+ </if>
+ 
+ 
+}
+
+
+
+}();
+</script>
+<include file="Public:stat" />
+</body>
+</html>
+
+

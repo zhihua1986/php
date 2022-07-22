@@ -1,0 +1,46 @@
+	<footer class="m-tabbar tabbar-fixed">
+						<if condition="C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL')==2">
+						<a href="/" class="tabbar-item tabbar-active">
+						<else/>
+						<a href="/index.php/m" class="tabbar-item tabbar-active">
+						</if>
+						
+						<span class="tabbar-icon">
+							<i class="iconfont weui-tabbar__label tqk-shouye1"></i>
+						</span>
+						<span class="tabbar-txt">首页</span>
+					</a>
+					<a href="{:U('jiu/index')}" class="tabbar-item">
+						<span class="tabbar-icon">
+							<i class="iconfont weui-tabbar__label tqk-kuai1"></i>
+						</span>
+						<span class="tabbar-txt">9块9包邮</span>
+					</a>
+					<if condition="C('yh_openjd') eq 1">
+						<a href="{:U('jd/index')}{$trackurl}" class="tabbar-item">
+							<span class="tabbar-icon"> <i class="iconfont tqk-jingdong4"></i></span>
+							<span class="tabbar-txt">京东券</span>
+						</a>
+						<else />
+						<a href="{:U('top100/index')}" class="tabbar-item">
+							<span class="tabbar-icon"> <i class="iconfont tqk-jingdong4"></i></span>
+							<span class="tabbar-txt">热销榜</span>
+						</a>
+
+					</if>
+					<if condition="$openduoduo eq 1">
+						<a href="{:U('pdd/index')}{$trackurl}" class="tabbar-item">
+							<span class="tabbar-icon"> <i class="iconfont tqk-pinduoduo2"></i></span>
+							<span class="tabbar-txt">拼多多券</span>
+						</a>
+						<else />
+						<a href="{:U('brand/index')}{$trackurl}" class="tabbar-item">
+							<span class="tabbar-icon"> <i class="iconfont tqk-pinduoduo2"></i></span>
+							<span class="tabbar-txt">品牌券</span>
+						</a>
+					</if>
+					<a href="{:U('user/ucenter')}" class="tabbar-item">
+						<span class="tabbar-icon"> <i class="iconfont tqk-yonghu"></i></span>
+						<span class="tabbar-txt">我的</span>
+					</a>
+				</footer>

@@ -1,0 +1,63 @@
+<include file="Public:head_nosearch1" />
+		<!--header-->
+		<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+		    <div class="am-header-left am-header-nav">
+		        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>
+		    </div>
+		    <h1 class="am-header-title">品牌券</h1> 
+		</header>
+				<!--menu-->
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td>
+		<p align="center">
+		<img border="0" src="__STATIC__/wap/images/icon/tu-de.png" width="100%"></td>
+	</tr>
+</table>
+				<div class="listmenu-wrap">
+			        <div class="swiper-container listmenu">
+			            <div class="swiper-wrapper">
+			                <div class="swiper-slide"><a href="{:U('brand/index')}{$trackurl}" class="menu-item <if condition="$cateid eq ''"> active</if>">全部</a></div>
+			            	<volist name="brand_cate" id="cate">
+								<div class="swiper-slide"><a href="{:U('brand/index',array('cateid'=>$cate['id']))}{$trackurl}" class="menu-item <if condition="$cateid eq $cate['id']"> active</if>">{$cate.name}
+									</a>
+								</div>
+							</volist>
+			            </div>
+			        </div>
+			        <div class="swiper-button-next"><i class="iconfont tqk-jiantou1 maincolor"></i></div>
+			        <div class="cate"></div>
+			    </div>
+<div style="background:#402197;height:5px;"></div>
+				<div class="am-tab-panel am-fade am-in am-active">
+					<div class="mod">
+						<table>
+							<tr>
+								<volist name="list" id="vo" key="i" mod="3">
+									<td><a href="{:U('/cate/',array('k'=>$vo['brand']))}"><img src="{$vo.logo}" class="am-margin-bottom-xs" width="60%"/><p>{$vo.brand}</p></a></td>
+									<eq name="mod" value="2"></tr><tr></eq>
+								</volist>
+							</tr>
+						</table>
+						<div class="page am-margin-bottom-lg">
+							<if condition="$total_item gt 30">
+							{$page}
+							</if>
+						</div>
+					</div>
+				</div>
+<include file="Public:footer" />
+<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js,__STATIC__/wap/js/swiper.min.js"/>
+<script type="text/javascript">
+	$(function(){
+		var listmenuSwiper = new Swiper('.listmenu', {
+			slidesPerView : 'auto' ,
+			resistanceRatio : 0.7,
+			navigation: {
+			    nextEl: '.swiper-button-next'
+			}
+	    })
+	})
+</script>
+</body>
+</html>

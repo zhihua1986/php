@@ -1,0 +1,142 @@
+<include file="Public:header" />
+<!--SEO设置-->
+<style type="text/css">
+    .deploys{
+        display: none;
+    }
+</style>
+<div class="pad_lr_10">
+	<form id="info_form" action="{:u('seo/url')}" method="post">
+     <table width="100%" class="table_form">
+     	
+     	 <tr>
+            <th width="150">缓存类型 :</th>
+            <td>
+                <select name="cachetype" id="datatype">
+                    <option value="File" <if condition="$config['DATA_CACHE_TYPE'] eq 'File'">selected="selected"</if>>文件缓存</option>
+                    <option value="Memcached" <if condition="$config['DATA_CACHE_TYPE'] eq 'Memcached'">selected="selected"</if>> Memcached</option>
+                </select>
+                如何设置Memcached缓存？<a style="color: #0000FF;" target="_blank" href="https://www.tuiquanke.com/view/91252335357">点这里</a>
+            </td>
+        </tr>
+           <tr class="deploys2">
+            <th>Memcached服务器 :</th>
+            <td><input type="text" placeholder="如：127.0.0.1" name="memhost" class="input-text" size="10" value="{$config['MEMCACHED_HOST']}"></td>
+        </tr>
+        <tr class="deploys2">
+            <th>Memcached端口号 :</th>
+            <td><input type="text" placeholder="如：11211" name="memport" class="input-text" size="10" value="{$config['MEMCACHED_PORT']}"></td>
+        </tr>
+           <tr>
+            <th>缓存有效期 :</th>
+            <td><input type="text" placeholder="如：www" name="cachetime" class="input-text" size="10" value="{$config['DATA_CACHE_TIME']}"></td>
+        </tr>
+     	
+     	
+        <tr>
+            <th width="150">{:L('url_model')} :</th>
+            <td>
+                <select name="url_model">
+
+                    <option value="1" <if condition="$config['URL_MODEL'] eq 1">selected="selected"</if>> PathInfo模式</option>
+                    <option value="2" <if condition="$config['URL_MODEL'] eq 2">selected="selected"</if>> 伪静态模式 </option>
+                </select>
+                如果开启了伪静态建议启用子域名另外需要配置 <a style="color: #0000FF;" target="_blank" href="http://www.tuiquanke.com/article_view/2115">重写规则 </a>
+            </td>
+        </tr>
+        <tr>
+            <th>{:L('url_suffix')} :</th>
+            <td><input type="text" name="url_suffix" class="input-text" size="10" value="{$config.URL_HTML_SUFFIX}"></td>
+        </tr>
+       <tr style="display: none;">
+            <th>{:L('url_depr')} :</th>
+            <td><input type="text" name="url_depr" class="input-text" size="4" value="{$config.URL_PATHINFO_DEPR}"></td>
+        </tr>
+        <!--<tr>
+            <th>生成静态HTML :</th>
+            <td>
+                <input type="radio" name="url_html" class="input-text" value="true" <if condition="$config['CREATE_HTML_ON'] eq true">checked</if>> 是&nbsp;
+                <input type="radio" name="url_html" class="input-text" value="0" <if condition="$config['CREATE_HTML_ON'] eq false">checked</if> >&nbsp;否
+                <span style="color:grey;">商品详情页面生成HTML,避免下架后出现404。</span>
+                <label style="color: #F15134;">特别提示：服务器需要有足够的存储空间，否则不建议开启。</label>
+            </td>
+
+        </tr>-->
+        <tr>
+            <th>是否开启静态缓存 :</th>
+            <td>
+                <input type="radio" name="url_cache" class="input-text" value="true" <if condition="$config['HTML_CACHE_ON'] eq true">checked</if>> 是&nbsp;
+                <input type="radio" name="url_cache" class="input-text" value="0" <if condition="$config['HTML_CACHE_ON'] eq false">checked</if> >&nbsp;否
+                <span style="color:grey;">建议开启此功能。可以有效提升网页的访问速度</span>
+                <label style="color: #F15134;">特别提示：开启后页面数据每30分钟更新一次，如果页面数据没有变化等30分钟后再看。</label>
+            </td>
+
+        </tr>
+        <tr>
+            <th>是否开启子域名 :</th>
+            <td>
+                <input type="radio" name="url_deploy" class="input-text url_deploy_checked"  value="1" <if condition="$config['APP_SUB_DOMAIN_DEPLOY'] eq 1">checked</if>>&nbsp;是
+                <input type="radio" name="url_deploy" class="input-text url_deploy_unchecked" value="0" <if condition="$config['APP_SUB_DOMAIN_DEPLOY'] eq 0">checked</if>>&nbsp;否
+            </td>
+        </tr>
+
+        <tr class="deploys">
+            <th>电脑域名 :</th>
+            <td><input type="text" placeholder="如：www" name="c_prefix" class="input-text" size="10" value="{$config.0}"></td>
+        </tr>
+        <tr class="deploys">
+            <th>手机域名 :</th>
+            <td><input type="text" placeholder="如：m" name="m_prefix" class="input-text" size="10" value="{$config.2}"></td>
+        </tr>
+        <tr class="deploys">
+            <th>后台域名 :</th>
+            <td><input type="text" placeholder="如：admin" name="h_prefix" class="input-text" size="10" value="{$config.1}"></td>
+        </tr>
+
+        <tr>
+        	<th></th>
+        	<td><input type="hidden" name="menuid"  value="{$menuid}"/><input type="submit" class="smt mr10" name="do" value="{:L('submit')}"/></td>
+        </tr>
+    </table>
+</form>
+</div>
+<include file="Public:footer" />
+<script type="text/javascript">
+$(function(){
+    var url_deploy = '{$config.APP_SUB_DOMAIN_DEPLOY}';
+    if(url_deploy!=0){
+        $('.deploys').show();
+    }  
+
+    $('.url_deploy_checked').click(function(){
+        $('.deploys').show();
+    })
+    $('.url_deploy_unchecked').click(function(){
+        $('.deploys').hide();
+    })
+    
+    var datatype = $("#datatype").val();
+    if(datatype == 'Memcached'){
+    	 $('.deploys2').show();
+    }else{
+    	 $('.deploys2').hide();
+    }
+    
+    $('#datatype').change(function(){
+    	
+    	var datatype = $("#datatype").val();
+    	
+    	if(datatype == 'Memcached'){
+    	 $('.deploys2').show();
+    }else{
+    	 $('.deploys2').hide();
+    }
+    	
+    	
+    })
+    
+    
+})
+</script>
+</body>
+</html>

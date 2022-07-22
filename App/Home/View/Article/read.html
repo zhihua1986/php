@@ -1,0 +1,164 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+		<div class="layui-row">
+						<div class="layui-col-xs9">
+							<div class="tqk-bg-white main-index">
+								<div class="layui-tab layui-tab-brief">
+									<div class="layui-tab-title tqk-pl-20 tqk-pt-20">
+<span class="layui-breadcrumb">
+  <a href="/">首页</a>
+  <a href="{:U('article/index/',array('cateid'=>$info['cate_id']))}">{$info.catename}</a>
+  <a><cite>{$info.title}</cite></a>
+</span>
+</div>
+
+									<div class="layui-tab-content" style="padding: 15px;">
+										<div class="layui-tab-item layui-show">
+
+<div class="tqk-text-c tqk-pb-20">
+								<h3 class="tqk-f-18 tqk-pt-15 tqk-pb-10">{$info.title}</h3>
+								<p class="tqk-pb-20">{:date('Y-m-d',$info['add_time'])}</p>
+								<hr />
+							</div>
+							<div class="con">
+								{$info.info}
+								
+								
+							<div class="tqk-text-c tqk-pt-20 tqk-pb-20">	<a href="javascript:history.back(-1)" class="back">返回>></a></div>
+				
+							</div>
+							<div class="post">
+                            <if condition="$next_article neq null">
+											<p class="tqk-pb-15"><a href="<if condition="C('URL_MODEL') eq 2">{:$next_article['url']}<else/>{:U('/article/read',array('id'=>$next_article['id']))}</if>"><span class="c-999 mr-10">上一篇：</span>{$next_article.title}</a></p>
+										<else />
+												<p class="tqk-pb-15"><a><span class="c-999 mr-10">上一篇：</span>到头了</a></p>
+										</if>
+										<if condition="$previous_article neq null">
+											<p>	<a href="<if condition="C('URL_MODEL') eq 2">{:$previous_article['url']}<else/>{:U('/article/read',array('id'=>$previous_article['id']))}</if>"><span class="c-999 mr-10">下一篇：</span>{$previous_article.title}</a></p>
+										<else />
+											<p>	<a><span class="c-999 mr-10">下一篇：</span>到底了</a></p>
+										</if>
+							</div>
+
+
+
+										</div>
+										
+										
+										
+							
+									</div>
+
+								</div>
+<div class="layui-clear tqk-pd-10">
+	
+<div class="tqk-mt-15">
+	<div id="yw0" class="pager">
+	{$page}
+	</div>
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+	
+</div>	
+							</div>
+
+						</div>
+						
+						<div class="layui-col-xs3">
+
+
+							<div class="tqk-bg-white tqk-ml-10 tqk-mt-10 layui-tab-brief">
+								
+								
+								<ul class="layui-tab-title">
+									<li class="layui-this">相关商品推荐</li>
+									
+								</ul>
+<div class="bestseller">
+<volist name="sellers" id="vo">
+<div class="tqk-f-l best-left">
+<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><img width="90" height="90" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.pic_url}_200x200"/></a></div>
+<div class="tqk-f-l best-right">
+<div class="overflow tqk-f-12">
+<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><i class="<if condition="$vo.shop_type eq 'B'">tm-ico<else/>tb-ico</if>"></i>{$vo.title}</a>
+</div>
+<div>
+		<span class="dec tqk-pl-10">原价￥{$vo.price|formatprice} </span> <span class="num tqk-pl-10">{$vo.volume}</span> 件
+		</div>
+		<div>
+		<label class="coupon-price">{$vo.quan}元券</label> <span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span>
+		</div>
+</div>	
+<div class="tqk-pb-20 layui-clear"></div>
+</volist>
+</div>
+
+<if condition="$toutiao">
+	<ul class="layui-tab-title">
+									<li class="layui-this">最新文章</li>
+									
+								</ul>
+								<div class="layui-tab-content" style="padding: 10px;">
+								<div class="layui-tab-item layui-show tqk-pb-15">
+									<ul class="tqk-ul-list">
+										<volist name="toutiao" id="vo" key="i">
+											<li class="layui-elip">
+												<a href="{$vo.linkurl}{$trackurl}">▸ {$vo.title}</a>
+											</li>
+										</volist>
+								
+									</ul>
+								</div>
+								</div>
+</if>
+					<if condition="$topic">
+					<ul class="layui-tab-title">
+					<li class="layui-this">您可能感兴趣的标签</li>
+							
+						</ul>
+						<div class="layui-tab-content" style="padding: 10px;">
+						<div class="layui-tab-item layui-show tqk-pb-15">
+						<volist name="topic" id="vo">
+						<a class="layui-btn layui-btn-radius layui-btn-primary layui-btn-sm mt-10 tqk-mb-10" href="{$vo.url}" title="{$vo.name}">{$vo.name}</a>
+						</volist>
+						</div>
+						</div>
+					</if>		
+
+				<div class="layui-clear"></div>		
+							</div>
+
+
+						</div>
+
+				
+					</div>
+
+
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+</body>
+</html>

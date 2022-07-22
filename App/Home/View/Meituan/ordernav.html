@@ -1,0 +1,20 @@
+<div class="layui-btn-group tqk-pt-5 tqk-pb-5 tqk-pr-5 tqk-f-r">
+   <a href="{:U('user/myorder')}" class="layui-btn">淘宝订单</a>
+   <if condition="C('yh_openjd') eq 1">
+   <a href="{:U('jindong/jdorder')}" class="layui-btn ">京东订单</a>
+   </if>
+    <if condition="C('yh_openduoduo') eq 1">
+   <a href="{:U('duoduo/duoduoorder')}" class="layui-btn ">拼多多订单</a>
+      </if>
+    <if condition="C('yh_openmt') eq 1">
+   <a href="{:U('meituan/order')}" class="layui-btn ">美团订单</a>
+      </if>
+	<if condition="C('yh_dmappkey') gt 1">
+	<a href="{:U('third/order')}" class="layui-btn ">其它订单</a>
+	   </if>
+  </div>	
+  <div class="tqk-ml-5 tqk-mr-5">
+   <button type="button" class="layui-bg-black  layui-btn-radius layui-btn layui-btn-primary layui-btn-xs layui-btn-fluid">
+  温馨提示：付款成功后，订单信息需要1-15分钟才可以同步到哟！
+   </button>
+  </div>	

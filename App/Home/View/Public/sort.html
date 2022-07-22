@@ -1,0 +1,8 @@
+<div class="sorting cl fd_mz">
+					<div class="sorting-s cl">
+						<a href="{:U("/cate/",array('sort'=>'new','cid'=>$cid))}?k={:urldecode($k)}" <if condition='$txt_sort eq "new"'>class="c-red"</if> data-value="">综合排序</a>
+						<a href="{:U("/cate/",array('sort'=>'hot','cid'=>$cid))}?k={:urldecode($k)}" class="sort <if condition='$txt_sort eq "hot"'>c-red</if> " data-value="hot">销量排序</a>
+						<a href="{:U("/cate/",array('sort'=>'rate','cid'=>$cid))}?k={:urldecode($k)}" class="sort <if condition='$txt_sort eq "rate"'>c-red</if> " data-value="rate">优惠金额排序</a>
+						<a href="{:U("/cate/",array('sort'=>'price','cid'=>$cid))}?k={:urldecode($k)}" class="sort <if condition='$txt_sort eq "price"'>c-red</if> " data-value="price">券后价排序</a>
+					</div>
+			</div>

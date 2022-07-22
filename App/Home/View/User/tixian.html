@@ -1,0 +1,142 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_725800_ybemhderilq.css" />
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+
+
+	<div class="layui-row">
+    <div class="layui-col-xs2">
+     <include file="nav"/>
+    </div>
+    
+     <div class="layui-col-xs10">
+     
+     		<div class="mianbar">
+				
+				<if condition="C('yh_payment_wechat') eq 1">
+						<blockquote class="layui-elem-quote">如果您关注过我们的公众号，提现金额会优先转入您的微信零钱包。</blockquote>
+						</if>	
+				
+					<div class="taobaonum tqk-text-c">
+		
+     <legend class="tqk-mb-40"></legend>
+						
+<form class="layui-form tqk-pr-20" action="">
+	
+<div class="layui-form-item">
+    <label class="layui-form-label">可提现金额</label>
+    <div class="layui-form-mid layui-word-aux tqk-c-red">
+     {$user.money}元 
+    </div>
+  </div>
+	
+<div class="layui-form-item">
+    <label class="layui-form-label">提现方式</label>
+   <div class="layui-word-aux tqk-text-l">
+	   <if condition="C('yh_payment_wechat') eq 1">
+	        <input type="radio" id="wechat" lay-filter="method" name="method" <if condition="C('yh_payment_alipay') eq 0"> checked="checked"</if> value="1" title="微信" >
+		</if>
+		<if condition="C('yh_payment_alipay') eq 1">
+	        <input type="radio" id="alipay" lay-filter="method" name="method" value="2" checked="checked" title="支付宝" >
+	</if>
+	</div>
+  </div>
+  
+<div class="layui-form-item J_closed_reason" style="display: none;">
+    <label class="layui-form-label">真实姓名</label>
+     <if condition="$user['realname']">
+      <div class="layui-form-mid layui-word-aux">
+	{$user.realname}	
+	</div>
+	<else/>
+	  <div class="layui-input-block">
+	<input type="text" autocomplete="off" lay-verType='tips' class="layui-input" name="name" placeholder="请输入真实姓名（很重要，提交后不可修改）" />
+	 </div>
+     </if>
+     
+  </div>
+  
+ <div class="layui-form-item J_closed_reason" style="display: none;">
+    <label class="layui-form-label" id="payname">支付宝账号</label>
+	  <div class="layui-input-block">
+	<input type="text" autocomplete="off" value="{$user.alipay}" lay-verType='tips' datatype="m|e" class="layui-input"  name="allpay" placeholder="请输入账号" />
+	 </div>
+     
+  </div>
+  
+  
+   <div class="layui-form-item">
+    <label class="layui-form-label">提现金额</label>
+     <div class="layui-input-inline">
+     <input type="text" class="layui-input" lay-verType='tips' required  lay-verify="required|number" name="money" placeholder="请输入提现金额" />	
+     </div>
+      <div class="layui-form-mid layui-word-aux">
+<label class="gray">单笔提现金额最小为{:C('yh_Quota')}元</label>
+	</div>
+     
+  </div>
+  
+     <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+     <div class="layui-input-block">
+     <textarea class="layui-textarea" name="content"></textarea>
+     </div>
+     {__TOKEN__}
+  </div>
+		<button lay-submit lay-filter="Tqktixian" class="layui-btn layui-btn-danger">确认提现</button>
+						</form>
+					</div>
+					
+				</div>
+			
+     
+    </div>
+    
+   </div>
+	
+
+	
+
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+<include file="Public:tqk-foot" />
+<script type="text/javascript">
+	layui.use(['layer'], function(){
+	 $ = layui.jquery;
+	 var layer = layui.layer,
+	  form = layui.form;
+	  
+	 if($('#alipay').is(':checked')){
+		 $('.J_closed_reason').fadeIn(); 
+	 }
+	form.on('radio(method)', function (data) {
+	    if( data.value == 1){
+	        $('#payname').html('微信账号');
+			 $('.J_closed_reason').fadeOut();
+	    }else{
+	　　　　　  $('#payname').html('支付宝账号');
+			 $('.J_closed_reason').fadeIn();
+	　　 }
+	});
+	
+	})
+	
+</script>
+</body>
+</html>
