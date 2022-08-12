@@ -60,14 +60,19 @@ class ItemAction extends BaseAction{
         }
 		
 		if($this->memberinfo && $item['ems']==1){
-		$R = A("Records");
-		$Arr = explode('-',$item['num_iid']);
-		$itemId = $Arr[1]?$Arr[1]:$item['num_iid'];
-		$data= $R ->content($itemId,$this->memberinfo['id']); 
-		$Repid = $data['pid'];
-		$item['quanurl'] = $this->Tbconvert($item['num_iid'],$Repid,$item['Quan_id']);		
+		// $R = A("Records");
+		// $Arr = explode('-',$item['num_iid']);
+		// $itemId = $Arr[1]?$Arr[1]:$item['num_iid'];
+		// $data= $R ->content($itemId,$this->memberinfo['id']); 
+		// $Repid = $data['pid'];
+		// $item['quanurl'] = $this->Tbconvert($item['num_iid'],$Repid,$item['Quan_id']);		
+		// $item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
+		// $this->assign('act', 'yes');
+		
+		$item['quanurl'] = $this->Tbconvert($item['num_iid'],$this->memberinfo,$item['Quan_id']);
 		$item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
 		$this->assign('act', 'yes');
+		
 		}
 		
 

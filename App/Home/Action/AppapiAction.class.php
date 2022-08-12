@@ -729,10 +729,14 @@ public function topic(){
         $artmod = new articleModel();
         $usermod = new userModel();
         $notice=$artmod->cache(true, 10 * 60)->where('cate_id=2')->field('id,title')->limit(5)->select();
-        $userinfo = $usermod->field('id,money,oid,avatar,score,invocode,tbname,webmaster_pid,webmaster,webmaster_rate,phone,qq,wechat,phone,nickname,realname,alipay,tb_open_uid,jd_pid')->where(['openid'=>$openid])->find();
+        $userinfo = $usermod->field('special_id,id,money,oid,avatar,score,invocode,tbname,webmaster_pid,webmaster,webmaster_rate,phone,qq,wechat,phone,nickname,realname,alipay,tb_open_uid,jd_pid')->where(['openid'=>$openid])->find();
 		
 		if($userinfo){
 		    $userinfo['jd_pid'] = $userinfo['jd_pid']?$userinfo['jd_pid']:$this->CreateJdPid($userinfo);
+			
+		if($userinfo['special_id'] < 2 ){ //会员管理ID
+		$this->Getspecial();
+		}
 		
         if (!$userinfo['invocode'] && $userinfo['id']) {
             $codes=$this->invicode($userinfo['id']);
@@ -1075,13 +1079,18 @@ public function topic(){
 	
 	$pid = trim(C('yh_taobao_pid'));
 	
-		if($uid && $res['webmaster']!=1 && !$res['webmaster_pid']){
-			$R = A("Records");
-			$Arr = explode('-',$this->params['num_iid']);
-			$itemId = $Arr[1]?$Arr[1]:$this->params['num_iid'];
-			$data= $R ->content($itemId,$uid); 
-			$pid = $data['pid'];
-		}
+		// if($uid && $res['webmaster']!=1 && !$res['webmaster_pid']){
+		// 	$R = A("Records");
+		// 	$Arr = explode('-',$this->params['num_iid']);
+		// 	$itemId = $Arr[1]?$Arr[1]:$this->params['num_iid'];
+		// 	$data= $R ->content($itemId,$uid); 
+		// 	$pid = $data['pid'];
+		// }
+		
+		$quanurl = $this->Tbconvert($this->params['num_iid'],$res,$this->params['quanid']);
+		
+		 $this->Exitjson(200, '成功', $quanurl);
+		/*
         $apiurl=$this->tqkapi.'/gconvert';
         $apidata=[
             'tqk_uid'=>$this->tqkuid,
@@ -1104,7 +1113,7 @@ public function topic(){
         }elseif($res['item_url']){
 			$quanurl=$res['item_url'];
 			$this->Exitjson(200, '成功', $quanurl);
-		}
+		}*/
 
         $this->Exitjson(400, '程序异常');
     }

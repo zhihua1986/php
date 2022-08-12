@@ -37,8 +37,8 @@
                    <input name="agentid" type="text" placeholder="代理用户的ID" class="input-text" size="10" value="{:$_GET['agentid']}" />
                    
                     &nbsp;&nbsp;
-                   渠道关系ID:
-                   <input name="relation_id" type="text" placeholder="渠道关系ID" class="input-text" size="10" value="{:$_GET['relation_id']}" />
+                   会员管理ID:
+                   <input name="special_id" type="text" placeholder="会员管理ID" class="input-text" size="10" value="{:$_GET['special_id']}" />
                    &nbsp;
                     <input type="submit" name="search" class="btn" value="搜索" />
                  </form>
@@ -70,7 +70,7 @@
       &nbsp;&nbsp;
      <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'12','scene'=>1))}" data-title="同步常规付款订单" data-id="12" data-width="480" data-height="130" style="color: #0000FF;">API同步常规付款订单</a>
            &nbsp;&nbsp;
-     <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'12','scene'=>2))}" data-title="同步渠道付款订单" data-id="12" data-width="480" data-height="130" style="color: #0000FF;">API同步渠道付款订单</a>
+     <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'12','scene'=>3))}" data-title="同步会员付款订单" data-id="12" data-width="480" data-height="130" style="color: #0000FF;">API同步会员付款订单</a>
            &nbsp;&nbsp;
      <a href="javascript:;" class="J_showdialog btn" data-uri="{:u('order/sync', array('type'=>'3','scene'=>1))}" data-title="同步已结算订单" data-id="3" data-width="480" data-height="130" style="color: #0000FF;">API同步已结算订单</a>
        &nbsp;&nbsp;

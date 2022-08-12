@@ -89,7 +89,6 @@
 <if condition="$articlelist">
 <div style="background:#ffffff;height:5px;"></div>
 <div style="background:#F8F8F8;height:8px;"></div>
-<!--滚动消息-->
 <div class="aui-container">
 <div class="aui-page">
 <div class="aui-page-my">
@@ -97,9 +96,8 @@
 <a href="{:U('article/index')}"><img src="https://img.alicdn.com/imgextra/i2/2053469401/O1CN012JJhrsTXsatcg9H-2053469401.gif" class="gg"></a> 
  	<div id="newslist">
 <ul id="contain">
-	<volist name="articlelist" id="vo" key="i">
-		<li><a href="{$vo.linkurl}"><img src="{$vo.pic}">&nbsp;&nbsp;{$vo.title}</a></li>
-	</volist>
+ <volist name="articlelist" id="vo" key="i">
+<li><a href="{$vo.linkurl}"><img src="{$vo.pic}">&nbsp;&nbsp;{$vo.title}</a></li></volist>
 </ul>
                    </div>
                </div>   

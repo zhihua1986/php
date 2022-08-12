@@ -43,7 +43,7 @@ class TaskAction extends BaseAction
         }
         $task = array(
             array('value' => 'TimedPush', 'query' => '/index.php?c=task&a=TimedPush&key=' . $this->accessKey, 'interval' => 60, 'status' => $Push ? $Push : 0),
-            array('value' => 'OrderBind', 'query' => '/index.php?c=task&a=OrderBind&key=' . $this->accessKey, 'interval' => 90, 'status' => 1),
+          //  array('value' => 'OrderBind', 'query' => '/index.php?c=task&a=OrderBind&key=' . $this->accessKey, 'interval' => 90, 'status' => 1), 自动分配pid关联用户
             array('value' => 'DelRecords', 'query' => '/index.php?c=task&a=DelRecords&key=' . $this->accessKey, 'interval' => 3500, 'status' => 1),
             array('value' => 'Tbcollect', 'query' => '/index.php?c=task&a=Tbcollect&key=' . $this->accessKey, 'interval' => 200, 'status' => 1),
             array('value' => 'Jdcollect', 'query' => '/index.php?c=task&a=Jdcollect&key=' . $this->accessKey, 'interval' => 240, 'status' => $jdstatus ? $jdstatus : 0),
@@ -66,7 +66,7 @@ class TaskAction extends BaseAction
             array('value' => 'TqkOrderPay', 'query' => '/index.php?c=task&a=TqkOrderPay&key=' . $this->accessKey, 'interval' => 480, 'status' => $ThirdParty ? $ThirdParty : 0),
             //array('value'=>'TqkOrderSettle','query'=>'/index.php?c=task&a=TqkOrderSettle&key='.$this->accessKey,'interval'=>1080,'status'=>$ThirdParty?$ThirdParty:0),
             //array('value'=>'TqkOrderFail','query'=>'/index.php?c=task&a=TqkOrderFail&key='.$this->accessKey,'interval'=>960,'status'=>$ThirdParty?$ThirdParty:0),
-            array('value' => 'TqkOrderScene', 'query' => '/index.php?c=task&a=TqkOrderScene&key=' . $this->accessKey, 'interval' => 900, 'status' => $ThirdParty ? $ThirdParty : 0),
+            array('value' => 'TqkOrderScene', 'query' => '/index.php?c=task&a=TqkOrderScene&key=' . $this->accessKey, 'interval' => 180, 'status' => $ThirdParty ? $ThirdParty : 0),
             array('value' => 'JdOrderPay', 'query' => '/index.php?c=task&a=JdOrderPay&key=' . $this->accessKey, 'interval' => 300, 'status' => $jdstatus ? $jdstatus : 0),
             array('value' => 'JdReceipt', 'query' => '/index.php?c=task&a=JdReceipt&key=' . $this->accessKey, 'interval' => 960, 'status' => $jdstatus ? $jdstatus : 0),
         );
@@ -855,9 +855,10 @@ class TaskAction extends BaseAction
         $mod = new orderModel();
         $stime = strtotime("-30 day");
         if ($AdzoneId) {
-            $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.webmaster_pid=b.relation_id AND b.relation_id>0) where b.uid=0 and b.ad_id<>' . $AdzoneId . ' and b.settle=0 and b.add_time>' . $stime;
-        } else {
-            $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.webmaster_pid=b.relation_id AND b.relation_id>0) where b.uid=0 and b.settle=0 and b.add_time>' . $stime;
+           // $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.webmaster_pid=b.relation_id AND b.relation_id>0) where b.uid=0 and b.ad_id<>' . $AdzoneId . ' and b.settle=0 and b.add_time>' . $stime;
+			$sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.special_id=b.special_id AND b.special_id>2) where b.uid=0 and b.ad_id<>' . $AdzoneId . ' and b.settle=0 and b.add_time>' . $stime;
+		} else {
+            $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.special_id=b.special_id AND b.special_id>2) where b.uid=0 and b.settle=0 and b.add_time>' . $stime;
         }
         $Model = M();
         $list_child = $Model->cache(true, 5 * 60)->query($sql);
@@ -1169,17 +1170,16 @@ class TaskAction extends BaseAction
             exit(json_encode($json, JSON_UNESCAPED_UNICODE));
         }
     }
-    public function TqkOrderScene()
+    public function TqkOrderScene() //同步会员管理订单
     {
         $this->timeout();
         $this->check_key();
-        $time = NOW_TIME;
-        $starttime = $time - 2400;
-        $endtime = $time - 1200;
-        $start_time = date('Y-m-d H:i:s', $starttime);
-        $end_time = date('Y-m-d H:i:s', $endtime);
+		$time = NOW_TIME;
+		$starttime = $time - 1200;
+		$start_time = date('Y-m-d H:i:s', $starttime);
+		$end_time = date('Y-m-d H:i:s', $time);
         $t = I('t');
-        $condition = array('query_type' => 2, 'start_time' => $start_time, 'end_time' => $end_time, 'order_scene' => 2, 'time' => NOW_TIME . $t, 'tqk_uid' => $this->tqkuid);
+        $condition = array('query_type' => 4, 'start_time' => $start_time, 'end_time' => $end_time, 'order_scene' => 3, 'time' => NOW_TIME . $t, 'tqk_uid' => $this->tqkuid);
         $token = $this->create_token(trim(C('yh_gongju')), $condition);
         $condition['token'] = $token;
         $url = $this->tqkapi . '/getorder';
@@ -1204,12 +1204,12 @@ class TaskAction extends BaseAction
         $c->appkey = $appkey;
         $c->secretKey = $appsecret;
         $req = new \TbkOrderDetailsGetRequest();
-        $req->setQueryType("2");
+        $req->setQueryType("4");
         $req->setPageSize("100");
         //$req->setTkStatus("12");
         $req->setStartTime(date('Y-m-d H:i:s', $starttime));
         $req->setEndTime(date('Y-m-d H:i:s', $endtime));
-        $req->setOrderScene("2");
+        $req->setOrderScene("3"); //会员管理
         $resp = $c->execute($req);
         $resp = json_decode(json_encode($resp), true);
         $this->Log('Tborderscene', $resp);
@@ -1223,12 +1223,12 @@ class TaskAction extends BaseAction
         $apppid = explode('_', $apppid);
         $AdzoneId = $apppid[2];
         $val = $datares;
-        if ((3 == $val['tk_status'] || 12 == $val['tk_status']) && $val['alipay_total_price'] > 0 && $val['site_id'] == $AdzoneId && $datares) {
+        if ($val['site_id'] == $AdzoneId && $datares) {
             $item = array();
             $count = 0;
             $item['orderid'] = $val['trade_id'];
-            $item['add_time'] = strtotime($val['tb_paid_time']);
-            $item['status'] = 1;
+            $item['add_time'] = $val['tb_paid_time']?strtotime($val['tb_paid_time']):strtotime($val['modified_time']);
+            $item['status'] = $val['tk_status'];
             $item['price'] = $val['alipay_total_price'];
             $item['goods_iid'] = $val['item_id'];
             $item['goods_title'] = $val['item_title'];
@@ -1239,7 +1239,7 @@ class TaskAction extends BaseAction
             $item['ad_id'] = $val['adzone_id'];
             $item['click_time'] = strtotime($val['click_time']);
             $item['income'] = $val['pub_share_pre_fee'];
-            $item['ad_name'] = $val['adzone_name'] ? $val['adzone_name'] : '渠道订单';
+            $item['ad_name'] = $val['adzone_name'] ? $val['adzone_name'] : '会员订单';
             $item['goods_rate'] = $val['total_commission_rate'] * 100;
             $item['oid'] = substr($val['trade_id'], -6, 6);
             $item['leve1'] = trim(C('yh_bili1'));
@@ -1254,10 +1254,10 @@ class TaskAction extends BaseAction
             $item = array();
             $count = 0;
             foreach ($datares as $val) {
-                if ((3 == $val['tk_status'] || 12 == $val['tk_status']) && $val['site_id'] == $AdzoneId && $val['alipay_total_price'] > 0) {
+                if ($val['site_id'] == $AdzoneId) {
                     $item['orderid'] = $val['trade_id'];
-                    $item['add_time'] = strtotime($val['tb_paid_time']);
-                    $item['status'] = 1;
+                    $item['add_time'] = $val['tb_paid_time']?strtotime($val['tb_paid_time']):strtotime($val['modified_time']);
+                    $item['status'] = $val['tk_status'];
                     $item['price'] = $val['alipay_total_price'];
                     $item['goods_iid'] = $val['item_id'];
 					$item_id = explode('-',$val['item_id']);
@@ -1268,7 +1268,7 @@ class TaskAction extends BaseAction
                     $item['ad_id'] = $val['adzone_id'];
                     $item['click_time'] = strtotime($val['click_time']);
                     $item['income'] = $val['pub_share_pre_fee'];
-                    $item['ad_name'] = $val['adzone_name'] ? $val['adzone_name'] : '渠道订单';
+                    $item['ad_name'] = $val['adzone_name'] ? $val['adzone_name'] : '会员订单';
                     $item['goods_rate'] = $val['total_commission_rate'] * 100;
                     $item['oid'] = substr($val['trade_id'], -6, 6);
                     $item['leve1'] = trim(C('yh_bili1'));

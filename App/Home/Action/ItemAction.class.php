@@ -93,12 +93,15 @@ class ItemAction extends BaseAction
 		
 		
 		if($this->memberinfo && $item['ems']==1){
+			
+		/*
 		$R = A("Records");
 		$Arr = explode('-',$item['num_iid']);
 		$itemId = $Arr[1]?$Arr[1]:$item['num_iid'];
 		$res= $R ->content($itemId,$this->memberinfo['id']); 
 		$Repid = $res['pid'];
-		$item['quanurl'] = $this->Tbconvert($item['num_iid'],$Repid,$item['Quan_id']);	
+		*/
+		$item['quanurl'] = $this->Tbconvert($item['num_iid'],$this->memberinfo,$item['Quan_id']);	
 		$item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
 		$this->assign('act', 'yes');
 		}
@@ -161,11 +164,12 @@ class ItemAction extends BaseAction
             ])->save(['quankouling'=>$kouling, 'last_time'=>time()]);
         }
 
-        $RelationId = $this->memberinfo['webmaster_pid'] ? $this->memberinfo['webmaster_pid'] : $this->GetTrackid('t_pid');
-        if ($RelationId && $item['ems']==1) {
-            $item['quanurl']=$item['quanurl'].'&relationId='.$RelationId;
-            $item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
-        }
+        // $RelationId = $this->memberinfo['webmaster_pid'] ? $this->memberinfo['webmaster_pid'] : $this->GetTrackid('t_pid');
+        // if ($RelationId && $item['ems']==1) {
+        //     $item['quanurl']=$item['quanurl'].'&relationId='.$RelationId;
+        //     $item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
+        // }
+		
         $this->assign('item', $item);
         $this->assign('items_list', $items);
         $this->assign('cate_list', $cate_list); // 分类

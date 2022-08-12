@@ -24,7 +24,7 @@ $sort	= I('sort', 'new');
 $start = $size * $page;
 $this->assign('txt_sort', $sort);
 $this->assign('cid', $cid);
-$key    = trimall(I("k"));
+$key    = I("k");
 $key    = urldecode($key);
 $where['ems'] = 1;
 $where['status'] = 'underway';
@@ -52,7 +52,6 @@ if(!$linkid && !$kouling){
 	}
 }
 if(($kouling || $linkid) && strstr($key, 'http') && !$this->hasEmoji($key)){
-
  $apiurl=$this->tqkapi.'/so';
  $data=array(
  'key'=>$this->_userappkey,

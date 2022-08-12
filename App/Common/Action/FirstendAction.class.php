@@ -42,21 +42,80 @@ class FirstendAction extends TopAction
     }
 	
 	
-	protected function Tbconvert($num_iid,$pid,$Quan_id=''){
+	protected function Getspecial()
+	{
+	    $url=$this->tqkapi."/getrelationid";
+	    $data=[
+	        //'key'=>$this->_userappkey,
+			//'tqk_uid'=>$this->tqkuid,
+	        'time'=>time(),
+			'info_type'=>2,
+	        'tqk_uid'=>	$this->tqkuid,
+	    ];
+	    $token=$this->create_token(trim(C('yh_gongju')), $data);
+	    $data['token']=$token;
+	    $data=$this->_curl($url, $data, true);
+	    $result=json_decode($data, true);
+	    if ($result['code'] == 200) {
+	        $Data = [];
+	        $Mod = new UserModel();
+	        if ($result['result']['external_id'] == $this->memberinfo['id']) {
+	            $Data = [
+	                'special_id' =>$result['result']['special_id'],
+	            ];
+	        } else {
+	            foreach ($result['result'] as $k=>$v) {
+	                if ($v['external_id'] == $this->memberinfo['id']) {
+	                    $Data = [
+	                        'special_id' =>$v['special_id'],
+	                    ];
+	                    break;
+	                }
+	            }
+	        }
+	
+	        if ($Data) {
+	            $res=$Mod->where(['id'=>$this->memberinfo['id']])->save($Data);
+	            if ($res) {
+	                $this->visitor->wechatlogin($this->memberinfo['openid']); //更新用户信息
+	                $json= ['status'=>1];
+	            }
+	        } else {
+	            return false;
+	        }
+	    } else {
+	        return false;
+	    }
+		
+		return true;
+		
+	}
+	
+	protected function Tbconvert($num_iid,$memberinfo=array(),$Quan_id=''){
 		$apiurl=$this->tqkapi.'/gconvert';
 		$apidata=[
 		    'tqk_uid'=>$this->tqkuid,
 		    'time'=>time(),
-			'pid'=>$pid,
 		    'good_id'=>''.$num_iid.''
 		];
+		$pid = trim(C('yh_taobao_pid'));
+		if($memberinfo && $memberinfo['special_id'] < 2 ){
+			$apidata['ExternalId'] = $memberinfo['id'];
+		}elseif($memberinfo){
+			$apidata['SpecialId'] = $memberinfo['special_id'];
+		}
 		$token=$this->create_token(trim(C('yh_gongju')), $apidata);
 		$apidata['token']=$token;
 		$res= $this->_curl($apiurl, $apidata, false);
 		$res = json_decode($res, true);
 		$me=$res['me'];
 		
-		if ($res && \strlen($res['me'])>5){
+		if($res && $memberinfo && $memberinfo['special_id'] < 2 ){
+			
+			$quanurl =$res['quanurl'];	
+			return $quanurl;
+		
+		}elseif($res && \strlen($res['me'])>5){
 		    if ($Quan_id){
 				$activityId =$Quan_id ? '&activityId='.$Quan_id : '';
 		        $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&itemId='.$num_iid.'&pid='.$pid.'&af=1';

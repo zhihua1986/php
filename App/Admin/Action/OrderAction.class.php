@@ -104,6 +104,10 @@ public function delete_f()
             $map['relation_id'] = I('relation_id','','trim');
         }
 		
+		if($_GET['special_id']){
+		    $map['special_id'] = I('special_id','','trim');
+		}
+		
         return $map;
     }
 	
@@ -331,7 +335,9 @@ $where['uid']=I('id');
    if(I('relation_id')){
      $where['relation_id'] = I('relation_id');
   }
-  
+  if(I('special_id')){
+     $where['special_id'] = I('special_id');
+  }
  
 if(I('agentid')){
 $where['_string'] ='(fuid = '.trim(I('agentid')).')  OR ( guid = '.trim(I('agentid')).')';
@@ -478,7 +484,7 @@ $req->setQueryType("2");
 $req->setPageSize("100");
 $req->setStartTime(date('Y-m-d H:i:s',$starttime));
 $req->setEndTime(date('Y-m-d H:i:s',$starttime+1200));
-$req->setOrderScene("2");
+$req->setOrderScene("3");
 $resp = $c->execute($req);
 $resp = json_decode(json_encode($resp), true);
 $datares=$resp['data']['results']['publisher_order_dto'];

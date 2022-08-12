@@ -425,6 +425,11 @@ class UserAction extends BaseAction
                 $this->assign('invicode', $codes);
             }
         }
+		
+		if($this->visitor->get('special_id') < 2 ){
+		$this->Getspecial();
+		}
+		
         $tbname=$this->visitor->get('tbname');
         if (1 != $tbname) {
             $map=[

@@ -253,6 +253,10 @@ class UserAction extends BaseAction
 		  $res = $moduser->where(array('id'=>$uid))->save(array('opid'=>$opid));
 		  S('wechat_'.$opid,NULL);
 		}
+		
+		if($this->visitor->get('special_id') < 2 ){
+		$this->Getspecial();
+		}
 
         if ($uid>0) {
             $code=$this->visitor->get('invocode');

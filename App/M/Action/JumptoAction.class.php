@@ -79,7 +79,11 @@ class JumptoAction extends BaseAction
 
         $orlike = $this->_mod->field('id,volume,quan,title,pic_url,coupon_price,price,shop_type,commission_rate,num_iid')->limit('0,6')->order('id desc')->select();
         $this->assign('orlike', $orlike);
-
+		
+		$newitem['quanurl'] = $this->Tbconvert($id,$this->memberinfo,$newitem['quanid']);
+		$newitem['kouling']=kouling($newitem['pict_url'].'_200x200.jpg', $newitem['title'], $newitem['quanurl']);
+		S($cach_name, $newitem, 86400);
+/*
         if (!isset($sinfo['kouling']) || empty($sinfo['kouling']) || !empty($agent_pid)) {
             $apiurl=$this->tqkapi.'/gconvert';
             //$agentpid=$this->agent_pid();
@@ -132,12 +136,12 @@ class JumptoAction extends BaseAction
             $newitem['quanurl']=$sinfo['quanurl'];
             $newitem['kouling']=$sinfo['kouling'];
         }
-
-        $RelationId = $this->memberinfo['webmaster_pid'] ? $this->memberinfo['webmaster_pid'] : $this->GetTrackid('t_pid');
-        if ($RelationId) {
-            $newitem['quanurl']=$newitem['quanurl'].'&relationId='.$RelationId;
-            $newitem['kouling']=kouling($newitem['pict_url'], $newitem['title'], $newitem['quanurl']);
-        }
+*/
+        // $RelationId = $this->memberinfo['webmaster_pid'] ? $this->memberinfo['webmaster_pid'] : $this->GetTrackid('t_pid');
+        // if ($RelationId) {
+        //     $newitem['quanurl']=$newitem['quanurl'].'&relationId='.$RelationId;
+        //     $newitem['kouling']=kouling($newitem['pict_url'], $newitem['title'], $newitem['quanurl']);
+        // }
 
         $this->assign('item', $newitem);
 		

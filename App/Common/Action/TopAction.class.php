@@ -547,19 +547,18 @@ class TopAction extends FuncAction
 		$tags = array(7,24,10564,31);
 		
         if ($opid && !in_array($opid,$tags)) {
-            $where['opt_id'] = $opid;
+           $where['opt_id'] = $opid;
         }
         if ($key && !$this->hasEmoji($key)) {
             $where['keyword'] = $key;
         }
         if ($page) {
-            $where['page'] = $page;
+           $where['page'] = $page;
         }
         if ($tagid || in_array($opid,$tags)) {
 			$tagid = $tagid?$tagid:$opid;
             $where['activity_tags'] = '['.$tagid.']';
         }
-		
 		$uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
 		
 		if($uid){
@@ -570,6 +569,7 @@ class TopAction extends FuncAction
         $pdd_api='http://gw-api.pinduoduo.com/api/router';
         $result=$this->_curl($pdd_api, $where, true);
         $items_list=json_decode($result, true);
+		
 		if($items_list['goods_search_response']['goods_list']){
 		$today=date('Ymd');
 		$goodslist=array();
@@ -638,7 +638,6 @@ class TopAction extends FuncAction
 		'goodslist'=>array_values($goodslist),
 		'count'=> $items_list['goods_search_response']['total_count']
 		);
-		
 		
         return $data;
     }
@@ -916,11 +915,11 @@ class TopAction extends FuncAction
 		$appkey = trim(C('yh_taobao_appkey'));
 		$appsecret = trim(C('yh_taobao_appsecret'));
 		$apppid=trim(C('yh_taobao_pid'));
-		if($uid){
-			$R = A("Records");
-			$data= $R ->content($uid,$uid); 
-			$apppid = $data['pid'];
-		}
+		// if($uid){
+		// 	$R = A("Records");
+		// 	$data= $R ->content($uid,$uid); 
+		// 	$apppid = $data['pid'];
+		// }
 		$apppid=explode('_', $apppid);
 		$AdzoneId=$apppid[3];
 		vendor('taobao.taobao');

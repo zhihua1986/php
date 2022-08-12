@@ -871,34 +871,55 @@ M('user')->where($map)->save(array(
 	$prefix = C(DB_PREFIX);
 	 $table=$prefix.'order';
 	 
-	$field='fuid,guid,webmaster_rate,(select id from '.$table.' where  tqk_order.orderid ="'.$item['orderid'].'" limit 1) as nid';
-	$ret=M('user')->field($field)->where(array('webmaster_pid'=>$item['relation_id']))->limit(1)->find();
+	// $field='fuid,guid,webmaster_rate,(select id from '.$table.' where  tqk_order.orderid ="'.$item['orderid'].'" limit 1) as nid';
+	// $ret=M('user')->field($field)->where(array('webmaster_pid'=>$item['relation_id']))->limit(1)->find();
+	
+	$field='id,fuid,guid,webmaster_rate,(select id from '.$table.' where  tqk_order.orderid ="'.$item['orderid'].'" limit 1) as nid';
+	$ret=M('user')->field($field)->where(array('special_id'=>$item['special_id']))->limit(1)->find();
 	$mod=M('order');
 	
 if($ret){
 
-if($ret['nid']<=0 && $item['status']==1){
+	if($item['status'] == 12 || $item['status'] == 14){
+	    $item['status']=1;
+	   }elseif($item['status'] == 3){
+	    $item['status']=3;
+	   }else{
+	    $item['status']=2;
+	   }
 	
-	  $item['status']=1;
+
+if($ret['nid']<=0){
+	
+	 // $item['status']=1;
 	  $item['nstatus']=1;
-	  $data['fuid']=$ret['fuid'];
-      $data['guid']=$ret['guid'];
+	  $item['fuid']=$ret['fuid'];
+	  $item['uid']=$ret['id'];
+      $item['guid']=$ret['guid'];
 	  $item['leve1']=$ret['webmaster_rate']?$ret['webmaster_rate']:trim(C('yh_bili1'));
 	  $item['oid']=md5($item['oid']);
 	 $mod->create($item);
       $item_id = $mod->add();
       if ($item_id) {
+		  
+		  if ($item['uid'] > 0) { //发送模板消息
+		      $wdata = array('url' => 'c=user&a=myorder', 'uid' => $item['uid'], 'keyword1' => $item['orderid'], 'keyword2' => $item['goods_title'], 'keyword3' => $item['price'], 'keyword4' => $item['income'] * ($item['leve1'] / 100));
+			  Weixin::orderTaking($wdata);
+		  }
+		  
             return 1;
         } else {
             return 0;
         }
 	
 }else{
-$data['relation_id']	=$item['relation_id'];
+//$data['relation_id']	=$item['relation_id'];
+$data['special_id']	=$item['special_id'];
 $data['leve1']=$ret['webmaster_rate']?$ret['webmaster_rate']:trim(C('yh_bili1'));
 $data['nstatus']=1;
 $data['price']=$item['price'];
 $data['income']=$item['income'];
+$data['uid']=$ret['id'];
 $data['fuid']=$ret['fuid'];
 $data['guid']=$ret['guid'];
 $sqlwhere['orderid'] = $item['orderid'];

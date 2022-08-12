@@ -105,7 +105,7 @@ class ThirdAction extends BaseAction
             $list[$k]['statustxt']=$v['order_status'];
             $list[$k]['orderid']=$v['order_sn'];
             $list[$k]['status']=$v['status'];
-            $list[$k]['payprice']=$v['order_time'];
+            $list[$k]['payprice']=$v['orders_price'];
             $list[$k]['profit']=$v['order_commission'];
             $list[$k]['paytime']=$v['order_time'];
             $list[$k]['settle_time']=$v['charge_time'];

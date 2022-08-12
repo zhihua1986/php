@@ -10,10 +10,11 @@ class TejiaAction extends BaseAction
             $this->assign('back', $back);
         }
 		$pid = trim(C('yh_taobao_pid'));
+		
 		if($this->memberinfo){
-			$R = A("Records");
-			$data= $R ->content($this->memberinfo['id'],$this->memberinfo['id']);
-			$pid = $data['pid'];
+			// $R = A("Records");
+			// $data= $R ->content($this->memberinfo['id'],$this->memberinfo['id']);
+			// $pid = $data['pid'];
 		}
 		
         $useragent = strtolower(addslashes($_SERVER['HTTP_USER_AGENT']));

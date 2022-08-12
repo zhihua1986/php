@@ -17,12 +17,13 @@ class ActivityAction extends BaseAction
 		])->find();
 		
 		if($this->memberinfo && $item['ems']==1 && $this->getRobot()==false){
-		$R = A("Records");
-		$Arr = explode('-',$item['num_iid']);
-		$id = $Arr[1]?$Arr[1]:$item['num_iid'];
-		$res= $R ->content($id,$this->memberinfo['id']); 
-		$Repid = $res['pid'];
-		$item['quanurl'] = $this->Tbconvert($item['num_iid'],$Repid,$item['Quan_id']);	
+		// $R = A("Records");
+		// $Arr = explode('-',$item['num_iid']);
+		// $id = $Arr[1]?$Arr[1]:$item['num_iid'];
+		// $res= $R ->content($id,$this->memberinfo['id']); 
+		// $Repid = $res['pid'];
+		
+		$item['quanurl'] = $this->Tbconvert($item['num_iid'],$this->memberinfo,$item['Quan_id']);	
 		$item['kouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
 		}elseif ($this->getRobot()==false){
 		    $apiurl=$this->tqkapi.'/gconvert';

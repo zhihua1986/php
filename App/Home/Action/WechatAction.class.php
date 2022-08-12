@@ -9,7 +9,8 @@ public function _initialize()
  parent::_initialize();
 $this->accessKey = trim(C('yh_gongju'));
 $this->openid=I('openid','','trim');
-$this->uid=S('wechat_'.$this->openid);
+$this->memberInfo = S('wechat_'.$this->openid);
+$this->uid=$this->memberInfo['id'];
 $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 
 	if($this->openid && false === $this->uid){
@@ -17,8 +18,9 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 	
 		if(C('yh_site_tiaozhuan') == 1){
 			
-			$this->uid=$mod->where(array('opid'=>$this->openid))->getField('id');
-			if(!$this->uid){
+			 $this->memberInfo=$mod->field('id,special_id,webmaster_rate')->where(array('opid'=>$this->openid))->find();
+			 $this->uid = $this->memberInfo['id'];
+			if(!$this->memberInfo){
 				$json=array(
 				'state'=>2
 				);
@@ -27,10 +29,11 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 	
 		}elseif(C('yh_qrcode') == 2){ //关闭登录提醒
 		
-		$this->uid=$mod->where(array('openid'=>$this->openid))->getField('id');
-		
+		$this->memberInfo=$mod->field('id,special_id,webmaster_rate')->where(array('openid'=>$this->openid))->find();
+		$this->uid = $this->memberInfo['id'];
 		}else{
-		$this->uid=$mod->where(array('opid'=>$this->openid))->getField('id');
+		$this->memberInfo=$mod->field('id,special_id,webmaster_rate')->where(array('opid'=>$this->openid))->find();
+		$this->uid = $this->memberInfo['id'];
 		if(!$this->uid){
 			$json=array(
 			'state'=>2
@@ -39,7 +42,7 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 		}
 			
 		}
-	S('wechat_'.$this->openid,$this->uid,3600);
+	S('wechat_'.$this->openid,$this->memberInfo,3600);
 	}
 
  }
@@ -291,6 +294,20 @@ exit(json_encode($data));
 	
 }
 
+
+	public function GetUserInfo(){
+		
+		if($this->memberInfo){
+		$data=array(
+		'uid'=>$this->memberInfo['id'],
+		'rate'=>$this->memberInfo['webmaster_rate'],
+		'sid'=>$this->memberInfo['special_id'],
+		'state'=>1
+		);
+		exit(json_encode($data));
+		}
+		
+	}
 
 	public function getUserPid(){
 		$num_iid = I('numiid');

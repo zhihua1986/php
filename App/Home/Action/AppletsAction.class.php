@@ -415,7 +415,7 @@ protected function bdmenu(){
 	            return $uid;
 	        }
 	        $mod = new userModel();
-	        $uid = $mod->field('webmaster_pid,id,fuid,guid,webmaster,webmaster_rate,jd_pid')->where(['openid'=>$openid])->find();
+	        $uid = $mod->field('special_id,webmaster_pid,id,fuid,guid,webmaster,webmaster_rate,jd_pid')->where(['openid'=>$openid])->find();
 	        if ($uid) {
 	            S($openid, $uid, 60);
 	            return $uid;
@@ -547,11 +547,11 @@ protected function bdmenu(){
 		protected function getElmLink($uid=''){
 			vendor("taobao.taobao");
 			$pid = trim(C('yh_taobao_pid')); 
-			 if($uid){
-			 	$R = A("Records");
-			 	$data= $R ->content($uid,$uid); 
-			 	$pid = $data['pid'];
-			 }
+			 // if($uid){
+			 // 	$R = A("Records");
+			 // 	$data= $R ->content($uid,$uid); 
+			 // 	$pid = $data['pid'];
+			 // }
 			 $apppid=explode('_', $pid);
 			 $AdzoneId=$apppid[3];
 			 $c = new \TopClient();
