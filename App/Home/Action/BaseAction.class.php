@@ -28,6 +28,9 @@ public function _initialize()
         $info = $this->CreateJdPid($this->memberinfo);
     }
 	
+	if($this->memberinfo && cookie('setsid') == 1){
+			$this->Getspecial();
+	}
 	
 	
 	}

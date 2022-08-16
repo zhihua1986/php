@@ -33,7 +33,7 @@
 							<div class="search-bg"></div>
 							<input type="text" name="tb" placeholder="输入商品名称或粘贴淘宝商品标题" class="search-input <if condition="CONTROLLER_NAME eq 'Pdditem' or CONTROLLER_NAME eq 'Jditem' or CONTROLLER_NAME eq 'Jd' or CONTROLLER_NAME eq 'Pdd'">s2</if>">
 							<if condition="C('yh_openjd') eq 1">
-							<input type="text" name="jd" placeholder="输入商品名称或粘贴京东商品标题" class="search-input <if condition="CONTROLLER_NAME neq 'Jditem' and CONTROLLER_NAME neq 'Jd'">s2</if>">
+							<input type="text" name="jd" placeholder="输入商品名称或粘贴京东商品链接" class="search-input <if condition="CONTROLLER_NAME neq 'Jditem' and CONTROLLER_NAME neq 'Jd'">s2</if>">
 							</if>
 							<if condition="C('yh_openduoduo') eq 1">
 							<input type="text" name="pdd" placeholder="输入商品名称或粘贴拼多多商品标题" class="search-input <if condition="CONTROLLER_NAME neq 'Pdditem' and CONTROLLER_NAME neq 'Pdd'">s2</if>">

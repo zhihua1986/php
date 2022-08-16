@@ -23,7 +23,7 @@ class MeituanAction extends BaseAction
 
     public function teamorder()
     {
-        $ComputingTime = abs(C('yh_ComputingTime'))*86400;
+        $ComputingTime = abs(C('yh_wm_settle'))*86400;
         $this->assign('ComputingTime', $ComputingTime);
         $p = I('p', 1, 'intval');
         $uid=$this->memberinfo['id'];
@@ -82,7 +82,7 @@ class MeituanAction extends BaseAction
         $p = I('p', 1, 'intval');
         $page_size = 10;
         $start = $page_size * ($p - 1);
-        $ComputingTime = abs(C('yh_ComputingTime'))*86400;
+        $ComputingTime = abs(C('yh_wm_settle'))*86400;
         $this->assign('ComputingTime', $ComputingTime);
         $stay['uid'] = $this->memberinfo['id'];
 		

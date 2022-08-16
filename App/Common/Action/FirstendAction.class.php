@@ -44,10 +44,10 @@ class FirstendAction extends TopAction
 	
 	protected function Getspecial()
 	{
+		$result = S('special');
+		if(!$result){
 	    $url=$this->tqkapi."/getrelationid";
 	    $data=[
-	        //'key'=>$this->_userappkey,
-			//'tqk_uid'=>$this->tqkuid,
 	        'time'=>time(),
 			'info_type'=>2,
 	        'tqk_uid'=>	$this->tqkuid,
@@ -56,16 +56,20 @@ class FirstendAction extends TopAction
 	    $data['token']=$token;
 	    $data=$this->_curl($url, $data, true);
 	    $result=json_decode($data, true);
+		S('special',$result,120);
+		}
 	    if ($result['code'] == 200) {
 	        $Data = [];
 	        $Mod = new UserModel();
-	        if ($result['result']['external_id'] == $this->memberinfo['id']) {
+			$exid = $result['result']['external_id']?$result['result']['external_id']:$result['result']['rtag'];
+	        if ($exid == $this->memberinfo['id']) {
 	            $Data = [
 	                'special_id' =>$result['result']['special_id'],
 	            ];
 	        } else {
 	            foreach ($result['result'] as $k=>$v) {
-	                if ($v['external_id'] == $this->memberinfo['id']) {
+					$exid = $v['external_id']?$v['external_id']:$v['rtag'];
+	                if ($exid == $this->memberinfo['id']) {
 	                    $Data = [
 	                        'special_id' =>$v['special_id'],
 	                    ];
@@ -79,6 +83,7 @@ class FirstendAction extends TopAction
 	            if ($res) {
 	                $this->visitor->wechatlogin($this->memberinfo['openid']); //更新用户信息
 	                $json= ['status'=>1];
+					cookie('setsid',null);
 	            }
 	        } else {
 	            return false;
@@ -101,6 +106,7 @@ class FirstendAction extends TopAction
 		$pid = trim(C('yh_taobao_pid'));
 		if($memberinfo && $memberinfo['special_id'] < 2 ){
 			$apidata['ExternalId'] = $memberinfo['id'];
+			cookie('setsid',1); //预设同步会员
 		}elseif($memberinfo){
 			$apidata['SpecialId'] = $memberinfo['special_id'];
 		}

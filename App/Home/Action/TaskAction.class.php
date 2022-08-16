@@ -109,12 +109,14 @@ class TaskAction extends BaseAction
 		   				if($info['num_iid']){
 		   					$num_iid = $info['num_iid'];
 		   					$data[$k]['num_iid'] = $num_iid;
-		   					 $data[$k]['volume'] = $info['volume'];
+		   					 $data[$k]['volume'] = $info['volume']?$info['volume']:0;
 		   					 $data[$k]['id'] = $v['id'];
 		   					$item_id = explode('-',$num_iid);
 		   					$data[$k]['item_id'] = $item_id[1]?$item_id[1]:$num_iid;
 		   					 $data[$k]['status'] = 'underway';
-		   				 }
+						 }else{
+						 	$res = $mod->where(array('num_iid'=>$num_iid))->delete();
+						 }
 		   }
 		     $res = $this->db_batch_update('tqk_items', array_values($data), 'id');
 		    $this->Log('UpdateItemId', $res);

@@ -426,9 +426,9 @@ class UserAction extends BaseAction
             }
         }
 		
-		if($this->visitor->get('special_id') < 2 ){
-		$this->Getspecial();
-		}
+		// if($this->visitor->get('special_id') < 2 ){
+		// $this->Getspecial();
+		// }
 		
         $tbname=$this->visitor->get('tbname');
         if (1 != $tbname) {

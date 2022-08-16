@@ -35,6 +35,11 @@ class BaseAction extends FirstendAction
         if ($this->visitor->is_login) {
             $info = $this->CreateJdPid($this->memberinfo);
         }
+		
+		if($this->memberinfo && cookie('setsid') == 1){
+					$this->Getspecial();
+		}
+		
     }
 
     protected function _alert_adv()

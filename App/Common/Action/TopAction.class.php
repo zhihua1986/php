@@ -562,7 +562,7 @@ class TopAction extends FuncAction
 		$uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
 		
 		if($uid){
-		$where['custom_parameters']=$uid;
+		//$where['custom_parameters']=$uid;
 		}
         $where['sign']=$this->create_pdd_sign(trim(C('yh_pddsecretkey')), $where);
 		
