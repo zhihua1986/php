@@ -42,7 +42,7 @@ class TaskAction extends BaseAction
             $Self = 1;
         }
         $task = array(
-            array('value' => 'TimedPush', 'query' => '/index.php?c=task&a=TimedPush&key=' . $this->accessKey, 'interval' => 60, 'status' => $Push ? $Push : 0),
+            array('value' => 'bindspecial', 'query' => '/index.php?c=task&a=bindspecial&key=' . $this->accessKey, 'interval' => 180, 'status' => 1),
           //  array('value' => 'OrderBind', 'query' => '/index.php?c=task&a=OrderBind&key=' . $this->accessKey, 'interval' => 90, 'status' => 1), 自动分配pid关联用户
             array('value' => 'DelRecords', 'query' => '/index.php?c=task&a=DelRecords&key=' . $this->accessKey, 'interval' => 3500, 'status' => 1),
             array('value' => 'Tbcollect', 'query' => '/index.php?c=task&a=Tbcollect&key=' . $this->accessKey, 'interval' => 200, 'status' => 1),
@@ -174,28 +174,42 @@ class TaskAction extends BaseAction
 		
 	}
 	
-    public function TimedPush()
+    public function bindspecial()
     {
-        $this->timeout();
-        $this->check_key();
-        $tempid = trim(C('yh_tempid_4'));
-        $now = NOW_TIME;
-        $year = date('Y-m-d', $now);
-        $time = strtotime($year . trim(C('yh_tempid_4_time')));
-        $push = S('timedpush');
-        if (!$push && $now - $time > 0 && $now - $time < 120) {
-            $weekend = strtotime(date("Y-m-d H:i:s", strtotime('-30 days')));
-            $mod = new userModel();
-            $where = array('opid' => array('exp', 'is not null'), 'special_id' => array(array('exp', 'is null'), array('eq', 2), 'or'), 'last_time' => array('egt', $weekend));
-            $result = $mod->where($where)->field('opid,id,last_time')->select();
-            if ($result) {
-                foreach ($result as $k => $v) {
-                    $data = array('openid' => $v['opid']);
-                    Weixin::TimePush($data);
-                }
-            }
-            S('timedpush', true, 180);
-        }
+			 $this->timeout();
+			 $this->check_key();
+            $weekend = strtotime(date("Y-m-d H:i:s", strtotime('-7 days')));
+			$special = $this->Getspecial();
+			$this->Log('bindspecial', $special);
+			if($special['code'] == 200){
+				$list = array();
+				foreach($special['result'] as $k=>$v){
+					if($v['external_id']){
+					$list[$v['external_id']] = $v['special_id'];
+					}
+				}
+				$listKey = array_keys($list);
+				$mod = new userModel();
+				$where = array('special_id' => array(array('exp', 'is null'), array('lt', 3), 'or'), 'last_time' => array('egt', $weekend));
+				$result = $mod->where($where)->field('id')->select();
+				foreach($result as $k=>$v){
+					
+					if(in_array($v['id'], $listKey)){
+						
+						$Data = [
+						    'special_id' =>$list[$v['id']],
+						];
+						
+						$res=$mod->where(['id'=>$v['id']])->save($Data);
+						
+					}
+					
+				}
+				
+				
+			}
+			
+		exit;	
     }
     public function DelRecords()
     {

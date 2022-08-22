@@ -36,9 +36,9 @@ class BaseAction extends FirstendAction
             $info = $this->CreateJdPid($this->memberinfo);
         }
 		
-		if($this->memberinfo && cookie('setsid') == 1){
-					$this->Getspecial();
-		}
+		// if($this->memberinfo && cookie('setsid') == 1){
+		// 			$this->Getspecial();
+		// }
 		
     }
 

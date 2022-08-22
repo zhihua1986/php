@@ -58,41 +58,9 @@ class FirstendAction extends TopAction
 	    $result=json_decode($data, true);
 		S('special',$result,120);
 		}
-	    if ($result['code'] == 200) {
-	        $Data = [];
-	        $Mod = new UserModel();
-			$exid = $result['result']['external_id']?$result['result']['external_id']:$result['result']['rtag'];
-	        if ($exid == $this->memberinfo['id']) {
-	            $Data = [
-	                'special_id' =>$result['result']['special_id'],
-	            ];
-	        } else {
-	            foreach ($result['result'] as $k=>$v) {
-					$exid = $v['external_id']?$v['external_id']:$v['rtag'];
-	                if ($exid == $this->memberinfo['id']) {
-	                    $Data = [
-	                        'special_id' =>$v['special_id'],
-	                    ];
-	                    break;
-	                }
-	            }
-	        }
-	
-	        if ($Data) {
-	            $res=$Mod->where(['id'=>$this->memberinfo['id']])->save($Data);
-	            if ($res) {
-	                $this->visitor->wechatlogin($this->memberinfo['openid']); //更新用户信息
-	                $json= ['status'=>1];
-					cookie('setsid',null);
-	            }
-	        } else {
-	            return false;
-	        }
-	    } else {
-	        return false;
-	    }
 		
-		return true;
+		return $result;
+		
 		
 	}
 	
@@ -106,7 +74,7 @@ class FirstendAction extends TopAction
 		$pid = trim(C('yh_taobao_pid'));
 		if($memberinfo && $memberinfo['special_id'] < 2 ){
 			$apidata['ExternalId'] = $memberinfo['id'];
-			cookie('setsid',1); //预设同步会员
+			//cookie('setsid',1); //预设同步会员
 		}elseif($memberinfo){
 			$apidata['SpecialId'] = $memberinfo['special_id'];
 		}
