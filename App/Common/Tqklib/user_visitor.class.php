@@ -14,7 +14,7 @@ class user_visitor
 
     public $error = '';
     
-    public $field = 'tb_open_uid,special_id,id,username,openid,nickname,phone,email,fuid,guid,invocode,avatar,password,score,tbname,money,webmaster,webmaster_rate,oid,webmaster_pid,jd_pid,opid';
+    public $field = 'tb_open_uid,special_id,id,username,openid,nickname,phone,email,fuid,guid,invocode,avatar,password,score,tbname,money,webmaster,webmaster_rate,oid,webmaster_pid,jd_pid,opid,elm_pid';
     
     public function __construct()
     {

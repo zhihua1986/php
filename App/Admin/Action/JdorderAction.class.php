@@ -96,6 +96,11 @@ class JdorderAction extends BaseAction
             $raw['skuName']=$json['skuName'];
             $raw['estimateCosPrice']=$json['estimateCosPrice'];
             $raw['estimateFee']=$json['estimateFee'];
+			
+			if($json['validCode'] == 17){
+			 $raw['estimateFee'] = $json['actualFee'];	
+			}
+			
             $raw['actualCosPrice']=$json['actualCosPrice'];
             $raw['actualFee']=$json['actualFee'];
             $raw['positionId']=$json['positionId'];
@@ -115,11 +120,13 @@ class JdorderAction extends BaseAction
                 if ($val['id']) {
 					
 					$payMonth = strtotime($val['payMonth']);
-					if($val['validCode'] == '17'){
-					$ComputingTime = abs(C('yh_ComputingTime'))*86400;
-					$payMonth=NOW_TIME + $ComputingTime;
-					}
 					
+					$estimateFee = $val['estimateFee'];
+					if ($val['validCode'] == '17') { //用户收货
+					    $ComputingTime = abs(C('yh_ComputingTime')) * 86400;
+					    $payMonth = NOW_TIME + $ComputingTime;
+						$estimateFee = $val['actualFee'];
+					}
                     $raw = [
                         'addTime'=>NOW_TIME,
                         'oid'=>$val['id'],
@@ -130,7 +137,7 @@ class JdorderAction extends BaseAction
                         'skuId'=>$val['skuId'],
                         'skuName'=>$val['skuName'],
                         'estimateCosPrice'=>$val['estimateCosPrice'],
-                        'estimateFee'=>$val['estimateFee'],
+                        'estimateFee'=>$estimateFee,
                         'actualCosPrice'=>$val['actualCosPrice'],
                         'actualFee'=>$val['actualFee'],
                         'positionId'=>$val['positionId'],
@@ -140,6 +147,7 @@ class JdorderAction extends BaseAction
                         'leve2'=> trim(C('yh_bili2')),
                         'leve3'=> trim(C('yh_bili3')),
                     ];
+					
                     if ($this->_ajax_jd_order_insert($raw)) {
                         $n++;
                     }

@@ -16,98 +16,93 @@ class ItemAction extends BaseAction{
             $this->assign('weixin', true);
         }
     }
-
-    public function index()
-    {
-        if ($this->memberinfo && C('yh_bingtaobao') == 2 && !$this->visitor->get('webmaster_pid')) {
-            $inviterCode = $this->RelationInviterCode($this->memberinfo);
-            $this->assign('inviterCode', $inviterCode);
-            $this->assign('Tbauth', true);
-        }
-        $id = I('id', 0, 'number_int');
-        $item = $this->_mod->field('ordid,ali_id,zc_id,orig_id,tag', true)->where(['num_iid' => $id])->find();
-        if (!$item) {
-            $item = $this->GetTbDetail($id);
-            !$item && $this->_404();
-            $item['sellerId']=$item['seller_id'];
-            $item['pic_url']=$item['pict_url'];
-            $item['price']=$item['zk_final_price'];
-            $item['link']=$item['item_url'];
-            $item['quan']=$item['coupon_amount'];
-            $item['commission_rate']=$item['commission_rate'];
-            $item['tk_commission_rate']=$item['commission_rate'];
-            $item['click_url']='https:'.$item['url'];
-            $item['volume']=$item['volume'];
-            $item['coupon_price']=$item['zk_final_price']-$item['coupon_amount'];
-            $item['coupon_end_time']=$item['coupon_end_time'];
-            $item['ems']=2;
-            $quanurl = $item['coupon_share_url'];
-            $item['quanurl']=$quanurl ? 'https:'.$quanurl : 'https:'.$item['url'];
-            $item['Quan_id']=$item['coupon_id'];
-            $this->assign('act', 'yes');
-        } else {
-            !$item && $this->_404();
-        }
-
-        $this->assign('mdomain', str_replace('/index.php/m', '', C('yh_headerm_html')));
-        if (!$this->memberinfo && $this->getrobot=='no' && $item['Quan_id'] && $item['ems']==1) {
-            $last_time=date('Y-m-d', $item['last_time']);
-            $today=date('Y-m-d', time());
-
-            if ($last_time!=$today && $item['ems']==1) {
-                $this->assign('gconvert', true);
-            }
-        }
+	
+	
+	public function  index(){
+		if ($this->memberinfo && C('yh_bingtaobao') == 2 && $this->visitor->get('webmaster')!=1){
+		    $inviterCode = $this->RelationInviterCode($this->memberinfo);
+		    $this->assign('inviterCode', $inviterCode);
+			$this->assign('callback',$this->fullurl());
+		    $this->assign('Tbauth', true);
+		}
+		
+		$id = I('id');
+		$item = $this->_mod->field('ordid,ali_id,zc_id,orig_id,tag', true)->where(['num_iid' => $id])->find();
+		$item && $item['pic_urls']=unserialize($item['pic_urls']);
+		if (!$item) {
+		    $item = $this->GetTbDetail($id);
+		    !$item && $this->_404();
+		    $item['sellerId']=$item['seller_id'];
+		    $item['pic_url']=$item['pict_url'];
+		    $item['price']=$item['zk_final_price'];
+		    $item['link']=$item['item_url'];
+		    $item['quan']=$item['coupon_amount'];
+		    $item['commission_rate']=$item['commission_rate'];
+		    $item['tk_commission_rate']=$item['commission_rate'];
+		    $item['click_url']='https:'.$item['url'];
+		    $item['volume']=$item['volume'];
+		    $item['coupon_price']=$item['zk_final_price']-$item['coupon_amount'];
+		    $item['coupon_end_time']=strtotime($item['coupon_end_time']);
+			$item['coupon_start_time']=strtotime($item['coupon_start_time']);
+		    $item['ems']=2;
+		    $quanurl = $item['coupon_share_url'];
+		    $item['quanurl']=$quanurl ? 'https:'.$quanurl : 'https:'.$item['url'];
+		    $item['Quan_id']=$item['coupon_id'];
+			$item['pic_urls']=$item['small_images']['string'];
+		    $this->assign('act', 'yes');
+		} else {
+		    !$item && $this->_404();
+		}
+		
+		$this->assign('mdomain', str_replace('/index.php/m', '', C('yh_headerm_html')));
+		if (!$this->memberinfo && $this->getrobot=='no' && $item['Quan_id'] && $item['ems']==1) {
+		    $last_time=date('Y-m-d', $item['last_time']);
+		    $today=date('Y-m-d', time());
+		
+		    if ($last_time!=$today && $item['ems']==1) {
+			$item['quanurl'] = $this->Tbconvert($item['num_iid'],$this->memberinfo,$item['Quan_id']);
+			$item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
+		        // $this->assign('gconvert', true);
+		    }
+		}
+		
 		
 		if($this->memberinfo && $item['ems']==1){
-		// $R = A("Records");
-		// $Arr = explode('-',$item['num_iid']);
-		// $itemId = $Arr[1]?$Arr[1]:$item['num_iid'];
-		// $data= $R ->content($itemId,$this->memberinfo['id']); 
-		// $Repid = $data['pid'];
-		// $item['quanurl'] = $this->Tbconvert($item['num_iid'],$Repid,$item['Quan_id']);		
-		// $item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
-		// $this->assign('act', 'yes');
-		
 		$item['quanurl'] = $this->Tbconvert($item['num_iid'],$this->memberinfo,$item['Quan_id']);
 		$item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
 		$this->assign('act', 'yes');
 		
 		}
 		
-
-        $file = 'orlike_m' .  $item['id'];
-        if (false === $orlike = S($file)) {
-            $cid = $item["cate_id"];
-            $where=[
-                'cate_id'=>$cid,
-                'id'=>['neq', $id]
-            ];
-            $orlike = $this->_mod->where($where)->field('id,volume,num_iid,quan,commission_rate,title,pic_url,coupon_price,price,shop_type')->limit('0,6')->order('id desc')->select();
-            S($file, $orlike);
-        } else {
-            $orlike = S($file);
-        }
-
-        $this->assign('orlike', $orlike);
-        if (!$item['quankouling']) {
-            $kouling=kouling($item['pic_url'].'_200x200.jpg', $item['title'], $item['quanurl']);
-            $item['quankouling']=$kouling;
-            $this->_mod->where([
-                'num_iid' => ''.$item['num_iid'].''
-            ])->save(['quankouling'=>$kouling, 'last_time'=>time()]);
-        }
-
-        $RelationId = $this->memberinfo['webmaster_pid'] ? $this->memberinfo['webmaster_pid'] : $this->GetTrackid('t_pid');
-        if ($RelationId && $item['ems']==1) {
-            $item['quanurl']=$item['quanurl'].'&relationId='.$RelationId;
-            $item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
-        }
-
-        $buyer=$this->buyer(5);
-        $this->assign('buyer', $buyer);
-        $item['pic_urls']=unserialize($item['pic_urls']);
-        $this->assign('item', $item);
+		$file = 'orlike_m' .  md5($item['id']);
+		if (false === $orlike = S($file)) {
+		    $cid = $item["cate_id"];
+		    $where=[
+		        'cate_id'=>$cid,
+		        'id'=>['neq', $id]
+		    ];
+		    $orlike = $this->_mod->where($where)->field('id,volume,num_iid,quan,commission_rate,title,pic_url,coupon_price,price,shop_type')->limit('0,6')->order('id desc')->select();
+		    S($file, $orlike);
+		} else {
+		    $orlike = S($file);
+		}
+		
+		$this->assign('orlike', $orlike);
+		if (!$item['quankouling']) {
+		    $kouling=kouling($item['pic_url'].'_200x200.jpg', $item['title'], $item['quanurl']);
+		    $item['quankouling']=$kouling;
+		    $this->_mod->where([
+		        'num_iid' => ''.$item['num_iid'].''
+		    ])->save(['quankouling'=>$kouling, 'last_time'=>time()]);
+		}
+		
+//		$RelationId = $this->memberinfo['webmaster_pid'] ? $this->memberinfo['webmaster_pid'] : $this->GetTrackid('t_pid');
+//		if ($RelationId && $item['ems']==1) {
+//		    $item['quanurl']=$item['quanurl'].'&relationId='.$RelationId;
+//		    $item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
+//		}
+		
+		$this->assign('item', $item);
 		
 		if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
 		
@@ -118,19 +113,20 @@ class ItemAction extends BaseAction{
 		}
 		
 		}
-
-        $this->_config_seo(C('yh_seo_config.item'), [
-            'title' => $item['title'],
-            'intro' => $item['intro'],
-            'price' => $item['price'],
-            'shop_type' => $item['shop_type']=='B' ? '天猫' : '淘宝',
-            'quan' => floattostr($item['quan']),
-            'coupon_price' => $item['coupon_price'],
-            'tags' => implode(',', $this->GetTags($item['title'], 4)),
-        ]);
-
-        $this->display();
-    }
+		
+		$this->_config_seo(C('yh_seo_config.item'), [
+		    'title' => $item['title'],
+		    'intro' => $item['intro'],
+		    'price' => $item['price'],
+		    'shop_type' => $item['shop_type']=='B' ? '天猫' : '淘宝',
+		    'quan' => floattostr($item['quan']),
+		    'coupon_price' => $item['coupon_price'],
+		    'tags' => implode(',', $this->GetTags($item['title'], 4)),
+		]);
+		
+		$this->display();
+	}
+	
 
     public function gconvert()
     {
@@ -157,8 +153,8 @@ class ItemAction extends BaseAction{
                 $me=$res['me'];
                 if (\strlen($me)>5) {
                     $activityId =$Quan_id ? '&activityId='.$Quan_id : '';
-                    $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&itemId='.$num_iid.'&pid='.trim(C('yh_taobao_pid')).'&af=1';
-                    $kouling=kouling($pic_url, $title, $quanurl);
+                    $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&pid='.trim(C('yh_taobao_pid')).'&af=1';
+					$kouling=kouling($pic_url, $title, $quanurl);
                     if (!$pic_urls) {
                         $pic_urls=$this->taobaodetail($num_iid);
                         if ($pic_urls) {

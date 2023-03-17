@@ -95,6 +95,7 @@ class TopAction extends FuncAction
 	protected function DuomaiLink($productID,$url,$array=[]){
 		
 		$uid = $array['euid'];
+		$array['euid'] = 'm'.$uid; //解决纯数字ID，接口调用失败问题
 		$douyin_openid = md5($array['douyin_openid']);
 		$urlcode = md5($url);
 		$cachename = 'DuomaiLink_'.$productID.$uid.$douyin_openid.$urlcode;
@@ -604,7 +605,7 @@ class TopAction extends FuncAction
 		}
 		
 		
-		if($count<$size && $key){
+		/*if($count<$size && $key){
 		 $Extend = $this->PddExtendedSearch($key,$ExtOrder);
 		if($Extend){
 		foreach($Extend as $k=>$v){
@@ -632,7 +633,7 @@ class TopAction extends FuncAction
 		
 		
 			
-		}
+		}*/
 		
 		$data = array(
 		'goodslist'=>array_values($goodslist),
@@ -909,17 +910,54 @@ class TopAction extends FuncAction
         ];
         return json_encode($json);
     }
-	
-	
+
+    /**
+     * @param $activityId
+     * @param $pid
+     * @return void
+     */
+    protected  function  CreateElmLink($activityId,$UserInfo=array()){
+        vendor("taobao.taobao");
+        $pid = trim(C('yh_elmpid'));
+        if(strlen($UserInfo['elm_pid'])>5){
+            $pid = $UserInfo['elm_pid'];
+        }
+        $appkey = trim(C('yh_elmkey'));
+        $secret = trim(C('yh_elmsecret'));
+        $c = new \TopClient();
+        $c->appkey = $appkey;
+        $c->secretKey = $secret;
+        $req = new \AlibabaAlscUnionElemePromotionOfficialactivityGetRequest();
+        $query_request = new \ActivityRequest();
+        $query_request->pid=$pid;
+        $query_request->activity_id=$activityId;
+        $query_request->include_wx_img="true";
+        $query_request->include_qr_code="true";
+        $req->setQueryRequest(json_encode($query_request));
+        $resp = $c->execute($req);
+        $resparr = json_decode(json_encode($resp), true);
+        if($resparr['data']['id']==$activityId){
+             return $resparr['data'];
+        }
+        exit($resparr['sub_msg']);
+
+    }
+
+    /**
+     * @param $id
+     * @param $relationid
+     * @param $uid
+     * @return mixed
+     */
 	protected function TbkActivity($id,$relationid="",$uid=""){
 		$appkey = trim(C('yh_taobao_appkey'));
 		$appsecret = trim(C('yh_taobao_appsecret'));
 		$apppid=trim(C('yh_taobao_pid'));
-		// if($uid){
-		// 	$R = A("Records");
-		// 	$data= $R ->content($uid,$uid); 
-		// 	$apppid = $data['pid'];
-		// }
+		 if($uid && C('yh_bingtaobao') == 0 && !is_null(C('yh_bingtaobao'))){
+		 	$R = A("Records");
+		 	$data= $R ->content($uid,$uid);
+		 	$apppid = $data['pid'];
+		 }
 		$apppid=explode('_', $apppid);
 		$AdzoneId=$apppid[3];
 		vendor('taobao.taobao');
@@ -1155,12 +1193,13 @@ class TopAction extends FuncAction
             'EasouSpider'=>'EasouSpider',
             'oBot'=>'oBot',
 			'uni-app'=>'other',
-			'MSIE'=>'ohter',
+			'MSIE'=>'other',
 			'Adsbot/3.1'=>'other',
 			'toutiao.com'=>'ohter',
 			'Alibaba.Security.Heimdall'=>'alibaba',
             'Sogou'=>'Sogou',
             'semrush'=>'semrush',
+            'PetalBot'=>'PetalBot',
             'FlightDeckReports Bot'=>'FlightDeckReports',
             'crawler'=>'other',
         ];
@@ -1447,6 +1486,56 @@ return false;
 
         return $result;
     }
+
+
+    protected function InsertElmOrder($item)
+    {
+        $mod = D('order');
+        $res = M('user')->field('id,fuid,guid,webmaster_rate')->where(array('elm_pid'=>$item['pid']))->find();
+        $item['fuid'] = $res['fuid']?:0;
+        $item['guid'] = $res['guid']?:0;
+        $item['leve1'] = $res['webmaster_rate'] ? $res['webmaster_rate'] :  $item['leve1'];
+        $item['uid'] = $res['id']?:0;
+        if (!$mod->create($item)){
+            $mod->setError(); //解决遇到错误无法循环，注意位置
+            $data = array(
+                'status'=>$item['status'],
+                'up_time'=>$item['up_time'],
+                'price' =>$item['price'],
+                'income'=>$item['income'],
+            );
+            $res = $mod->where(array('orderid'=>$item['orderid']))->save($data);
+            if ($res) {
+                return 1;
+            }
+
+
+        }else{
+            $item_id = $mod->add();
+            if ($item_id) {
+
+                if($item['uid']>0){
+                    $wdata = array(
+                        'url'=>'c=user&a=myorder',
+                        'uid'=>$item['uid'],
+                        'keyword1'=>$item['orderid'],
+                        'keyword2'=>$item['goods_title'],
+                        'keyword3'=>$item['price'],
+                        'keyword4'=>$item['income']*($item['leve1']/100)
+                    );
+                    Weixin::orderTaking($wdata);
+                }
+
+                return 1;
+            }
+
+
+        }
+
+        return 0;
+
+    }
+
 
     protected function jdstatus($status)
     {

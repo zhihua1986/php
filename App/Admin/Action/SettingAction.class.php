@@ -139,14 +139,15 @@ $Sdata=array(
 'dmappkey'=>$setting['dmappkey'],
 'site_url'=>$setting['site_url'],
 'dm_pid'=>$setting['dm_pid'],
-'dmsecret'=>$setting['dmsecret']
+'dmsecret'=>$setting['dmsecret'],
+'bingtaobao'=>!is_null($setting['bingtaobao']) && $setting['bingtaobao']==0?1:$setting['bingtaobao']
 );
 
 if($appkey && $Sdata != $Set){
 $savedata = $Sdata;
 $savedata['appkey'] = trim($appkey);
 $apiurl='http://api.tuiquanke.cn/getappkey/savebili';
-$result=$this->_curl($apiurl,$savedata,true); 
+$result=$this->_curl($apiurl,$savedata,true);
 F('tuiquanke_settings',$Sdata);
  
 }

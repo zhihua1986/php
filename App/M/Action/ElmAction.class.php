@@ -50,24 +50,24 @@ public function other(){
 		redirect($URL);
 	}
 
-    public function index()
-    {
+    public function index(){
         $back = $_SERVER["HTTP_REFERER"];
         if ($back && stristr($back, trim(C('yh_headerm_html')))) {
             $this->assign('back', $back);
         }
-
-        $RelationId = $this->memberinfo['webmaster_pid'] ? $this->memberinfo['webmaster_pid'] : $this->GetTrackid('t_pid');
-        $data = $this->TbkActivity('20150318019998877', $RelationId,$this->memberinfo['id']);
-        if ($data['data']['click_url']) {
-            $kouling = kouling('https://img.alicdn.com/bao/uploaded/i1/2219509495/O1CN01yA0cYi2K0lETuFHN8_!!0-item_pic.jpg', '饿了么外卖红包', $data['data']['click_url']);
-        }
-
-        $this->assign('kouling', $kouling);
-        $this->assign('qrcode', $data['data']['wx_qrcode_url']);
+        $index = I('tab')?I('tab'):0;
+        $data = $this->ElmTab();
+        $this->assign('Tab',$data);
+        $PageInfo = $data[$index?$index:0];
+        $this->assign('PageInfo',$PageInfo);
+        $Id = $this->ActivityID($PageInfo['id']);
+        $data = $this->CreateElmLink($Id,$this->memberinfo);
+        $this->assign('item',$data);
         $this->_config_seo([
             'title' => '饿了么外卖红包每天领-'.C('yh_site_name'),
         ]);
         $this->display();
+
     }
+
 }

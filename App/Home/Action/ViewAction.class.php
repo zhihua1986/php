@@ -19,7 +19,7 @@ class ViewAction extends BaseAction
 		$help_mod = $this->_mod;
 		$hits_data = array('hits'=>array('exp','hits+1'));
 		$help_mod->where(array('urlid'=>$id))->setField($hits_data);
-		$help = $help_mod->where(array('urlid'=>$id))->field('id,title,info,author,seo_title,seo_keys,seo_desc,add_time,cate_id')->find();
+		$help = $help_mod->where(array('urlid'=>$id))->field('id,title,info,author,seo_title,url,seo_keys,seo_desc,add_time,cate_id')->find();
 		!$help && $this->_404();
 		$Replace = A("Replace");
 		$info= $Replace ->content($help['info']); 
@@ -31,7 +31,7 @@ class ViewAction extends BaseAction
 		    ));
 		$help['catename']=$this->_cate_mod->where('id='.$help['cate_id'])->getField('name');   
 		$this->assign('info', $help); 
-		$orlike = D('items')->cache(true, 10 * 60)->where("title like '%" . $help['author'] . "%' ")
+		$orlike = D('items')->field('id,pic_url,num_iid,volume,title,coupon_price,price,quan,click_url,coupon_start_time,coupon_end_time,shop_type')->cache(true, 10 * 60)->where("title like '%" . $help['author'] . "%' ")
 		->limit('0,8')
 		->order('id desc')
 		->select();

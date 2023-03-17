@@ -1,0 +1,97 @@
+<include file="NewPublic:meta" />
+	<body>
+		<div class="pagebox">
+			
+				
+					  
+					  <div class="topfixed fixs">
+					      <a class="back" href="{$callback}">返回</a> 
+					      <p>淘宝渠道备案</p>
+					  </div>
+					  <div class="topfixedZw"> </div>
+					  
+				<div id="addshowcontent">
+				<div class="wd_page">
+					<div class="am-panel am-panel-danger">
+						<div class="copy-box">
+					<div style="text-align: center;">		
+					<img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01ydYjeu2MgYfyEh1eS_!!3175549857.jpg"/>
+					</div>
+					  <div class="am-panel-hd">
+						  复制下方口令↓↓ 打开【手机淘宝】即可完成备案！
+					  
+					  </div>
+										  <div class="am-panel-bd">
+											<h4 id="CopyMsg">{$inviterCode}</h4>
+										  </div>
+					</div>
+				
+				</div>
+					
+					</div>
+					
+		
+					
+				
+				<div class="dealbtn">
+					
+					<a href="javascript:;" style="width: 60%;height:2rem;font-size:0.8rem" class="weui-btn weui-btn_warn copya2">一键复制</a>
+					 <a href="javascript:CheckBtn();" style="width: 60%;height:2rem;font-size:0.8rem" class="weui-btn weui-btn_default">验证授权</a>
+					
+					</div>
+					
+			
+			<div class="clear" style="padding-top: 1.9rem;"></div>
+			
+			<div class="tqk-rad-12">
+				<div class="goods-des-title">
+					<div class="phb-content-title"><span>视频教程</span></div>
+				</div>
+				<div style="margin: 0 auto; padding-top: 0.8rem; width: 80%;">
+				<video width="100%" poster="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01YRSOL42MgYoqPRVgf_!!3175549857.jpg" src="https://cloud.video.taobao.com/play/u/3175549857/p/1/e/6/t/1/390271698030.mp4"  preload="auto"  controls="controls" autoplay="autoplay"  playsinline="true"  webkit-playsinline="true"  x5-video-player-type='h5' x5-video-player-fullscreen='true' >您的浏览器不支持 video 标签。</video>
+		</div></div>
+				
+				</div>
+				
+		
+		</div>
+	</body>
+	<script type="text/javascript">
+	<if condition="$Tbauth">
+		var clipboard2 = new ClipboardJS('.copya2', {
+					text:function() {
+						return  "{$inviterCode}" ;
+					}
+				});
+			clipboard2.on('success', function(e) {
+				$.toast("口令复制成功");
+				e.clearSelection();
+			});
+			clipboard2.on('error', function(e) {
+				 $.toast("复制失败", "forbidden");
+			});
+	</if>
+	
+	
+	function CheckBtn(){
+		$.ajax({
+					url: '{:U('auth/getrelation')}',
+					type: 'post',
+					dataType : 'json',    
+					success: function(res) {
+					if(res.status == 1){
+					$.toast("验证成功，现在下单可以拿返利啦！");
+					setTimeout(function(){
+						window.location.href="{$callback}";
+					}, 2000);
+					return false;
+					}
+					
+					$.toast("验证失败，请联系客服处理！", "forbidden");
+					 
+					}
+				});
+	}
+	
+	</script>
+</html>

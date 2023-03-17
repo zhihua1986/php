@@ -88,13 +88,14 @@
 		 </tr>
 		
 		
-	<!-- 		<tr>
-			<th width="10%">淘宝授权 :</th>
+			<tr>
+			<th width="10%">淘宝跟单方式 :</th>
         	<td width="40%">
-        		    <label><input type="radio"  <if condition="C('yh_bingtaobao') eq '2'">checked="checked"</if> value="2" name="setting[bingtaobao]"> 强制授权</label> &nbsp;&nbsp;
-				<label><input type="radio"  <if condition="C('yh_bingtaobao') eq '1'">checked="checked"</if> value="1" name="setting[bingtaobao]"> 自愿授权</label> &nbsp;&nbsp;
-                <label><input type="radio"  <if condition="C('yh_bingtaobao') eq '0'">checked="checked"</if> value="0" name="setting[bingtaobao]"> {:L('close')}</label>
-        <span class="gray ml10">可以通过授权实现订单与网站账号的关联。注：需要通过<a href="http://www.tuiquanke.com/article_view/2184" target="_blank"> <font color="blue">渠道管理</font></a>才可以开启</span>     
+        		    <label><input type="radio"  <if condition="C('yh_bingtaobao') eq '2'">checked="checked"</if> value="2" name="setting[bingtaobao]"> 渠道管理</label> &nbsp;&nbsp;
+				<!-- <label><input type="radio"  <if condition="C('yh_bingtaobao') eq '1'">checked="checked"</if> value="1" name="setting[bingtaobao]"> 自愿授权</label> &nbsp;&nbsp; -->
+                <label><input type="radio"  <if condition="C('yh_bingtaobao') eq '0'">checked="checked"</if> value="0" name="setting[bingtaobao]">PID跟单</label>
+        <span class="gray ml10"><a href="https://www.tuiquanke.com/topics/1dyiit1h189n8" target="_blank"> <font color="blue">渠道管理配置教程</font></a> </span>
+				<span class="gray ml10"><a href="https://www.tuiquanke.com/view/34277723812" target="_blank"> <font color="blue">PID跟单配置教程</font></a> </span>
         	</td>
 		</tr>
 		
@@ -104,7 +105,7 @@
 		<input type="text" name="setting[invitecode]"  class="input-text" size="45" value="{:C('yh_invitecode')}" >
        <span class="gray ml10">邀请码如何获取？<a href="http://www.tuiquanke.com/article_view/2203" target="_blank"> <font color="blue">点这里</font></a></span>     
         	</td>
-		</tr> -->
+		</tr>
 		
 	  <tr>
 			<th width="10%">启用三方订单接口 :</th>

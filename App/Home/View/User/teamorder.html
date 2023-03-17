@@ -74,7 +74,7 @@
 								</if>
 									</td>
 									<td id="order_time_{$vo.id}" 
-									<if condition="$vo['state'] eq 3">
+									<if condition="$vo['state'] eq 3 and $vo['settle'] neq 1">
 									data-id="{$vo.id}" data-starttime="{:date('Y-m-d H:i:s',time())}" data-endtime="{:date('Y-m-d H:i:s',$ComputingTime+$vo['up_time'])}"  class="remain-time"
 									</if>
 									><if condition="$vo['up_time']">

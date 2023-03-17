@@ -30,7 +30,7 @@ class ArticleAction extends BaseAction
            $where['cate_id'] = $cid;
        }
        $prefix = C(DB_PREFIX);
-       $items_list = $this->_mod->where($where)->field('title,cate_id,add_time,id,pic,url,info,(select name from '.$prefix.'articlecate where '.$prefix.'articlecate.id = '.$prefix.'article.cate_id) as catename')->order($order)->limit($start . ',' . $size)->select();	
+       $items_list = $this->_mod->where($where)->field('title,cate_id,add_time,id,pic,url,urlid,info,(select name from '.$prefix.'articlecate where '.$prefix.'articlecate.id = '.$prefix.'article.cate_id) as catename')->order($order)->limit($start . ',' . $size)->select();	
        $count =$this->_mod->where($where)->count('1');
        $this->assign('total_item',$count);
        $this->assign('size',$size);
@@ -41,6 +41,7 @@ class ArticleAction extends BaseAction
         $goodslist=array();
         foreach($items_list as $k=>$v){
             $goodslist[$k]['id']=$v['id'];
+			$goodslist[$k]['ccid']='cc_'.rand(1,888888);
             $goodslist[$k]['pic']=$v['pic'];
             $goodslist[$k]['cateid']=$v['cate_id'];
             $goodslist[$k]['catename']= $v['catename'];
@@ -50,7 +51,7 @@ class ArticleAction extends BaseAction
             if(C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL')==2){
                 $goodslist[$k]['linkurl']=$v['url'];
             }else{
-                $goodslist[$k]['linkurl']=U('/article/read',array('id'=>$v['id']));
+                $goodslist[$k]['linkurl']=U('/article/read',array('id'=>$v['urlid']));
             }
             
         }
@@ -90,8 +91,8 @@ public function read()
     $id = I('id', '1', 'intval');
     $help_mod = $this->_mod;
     $hits_data = array('hits'=>array('exp','hits+1'));
-    $help_mod->where(array('id'=>$id))->setField($hits_data);
-    $help = $help_mod->field('id,title,info,author,seo_title,seo_keys,seo_desc,add_time,cate_id')->find($id);
+    $help_mod->where(array('urlid'=>$id))->setField($hits_data);
+	$help = $help_mod->where(array('urlid'=>$id))->field('id,title,info,author,seo_title,url,seo_keys,seo_desc,add_time,cate_id')->find();
 	!$help && $this->_404();
 	$Replace = A("Replace");
 	$info= $Replace ->content($help['info']); 
@@ -103,7 +104,7 @@ public function read()
         ));
     $help['catename']=$this->_cate_mod->where('id='.$help['cate_id'])->getField('name');   
     $this->assign('info', $help); 
-    $orlike = D('items')->cache(true, 10 * 60)->where("title like '%" . $help['author'] . "%' ")
+    $orlike = D('items')->field('id,pic_url,num_iid,volume,title,coupon_price,price,quan,click_url,coupon_start_time,coupon_end_time,shop_type')->cache(true, 10 * 60)->where("title like '%" . $help['author'] . "%' ")
     ->limit('0,8')
     ->order('id desc')
     ->select();

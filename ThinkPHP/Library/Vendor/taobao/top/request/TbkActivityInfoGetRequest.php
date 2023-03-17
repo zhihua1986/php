@@ -3,12 +3,12 @@
  * TOP API: taobao.tbk.activity.info.get request
  * 
  * @author auto create
- * @since 1.0, 2020.02.20
+ * @since 1.0, 2022.06.20
  */
 class TbkActivityInfoGetRequest
 {
 	/** 
-	 * 官方的物料id
+	 * 官方活动会场ID，从淘宝客后台“我要推广-活动推广”中获取
 	 **/
 	private $activityMaterialId;
 	
@@ -18,7 +18,7 @@ class TbkActivityInfoGetRequest
 	private $adzoneId;
 	
 	/** 
-	 * 代理id
+	 * 渠道关系id
 	 **/
 	private $relationId;
 	
@@ -26,6 +26,11 @@ class TbkActivityInfoGetRequest
 	 * mm_xxx_xxx_xxx 仅三方分成场景使用
 	 **/
 	private $subPid;
+	
+	/** 
+	 * 自定义输入串，英文和数字组成，长度不能大于12个字符，区分不同的推广渠道
+	 **/
+	private $unionId;
 	
 	private $apiParas = array();
 	
@@ -71,6 +76,17 @@ class TbkActivityInfoGetRequest
 	public function getSubPid()
 	{
 		return $this->subPid;
+	}
+
+	public function setUnionId($unionId)
+	{
+		$this->unionId = $unionId;
+		$this->apiParas["union_id"] = $unionId;
+	}
+
+	public function getUnionId()
+	{
+		return $this->unionId;
 	}
 
 	public function getApiMethodName()

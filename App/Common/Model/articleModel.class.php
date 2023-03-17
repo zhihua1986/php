@@ -32,7 +32,7 @@ protected $pk     = 'id';
 	if($cid){
 	 $where['cate_id'] = $cid;
 	}
-	$list = $this->cache(true, 5 * 60)->field('title,cate_id,add_time,id,pic,info,url')->where($where)->order('ordid asc,id desc')->limit($size)->select();
+	$list = $this->cache(true, 5 * 60)->field('title,cate_id,urlid,add_time,id,pic,info,url')->where($where)->order('ordid asc,id desc')->limit($size)->select();
 	if($list){
 	$goodslist = array();
 	 foreach($list as $k=>$v){
@@ -45,7 +45,7 @@ protected $pk     = 'id';
       if(C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL') == 2){
         $goodslist[$k]['linkurl']=$v['url'];
       }else{
-        $goodslist[$k]['linkurl']=U('/article/read',array('id'=>$v['id']));
+        $goodslist[$k]['linkurl']=U('/article/read',array('id'=>$v['urlid']));
       }
 }
     }

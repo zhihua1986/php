@@ -729,11 +729,11 @@ public function topic(){
         $artmod = new articleModel();
         $usermod = new userModel();
         $notice=$artmod->cache(true, 10 * 60)->where('cate_id=2')->field('id,title')->limit(5)->select();
-        $userinfo = $usermod->field('special_id,id,money,oid,avatar,score,invocode,tbname,webmaster_pid,webmaster,webmaster_rate,phone,qq,wechat,phone,nickname,realname,alipay,tb_open_uid,jd_pid')->where(['openid'=>$openid])->find();
+        $userinfo = $usermod->field('special_id,id,money,oid,avatar,score,invocode,tbname,webmaster_pid,webmaster,webmaster_rate,phone,qq,wechat,phone,nickname,realname,alipay,tb_open_uid,jd_pid,elm_pid')->where(['openid'=>$openid])->find();
 		
 		if($userinfo){
-		    $userinfo['jd_pid'] = $userinfo['jd_pid']?$userinfo['jd_pid']:$this->CreateJdPid($userinfo);
-			
+		    $userinfo['jd_pid'] = $userinfo['jd_pid']>0?$userinfo['jd_pid']:$this->CreateJdPid($userinfo);
+            $userinfo['elm_pid'] = strlen($userinfo['elm_pid'])>5?$userinfo['elm_pid']:$this->CreateElmPid($userinfo);
 		if($userinfo['special_id'] < 2 ){ //会员管理ID
 		$this->Getspecial();
 		}
@@ -814,8 +814,8 @@ public function topic(){
 		
 		$openid = $this->Authtoken();
 		$res = $this->getuid($openid);
-		$uid = $res['id'];
-		$data = $this->getElmLink($uid);
+		//$uid = $res['id'];
+		$data = $this->getElmLink($res);
         if ($data) {
             $this->Exitjson(200, '', $data);
         }
@@ -1086,9 +1086,7 @@ public function topic(){
 		// 	$data= $R ->content($itemId,$uid); 
 		// 	$pid = $data['pid'];
 		// }
-		
 		$quanurl = $this->Tbconvert($this->params['num_iid'],$res,$this->params['quanid']);
-		
 		 $this->Exitjson(200, '成功', $quanurl);
 		/*
         $apiurl=$this->tqkapi.'/gconvert';
@@ -1543,7 +1541,6 @@ public function topic(){
 		$id = $this->params['id'];
 		$uid = $this->params['uid'];
 		$relationid = $this->params['relationid'];
-		
 		if(!$uid){ 
 			$this->Exitjson(500,'请登录后再操作');
 		}
@@ -1600,12 +1597,13 @@ public function topic(){
 			$openid = $_SERVER['HTTP_AUTHTOKEN'];
 			if($openid){
 			$res = $this->getuid($openid);
-			$uid = $res['id'];	
+			//$uid = $res['id'];
 			}
-			$data = $this->TbkActivity($activityid,$relationid,$uid);
+            $data = $this->CreateElmLink($activityid,$res);
+			//$data = $this->TbkActivity($activityid,$relationid,$uid);
 			$res = array(
-			'data'=>$data['data']['wx_miniprogram_path'],
-			'qrcode'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode($data['data']['wx_qrcode_url']),
+			'data'=>$data['link']['wx_path'],
+			'qrcode'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode($data['link']['mini_qrcode']),
 			'tab'=>'elm',
 			'appid'=>trim(C('yh_elmappid')),
 			'tabs'=>$this->ElmTab()
@@ -3394,8 +3392,8 @@ exit(json_encode($json,JSON_UNESCAPED_UNICODE));
 			case 'elm':
 				$openid = $this->Authtoken();
 				$res = $this->getuid($openid);
-				$uid = $res['id'];
-				$data = $this->getElmLink($uid);
+				//$uid = $res['id'];
+				$data = $this->getElmLink($res);
 				if ($data) {
 					
 					$result = array(

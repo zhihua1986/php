@@ -26,7 +26,7 @@ $res = json_decode($res, true);
 $me=$res['me'];
 
 if(strlen($me)>5){
-$quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.'&activityId='.$item['Quan_id'].'&itemId='.$item['num_iid'].'&pid='.trim(C('yh_taobao_pid')).'&af=1';
+$quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.'&activityId='.$item['Quan_id'].'&pid='.trim(C('yh_taobao_pid')).'&af=1';
 $kouling=kouling($item['pic_url'],$item['title'],$quanurl);
 return $kouling;
 }

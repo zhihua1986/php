@@ -7,7 +7,61 @@ class PidAction extends BaseAction{
         parent :: _initialize();
         $this -> _mod = D('pid');
     }
-	
+
+    /**
+     * @param $i
+     * @return mixed
+     */
+    private  function  QueryPid($i){
+
+        $name = date('YmdHis',time());
+        $apiurl = 'http://api.tuiquanke.cn/createtbpid';
+        $apidata=[
+            'tqk_uid'=>$this->tqkuid,
+            'time'=>time(),
+            'adname'=>$name
+        ];
+        $token=$this->create_token(trim(C('yh_gongju')), $apidata);
+        $apidata['token']=$token;
+        $res= $this->_curl($apiurl, $apidata, false);
+        $res = json_decode($res, true);
+        return $res;
+    }
+
+    public  function addpid(){
+
+        if(IS_POST){
+
+            $Num = I('num');
+            if($Num > 10 ){
+                return $this->ajaxReturn(0, '一次最多只能创建10个PID！');
+            }
+            $pid = C('yh_taobao_pid');
+            if(!$pid){
+                return $this->ajaxReturn(0, '站点设置中，阿里妈妈PID必须要填写！');
+            }
+            $i =0;
+
+            for ($i;$i<$Num;$i++){
+
+                 $data =  $this->QueryPid($i);
+                if($data['status'] == 0){
+                    return $this->ajaxReturn(0, $data['result']);
+                    break;
+                }
+                Sleep(1);
+            }
+
+
+            return $this->ajaxReturn(1, '创建完成,！');
+
+
+        }
+
+        $response = $this->fetch();
+        $this->ajaxReturn(1, '', $response);
+
+    }
 	
 	//public function _before_add() {
 	public function add() {

@@ -39,7 +39,7 @@ if($this->FilterWords($key)){
 $this->_404();
 }
 
- $this->pddquery($key);
+ //$this->pddquery($key);
  $this->assign('sokey', $key);
 }
 

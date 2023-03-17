@@ -136,7 +136,7 @@
 <ul id="contain"> 
 <li><a>确认收货{:C('yh_ComputingTime')}天后结算到账,余额满{:C('yh_Quota')}元可提现。</a></li>
 <volist name="article" id="art">
-<li><a href="<if condition="C('URL_MODEL') eq 2 and C('APP_SUB_DOMAIN_DEPLOY') eq true">/article/view_{$art.id}<else/>{:U('/m/article/read',array('id'=>$art['id']))}</if>">{$art.title}</a></li>
+<li><a href="<if condition="C('URL_MODEL') eq 2 and C('APP_SUB_DOMAIN_DEPLOY') eq true">{$art.url}<else/>{:U('/m/article/read',array('id'=>$art['urlid']))}</if>">{$art.title}</a></li>
 </volist>	
 </ul>
                    </div>
@@ -170,20 +170,7 @@
 						<a href="{:U('zhan/ucenter')}"> 进入老的代理用户中心</a>
 					</div>
 	</if>-->
-<if condition="C('yh_bingtaobao') gt 0 and $user['webmaster'] eq 0">
-<div style="background: #ffffff; padding: 5px;">	
-<a href="javascript:;" class="inviterCode"><img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN0190MQUa2MgYgFAhzkA_!!3175549857.jpg" width="100%"></a>
-</div>
 <div style="padding-bottom: 5px;"> </div>
-
-<elseif condition="!$user['oid'] and $user['webmaster'] eq 0"/>
-
-<!-- <div style="background: #ffffff; padding: 5px;">
-<a href="{:U('user/suborder')}"><img src="__STATIC__/wap/images/bindorder.png?v=2" width="100%"></a>
-</div>
-<div style="padding-bottom: 5px;"> </div> -->
-
-</if>
 
 	
     
@@ -359,31 +346,7 @@ text: function() {
     return "{$inviterCode}";
 }
 });
-inviterCode.on('success', function(e) {
-layer.confirm('复制口令成功！现在打开【手机淘宝App】完成授权操作', {
-  btn: ['我已完成'] 
-}, function(){
-    $.ajax({
-                url: '{:U('user/getrelation')}',
-                type: 'post',
-                dataType : 'json',    
-                success: function(res) {
-                	if(res.status == 1){
-                layer.msg('授权成功！',{icon: 1});
-				setTimeout(function(){
-					window.location.reload();
-				}, 2000);
-				return false;
-				}
-                 
-                  layer.msg('授权失败，确定手机淘宝APP内完成备案了吗？', {icon: 2});
-                 
-                }
-            });
-	
-});
-        
-});
+
     
   function $$(selector) {
         return document.querySelector(selector);

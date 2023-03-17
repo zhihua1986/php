@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="__SKIN2__/layui/css/layui.css?v=1.3">
 <style>
 html{font-size:80px}
-body{font-size:14px;line-height:1.8;background:#37bcff}
+body{font-size:14px;line-height:1.8;background:{$PageInfo.color}}
 .coupon-wrap{width:100%;position:relative}
 .root{width:100%;overflow:hidden}
 .coupon-wrap .title{height:.63rem;padding-top:.43rem}
@@ -32,11 +32,13 @@ body{font-size:14px;line-height:1.8;background:#37bcff}
 .coupon-wrap .content .coupon-con{width:3.02rem;height:1.43rem;padding-top:.2rem;margin:0 auto .32rem;box-sizing:border-box}
 @media screen and (min-width:768px){.flex-wrap{width:600px;margin:0 auto}
 }
+.back{position: absolute;left: 0px;top: 12px;z-index:9;display: block;width: 40px;height: 30px;background: rgba(0,0,0,0.7);text-align: center;line-height: 30px;color: #fff;border-bottom-right-radius:10%;border-top-right-radius:10%;font-size: 24px;}
 .copy-link{margin:.12rem;padding:.15rem;border-radius:8px;font-size:.24rem;text-align:center;background:#fff;color:#474747}
 .copy-link .code{width:264px;resize:none;margin:0 auto;padding:0 10px;height:40px;line-height:40px;font-size:.24rem;background-color:#ededed;border:none;overflow:hidden;box-sizing:border-box;text-align:center}
-.copy-link button{margin:12px 0;width:100px;height:36px;line-height:36px;font-size:14px}
+.copy-link a{margin:12px 0;width:200px;height:36px;line-height:36px;font-size:14px;}
 .copy-link p{margin-bottom:5px;font-size:.2rem}
-.koubei-btn{padding:.12rem}
+.koubei-btn{text-align: center; margin: 0 auto;}
+.koubei-btn a{background-color: #ffffff;}
 #silde{width: 40px; position: absolute; right: 15px; z-index: 999;}
 .tqkup {
     background: #9F9F9F;
@@ -44,37 +46,45 @@ body{font-size:14px;line-height:1.8;background:#37bcff}
 .tqkup i{font-size: 40px;}
 #silde{position: fixed; bottom: 50px;}
 #silde a{display: block;width: 40px;height: 40px;border-radius: 40px; text-align: center; line-height: 40px; color: #FFF; margin-bottom: 1px; cursor: pointer;}
+.layui-btn-group .layui-btn:first-child{
+	border-top-left-radius:30px ;border-bottom-left-radius:30px ;
+}
+.layui-btn-group .layui-btn:last-child{
+	border-top-right-radius:30px ;border-bottom-right-radius:30px ;
+}
+.tqk-tab{border-color: #d2d2d2;color: #FA3534; background: rgba(255,255,255,0.5);}
+.layui-btn { padding: 0 14px;}
 </style>
 </head>
 <body>
 	
 		<div class="layui-container" style="padding: 0;">
+<if condition="$back">
+	<a href="{$back}" class="layui-icon layui-icon-left back"></a>
+</if>
 	<div class="layui-row">	
  <div class="layui-col-xs12 layui-col-sm12">
 <div class="root">
 <div class="coupon-wrap flex-wrap">
-<img src="__SKIN2__/static/home/images/elm.png?v=1" width="100%"/>
+<img src="{$PageInfo.banner}" width="100%"/>
 <div class="koubei-btn">
-<img src="__SKIN2__/static/home/images/e02.png?v=1"  width="100%"/>
+	
+<div class="layui-btn-group">
+<volist name="Tab" id="vo">
+  <a href="{:U('elm/index',array('tab'=>$i-1))}" class="layui-btn layui-btn-primary <if condition="$vo['id'] eq $PageInfo['id']">tqk-tab</if>">{$vo.name}</a>
+</volist>
+</div>	
+	
 </div>
 <div class="copy-link">
-<p>复制下方淘口令，打开【手机淘宝】领饿了么外卖专享红包</p>
- <div class="code-android">
- <textarea class="code" >{$kouling}</textarea>
- <div style="margin-left: -600px; height: 1px; overflow: hidden;">
-<input id="code" value="{$kouling}" readonly="readonly" />
-</div>
- </div>
-  <button  data-clipboard-target="#code" data-clipboard-action="copy" class="layui-btn layui-btn-radius layui-btn-danger copycode">一键复制</button>
-
 <div style="padding: 0.3rem; text-align: center;">
-	<img src="{$qrcode}" width="200" />
-	<div>微信扫饿了么小程序即可领取</div>
+	<div>打开微信扫描小程序二维码</div>
+	<img src="{$item.link.mini_qrcode}" width="200" />
 </div>
-
+<if condition="$item['link']['h5_url']">
+ <a target="_blank" href="{$item.link.h5_url}" class="layui-btn layui-btn-radius layui-btn-danger">点击领取</a>
+</if>
 </div>
-
-	
 </div>
 </div>
 
@@ -95,6 +105,16 @@ body{font-size:14px;line-height:1.8;background:#37bcff}
     base: '__SKIN2__/static/home/js/' 
     ,debug:false
   }).use('tqk'); 
+  
+  <if condition="$Tbauth">
+  layer.confirm('淘宝官方要求，完成备案后才能获得返利', {
+    btn: ['开始备案','暂不备案'] //按钮
+  }, function(){
+   window.location.href="{:U('auth/index',array('callback'=>$callback))}";
+  }, function(){
+  layer.close();
+  });
+  </if>
 </script>
 <include file="Public:stat" />
 </body>

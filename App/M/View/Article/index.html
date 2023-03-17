@@ -20,8 +20,8 @@
 				<div class="am-tab-panel am-fade am-in am-active">
 					<ul class="headlines-bd">
 						<volist name='list' id="cateid">
-							<li>
-								<a href="{$cateid.linkurl}{$trackurl}">
+							<li class="{$cateid.ccid}" >
+								<a class="{$cateid.ccid}" href="{$cateid.linkurl}{$trackurl}">
 									<img src="{$cateid.pic}" width="120" height="120">
 									<h3 class="ellipsis-2">{$cateid.title}</h3>
 									<p class="ellipsis-2">{$cateid.infocontent}</p>

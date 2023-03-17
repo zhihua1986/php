@@ -3,12 +3,12 @@
  * TOP API: taobao.tbk.order.details.get request
  * 
  * @author auto create
- * @since 1.0, 2019.04.25
+ * @since 1.0, 2022.08.31
  */
 class TbkOrderDetailsGetRequest
 {
 	/** 
-	 * 订单查询结束时间
+	 * 订单查询结束时间，订单开始时间至订单结束时间，中间时间段日常要求不超过3个小时，但如618、双11、年货节等大促期间预估时间段不可超过20分钟，超过会提示错误，调用时请务必注意时间段的选择，以保证亲能正常调用！
 	 **/
 	private $endTime;
 	
@@ -43,7 +43,7 @@ class TbkOrderDetailsGetRequest
 	private $positionIndex;
 	
 	/** 
-	 * 查询时间类型，1：按照订单淘客创建时间查询，2:按照订单淘客付款时间查询，3:按照订单淘客结算时间查询
+	 * 查询时间类型，1：按照订单淘客创建时间查询，2:按照订单淘客付款时间查询，3:按照订单淘客结算时间查询，4:按照订单更新时间；
 	 **/
 	private $queryType;
 	
@@ -53,7 +53,7 @@ class TbkOrderDetailsGetRequest
 	private $startTime;
 	
 	/** 
-	 * 淘客订单状态，12-付款，13-关闭，14-确认收货，15-结算成功;不传，表示所有状态
+	 * 淘客订单状态，11-拍下未付款，12-付款，13-关闭，14-确认收货，3-结算成功;不传，表示所有状态
 	 **/
 	private $tkStatus;
 	

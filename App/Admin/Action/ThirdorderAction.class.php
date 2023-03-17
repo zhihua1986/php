@@ -90,7 +90,7 @@ if($json['data']){
 					'order_commission'=>$query['details'][0]['order_commission'],
 					'order_sn'=>$query['details'][0]['order_sn'],
 					'order_time'=>strtotime($query['order_time']),
-					'uid'=>$query['euid'],
+					'uid'=>str_replace('m','',$query['euid']),
 					'status'=>$query['status'],
 					'confirm_price'=>$query['confirm_price'],
 					'confirm_siter_commission'=>$query['confirm_siter_commission'],

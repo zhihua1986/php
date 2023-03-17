@@ -98,7 +98,7 @@
 								  <if condition="$vo['category_id']">
 										 <li>
 															<div class="goods_list">
-																<a href="javascript:;" class="jump" quanid="{$vo.coupon_id}" trackurl="{$trackurl}" data-rate="{:$vo['commission_rate']}" rel="{$vo.quan}" data-cnzz="{$vo.num_iid}" quanurl="{$vo.coupon_click_url}">
+																<a href="{:U('/item/',array('id'=>$vo['num_iid']))}" >
 																	<div class="goods_img">
 																		<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
 																			<span class="rank_num">约返{:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}元</span>

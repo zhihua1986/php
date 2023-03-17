@@ -61,9 +61,9 @@ protected function bdmenu(){
 	        'type'=>1,
 	    ],
 	    [
-	        'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01BPGIkm2MgYkwjSWQT_!!3175549857.png',
-	        'name'=>'1分包邮',
-	        'url'=>'/pages/other/topic?id=20150318020008177',
+	        'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01LJdLke2MgYqLLxz7y_!!3175549857.png',
+	        'name'=>'超级U选',
+	        'url'=>'/pages/other/topic?id=20150318020014180',
 	        'type'=>1,
 	    ],
 	    [
@@ -244,9 +244,15 @@ protected function bdmenu(){
 		    'name'=>'京东',
 		    'url'=>'/pages/cate/multi?mod=jd',
 		    'type'=>1,
-		]  
-		  
-	  ];
+		],
+          [
+              'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01LJdLke2MgYqLLxz7y_!!3175549857.png',
+              'name'=>'超级U选',
+              'url'=>'/pages/other/topic?id=20150318020014180',
+              'type'=>1,
+          ]
+
+      ];
 	  if (C('yh_openduoduo')){
 	  	$part1[] =  [
 	          'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01XaqX9a2MgYl0G5RIk_!!3175549857.png',
@@ -257,25 +263,7 @@ protected function bdmenu(){
 	  }
 	
 	 $part2 = [];
-	 if(C('yh_dm_cid_mt') == 1){
-	 	$part2[] =  [
-	 	    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01MgRSKf2MgYktTWx1Q_!!3175549857.png',
-	 	    'name'=>'美团外卖',
-			'url'=> '/pages/other/share?id=1&tab=dmmt&cur=0',
-			'id'=>'1',
-			'type'=>1,
-	 	];
-	 }elseif(C('yh_openmt') == 1){
-	 	
-	 	$part2[] =  [
-	 	    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01MgRSKf2MgYktTWx1Q_!!3175549857.png',
-	 	    'name'=>'美团外卖',
-	 	   'url'=> '/pages/other/share?id=33&tab=mt&cur=0',
-	 	   'id'=>'33',
-	 	   'type'=>1,
-	 	];
-	 	
-	 }
+
 	 if(C('yh_dm_cid_kfc') == 1){
 		 $part2[] =  [
 		   'img'=>'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01vv0lrn2MgYl2HB95o_!!3175549857.png',
@@ -309,6 +297,37 @@ protected function bdmenu(){
 			'type'=>3,
 			 ];
 	}
+
+        if(C('yh_elm') == 1){
+            $part2[] =  [
+                'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01FRzfOs2MgYkyiAOiu_!!3175549857.png',
+                'name'=>'饿了么',
+                'url'=> '/pages/other/share?id=2192&tab=elm&cur=0',
+                'id'=>'2192',
+                'type'=>1,
+            ];
+        }
+
+        if(C('yh_dm_cid_mt') == 1){
+            $part2[] =  [
+                'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01MgRSKf2MgYktTWx1Q_!!3175549857.png',
+                'name'=>'美团外卖',
+                'url'=> '/pages/other/share?id=10124&tab=dmmt&cur=0',
+                'id'=>'10124',
+                'type'=>1,
+            ];
+        }elseif(C('yh_openmt') == 1){
+
+            $part2[] =  [
+                'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01MgRSKf2MgYktTWx1Q_!!3175549857.png',
+                'name'=>'美团外卖',
+                'url'=> '/pages/other/share?id=33&tab=mt&cur=0',
+                'id'=>'33',
+                'type'=>1,
+            ];
+
+        }
+
         $part3 = [
 			[
 			    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lH6WbT2MgYkx01LPz_!!3175549857.png',
@@ -323,24 +342,11 @@ protected function bdmenu(){
 			    'type'=>2,
 			],
             [
-                'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01FRzfOs2MgYkyiAOiu_!!3175549857.png',
-                'name'=>'饿了么',
-                'url'=> '/pages/other/share?id=2192&tab=elm&cur=0',
-				'id'=>'2192',
-                'type'=>1,
-            ],
-            [
                 'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN0185ADWl2MgYl1MitES_!!3175549857.gif',
                 'name'=>'百亿补贴',
                 'url'=>'/pages/other/topic?id=20150318020000462',
                 'type'=>1,
             ],
-			[
-			    'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01BPGIkm2MgYkwjSWQT_!!3175549857.png',
-			    'name'=>'1分包邮',
-			    'url'=>'/pages/other/topic?id=20150318020008177',
-			    'type'=>1,
-			],
             [
                 'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01vemkIN2MgYkrJyOCb_!!3175549857.png',
                 'name'=>'超划算',
@@ -368,6 +374,7 @@ protected function bdmenu(){
 			],
             
         ];
+
 		
 		if(C('yh_dm_cid_dy') == 1){
 				 $part3[] =  [
@@ -415,7 +422,7 @@ protected function bdmenu(){
 	            return $uid;
 	        }
 	        $mod = new userModel();
-	        $uid = $mod->field('special_id,webmaster_pid,id,fuid,guid,webmaster,webmaster_rate,jd_pid')->where(['openid'=>$openid])->find();
+	        $uid = $mod->field('special_id,webmaster_pid,id,fuid,guid,webmaster,webmaster_rate,jd_pid,elm_pid')->where(['openid'=>$openid])->find();
 	        if ($uid) {
 	            S($openid, $uid, 60);
 	            return $uid;
@@ -544,7 +551,10 @@ protected function bdmenu(){
 			
 		}
 		
-		protected function getElmLink($uid=''){
+		protected function getElmLink($res=array()){
+
+
+
 			vendor("taobao.taobao");
 			$pid = trim(C('yh_taobao_pid')); 
 			 // if($uid){

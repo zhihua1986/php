@@ -15,6 +15,7 @@ return array(
     // '配置项'=>'配置值'
     'TMPL_PARSE_STRING' => array(
         '__SKIN2__' => __ROOT__ . '/Public/skin2',
+		'__SKIN3__' => __ROOT__ . '/Public/skin3',
         '__STATIC__' => __ROOT__ . '/Public/static',
         '__IMG__' => __ROOT__ . '/Public/static/images',
         '__CSS__' => __ROOT__ . '/Public/static/css',

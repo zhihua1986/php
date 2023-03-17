@@ -32,7 +32,7 @@ class ArticleAction extends BaseAction
             $where['cate_id'] = $cid;
         }
 
-        $items_list = $this->_mod->where($where)->field('title,cate_id,add_time,id,pic,info,url')->order($order)->limit($start . ',' . $size)->select();
+        $items_list = $this->_mod->where($where)->field('title,cate_id,add_time,id,urlid,pic,info,url')->order($order)->limit($start . ',' . $size)->select();
         $count =$this->_mod->where($where)->count();
         $this->assign('total_item', $count);
         $this->assign('size', $size);
@@ -43,6 +43,7 @@ class ArticleAction extends BaseAction
             $goodslist=[];
             foreach ($items_list as $k=>$v) {
                 $goodslist[$k]['id']=$v['id'];
+				 $goodslist[$k]['ccid']='cc_'.rand(1,99999);
                 $goodslist[$k]['pic']=$v['pic'];
                 $goodslist[$k]['cateid']=$v['cate_id'];
                 $goodslist[$k]['catename']= $this->_cate_mod->where('id='.$v['cate_id'])->getField('name');
@@ -52,7 +53,7 @@ class ArticleAction extends BaseAction
                 if (C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL')==2) {
                     $goodslist[$k]['linkurl']=$v['url'];
                 } else {
-                    $goodslist[$k]['linkurl']=U('/m/article/read', ['id'=>$v['id']]);
+                    $goodslist[$k]['linkurl']=U('/m/article/read', ['id'=>$v['urlid']]);
                 }
             }
             $this->assign('list', $goodslist);
@@ -78,12 +79,12 @@ class ArticleAction extends BaseAction
     {
         $help_mod = M('article');
         $id = I('id', '1', 'intval');
-        $help = $help_mod->field('id,title,info,author,seo_title,seo_keys,seo_desc,add_time,cate_id')->find($id);
+		$help = $help_mod->where(array('urlid'=>$id))->field('id,title,info,author,seo_title,url,urlid,seo_keys,seo_desc,add_time,cate_id')->find();
         !$help && $this->_404();
         $articlecate= $this->_cate_mod->where('status=1')->field('id,name')->select();
         $this->assign('articlecate', $articlecate);
         $hits_data = ['hits'=>['exp', 'hits+1']];
-        $help_mod->where(['id'=>$id])->setField($hits_data);
+        $help_mod->where(['urlid'=>$id])->setField($hits_data);
         $this->_config_seo([
             'title' => $help['seo_title'] ? $help['seo_title'] : $help['title'].'_'.C('yh_site_name'),
             'keywords'=>$help['seo_keys'],
@@ -91,16 +92,16 @@ class ArticleAction extends BaseAction
         ]);
         $help['catename']=$this->_cate_mod->where('id='.$help['cate_id'])->getField('name');
         $this->assign('info', $help);
-        $orlike = D('items')->cache(true, 10 * 60)->where("title like '%" . $help['author'] . "%' ")
+        $orlike = D('items')->field('id,pic_url,num_iid,volume,title,coupon_price,price,quan,click_url,coupon_start_time,coupon_end_time,shop_type')->cache(true, 10 * 60)->where("title like '%" . $help['author'] . "%' ")
              ->field('id,pic_url,num_iid,title,coupon_price,price,quan,shop_type,volume,add_time')
             ->limit('0,4')
             ->order('is_commend desc,id desc')
             ->select();
         $where=[
             'cate_id'=>$help['cate_id'],
-            'id'=>['neq', $id]
+            'urlid'=>['neq', $id]
         ];
-        $articlelike = $this->_mod->where($where)->field('id,title,pic,add_time,cate_id,url')->limit('0,5')->order('id desc')->select();
+        $articlelike = $this->_mod->where($where)->field('id,title,pic,add_time,cate_id,url,urlid')->limit('0,5')->order('id desc')->select();
         $article=[];
         foreach ($articlelike as $k=>$v) {
             $article[$k]['id']=$v['id'];
@@ -111,7 +112,7 @@ class ArticleAction extends BaseAction
             if (C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL')==2) {
                 $article[$k]['linkurl']=$v['url'];
             } else {
-                $article[$k]['linkurl']=U('/m/article/read', ['id'=>$v['id']]);
+                $article[$k]['linkurl']=U('/m/article/read', ['id'=>$v['urlid']]);
             }
         }
         $this->assign('articlelike', $article);
