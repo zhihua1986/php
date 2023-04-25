@@ -3,7 +3,7 @@
  * TOP API: taobao.httpdns.get request
  * 
  * @author auto create
- * @since 1.0, 2016.03.24
+ * @since 1.0, 2021.12.07
  */
 class HttpdnsGetRequest
 {

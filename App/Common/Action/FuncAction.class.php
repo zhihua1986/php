@@ -5,6 +5,9 @@ use Common\Api\Weixin;
 class FuncAction extends Action
 {
 
+/*
+物料搜索
+*/
 protected function TbkDgMaterial($size,$material_id,$page=1){
 vendor("taobao.taobao");
 $appkey=trim(C('yh_taobao_appkey'));
@@ -871,11 +874,11 @@ M('user')->where($map)->save(array(
 	$prefix = C(DB_PREFIX);
 	 $table=$prefix.'order';
 	 
-	// $field='fuid,guid,webmaster_rate,(select id from '.$table.' where  tqk_order.orderid ="'.$item['orderid'].'" limit 1) as nid';
-	// $ret=M('user')->field($field)->where(array('webmaster_pid'=>$item['relation_id']))->limit(1)->find();
-	
 	$field='id,fuid,guid,webmaster_rate,(select id from '.$table.' where  tqk_order.orderid ="'.$item['orderid'].'" limit 1) as nid';
-	$ret=M('user')->field($field)->where(array('special_id'=>$item['special_id']))->limit(1)->find();
+	$ret=M('user')->field($field)->where(array('webmaster_pid'=>$item['relation_id']))->limit(1)->find();
+	
+	// $field='id,fuid,guid,webmaster_rate,(select id from '.$table.' where  tqk_order.orderid ="'.$item['orderid'].'" limit 1) as nid';
+	// $ret=M('user')->field($field)->where(array('special_id'=>$item['special_id']))->limit(1)->find();
 	$mod=M('order');
 	
 if($ret){
@@ -913,7 +916,7 @@ if($ret['nid']<=0){
         }
 	
 }else{
-//$data['relation_id']	=$item['relation_id'];
+$data['relation_id']=$item['relation_id'];
 $data['special_id']	=$item['special_id'];
 $data['leve1']=$ret['webmaster_rate']?$ret['webmaster_rate']:trim(C('yh_bili1'));
 $data['nstatus']=1;
@@ -1019,6 +1022,23 @@ if ($res) {
 		 return 0;
 
      
+    }
+
+    /**
+     * 饿了么订单状态映射到淘宝
+     * @param $Num
+     * @return int
+     */
+    protected  function ElmToTb($Num){
+
+        $Data = array(
+            '0'=>2,
+            '1'=>0,
+            '2'=>1,
+            '4'=>3
+        );
+
+        return $Data[$Num];
     }
  
     protected function ajaxReturn($status=1, $msg='', $data='', $dialog='') {
@@ -1278,7 +1298,7 @@ if ($res) {
 		        'partner_trade_no' => $trade_no, //商户订单号，需要唯一
 		        'openid' => $openid,
 		        'check_name' => 'NO_CHECK', //OPTION_CHECK不强制校验真实姓名, FORCE_CHECK：强制 NO_CHECK：
-		        'amount' => $money * 100, //付款金额单位为分
+		        'amount' => intval($money * 100), //付款金额单位为分
 		        'desc' => '余额提现',
 		        'spbill_create_ip' => get_client_ip(),
 		    );
@@ -1296,7 +1316,7 @@ if ($res) {
 			$pars['out_batch_no'] = $out_batch_no;
 			$pars['batch_name']   = '余额提现';
 			$pars['batch_remark'] = '余额提现';
-			$pars['total_amount'] = $money * 100;
+			$pars['total_amount'] = intval($money * 100);
 			$pars['total_num']    = 1;
 			$pars['transfer_detail_list'][0]  = [
 													'out_detail_no'=>$out_detail_no,
@@ -1376,6 +1396,7 @@ if ($res) {
 	protected function topicImg($id){
 		
 		$data = array(
+            '20150318020014180'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01FAQTzx2MgYqI3YPaZ_!!3175549857.jpg',
 		'20150318020003022'=>'https://gw.alicdn.com/imgextra/i3/O1CN01OVBveb1v0t14Adcxe_!!6000000006111-2-tps-800-450.png',
 		'20150318020000462'=>'https://gw.alicdn.com/tfs/TB1iwoaSBr0gK0jSZFnXXbRRXXa-800-450.png',
 		'chaohuasuan'=>'https://img.alicdn.com/imgextra/i4/126947653/O1CN01zB6KOQ26P7kZ09xAe_!!126947653.png',
@@ -1393,6 +1414,7 @@ if ($res) {
 	protected function topicColor($id){
 		
 		$data = array(
+            '20150318020014180'=>'#FEA1C',
 		'20150318020003022'=>'#BE0724',
 		'20150318020000462'=>'#E70012',
 		'chaohuasuan'=>'#FF5207',
@@ -1414,9 +1436,15 @@ if ($res) {
 		'4620'=>'20150318020000462',//百亿补贴
 		'3158'=>'20150318020003158',//一元购
 		'4956'=>'20150318020008177',//1分购
-		'8877'=>'20150318020002192',//饿了么外卖
-		'4441'=>'20150318020004284',//饿了么商超
-		'2192'=>'20150318020002192',// 饿了么小程序
+		//'8877'=>'20150318020002597',//饿了么外卖
+//		'4441'=>'20150318020004284',//饿了么商超
+//		'2192'=>'20150318020002192',// 饿了么小程序
+        '4441'=>'10247',//饿了么商超
+        '2192'=>'10144',// 饿了么小程序
+		'8877'=>'20150318019998877',//饿了么外卖
+            '4187'=> '20150318020014187',//U选特惠
+            '4185'=> '20150318020014185',//U选快抢
+            '4180'=> '20150318020014180',//超级U选
 		);
 		
 		return $data[$id];

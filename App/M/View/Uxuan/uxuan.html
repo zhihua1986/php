@@ -1,0 +1,239 @@
+<include file="NewPublic:meta" />
+<style>
+    body{background:{$PageInfo.color}}
+    .layui-btn-group .layui-btn:first-child{
+        border-top-left-radius:1.2rem ;border-bottom-left-radius:1.2rem ;
+    }
+    .layui-btn-group .layui-btn:last-child{
+        border-top-right-radius:1.2rem ;border-bottom-right-radius:1.2rem ;
+    }
+    .layui-btn { padding: 0 0.9rem;}
+    .layui-btn-group {
+        vertical-align: middle;
+        font-size: 0
+    }
+    .layui-btn, .layui-btn-group, .layui-edge {
+        display: inline-block;
+    }
+    .layui-btn-group .layui-btn {
+        margin-left: 0!important;
+        margin-right: 0!important;
+        border-left: 1px solid rgba(255,255,255,.5);
+        border-radius: 0
+    }
+
+    .layui-btn-group .layui-btn-primary {
+        border-left: none
+    }
+    .layui-btn-group .layui-btn:first-child {
+        border-left: none;
+        border-radius: 1rem 0 0 1rem
+    }
+    .layui-btn-group .layui-btn:last-child {
+        border-radius: 0 1rem 1rem 0
+    }
+
+    .layui-btn-group .layui-btn+.layui-btn {
+        margin-left: 0
+    }
+
+    .layui-btn-group+.layui-btn-group {
+        margin-left: 3rem
+    }
+    .layui-btn {
+        height: 2rem;
+        line-height: 2rem;
+        border: 1px solid transparent;
+        padding: 0 1rem;
+        background-color: #FA3534;
+        color: #fff;
+        white-space: nowrap;
+        text-align: center;
+        border-radius: .2rem;
+        cursor: pointer
+    }
+
+.koubei-btn{ display: flex;justify-content: center;}
+    .layui-btn-container .layui-btn {
+        margin-right: 10px;
+        margin-bottom: 10px
+    }
+
+    .layui-btn-container .layui-btn+.layui-btn {
+        margin-left: 0
+    }
+    .tqk-tab{ background:#353535;}
+    .box-title{border-radius:.5rem;margin: .8rem}
+</style>
+<body>
+<div class="pagebox">
+    <div class="weui-tab">
+
+        <div class="swiper mySwiper" style="margin:0 auto;">
+            <if condition="$back">
+            <a href="{$back}" class="iconfont tqk-fanhuiiconx"
+               style="background: rgba(0, 0, 0, 0.3); color: rgb(255, 255, 255);"></a>
+            </if>
+            <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="{$PageInfo.banner}" alt=""></div>
+            </div>
+        </div>
+
+        <div class="koubei-btn">
+
+            <div class="layui-btn-group">
+                <volist name="Tab" id="vo">
+                    <a href="{:U('uxuan/index',array('tab'=>$i-1))}" class="layui-btn layui-btn-primary <if condition="$vo['id'] eq $PageInfo['id']">tqk-tab</if>">{$vo.name}</a>
+                </volist>
+            </div>
+
+        </div>
+
+
+
+        <div class="box-title tqk-p-5">
+
+            <div style="padding: 0.3rem; text-align: center;">
+                <div>手机淘宝扫码进入活动页面</div>
+                <img src="{$info.data.url}" width="160" />
+            </div>
+
+
+
+
+        <a  href="javascript:popup();" class="layui-btn layui-btn-radius layui-btn-danger">查看活动页面</a>
+
+<div class="tqk"></div>
+        </div>
+
+
+</div>
+
+
+</div>
+
+<div class="footzw"> </div>
+
+
+<div class="weui-tabbar">
+    <a href="/" class="weui-tabbar__item">
+        <div class="weui-tabbar__icon">
+            <i class="iconfont tqk-shouye1"></i>
+        </div>
+        <p class="weui-tabbar__label">首页</p>
+    </a>
+
+
+    <a href="{:U('jiu/index')}" class="weui-tabbar__item">
+        <div class="weui-tabbar__icon">
+            <i class="iconfont tqk-kuai1"></i>
+        </div>
+        <p class="weui-tabbar__label">9块9包邮</p>
+    </a>
+
+    <if condition="C('yh_openjd') eq 1">
+    <a href="{:U('jd/index')}" class="weui-tabbar__item">
+        <div class="weui-tabbar__icon">
+            <i class="iconfont tqk-jingdong4"></i>
+        </div>
+        <p class="weui-tabbar__label">京东券</p>
+    </a>
+    <else/>
+
+        <a href="{:U('top100/index')}" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <i class="iconfont tqk-kuai1"></i>
+            </div>
+            <p class="weui-tabbar__label">热销榜</p>
+        </a>
+
+    </if>
+
+    <if condition="$openduoduo eq 1">
+        <a href="{:U('pdd/index')}" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <i class="iconfont tqk-pinduoduo2"></i>
+            </div>
+            <p class="weui-tabbar__label">拼多多券</p>
+        </a>
+        <else/>
+
+        <a href="{:U('brand/index')}" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <i class="iconfont tqk-liwu"></i>
+            </div>
+            <p class="weui-tabbar__label">品牌券</p>
+        </a>
+
+    </if>
+
+
+    <a href="{:U('user/ucenter')}" class="weui-tabbar__item">
+        <div class="weui-tabbar__icon">
+            <i class="iconfont tqk-yonghu"></i>
+        </div>
+        <p class="weui-tabbar__label">我的</p>
+    </a>
+
+
+</div>
+
+
+
+<div id="half" class='weui-popup__container popup-bottom'>
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+        <div class="toolbar">
+            <div class="toolbar-inner">
+                <a href="javascript:;" class="picker-button close-popup iconfont tqk-xiangzuojiantou"></a>
+                <h1 class="title">淘口令购买</h1>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="weui-grids">
+                <div class="copy-box">
+                    <div class="am-panel am-panel-danger">
+                        <div class="am-panel-hd">复制下方口令↓↓ 打开【手机淘宝】即可进入活动页面！</div>
+                        <div class="am-panel-bd">
+                            <h4 id="CopyMsg">{$info.data.kouling}</h4>
+                        </div>
+                    </div>
+                    <a href="javascript:;" id="copy_btn" style="width: 60%;height:2rem;font-size:0.8rem"
+                       class="weui-btn weui-btn_warn copya">一键复制</a>
+                    <a href="javascript:$.closePopup();" style="width: 60%;height:2rem;font-size:0.8rem"
+                       class="weui-btn weui-btn_default">关闭页面</a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+ function popup(){
+
+     $("#half").popup();
+     return false;
+
+ }
+ var Kouling = '{$info.data.kouling}';
+ var clipboard = new ClipboardJS('.copya', {
+     text: function() {
+         return  Kouling ;
+     }
+ });
+ clipboard.on('success', function(e) {
+     $.toast("口令复制成功");
+     e.clearSelection();
+ });
+ clipboard.on('error', function(e) {
+     $.toast("复制失败", "forbidden");
+ });
+</script>
+
+<include file="Public:stat" />
+</body>
+</html>

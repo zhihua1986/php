@@ -1,0 +1,75 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+  <div class="layui-container container">
+    <div class="tqk-pt-20"></div>
+    <div class="tqk-bg-white">
+
+
+      <div class="flexbox">
+
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-header tqk-f-20">拼多多渠道备案 </div>
+            <div class="layui-card-body" style="padding: 50px;">
+
+
+              <div class="layui-row">
+
+                <div class="layui-col-xs1">&nbsp;</div>
+
+                <div class="layui-col-xs5">
+                  <div style="margin: 0 auto; padding: 40px; text-align: center;">
+                    <p class="tqk-pb-15">
+                      拼多多官方要求，必须备案了才可以继续使用。
+                      <br/>
+                      使用微信或拼多多App扫码备案</p>
+                    <img id="codeimg" src="{:U('item/qrcode')}?dataurl={:base64_encode($inviterCode)}" width="150" height="150">
+                  </div>
+
+                  <div class="layui-form-item">
+                    <a href="{$callback}" class="layui-btn layui-btn-danger" style="width: 100%;">我已完成授权</a>
+                  </div>
+
+                </div>
+
+                <div class="layui-col-xs1" style="border-right: 1px solid #ddd; height: 260px;">&nbsp;</div>
+                <div class="layui-col-xs1" >&nbsp;</div>
+
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="tqk-mt-30">
+
+      <div class="layui-clear tqk-pb-20"></div>
+
+    </div>
+
+
+  </div>
+
+  <div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+
+
+</body>
+</html>

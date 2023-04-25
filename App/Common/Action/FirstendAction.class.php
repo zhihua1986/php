@@ -1,4 +1,5 @@
 <?php
+
 namespace Common\Action;
 
 use Common\Tqklib\user_visitor;
@@ -16,239 +17,326 @@ class FirstendAction extends TopAction
         parent::_initialize();
         $this->_init_visitor();
         $this->_cate_mod = D('itemscate')->cache(true, 100 * 60);
-        $this->cur_url= strtolower($_SERVER["REQUEST_URI"]);
+        $this->cur_url = strtolower($_SERVER["REQUEST_URI"]);
         $this->assign('nav_curr', $this->cur_url);
         if (S('catetree')) {
-            $catetree= S('catetree');
+            $catetree = S('catetree');
         } else {
-            $catetree=$this->_cate_mod->where('status=1 and pid=0')->field('id,name,cateimg')->order('ordid desc')->select();
+            $catetree = $this->_cate_mod->where('status=1 and pid=0')->field('id,name,cateimg')->order('ordid desc')->select();
             S('catetree', $catetree);
         }
         $this->assign('catetree', $catetree);
         $this->assign('request_url', $this->cur_url);
+
+
         $this->assign('islogin', C('yh_islogin'));
         $this->assign('openinvocode', C('yh_invocode'));
         $this->assign('isfanli', C('yh_isfanli'));
     }
+
     /**
      * 初始化访问者
      */
     private function _init_visitor()
     {
         $this->visitor = new user_visitor();
-        $this->memberinfo=$this->visitor->info;
+        $this->memberinfo = $this->visitor->info;
         $this->assign('visitor', $this->memberinfo);
-		
+
     }
-	
-	
-	protected function Getspecial()
-	{
-		$result = S('special');
-		if(!$result){
-	    $url=$this->tqkapi."/getrelationid";
-	    $data=[
-	        'time'=>time(),
-			'info_type'=>2,
-	        'tqk_uid'=>	$this->tqkuid,
-	    ];
-	    $token=$this->create_token(trim(C('yh_gongju')), $data);
-	    $data['token']=$token;
-	    $data=$this->_curl($url, $data, true);
-	    $result=json_decode($data, true);
-		S('special',$result,120);
-		}
-		
-		return $result;
-		
-		
-	}
-	
-	protected function Tbconvert($num_iid,$memberinfo=array(),$Quan_id=''){
-		$apiurl=$this->tqkapi.'/gconvert';
-		$apidata=[
-		    'tqk_uid'=>$this->tqkuid,
-		    'time'=>time(),
-		    'good_id'=>''.$num_iid.''
-		];
-		$pid = trim(C('yh_taobao_pid'));
-		if($memberinfo && $memberinfo['special_id'] < 2 ){
-			$apidata['ExternalId'] = $memberinfo['id'];
-			//cookie('setsid',1); //预设同步会员
-		}elseif($memberinfo){
-			$apidata['SpecialId'] = $memberinfo['special_id'];
-		}
-		$token=$this->create_token(trim(C('yh_gongju')), $apidata);
-		$apidata['token']=$token;
-		$res= $this->_curl($apiurl, $apidata, false);
-		$res = json_decode($res, true);
-		$me=$res['me'];
-		
-		if($res && $memberinfo && $memberinfo['special_id'] < 2 ){
-			
-			$quanurl =$res['quanurl'];	
-			return $quanurl;
-		
-		}elseif($res && \strlen($res['me'])>5){
-		    if ($Quan_id){
-				$activityId =$Quan_id ? '&activityId='.$Quan_id : '';
-		        $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&itemId='.$num_iid.'&pid='.$pid.'&af=1';
-		    } else {
-		        $quanurl =$res['quanurl'];
-		    }
-			
-			return $quanurl;
-			
-		}else{
-			
-			$link = 'https://uland.taobao.com/coupon/edetail?e=&activityId='.$Quan_id.'&itemId='.$num_iid.'&pid='. $pid .'';
-			
-		    if ($Quan_id) {
-				$quanurl= $link;
-		    } else {
-		        $quanurl =$res['item_url']?:$link;
-		    }
-			
-			return $quanurl;
-			
-		}
-		
-		
-		return false;
-		
-	}
-	
+
+
+    protected function Getspecial()
+    {
+        $result = S('special');
+        if (!$result) {
+            $url = $this->tqkapi . "/getrelationid";
+            $data = [
+                'time' => time(),
+                //'info_type'=>2,
+                'tqk_uid' => $this->tqkuid,
+            ];
+            $token = $this->create_token(trim(C('yh_gongju')), $data);
+            $data['token'] = $token;
+            $data = $this->_curl($url, $data, true);
+            $result = json_decode($data, true);
+            S('special', $result, 120);
+        }
+
+        return $result;
+
+
+    }
+
+    /**
+     * @param $num_iid
+     * @param $memberinfo
+     * @param $Quan_id
+     * @return mixed|string
+     */
+    protected function Tbconvert($num_iid, $memberinfo = array(), $Quan_id = '')
+    {
+
+        $cacheName = md5($num_iid . $memberinfo['id'] . $memberinfo['special_id'] . $memberinfo['webmaster_pid']);
+        $cacheResult = S($cacheName);
+        if ($cacheResult) {
+            return $cacheResult;
+        }
+        $apiurl = $this->tqkapi . '/gconvert';
+        $apidata = [
+            'tqk_uid' => $this->tqkuid,
+            'time' => time(),
+            'good_id' => '' . $num_iid . ''
+        ];
+        $pid = trim(C('yh_taobao_pid'));
+        $relation = '';
+        if($memberinfo && C('yh_bingtaobao') == 0 && !is_null(C('yh_bingtaobao'))){
+        $R = A("Records");
+        $Arr = explode('-',$num_iid);
+        $itemId = $Arr[1]?$Arr[1]:$num_iid;
+        $res= $R ->content($itemId,$memberinfo['id']);
+        $pid = $res['pid'];
+        $apidata['pid'] = $pid;
+
+        }
+
+
+        // if($memberinfo && $memberinfo['special_id'] < 2 ){
+        // 	$apidata['ExternalId'] = $memberinfo['id'];
+        // }elseif($memberinfo){
+        // 	$apidata['SpecialId'] = $memberinfo['special_id'];
+        // }
+        if ($memberinfo && $memberinfo['webmaster_pid'] > 2 && C('yh_ipban_switch') == 2) {
+            $apidata['RelationId'] = $memberinfo['webmaster_pid'];
+            $apidata['protype'] = 2; //推广赚
+            $relation = '&relationId=' . $memberinfo['webmaster_pid'];
+        }
+        $token = $this->create_token(trim(C('yh_gongju')), $apidata);
+        $apidata['token'] = $token;
+        $res = $this->_curl($apiurl, $apidata, false);
+        $res = json_decode($res, true);
+        $me = $res['me'];
+        if ($res && $memberinfo && $memberinfo['special_id'] < 2) {
+
+            $quanurl = $res['quanurl'];
+            S($cacheName, $quanurl);
+            return $quanurl;
+
+        } elseif ($res && \strlen($res['me']) > 5) {
+            if ($Quan_id) {
+                $activityId = $Quan_id ? '&activityId=' . $Quan_id : '';
+                $quanurl = 'https://uland.taobao.com/coupon/edetail?e=' . $me . $activityId . '&pid=' . $pid . $relation . '&af=1';
+            } else {
+                $quanurl = $res['quanurl'];
+            }
+            S($cacheName, $quanurl);
+            return $quanurl;
+
+        } else {
+
+            $link = 'https://uland.taobao.com/coupon/edetail?itemId=' . $num_iid . '&activityId=' . $Quan_id . '&pid=' . $pid . $relation . '';
+
+            if ($Quan_id) {
+                $quanurl = $link;
+            } else {
+                $quanurl = $res['item_url'] ?: $link;
+            }
+            S($cacheName, $quanurl);
+            return $quanurl;
+
+        }
+
+
+        return false;
+
+    }
+
 
     protected function parent_pid()
     {
-        $pid=trim(C('yh_taobao_pid'));
-        $apppid=explode('_', $pid);
-        return '_'.$apppid[3];
+        $pid = trim(C('yh_taobao_pid'));
+        $apppid = explode('_', $pid);
+        return '_' . $apppid[3];
     }
 
     protected function _wechat_login($data)
     {
         if ($data) {
-			$openid = $data['wx_openid'];
-			$UnionId = C('yh_unionid');
-			if($UnionId == 1 && $data['wx_unionid']){
-			$mod = D('user');
-			$openid = $mod->where(array('unionid'=>$data['wx_unionid']))->getField('openid');
-				if(!$openid){
-					$mod->where(array('opid'=>$data['wx_openid']))->save(array('unionid'=>$data['wx_unionid']));
-					$openid = $data['wx_openid'];
-				}
-			
-			}
-			
-			if(C('yh_site_tiaozhuan') == 1){ //认证的服务号
-			$newOpenid = $data['wx_openid'];
-			}
-			
-            $res = $this->visitor->wechatlogin($openid,$newOpenid,$data);
-			
+            $openid = $data['wx_openid'];
+            $UnionId = C('yh_unionid');
+            if ($UnionId == 1 && $data['wx_unionid']) {
+                $mod = D('user');
+                $openid = $mod->where(array('unionid' => $data['wx_unionid']))->getField('openid');
+                if (!$openid) {
+                    $mod->where(array('opid' => $data['wx_openid']))->save(array('unionid' => $data['wx_unionid']));
+                    $openid = $data['wx_openid'];
+                }
+
+            }
+
+            if (C('yh_site_tiaozhuan') == 1) { //认证的服务号
+                $newOpenid = $data['wx_openid'];
+            }
+            $visitor = new user_visitor();
+            $res = $visitor->wechatlogin($openid, $newOpenid, $data);
+
             return $res;
         }
     }
 
+
+    /**
+     * @param $user
+     * @return mixed|void
+     */
+    protected function CreateElmPid($user)
+    {
+        $pid = trim(C('yh_elmpid'));
+        $appkey = trim(C('yh_elmkey'));
+        $secret = trim(C('yh_elmsecret'));
+        $uid = $user['id'];
+        if ($pid && $appkey && C('yh_elm') == 1 && strlen($user['elm_pid']) < 3) {
+            vendor("taobao.taobao");
+            $adName = $uid;
+            $c = new \TopClient();
+            $c->appkey = $appkey;
+            $c->secretKey = $secret;
+            $req = new \AlibabaAlscUnionMediaZoneAddRequest();
+            $req->setZoneName($adName);
+            $resp = $c->execute($req);
+            $resparr = json_decode(json_encode($resp), true);
+            if ($resparr && $resparr['result']['pid']) {
+                $result = M('user')->where(['id' => $uid])->setField('elm_pid', $resparr['result']['pid']);
+                $visitor = new user_visitor();
+                $visitor->wechatlogin($user['openid']); // update userinfo
+                return $resparr['result']['pid'];
+
+            }
+
+            $MonthTime = strtotime(date('Y-m-01', strtotime('last day of -1 month')));
+            $Sqlwhere = array(
+                'elm_pid' => array('gt', 0),
+                'last_time' => array('lt', $MonthTime),
+            );
+            $Res = M('user')->field('id,elm_pid')->where($Sqlwhere)->order('id asc')->find();
+            if ($Res && $Res['elm_pid']) {
+                $Sql = 'Update tqk_user set elm_pid=' . $Res['elm_pid'] . ' where id=' . $uid . ';Update tqk_user set elm_pid="0" where id =' . $Res['id'] . '';
+                M()->execute($Sql);
+                $visitor = new user_visitor();
+                $visitor->wechatlogin($user['openid']); // update userinfo
+                return $Res['elm_pid'];
+            }
+
+
+            return false;
+
+        }
+    }
+
+    /**
+     * @param $user
+     * @return mixed|void
+     */
     protected function CreateJdPid($user)
     {
         $pid = trim(C('yh_jdpid'));
         $key = trim(C('yh_jdauthkey'));
         $uid = $user['id'];
-        if ($pid && $key && C('yh_openjd') == 1 && $user['jd_pid']<1) {
-            $apiurl=$this->tqkapi.'/Createjdpid';
-            $apidata=[
-                'tqk_uid'=>$this->tqkuid,
-                'time'=>time(),
-                'pid'=>$pid,
-                'uid'=>$uid,
+        if ($pid && $key && C('yh_openjd') == 1 && $user['jd_pid'] < 1) {
+            $apiurl = $this->tqkapi . '/Createjdpid';
+            $apidata = [
+                'tqk_uid' => $this->tqkuid,
+                'time' => time(),
+                'pid' => $pid,
+                'uid' => $uid,
             ];
-            $token=$this->create_token(trim(C('yh_gongju')), $apidata);
-            $apidata['token']=$token;
-            $res= $this->_curl($apiurl, $apidata, false);
+            $token = $this->create_token(trim(C('yh_gongju')), $apidata);
+            $apidata['token'] = $token;
+            $res = $this->_curl($apiurl, $apidata, false);
             $res = json_decode($res, true);
-            if ($res['code'] == 200 && $res['result']['return']==0 && $res['result']['result']['positionid']) {
+            if ($res['code'] == 200 && $res['result']['return'] == 0 && $res['result']['result']['positionid']) {
                 $data = [
-                    'unionid'=>$res['result']['result']['unionId'],
-                    'name'=>$uid,
-                    'positionid'=>$res['result']['result']['positionid'],
-                    'type'=>1,
-                    'uid'=>$uid,
-                    'status'=>1
+                    'unionid' => $res['result']['result']['unionId'],
+                    'name' => $uid,
+                    'positionid' => $res['result']['result']['positionid'],
+                    'type' => 1,
+                    'uid' => $uid,
+                    'status' => 1
                 ];
                 $result = M('jdpositionid')->add($data);
 
                 if ($result) {
-                    $result = M('user')->where(['id'=>$uid])->setField('jd_pid', $res['result']['result']['positionid']);
-                    $this->visitor->wechatlogin($user['openid']); // update userinfo
-					return $res['result']['result']['positionid'];
+                    $result = M('user')->where(['id' => $uid])->setField('jd_pid', $res['result']['result']['positionid']);
+                    $visitor = new user_visitor();
+                    $visitor->wechatlogin($user['openid']); // update userinfo
+                    return $res['result']['result']['positionid'];
                 }
-            }else{
-				
-				$MonthTime = strtotime(date('Y-m-01', strtotime('last day of -1 month')));
-				$Sqlwhere = array(
-				'jd_pid'=>array('gt',1),
-				'last_time'=>array('lt',$MonthTime),
-				);
-				$Res = M('user')->field('id,jd_pid')->where($Sqlwhere)->order('id asc')->find();
-				if ($Res && $Res['jd_pid']) {
-					$Sql = 'Update tqk_user set jd_pid='.$Res['jd_pid'].' where id='.$uid.';Update tqk_user set jd_pid="0" where id ='.$Res['id'].'';
-					M()->execute($Sql);
-				    $this->visitor->wechatlogin($user['openid']); // update userinfo
-					return $Res['jd_pid'];
-				}
-				
-				
-			}
-			
-			
+            } else {
 
-           // S('createjdpid_'.$uid, true);
+                $MonthTime = strtotime(date('Y-m-01', strtotime('last day of -1 month')));
+                $Sqlwhere = array(
+                    'jd_pid' => array('gt', 1),
+                    'last_time' => array('lt', $MonthTime),
+                );
+                $Res = M('user')->field('id,jd_pid')->where($Sqlwhere)->order('id asc')->find();
+                if ($Res && $Res['jd_pid']) {
+                    $Sql = 'Update tqk_user set jd_pid=' . $Res['jd_pid'] . ' where id=' . $uid . ';Update tqk_user set jd_pid="0" where id =' . $Res['id'] . '';
+                    M()->execute($Sql);
+                    $visitor = new user_visitor();
+                    $visitor->wechatlogin($user['openid']); // update userinfo
+                    return $Res['jd_pid'];
+                }
+
+
+            }
+
+
+            // S('createjdpid_'.$uid, true);
         }
     }
 
     protected function GetTrackid($field)
     {
-        $track_val=cookie('trackid');
+        $track_val = cookie('trackid');
         if (!empty($track_val)) {
-            $track=unserialize($track_val);
+            $track = unserialize($track_val);
             if ($track[$field]) {
                 return $track[$field];
             }
             return false;
         }
     }
-	
-	protected function phoneBill($uid = ''){
-		
-		$pid = trim(C('yh_youhun_secret'));
-		if($pid){
-		$where=[
-		    'type'=>'pdd.ddk.resource.url.gen',
-		    'data_type'=>'JSON',
-		    'timestamp'=>$this->msectime(),
-		    'client_id'=>trim(C('yh_pddappkey')),
-			'generate_we_app'=>'true',
-			'resource_type'=>39997,
-			'pid'=>$pid
-		];
-		
-		if($uid){
-			$where['custom_parameters'] = $uid;
-		}
-		
-		$where['sign']=$this->create_pdd_sign(trim(C('yh_pddsecretkey')), $where);
-		$pdd_api='http://gw-api.pinduoduo.com/api/router';
-		$result=$this->_curl($pdd_api, $where, true);
-		$data=json_decode($result, true);
-		return $data;
-		
-		}
-		
-		return false;
-		
-	}
+
+    protected function phoneBill($uid = '')
+    {
+
+        $pid = trim(C('yh_youhun_secret'));
+        if ($pid) {
+            $where = [
+                'type' => 'pdd.ddk.resource.url.gen',
+                'data_type' => 'JSON',
+                'timestamp' => $this->msectime(),
+                'client_id' => trim(C('yh_pddappkey')),
+                'generate_we_app' => 'true',
+                'resource_type' => 39997,
+                'pid' => $pid
+            ];
+
+            if ($uid) {
+                $where['custom_parameters'] = $uid;
+            }
+
+            $where['sign'] = $this->create_pdd_sign(trim(C('yh_pddsecretkey')), $where);
+            $pdd_api = 'http://gw-api.pinduoduo.com/api/router';
+            $result = $this->_curl($pdd_api, $where, true);
+            $data = json_decode($result, true);
+            return $data;
+
+        }
+
+        return false;
+
+    }
 
     protected function taobaodetail($id)
     {
@@ -260,7 +348,7 @@ class FirstendAction extends TopAction
             $c->appkey = $appkey;
             $c->secretKey = $appsecret;
             $req = new \TbkItemInfoGetRequest();
-          //  $req->setFields("free_shipment,ratesum,shop_dsr,is_prepay,num_iid,user_type,title,seller_id,volume,pict_url,reserve_price,zk_final_price,item_url,provcity,nick");
+            //  $req->setFields("free_shipment,ratesum,shop_dsr,is_prepay,num_iid,user_type,title,seller_id,volume,pict_url,reserve_price,zk_final_price,item_url,provcity,nick");
             $req->setPlatform("1");
             $req->setNumIids($id);
             $resp = $c->execute($req);
@@ -275,13 +363,21 @@ class FirstendAction extends TopAction
 
     protected function GetTbDetail($id)
     {
-        $appkey=trim(C('yh_taobao_appkey'));
-        $appsecret=trim(C('yh_taobao_appsecret'));
-        $apppid=trim(C('yh_taobao_pid'));
-        $apppid=explode('_', $apppid);
-        $AdzoneId=$apppid[3];
-		$key = 'https://uland.taobao.com/item/edetail?id='.$id;
-        $key = 'https://item.taobao.com/item.htm?id='.$id;
+
+        $CacheName = md5($id);
+        $CacheResult = S($CacheName);
+        if ($CacheResult) {
+            return $CacheResult;
+        }
+        $appkey = trim(C('yh_taobao_appkey'));
+        $appsecret = trim(C('yh_taobao_appsecret'));
+        $apppid = trim(C('yh_taobao_pid'));
+        $apppid = explode('_', $apppid);
+        $AdzoneId = $apppid[3];
+        $key = 'https://uland.taobao.com/item/edetail?id=' . $id;
+        if (is_numeric($id)) {
+            $key = 'https://item.taobao.com/item.htm?id=' . $id;
+        }
         vendor("taobao.taobao");
         $c = new \TopClient();
         $c->appkey = $appkey;
@@ -299,7 +395,8 @@ class FirstendAction extends TopAction
         $req->setSort("tk_des");
         $resp = $c->execute($req);
         $resp = json_decode(json_encode($resp), true);
-        $resp=$resp['result_list']['map_data'][0];
+        $resp = $resp['result_list']['map_data'][0];
+        S($CacheName, $resp);
         return $resp;
     }
 
@@ -311,16 +408,16 @@ class FirstendAction extends TopAction
             return true;
         }
         if (C('TOKEN_ON')) {
-            $name   = C('TOKEN_NAME', null, '__hash__');
+            $name = C('TOKEN_NAME', null, '__hash__');
             if (!isset($data[$name]) || !isset($_SESSION[$name])) { // 令牌数据无效
                 return false;
             }
 
             // 令牌验证
-            list($key, $value)  =  explode('_', $data[$name]);
+            list($key, $value) = explode('_', $data[$name]);
             if (isset($_SESSION[$name][$key]) && $value && $_SESSION[$name][$key] === $value) { // 防止重复提交
-                    unset($_SESSION[$name][$key]); // 验证完成销毁session
-                    return true;
+                unset($_SESSION[$name][$key]); // 验证完成销毁session
+                return true;
             }
             // 开启TOKEN重置
             if (C('TOKEN_RESET')) {
@@ -333,12 +430,12 @@ class FirstendAction extends TopAction
 
     protected function agent_pid()
     { //废弃
-        $track_val=cookie('trackid');
+        $track_val = cookie('trackid');
         if (!empty($track_val)) {
-            $track=unserialize($track_val);
-            $track='_'.$track['t_pid'];
-            $par_pid=$this->parent_pid();
-            $pid=str_replace($par_pid, $track, trim(C('yh_taobao_pid')));
+            $track = unserialize($track_val);
+            $track = '_' . $track['t_pid'];
+            $par_pid = $this->parent_pid();
+            $pid = str_replace($par_pid, $track, trim(C('yh_taobao_pid')));
             return $pid;
         }
         return '';
@@ -350,7 +447,7 @@ class FirstendAction extends TopAction
      * @param mixed $data
      * @param mixed $assign
      */
-    protected function _config_seo($seo_info = [], $data = [], $assign='true')
+    protected function _config_seo($seo_info = [], $data = [], $assign = 'true')
     {
         $page_seo = [
             'title' => C('yh_site_title'),
@@ -400,41 +497,41 @@ class FirstendAction extends TopAction
         if ($assign) {
             $this->assign('page_seo', $page_seo);
         } else {
-            return 	$page_seo;
+            return $page_seo;
         }
     }
 
     protected function invicode($uid)
     {
-        $mod=new userModel();
+        $mod = new userModel();
         //$code=$this->randStr($uid,6);
-        $str=800;
-        $newstr=$str+$uid;
-        $num=sprintf("%06d", $newstr);
-        $data=[
-            'invocode'=>$num
+        $str = 800;
+        $newstr = $str + $uid;
+        $num = sprintf("%06d", $newstr);
+        $data = [
+            'invocode' => $num
         ];
-        $res=$mod->where('id='.$uid)->save($data);
+        $res = $mod->where('id=' . $uid)->save($data);
 
         if ($res) {
-            return $code;
+            return $num;
         }
     }
 
     protected function reinvi($uid)
     {
-        $reinvi=F('reinvi_'.$uid);
-        $score=trim(C('yh_reinte'));
-        if ($score>0 && $uid && false ===$reinvi) {
-            F('reinvi_'.$uid, $uid);
-            $mod=new userModel();
-            $mod->where("id='".$uid."'")->setInc('score', $score);
+        $reinvi = F('reinvi_' . $uid);
+        $score = trim(C('yh_reinte'));
+        if ($score > 0 && $uid && false === $reinvi) {
+            F('reinvi_' . $uid, $uid);
+            $mod = new userModel();
+            $mod->where("id='" . $uid . "'")->setInc('score', $score);
             M('basklistlogo')->add([
-                'uid'=>$uid,
-                'integray'=>$score,
-                'remark'=>'注册送+'.$score,
-                'order_sn'=>'--',
-                'create_time'=>NOW_TIME,
+                'uid' => $uid,
+                'integray' => $score,
+                'remark' => '注册送+' . $score,
+                'order_sn' => '--',
+                'create_time' => NOW_TIME,
             ]);
         }
     }
@@ -536,250 +633,320 @@ class FirstendAction extends TopAction
     {
         $this->display(ACTION_NAME);
     }
-	
-	
-	protected function Takeout()
-	{
-	
-	$part1[] =  [
-	     'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01D23onG2MgYl28v3kI_!!3175549857.jpg',
-	     'name'=>'100元高德打车券',
-			  'url'=>'/index.php?c=elm&a=gaode&type=1'
-	 ];
-	 $part1[] = [
-	     'img'=>'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01nnJqO22MgYl9P1AgK_!!3175549857.jpg',
-	     'name'=>'饿了么红包 最高66',
-	     'url'=>'/index.php?c=elm&a=minapp&ac=wm&type=3',
-	 ];
-	 
-		if (C('yh_openduoduo')){
-	  	$part1[] =  [
-	          'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01ZVLZFa2MgYl9OJjgs_!!3175549857.jpg',
-	          'name'=>'话费流量充值享折扣',
-	          'url'=>'/index.php?c=elm&a=chong',
-	      ];
-	  }
-		
-	if(C('yh_dm_cid_kfc') == 1){
-			 $part1[] =  [
-			   'img'=>'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01h2nFyx2MgYl4UaieB_!!3175549857.jpg',
-			   'name'=>'肯德基5折起',
-			   'url'=>'/index.php?c=elm&a=other&id=5933&type=1',
-			 ];
-	}
-	if(C('yh_dm_cid_qz') == 1){
-			 $part1[] =  [
-			'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN017ShJrA2MgYl6pLrQg_!!3175549857.jpg',
-			'name'=>'特惠电影票',
-			'url'=>'/index.php?c=elm&a=other&id=6680&type=1',
-			 ];
-	}
-	
-	if(C('yh_dm_cid_dd') == 1){
-			 $part1[] =  [
-			  'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN012ghZIt2MgYl860dth_!!3175549857.jpg',
-			  'name'=>'滴滴打车 最高立减10元',
-			  'url'=>'/index.php?c=elm&a=other&id=12485&type=3',
-			 ];
-			 $part1[] =  [
-			  'img'=>'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01xJ4TV52MgYlCmAFwB_!!3175549857.jpg',
-			  'name'=>'汽车加油 最高立减20',
-			  'url'=>'/index.php?c=elm&a=other&id=15200&type=3'
-			 ];
-			 $part1[] =  [
-			  'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01FThA9Z2MgYlDYYxy5_!!3175549857.jpg',
-			  'name'=>'滴滴货运券 最高立减15',
-			  'url'=>'/index.php?c=elm&a=other&id=12644&type=3'
-			 ];
-			 $part1[] =  [
-			  'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN018ljXs02MgYlDYdStB_!!3175549857.jpg',
-			  'name'=>'花小猪打车，首单立减10元',
-			  'url'=>'/index.php?c=elm&a=other&id=14801&type=3'
-			 ];
-	}
-	
-	$part1[] =  [
-	     'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01YQ6aQ62MgYl6UfWlP_!!3175549857.jpg',
-	     'name'=>'饿了么商超红包 29减10',
-	     'url'=>'/index.php?c=elm&a=minapp&ac=sc&type=3',
-	 ];
-	
-	 $part2 = [];
-	 if(C('yh_dm_cid_mt') == 1){
-	 	$part2[] = [
-	 	    'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01LDi4tP2MgYlAbzd0K_!!3175549857.jpg',
-	 	    'name'=>'美团外卖红包天天领',
-			'url'=> '/index.php?c=elm&a=other&id=10124&type=3',
-	 	];
-		$part2[] =[
-		    'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01RumGh62MgYlCReb86_!!3175549857.jpg',
-		    'name'=>'美团闪购红包',
-			'url'=> '/index.php?c=elm&a=other&id=10127&type=3',
-		];
-		$part2[] =[
-		    'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN011sI7Ps2MgYl9QDguL_!!3175549857.jpg',
-		    'name'=>'美团优惠券商城',
-			'url'=> '/index.php?c=elm&a=other&id=10130&type=3',
-		];
-		
-	 }elseif(C('yh_openmt') == 1){
-	 	
-	 	$part2[] =  [
-	 	    'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01LDi4tP2MgYlAbzd0K_!!3175549857.jpg',
-	 	    'name'=>'美团外卖红包天天领',
-	 	    'url'=> '/index.php?c=elm&a=meituan&id=33&type=1',
-	 	];
-		$part2[] =[
-		    'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01FhOpCj2MgYl9ZgFLE_!!3175549857.jpg',
-		    'name'=>'美团生鲜红包天天领',
-		    'url'=> '/index.php?c=elm&a=meituan&id=4&type=1',
-		];
-		$part2[] =[
-		    'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN010oxYlw2MgYl2JeUni_!!3175549857.jpg',
-		    'name'=>'美团优选便宜有好货',
-		    'url'=> '/index.php?c=elm&a=meituan&id=105&type=1',
-		];
-	 	
-	 }
-	
-		$data = array_merge($part1,$part2);
-	
-	    return $data;
-	}
-	
-	protected function ElmTab(){
-		
-		$data = array(
-			array(
-			'name'=>'外卖',
-			'title'=>'饿了么红包',
-			'id'=>"2192",
-			'color'=>'#1193FE',
-			'banner'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01tWwBvr2MgYl0j6gSp_!!3175549857.png',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i1/3175549857/O1CN01PMMQvm2MgYl0qtuxU_!!3175549857.jpg"),
-			),
-			array(
-			'name'=>'果蔬超市',
-			'id'=>'4441',
-			'title'=>'饿了么果超市红包',
-			'color'=>'#79BA37',
-			'banner'=>'https://img.alicdn.com/imgextra/i4/3175549857/O1CN010vObyk2MgYkwystU1_!!3175549857.jpg',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i3/3175549857/O1CN014aB90d2MgYl7zw6xw_!!3175549857.jpg"),
-			)
-			);
-			
-			return $data;
-		
-	}
-	
-	protected function MeituanDmTab(){
-		
-		$data = array(
-			array(
-			'name'=>'美团外卖',
-			'title'=>'美团外卖红包',
-			'id'=>"10124",
-			'color'=>'#F8D247',
-			'banner'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN016Yqt7Y2MgYl7kRGz7_!!3175549857.jpg',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i1/3175549857/O1CN01mB03k42MgYl3dRFlP_!!3175549857.jpg"),
-			),
-			array(
-			'name'=>'美团闪购',
-			'title'=>'美团闪购红包',
-			'id'=>"10127",
-			'color'=>'#BC0601',
-			'banner'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01avgJmx2MgYl0vI0II_!!3175549857.jpg',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i2/3175549857/O1CN01oWYd1r2MgYl5oWfbC_!!3175549857.jpg"),
-			),array(
-			'name'=>'优惠券商城',
-			'title'=>'美团优惠券商城',
-			'id'=>"10130",
-			'color'=>'#FF4827',
-			'banner'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01yG2pg12MgYl7lRNAB_!!3175549857.jpg',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i3/3175549857/O1CN01KAv5qE2MgYl9eTCLH_!!3175549857.jpg"),
-			)
-			);
-			
-			return $data;
-		
-	}
-	
-	protected function MeituanTab(){
-		
-		$data = array(
-			array(
-			'name'=>'美团外卖',
-			'title'=>'美团外卖红包',
-			'id'=>"33",
-			'color'=>'#F8D247',
-			'banner'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN016Yqt7Y2MgYl7kRGz7_!!3175549857.jpg',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i1/3175549857/O1CN01mB03k42MgYl3dRFlP_!!3175549857.jpg"),
-			),
-			array(
-			'name'=>'美团生鲜',
-			'title'=>'美团生鲜红包',
-			'id'=>"4",
-			'color'=>'#33B865',
-			'banner'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01dvq5pe2MgYl7LB6Oy_!!3175549857.jpg',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01lGRKTK2MgYkurZAKi_!!3175549857.jpg"),
-			),
-			array(
-			'name'=>'美团优选',
-			'title'=>'美团优选红包',
-			'id'=>"105",
-			'color'=>'#FFA401',
-			'banner'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01TTgDj42MgYl4KH1e3_!!3175549857.jpg',
-			'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i3/3175549857/O1CN011kzMKa2MgYl02xsF5_!!3175549857.jpg"),
-			),
-			);
-			
-			
-		
-			
-			return $data;
-		
-		
-	}
-	
-	protected function DidiTab(){
-		
-	$data =	array(
-		array(
-		'name'=>'滴滴打车',
-		'title'=>'滴滴打车券',
-		'id'=>"12485",
-		'color'=>'#FF7E01',
-		'banner'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01SayEZs2MgYl89Txs6_!!3175549857.jpg',
-		'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01MegUt02MgYl6ILQPh_!!3175549857.jpg"),
-		),
-		array(
-		'name'=>'滴滴加油',
-		'title'=>'滴滴加油券',
-		'id'=>"15200",
-		'color'=>'#FE911B',
-		'banner'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01rzLOYt2MgYkzT3xg3_!!3175549857.jpg',
-		'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01cKSNtx2MgYl8AFUul_!!3175549857.jpg"),
-		),
-		array(
-		'name'=>'滴滴货运',
-		'title'=>'滴滴货运券',
-		'id'=>"12644",
-		'color'=>'#01C897',
-		'banner'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01ud9kMk2MgYl13KDKI_!!3175549857.jpg',
-		'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i2/3175549857/O1CN01qblzKE2MgYkwT5pHM_!!3175549857.jpg"),
-		),
-		array(
-		'name'=>'花小猪打车',
-		'title'=>'花小猪打车券',
-		'id'=>"14801",
-		'color'=>'#A300ED',
-		'banner'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01XqgD572MgYl2izGXn_!!3175549857.jpg',
-		'poster'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01vaP5wg2MgYl6IIGyv_!!3175549857.jpg"),
-		)
-		);
-		
-		return $data;
-	}
-	
-	
+
+    protected function fullurl()
+    {
+        $mdomain = ((int)$_SERVER['SERVER_PORT'] == 80 ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'];
+        $url = $_SERVER["REQUEST_URI"];
+        // $requestUrl = strtolower($url);
+        // if(strpos($url, 'pdditem')>0 || strpos($url, 'jditem')>0){
+        $requestUrl = $url;
+        // }
+        $url = urlencode($mdomain . $requestUrl);
+        return $url;
+    }
+
+
+    protected function Takeout()
+    {
+
+        $part1[] = [
+            'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01D23onG2MgYl28v3kI_!!3175549857.jpg',
+            'name' => '100元高德打车券',
+            'url' => '/index.php?c=elm&a=gaode&type=1'
+        ];
+        if (C('yh_elm') == 1) {
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01luBsIV2MgYq3UVufb_!!3175549857.jpg',
+                'name' => '饿了么外卖红包',
+                'url' => '/index.php?c=elm&a=elmlink&id=10144&type=3',
+            ];
+
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN019MQJbg2MgYqKRWwmo_!!3175549857.jpg',
+                'name' => '饿了么果蔬超市红包',
+                'url' => '/index.php?c=elm&a=elmlink&id=10247&type=3',
+            ];
+
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01gUKofC2MgYq8CCuca_!!3175549857.jpg',
+                'name' => '饿了么浏览店铺得红包',
+                'url' => '/index.php?c=elm&a=elmlink&id=10174&type=3',
+            ];
+
+
+        }
+
+        if (C('yh_openjd') == 1) {
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01ZVLZFa2MgYl9OJjgs_!!3175549857.jpg',
+                'name' => '话费流量充值享折扣',
+                'url' => '/index.php?c=elm&a=chong',
+            ];
+        }
+
+        if (C('yh_dm_cid_kfc') == 1) {
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01h2nFyx2MgYl4UaieB_!!3175549857.jpg',
+                'name' => '肯德基5折起',
+                'url' => '/index.php?c=elm&a=other&id=5933&type=1',
+            ];
+        }
+        if (C('yh_dm_cid_qz') == 1) {
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN017ShJrA2MgYl6pLrQg_!!3175549857.jpg',
+                'name' => '特惠电影票',
+                'url' => '/index.php?c=elm&a=other&id=6680&type=1',
+            ];
+        }
+
+        if (C('yh_dm_cid_dd') == 1) {
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN012ghZIt2MgYl860dth_!!3175549857.jpg',
+                'name' => '滴滴打车 最高立减10元',
+                'url' => '/index.php?c=elm&a=other&id=12485&type=3',
+            ];
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01xJ4TV52MgYlCmAFwB_!!3175549857.jpg',
+                'name' => '汽车加油 最高立减20',
+                'url' => '/index.php?c=elm&a=other&id=15200&type=3'
+            ];
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01FThA9Z2MgYlDYYxy5_!!3175549857.jpg',
+                'name' => '滴滴货运券 最高立减15',
+                'url' => '/index.php?c=elm&a=other&id=12644&type=3'
+            ];
+            $part1[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN018ljXs02MgYlDYdStB_!!3175549857.jpg',
+                'name' => '花小猪打车，首单立减10元',
+                'url' => '/index.php?c=elm&a=other&id=14801&type=3'
+            ];
+        }
+
+//        $part1[] = [
+//            'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01YQ6aQ62MgYl6UfWlP_!!3175549857.jpg',
+//            'name' => '饿了么商超红包 29减10',
+//            'url' => '/index.php?c=elm&a=minapp&ac=sc&type=3',
+//        ];
+
+        $part2 = [];
+        if (C('yh_dm_cid_mt') == 1) {
+            $part2[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01LDi4tP2MgYlAbzd0K_!!3175549857.jpg',
+                'name' => '美团外卖红包天天领',
+                'url' => '/index.php?c=elm&a=other&id=10124&type=3',
+            ];
+//            $part2[] = [
+//                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01RumGh62MgYlCReb86_!!3175549857.jpg',
+//                'name' => '美团闪购红包',
+//                'url' => '/index.php?c=elm&a=other&id=10127&type=3',
+//            ];
+            $part2[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN011sI7Ps2MgYl9QDguL_!!3175549857.jpg',
+                'name' => '美团优惠券商城',
+                'url' => '/index.php?c=elm&a=other&id=10130&type=3',
+            ];
+
+        } elseif (C('yh_openmt') == 1) {
+
+            $part2[] = [
+                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01LDi4tP2MgYlAbzd0K_!!3175549857.jpg',
+                'name' => '美团外卖红包天天领',
+                'url' => '/index.php?c=elm&a=meituan&id=33&type=1',
+            ];
+//            $part2[] = [
+//                'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01FhOpCj2MgYl9ZgFLE_!!3175549857.jpg',
+//                'name' => '美团生鲜红包天天领',
+//                'url' => '/index.php?c=elm&a=meituan&id=4&type=1',
+//            ];
+//            $part2[] = [
+//                'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN010oxYlw2MgYl2JeUni_!!3175549857.jpg',
+//                'name' => '美团优选便宜有好货',
+//                'url' => '/index.php?c=elm&a=meituan&id=105&type=1',
+//            ];
+
+        }
+
+        $data = array_merge($part1, $part2);
+
+        return $data;
+    }
+
+    protected function ElmTab()
+    {
+
+        $data = array(
+            array(
+                'name' => '外卖红包',
+                'title' => '饿了么红包',
+                'id' => "2192",
+                'color' => '#1193FE',
+                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01tWwBvr2MgYl0j6gSp_!!3175549857.png',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i1/3175549857/O1CN01PMMQvm2MgYl0qtuxU_!!3175549857.jpg"),
+            ),
+            array(
+                'name' => '果蔬超市红包',
+                'id' => '4441',
+                'title' => '饿了么超市红包',
+                'color' => '#79BA37',
+                'banner' => 'https://img.alicdn.com/imgextra/i4/3175549857/O1CN010vObyk2MgYkwystU1_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i3/3175549857/O1CN014aB90d2MgYl7zw6xw_!!3175549857.jpg"),
+            )
+        );
+
+        return $data;
+
+    }
+
+    protected function MeituanDmTab()
+    {
+
+        $data = array(
+            array(
+                'name' => '美团外卖',
+                'title' => '美团外卖红包',
+                'id' => "10124",
+                'color' => '#F8D247',
+                'banner' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN016Yqt7Y2MgYl7kRGz7_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i1/3175549857/O1CN01mB03k42MgYl3dRFlP_!!3175549857.jpg"),
+            ),
+//            array(
+//                'name' => '美团闪购',
+//                'title' => '美团闪购红包',
+//                'id' => "10127",
+//                'color' => '#BC0601',
+//                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01avgJmx2MgYl0vI0II_!!3175549857.jpg',
+//                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i2/3175549857/O1CN01oWYd1r2MgYl5oWfbC_!!3175549857.jpg"),
+//            ),
+array(
+                'name' => '优惠券商城',
+                'title' => '美团优惠券商城',
+                'id' => "10130",
+                'color' => '#FF4827',
+                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01yG2pg12MgYl7lRNAB_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i3/3175549857/O1CN01KAv5qE2MgYl9eTCLH_!!3175549857.jpg"),
+            )
+        );
+
+        return $data;
+
+    }
+
+    /**
+     * @return array[]
+     */
+    protected function UxuanTab()
+    {
+
+        $data = array(
+            array(
+                'name' => '超级U选',
+                'title' => '优选天猫爆品，享官方补贴！',
+                'id' => "4180",
+                'color' => '#FEA1C0',
+                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01FAQTzx2MgYqI3YPaZ_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i1/3175549857/O1CN01mB03k42MgYl3dRFlP_!!3175549857.jpg"),
+            ),
+            array(
+                'name' => 'U选快抢',
+                'title' => '好货最高9.9元',
+                'id' => "4185",
+                'color' => '#F9A24B',
+                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN0179eBoh2MgYqHRBq74_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01lGRKTK2MgYkurZAKi_!!3175549857.jpg"),
+            ),
+            array(
+                'name' => 'U选特惠',
+                'title' => '优选全网低价',
+                'id' => "4187",
+                'color' => '#FEA1C0',
+                'banner' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01JiIE4F2MgYqKqE4ge_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i3/3175549857/O1CN011kzMKa2MgYl02xsF5_!!3175549857.jpg"),
+            ),
+        );
+
+
+        return $data;
+
+
+    }
+
+    protected function MeituanTab()
+    {
+
+        $data = array(
+            array(
+                'name' => '美团外卖',
+                'title' => '美团外卖红包',
+                'id' => "33",
+                'color' => '#F8D247',
+                'banner' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN016Yqt7Y2MgYl7kRGz7_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i1/3175549857/O1CN01mB03k42MgYl3dRFlP_!!3175549857.jpg"),
+            ),
+//            array(
+//                'name' => '美团生鲜',
+//                'title' => '美团生鲜红包',
+//                'id' => "221",
+//                'color' => '#33B865',
+//                'banner' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01dvq5pe2MgYl7LB6Oy_!!3175549857.jpg',
+//                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01lGRKTK2MgYkurZAKi_!!3175549857.jpg"),
+//            ),
+//            array(
+//                'name' => '美团优选',
+//                'title' => '美团优选红包',
+//                'id' => "203",
+//                'color' => '#FFA401',
+//                'banner' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01TTgDj42MgYl4KH1e3_!!3175549857.jpg',
+//                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i3/3175549857/O1CN011kzMKa2MgYl02xsF5_!!3175549857.jpg"),
+//            ),
+        );
+
+
+        return $data;
+
+
+    }
+
+    protected function DidiTab()
+    {
+
+        $data = array(
+            array(
+                'name' => '滴滴打车',
+                'title' => '滴滴打车券',
+                'id' => "12485",
+                'color' => '#FF7E01',
+                'banner' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01SayEZs2MgYl89Txs6_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01MegUt02MgYl6ILQPh_!!3175549857.jpg"),
+            ),
+            array(
+                'name' => '滴滴加油',
+                'title' => '滴滴加油券',
+                'id' => "15200",
+                'color' => '#FE911B',
+                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01rzLOYt2MgYkzT3xg3_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01cKSNtx2MgYl8AFUul_!!3175549857.jpg"),
+            ),
+            array(
+                'name' => '滴滴货运',
+                'title' => '滴滴货运券',
+                'id' => "12644",
+                'color' => '#01C897',
+                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01ud9kMk2MgYl13KDKI_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i2/3175549857/O1CN01qblzKE2MgYkwT5pHM_!!3175549857.jpg"),
+            ),
+            array(
+                'name' => '花小猪打车',
+                'title' => '花小猪打车券',
+                'id' => "14801",
+                'color' => '#A300ED',
+                'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01XqgD572MgYl2izGXn_!!3175549857.jpg',
+                'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01vaP5wg2MgYl6IIGyv_!!3175549857.jpg"),
+            )
+        );
+
+        return $data;
+    }
+
+
 }

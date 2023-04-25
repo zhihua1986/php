@@ -602,7 +602,7 @@ public function recom(){
 					'openid'=>$openid
 					);
 					$this->CreateJdPid($user);
-					
+                    $this->CreateElmPid($user);
 				}
 				
 				 exit('ok');

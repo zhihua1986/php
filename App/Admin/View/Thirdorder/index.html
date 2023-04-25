@@ -16,27 +16,36 @@
                     <input type="hidden" name="c" value="order" />
                     <input type="hidden" name="a" value="index" />
                     <input type="hidden" name="menuid" value="{$menuid}" />
-                    &nbsp;&nbsp;多麦订单号 :
+                    &nbsp;&nbsp;订单号 :
                     <input name="keyword" type="text" class="input-text" size="25" value="{$search.keyword}" />
-                    &nbsp;&nbsp;多麦商品名称 :
+                    &nbsp;&nbsp;商品名称 :
                     <input name="smstitle" type="text" class="input-text" size="25" value="{$search.smstitle}" />
                     
                     &nbsp;&nbsp;状态 :
                     <select name="status">
                     <option value="">-{:L('all')}-</option>
-                    <option value="-1" <if condition="$search.status eq '-1'">selected="selected"</if>>无效</option>
-                    <option value="0" <if condition="$search.status eq '0'">selected="selected"</if>>未确认</option>
-                    <option value="1" <if condition="$search.status eq '1'">selected="selected"</if>>确认</option>
-                    <option value="2" <if condition="$search.status eq '2'">selected="selected"</if>>结算</option>
+                    <option value="-1" <if condition="$_GET['status'] eq '-1'">selected="selected"</if>>无效</option>
+                    <option value="0" <if condition="$_GET['status'] eq '0'">selected="selected"</if>>未确认</option>
+                    <option value="1" <if condition="$_GET['status'] eq '1'">selected="selected"</if>>确认</option>
+                    <option value="2" <if condition="$_GET['status'] eq '2'">selected="selected"</if>>结算</option>
 					</select>
+                            订单来源 :
+                            <select name="src">
+                                <option value="">-{:L('all')}-</option>
+                                <volist name="ordersrc" id="vo">
+                                <option value="{$key}" <if condition="$_GET['src'] eq $key">selected="selected"</if>>{$vo}</option>
+                                </volist>
+                            </select>
+
                     &nbsp;&nbsp;
                     <input type="submit" name="search" class="btn" value="搜索" />
 					
-					<a href="javascript:;" data-uri="{:U('thirdorder/sync', array('type'=>'12'))}" data-title="同步订单" data-id="12" data-width="360" data-height="100"  class="J_showdialog btn" style="color: #0000FF;">同步订单</a>
+					<a href="javascript:;" data-uri="{:U('thirdorder/sync', array('type'=>'duomai'))}" data-title="同步多麦订单" data-id="12" data-width="360" data-height="100"  class="J_showdialog btn" style="color: #0000FF;">同步多麦订单</a>
+                            <a href="javascript:;" data-uri="{:U('thirdorder/sync', array('type'=>'vip'))}" data-title="同步唯品会订单" data-id="12" data-width="360" data-height="100"  class="J_showdialog btn" style="color: #0000FF;">同步唯品会订单</a>
                  </form>
 
                     <div class="bk8"></div>               
-                 如果不能正常同步订单，请查看站点设置是否配置好多麦密钥。
+
          &nbsp;&nbsp;    
                    
                 </div>

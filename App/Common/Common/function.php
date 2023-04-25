@@ -848,9 +848,7 @@ return $url;
 
 function kouling($logo, $text, $url,$simple=false)
 {
-	
 $logo = $logo?$logo:'https://img.alicdn.com/imgextra/i4/126947653/O1CN01zB6KOQ26P7kZ09xAe_!!126947653.png';	
-	
 if(substr($url,0,2)=='//'){ 
 $url='https:'.$url;
 };
@@ -863,11 +861,11 @@ $c = new \TopClient();
 $c->appkey = $appkey;
 $c->secretKey = $appsecret;
 $req = new \TbkTpwdCreateRequest();
-$req->setUserId("123");
-$req->setText($text);
+//$req->setUserId("123");
+//$req->setText($text);
 $req->setUrl($url);
-$req->setLogo($logo);
-$req->setExt("{}");
+//$req->setLogo($logo);
+//$req->setExt("{}");
 $resp = $c->execute($req);
 $resparr = xmlToArray($resp);
 if($simple){

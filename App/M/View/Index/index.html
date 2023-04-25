@@ -53,13 +53,17 @@
 <img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lH6WbT2MgYkx01LPz_!!3175549857.png" class="category-icon"><p class="category-name">高德打车券</p></a></div>
 <!-- <div class="category-item"><a href="{:U('top100/index')}"><img src="__STATIC__/wap/images/icon/cjmbq-5.png" class="category-icon"><p class="category-name">实时热榜</p></a></div> -->
 	
-<div class="category-item"><a href="{:U('special/index',array('id'=>4956))}"><img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01BPGIkm2MgYkwjSWQT_!!3175549857.png" class="category-icon"><p class="category-name">1分包邮</p></a></div>
-<div class="category-item">
+<div class="category-item"><a href="{:U('uxuan/index',array('id'=>4956))}">
+	<div class="dot-tip">享补贴</div>
+	<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01LJdLke2MgYqLLxz7y_!!3175549857.png" class="category-icon"><p class="category-name">超级U选</p></a></div>
+<if condition="C('yh_dm_cid_mt') eq 1 or C('yh_openmt' eq 1)">
+	<div class="category-item">
 <a href="{:U('takeout/index')}"><img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01MgRSKf2MgYktTWx1Q_!!3175549857.png" class="category-icon">
 <p class="category-name">美团外卖券</p></a>
 </div>
-<if condition="$pdditems">
-<div class="category-item"><a href="{:U('chong/index')}" target="_blank">
+</if>
+<if condition="$openjd">
+<div class="category-item"><a href="{:U('recharge/index')}">
 <div class="dot-tip">特惠</div>
 <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01NNZXb62MgYkpHmTRi_!!3175549857.png" class="category-icon"><p class="category-name">话费充值</p></a></div>
 <else/>
@@ -69,7 +73,9 @@
 			 <div class="category-item"><a href="{:U('brand/index')}{$trackurl}"><img src="__STATIC__/wap/images/icon/cjmbq-3.png" class="category-icon"><p class="category-name">品牌券</p></a></div>
 	    </div>
 		<div class="category">
+			<if condition="C('yh_elm') eq 1">
 			 <div class="category-item"><a href="{:U('elm/index')}"><img src="/Public/skin2/static/home/images/elm-4.png" class="category-icon"><p class="category-name">饿了么红包</p></a></div>
+			</if>
 		    <!-- <div class="category-item"><a href="{:U('special/index',array('id'=>3158))}"><img src="https://img.alicdn.com/imgextra/i4/126947653/O1CN0106TnZX26P7kiJHX71_!!126947653.png" class="category-icon"><p class="category-name">1元购</p></a></div> -->
 		    <div class="category-item"><a href="{:U('special/index',array('id'=>4620))}"><img src="https://img.alicdn.com/imgextra/i4/126947653/O1CN01WEGWHb26P7kkTh09r_!!126947653.png" class="category-icon"><p class="category-name">百亿补贴</p></a></div>
 		     <if condition="C('yh_taolijin') gt 0">
@@ -182,7 +188,7 @@ xx();
 <if condition="$pdditems">
 	<!--pin-->
 		<div class="pin-wrap">
-			<div class="btn-blue-gradient btn-tag btn-md index-title">拼多多品牌热销</div>
+			<div class="btn-blue-gradient btn-tag btn-md index-title">拼多多限时秒杀</div>
 			<div class="swiper-container pin">
 			  <div class="swiper-wrapper">
 			  <volist name="pdditems" id="vo">

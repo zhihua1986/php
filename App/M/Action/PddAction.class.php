@@ -39,7 +39,7 @@ if($this->FilterWords($key)){
 $this->_404();
 }
 
- $this->pddquery($key);
+ //$this->pddquery($key);
  $this->assign('sokey', $key);
 }
 
@@ -51,6 +51,16 @@ if($stype == 1){
 	$this->assign('stype', $stype);
 }
 $data = $this->PddGoodsSearch($cid,'',$key,$sort,'',$size=20,$hash);
+
+    if($data['res']){
+        $back = $_SERVER["HTTP_REFERER"];
+        if ($back) {
+            $url = U('auth/pdd',array('back'=>urlencode($back),'auth'=>urlencode($data['res'])));
+            echo('<script>window.location.href="'.$url.'"</script>');
+            exit;
+        }
+
+    }
 
 $this->assign('list',$data['goodslist']);
 
@@ -94,7 +104,16 @@ if($stype == 1){
 	$hash = 'true';
 	$this->assign('stype', $stype);
 }
+
+
+if($page>5 && !$this->memberinfo['id']){
+
+    echo('<script>alert("请登录后再浏览！");</script>');
+    exit;
+}
+
 $data = $this->PddGoodsSearch($cid,$page,$key,$sort,'',$size=20,$hash);
+
 
 
 $this->assign('list',$data['goodslist']);

@@ -1,0 +1,135 @@
+<script type="text/javascript">
+  var QuanUrl = '{$item.quanurl}';
+  var Kouling = '{$item.quankouling}';
+<if condition="$gconvert">
+						setTimeout(function(){
+							$.ajax({ 
+								url: "{:U('item/gconvert')}",  
+								type:'post',
+								dataType: "json",
+								timeout :3000,
+								data: {pic_urls:"{$item.pic_urls}",title: "{$item.title}",Quan_id:"{$item.Quan_id}",pic_url:"{$item.pic_url}",last_time:"{$item.last_time}",num_iid:"{$item.num_iid}" },
+								success: function(data){
+									if(data.status=='200'){
+										QuanUrl = data.result.quanurl;
+										Kouling = data.result.quankouling;
+										$("#CopyMsg").html( Kouling);
+									}
+								}  
+							});	
+						},500);
+
+</if>	
+
+function half(kl = 0){
+	//要求登录后才能领券
+	<if condition="$islogin && !$visitor">
+	 LoginMsg();
+	 return false;
+	</if>
+	//登录后
+	<if condition="$visitor">
+	
+	<if condition="$Tbauth">
+	addPack(kl);
+	return false;
+	</if>
+	
+	
+	
+	</if>
+if(kl == 1){ //淘口令
+	$("#half").popup();
+	return false;
+}
+	
+<if condition="$iosLink">
+window.location.href="{$iosLink}"
+return false;
+</if>
+window.location.href="/index.php?m=m&c=out&quanurl={:base64_encode($item['quanurl'])}";
+	
+}
+	
+function LoginMsg(){
+	$.modal({
+			 title: "系统提示",
+			 text: "请登录后再领券！",
+			 buttons: [
+			   { text: "开始登录", onClick: function(){ 
+									window.location.href="{:U('login/index')}";
+									 } },
+			   { text: "暂不登录", className: "default",onClick: function(){ 
+									$.closePopup()
+									 } },
+			 ]
+		   });
+}
+			
+function addPack(kl = 0){
+	
+	 $.modal({
+			  title: "系统提示",
+			  text: "淘宝官方要求，完成备案后才能获得返利。",
+			  buttons: [
+				{ text: "开始备案", onClick: function(){ 
+					
+					window.location.href="{:U('auth/index',array('callback'=>$callback))}";
+					 
+					 } },
+				{ text: "暂不备案", className: "default",onClick: function(){ 
+					$.closePopup()
+					if(kl == 1){ //淘口令
+						$("#half").popup();
+						return false;
+					}
+					<if condition="$iosLink">
+					window.location.href="{$iosLink}"
+					return false;
+					</if>
+					window.location.href="/index.php?m=m&c=out&quanurl={:base64_encode($item['quanurl'])}";
+					 
+					 } },
+			  ]
+			});
+	
+	
+}
+			
+//var content = "{$item.quankouling}";
+var clipboard = new ClipboardJS('.copya', {
+			text: function() {
+				return  Kouling ;
+			}
+		});
+	clipboard.on('success', function(e) {
+		$.toast("口令复制成功");
+		e.clearSelection();
+	});
+	clipboard.on('error', function(e) {
+		 $.toast("复制失败", "forbidden");
+	});
+
+	var clipboard3 = new ClipboardJS('#copy_share');
+	clipboard3.on('success', function(e) {
+		$.toast("文案复制成功");
+		e.clearSelection();
+	});
+	clipboard3.on('error', function(e) {
+		$.toast("复制失败", "forbidden");
+	});
+
+var swiper = new Swiper(".mySwiper", {
+	scrollbar: {
+		el: ".swiper-scrollbar",
+		hide: false,
+	},
+	autoplay: true,
+	loop: true
+});
+
+function ShareBtn(){
+	$("#share").popup();
+}
+
+</script>

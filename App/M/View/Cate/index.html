@@ -64,7 +64,7 @@
 <if condition="$vo['category_id']">
 	
 	<div class="goods-item">
-					<a href="javascript:jumpto('{$vo.quan}','{$vo.num_iid}','{$vo.coupon_click_url}','{$vo.commission_rate}');">
+					<a href="{:U('item/index',array('id'=>$vo['num_iid']))}">
 	               <div class="goods-pic">
 	                   <img src="{$vo.pic_url}_400x400.jpg" class="goods-pic">
 	   <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">

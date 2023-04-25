@@ -58,18 +58,18 @@ class PdditemAction extends BaseAction
 	$t = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
 	$data = $this->pddPromotionUrl($id,$search_id,$t);
 	
-	if(!$data['url']){
+	if(!$data['mobile_url']){
 	$data = $this->pddPromotionUrl($id,$search_id,$t,'true');	
 	}
 	
-	if($data['url']){
+	if($data['mobile_url']){
 		// if($t && $t!==null){
 		// 	//$data['url'] = urldecode($data['url']);
 		// 	//$data['url'] = str_replace('&goods_sign','&customParameters='.$t.'&goods_sign',$data['url']);
 		// }
 		$json= [
 		    'code'=>200,
-		    'result'=>base64_encode($data['url'])
+		    'result'=>base64_encode($data['mobile_url'])
 		];
 		exit(json_encode($json));
 	}	

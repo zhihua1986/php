@@ -62,7 +62,7 @@ if($key){
 if($this->FilterWords($key)){
 $this->_404();
 }
-$this->jdquery($key);
+//$this->jdquery($key);
  $where['title'] = array( 'like', '%' . $key . '%' );
  $this->assign('k', $key);
 }

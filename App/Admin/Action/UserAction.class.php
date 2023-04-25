@@ -39,6 +39,10 @@ class UserAction extends BaseAction
             $map['tbname'] = 1;
             $this->assign('tbname', true);
         }
+		if ($_GET['webmaster_pid']) {
+		    $map['webmaster_pid'] = $_GET['webmaster_pid'];
+		    $this->assign('webmaster_pid', $webmaster_pid);
+		}
         if (isset($_GET['uid'])) {
             $map['id'] = $_GET['uid'];
             $this->assign('uid', $_GET['uid']);
@@ -186,10 +190,14 @@ class UserAction extends BaseAction
             $where['a.phone|a.nickname'] = array('like', '%' . $keyword . '%');
             $this->assign('keyword', $keyword);
         }
-        if (isset($_GET['uid'])) {
+        if ($_GET['uid']) {
             $where['a.id'] = $_GET['uid'];
             $this->assign('uid', $_GET['uid']);
         }
+		if ($_GET['webmaster_pid']) {
+		    $where['a.webmaster_pid'] = $_GET['webmaster_pid'];
+		    $this->assign('webmaster_pid', $_GET['webmaster_pid']);
+		}
         $field = '(SELECT count(*) FROM __MTORDER__ WHERE __MTORDER__.uid = a.id) AS mtordercount,(SELECT count(*) FROM __JDORDER__ WHERE __JDORDER__.uid = a.id) AS jdordercount,(SELECT count(*) FROM __PDDORDER__ WHERE __PDDORDER__.uid = a.id) AS pddordercount,(SELECT count(*) FROM __ORDER__ WHERE __ORDER__.uid = a.id) AS ordercount,(SELECT count(*) FROM __USER__ WHERE __USER__.fuid = a.id) AS fcount,(SELECT count(*) FROM __USER__ WHERE __USER__.guid = a.id) AS gcount,';
         $field = table_auto_format($field);
         $rows = $mod->field('a.*,' . $field . 'b.nickname as fnickname,c.nickname as gnickname')->alias('a')->join('LEFT JOIN __USER__ as b on b.id=a.fuid')->join('LEFT JOIN __USER__ as c on c.id=a.guid')->limit($start . ',' . $page_size)->where($where)->order($orderby)->select();

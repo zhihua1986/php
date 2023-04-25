@@ -45,7 +45,12 @@ class TopAction extends FuncAction
 		return $data;
 	}
 
-
+    /**
+     * @param $stime
+     * @param $etime
+     * @return array
+     * @throws \Duomai\CpsClient\Exceptions\ServiceException
+     */
 	protected function GetDmOrder($stime,$etime){
 		vendor("duomai.autoload");
 		$config = [
@@ -61,8 +66,33 @@ class TopAction extends FuncAction
 		$data = $client->OrderList($stime,$etime,1,200);
 		return $data;
 	}
-	
-	protected function floatNumber($number){
+
+
+    /**
+     * 唯品会订单同步
+     * @return void
+     */
+    protected function GetvipOrder($stime,$etime){
+
+        $url = $this->tqkapi . '/vphorderlist';
+        $orderTimeStart = date('Y-m-d H:i:s',$stime);
+        $orderTimeEnd = date('Y-m-d H:i:s',$etime);
+        $data=[
+            'time'=>time(),
+            'tqk_uid'=>	$this->tqkuid,
+            'orderTimeStart'=>$orderTimeStart,
+            'orderTimeEnd'=>$orderTimeEnd,
+        ];
+
+        $token=$this->create_token(trim(C('yh_gongju')), $data);
+        $data['token']=$token;
+        $result=$this->_curl($url, $data, true);
+
+        return $result;
+    }
+
+
+    protected function floatNumber($number){
 	    $length = strlen($number);  //数字长度
 	    if($length > 8){ //亿单位
 	        $str = substr_replace(strstr($number,substr($number,-7),' '),'.',-1,0)."亿";
@@ -95,6 +125,7 @@ class TopAction extends FuncAction
 	protected function DuomaiLink($productID,$url,$array=[]){
 		
 		$uid = $array['euid'];
+		$array['euid'] = 'm'.$uid; //解决纯数字ID，接口调用失败问题
 		$douyin_openid = md5($array['douyin_openid']);
 		$urlcode = md5($url);
 		$cachename = 'DuomaiLink_'.$productID.$uid.$douyin_openid.$urlcode;
@@ -549,7 +580,7 @@ class TopAction extends FuncAction
         if ($opid && !in_array($opid,$tags)) {
            $where['opt_id'] = $opid;
         }
-        if ($key && !$this->hasEmoji($key)) {
+        if ($key && !$this->hasEmoji($key) && $this->memberinfo) {
             $where['keyword'] = $key;
         }
         if ($page) {
@@ -562,14 +593,19 @@ class TopAction extends FuncAction
 		$uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
 		
 		if($uid){
-		//$where['custom_parameters']=$uid;
+		$where['custom_parameters']=$uid;
 		}
         $where['sign']=$this->create_pdd_sign(trim(C('yh_pddsecretkey')), $where);
 		
         $pdd_api='http://gw-api.pinduoduo.com/api/router';
         $result=$this->_curl($pdd_api, $where, true);
         $items_list=json_decode($result, true);
-		
+        if($items_list['error_response']['sub_code'] == '60001'){
+
+          $AuthLink =  $this->GetPddAuthLink($uid);
+
+        }
+
 		if($items_list['goods_search_response']['goods_list']){
 		$today=date('Ymd');
 		$goodslist=array();
@@ -602,45 +638,50 @@ class TopAction extends FuncAction
 			
 		}
 		}
-		
-		
-		if($count<$size && $key){
-		 $Extend = $this->PddExtendedSearch($key,$ExtOrder);
-		if($Extend){
-		foreach($Extend as $k=>$v){
-		$goodslist[$k+$count]['id']=$v['goods_id'];
-		$goodslist[$k+$count]['goods_id']=$v['goods_id'];
-		$goodslist[$k+$count]['title']=$v['goods_name'];
-		$goodslist[$k+$count]['pic_url']=$v['goods_thumbnail_url'];
-		$goodslist[$k+$count]['coupon_price']=round($v['min_group_price']/100-$v['coupon_discount']/100,2);
-		$goodslist[$k+$count]['price']=round($v['min_normal_price']/100,2);
-		$goodslist[$k+$count]['group_price']=round($v['min_group_price']/100,2);
-		$goodslist[$k+$count]['promotion_rate']=$v['promotion_rate'];
-		$goodslist[$k+$count]['quan']=$v['coupon_discount']/100;
-		$goodslist[$k+$count]['volume']=$v['sales_tip'];
-		$goodslist[$k+$count]['end_time']=$v['coupon_end_time'];
-		$goodslist[$k+$count]['search_id']=$v['search_id'];
-		$goodslist[$k+$count]['goods_sign']=$v['goods_sign'];
-		if(C('APP_SUB_DOMAIN_DEPLOY')){
-		$goodslist[$k+$count]['linkurl']=U('/pdditem/',array('s'=>$v['goods_sign']));
-		}else{
-		$goodslist[$k+$count]['linkurl']=U('pdditem/index',array('s'=>$v['goods_sign']));
-		}
-		}
-		
-		}
-		
-		
-			
-		}
+
 		
 		$data = array(
 		'goodslist'=>array_values($goodslist),
-		'count'=> $items_list['goods_search_response']['total_count']
+		'count'=> $items_list['goods_search_response']['total_count'],
+            'res'=>$AuthLink
 		);
 		
         return $data;
     }
+
+    /**
+     * 生成拼多多渠道备案链接
+     * @return void
+     */
+    protected  function GetPddAuthLink($uid)
+    {
+        $pid = trim(C('yh_youhun_secret'));
+        if ($pid) {
+            $where = [
+                'type' => 'pdd.ddk.rp.prom.url.generate',
+                'data_type' => 'JSON',
+                'timestamp' => $this->msectime(),
+                'client_id' => trim(C('yh_pddappkey')),
+                'custom_parameters' => $uid,
+                'channel_type' => 10,
+                'p_id_list' => '["' . $pid . '"]'
+            ];
+            $where['sign'] = $this->create_pdd_sign(trim(C('yh_pddsecretkey')), $where);
+            $pdd_api = 'http://gw-api.pinduoduo.com/api/router';
+            $result = $this->_curl($pdd_api, $where, true);
+            $list = json_decode($result, true);
+            if ($list['error_response']['sub_msg']) {
+                exit($list['error_response']['sub_msg']);
+            }
+            if ($list['rp_promotion_url_generate_response']['url_list'][0]['url']) {
+                return $list['rp_promotion_url_generate_response']['url_list'][0]['url'];
+            }
+
+            return false;
+
+        }
+    }
+
 
     protected function msectime()
     {
@@ -909,17 +950,54 @@ class TopAction extends FuncAction
         ];
         return json_encode($json);
     }
-	
-	
+
+    /**
+     * @param $activityId
+     * @param $pid
+     * @return void
+     */
+    protected  function  CreateElmLink($activityId,$UserInfo=array()){
+        vendor("taobao.taobao");
+        $pid = trim(C('yh_elmpid'));
+        if(strlen($UserInfo['elm_pid'])>5){
+            $pid = $UserInfo['elm_pid'];
+        }
+        $appkey = trim(C('yh_elmkey'));
+        $secret = trim(C('yh_elmsecret'));
+        $c = new \TopClient();
+        $c->appkey = $appkey;
+        $c->secretKey = $secret;
+        $req = new \AlibabaAlscUnionElemePromotionOfficialactivityGetRequest();
+        $query_request = new \ActivityRequest();
+        $query_request->pid=$pid;
+        $query_request->activity_id=$activityId;
+        $query_request->include_wx_img="true";
+        $query_request->include_qr_code="true";
+        $req->setQueryRequest(json_encode($query_request));
+        $resp = $c->execute($req);
+        $resparr = json_decode(json_encode($resp), true);
+        if($resparr['data']['id']==$activityId){
+             return $resparr['data'];
+        }
+        exit($resparr['sub_msg']);
+
+    }
+
+    /**
+     * @param $id
+     * @param $relationid
+     * @param $uid
+     * @return mixed
+     */
 	protected function TbkActivity($id,$relationid="",$uid=""){
 		$appkey = trim(C('yh_taobao_appkey'));
 		$appsecret = trim(C('yh_taobao_appsecret'));
 		$apppid=trim(C('yh_taobao_pid'));
-		// if($uid){
-		// 	$R = A("Records");
-		// 	$data= $R ->content($uid,$uid); 
-		// 	$apppid = $data['pid'];
-		// }
+		 if($uid && C('yh_bingtaobao') == 0 && !is_null(C('yh_bingtaobao'))){
+		 	$R = A("Records");
+		 	$data= $R ->content($uid,$uid);
+		 	$apppid = $data['pid'];
+		 }
 		$apppid=explode('_', $apppid);
 		$AdzoneId=$apppid[3];
 		vendor('taobao.taobao');
@@ -1155,12 +1233,13 @@ class TopAction extends FuncAction
             'EasouSpider'=>'EasouSpider',
             'oBot'=>'oBot',
 			'uni-app'=>'other',
-			'MSIE'=>'ohter',
+			'MSIE'=>'other',
 			'Adsbot/3.1'=>'other',
 			'toutiao.com'=>'ohter',
 			'Alibaba.Security.Heimdall'=>'alibaba',
             'Sogou'=>'Sogou',
             'semrush'=>'semrush',
+            'PetalBot'=>'PetalBot',
             'FlightDeckReports Bot'=>'FlightDeckReports',
             'crawler'=>'other',
         ];
@@ -1447,6 +1526,56 @@ return false;
 
         return $result;
     }
+
+
+    protected function InsertElmOrder($item)
+    {
+        $mod = D('order');
+        $res = M('user')->field('id,fuid,guid,webmaster_rate')->where(array('elm_pid'=>$item['pid']))->find();
+        $item['fuid'] = $res['fuid']?:0;
+        $item['guid'] = $res['guid']?:0;
+        $item['leve1'] = $res['webmaster_rate'] ? $res['webmaster_rate'] :  $item['leve1'];
+        $item['uid'] = $res['id']?:0;
+        if (!$mod->create($item)){
+            $mod->setError(); //解决遇到错误无法循环，注意位置
+            $data = array(
+                'status'=>$item['status'],
+                'up_time'=>$item['up_time'],
+                'price' =>$item['price'],
+                'income'=>$item['income'],
+            );
+            $res = $mod->where(array('orderid'=>$item['orderid']))->save($data);
+            if ($res) {
+                return 1;
+            }
+
+
+        }else{
+            $item_id = $mod->add();
+            if ($item_id) {
+
+                if($item['uid']>0){
+                    $wdata = array(
+                        'url'=>'c=user&a=myorder',
+                        'uid'=>$item['uid'],
+                        'keyword1'=>$item['orderid'],
+                        'keyword2'=>$item['goods_title'],
+                        'keyword3'=>$item['price'],
+                        'keyword4'=>$item['income']*($item['leve1']/100)
+                    );
+                    Weixin::orderTaking($wdata);
+                }
+
+                return 1;
+            }
+
+
+        }
+
+        return 0;
+
+    }
+
 
     protected function jdstatus($status)
     {
@@ -1763,7 +1892,25 @@ $text = '';
 	
 	     
 	    }
-	
+
+    /**
+     * @param $txt
+     * @return string
+     */
+        protected  function OrderSrc($txt = ''){
+
+        $data = array(
+              'duomai'=>'多麦',
+            'vip'=>'唯品会',
+            'douyin'=>'抖音'
+        );
+
+        if($txt){
+            return $data[$txt];
+        }
+        return $data;
+        }
+
 
     protected function ajax_jd_publish_stat($item)
     {

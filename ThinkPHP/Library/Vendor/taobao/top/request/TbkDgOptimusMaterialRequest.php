@@ -3,7 +3,7 @@
  * TOP API: taobao.tbk.dg.optimus.material request
  * 
  * @author auto create
- * @since 1.0, 2019.05.28
+ * @since 1.0, 2022.08.29
  */
 class TbkDgOptimusMaterialRequest
 {
@@ -23,19 +23,24 @@ class TbkDgOptimusMaterialRequest
 	private $contentSource;
 	
 	/** 
-	 * 智能匹配-设备号加密类型：MD5
+	 * 智能匹配-设备号加密类型：MD5，类型为OAID时不传
 	 **/
 	private $deviceEncrypt;
 	
 	/** 
-	 * 智能匹配-设备号类型：IMEI，或者IDFA，或者UTDID（UTDID不支持MD5加密）
+	 * 智能匹配-设备号类型：IMEI，或者IDFA，或者UTDID（UTDID不支持MD5加密），或者OAID
 	 **/
 	private $deviceType;
 	
 	/** 
-	 * 智能匹配-设备号加密后的值（MD5加密需32位小写）
+	 * 智能匹配-设备号加密后的值（MD5加密需32位小写），类型为OAID时传原始OAID值
 	 **/
 	private $deviceValue;
+	
+	/** 
+	 * 选品库投放id
+	 **/
+	private $favoritesId;
 	
 	/** 
 	 * 商品ID，用于相似商品推荐
@@ -43,7 +48,7 @@ class TbkDgOptimusMaterialRequest
 	private $itemId;
 	
 	/** 
-	 * 官方的物料Id(详细物料id见：https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8576096)
+	 * 官方的物料Id(详细物料id见：https://market.m.taobao.com/app/qn/toutiao-new/index-pc.html#/detail/10628875?_k=gpov9a)
 	 **/
 	private $materialId;
 	
@@ -125,6 +130,17 @@ class TbkDgOptimusMaterialRequest
 		return $this->deviceValue;
 	}
 
+	public function setFavoritesId($favoritesId)
+	{
+		$this->favoritesId = $favoritesId;
+		$this->apiParas["favorites_id"] = $favoritesId;
+	}
+
+	public function getFavoritesId()
+	{
+		return $this->favoritesId;
+	}
+
 	public function setItemId($itemId)
 	{
 		$this->itemId = $itemId;
@@ -183,8 +199,7 @@ class TbkDgOptimusMaterialRequest
 	{
 		
 		RequestCheckUtil::checkNotNull($this->adzoneId,"adzoneId");
-		RequestCheckUtil::checkMaxValue($this->pageSize,100,"pageSize");
-		RequestCheckUtil::checkMinValue($this->pageSize,1,"pageSize");
+		RequestCheckUtil::checkNotNull($this->materialId,"materialId");
 	}
 	
 	public function putOtherTextParam($key, $value) {

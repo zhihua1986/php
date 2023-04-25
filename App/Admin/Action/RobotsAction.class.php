@@ -377,7 +377,7 @@ class RobotsAction extends BaseAction
                     'tuisong' => 0,
                     'area' => 0,
                     'pass' => 1,
-                    'status' => '1',
+                    'status' => 'underway',
                     'isshow' => 1,
                     // 'commission_rate'=>'',
                     'commission_rate' => $val['tk_commission_rate'],
@@ -408,7 +408,7 @@ class RobotsAction extends BaseAction
                 $totalcoll++;
                 $t++;
             }
-            M('items')->addAll($raw, array(), true);
+            M('items_temp')->addAll($raw, array(), true);
             //fail
             file_put_contents($file, $startId);
         } else {
@@ -505,12 +505,15 @@ class RobotsAction extends BaseAction
             $req->setHasCoupon("true");
             $req->setNpxLevel("2");
             $req->setNeedPrepay("true");
-            $req->setIncludePayRate30("true");
+//            $req->setIncludePayRate30("true");
             $req->setIncludeGoodRate("true");
             $req->setAdzoneId($AdzoneId);
             $resp = $c->execute($req);
             $resp = json_decode(json_encode($resp), true);
             $datares = $resp['result_list']['map_data'];
+
+
+
         }
         if ($datares) {
             $t = 0;

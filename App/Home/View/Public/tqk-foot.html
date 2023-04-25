@@ -6,11 +6,14 @@
 				<span class="pipe">|</span> <a href="{:U('help/index',array('id'=>'contactus'))}" target="_blank">联系我们</a>
 				<span class="pipe">|</span> <a href="/sitemap.txt" target="_blank">网站地图</a> 
 		</nav>
-		<p>Copyright © 2021-2022 {:C('yh_site_name')}  版权所有 <br>
-		<if condition="C('yh_gaico')">
-		<label class="tqk-pr-20"><img src="{:C('yh_gaico')}"	width="16" height="16">  {:C('yh_gaicp')} </label>
-		</if>
+		<p>Copyright © 2022-2023 {:C('yh_site_name')}  版权所有
+			<if condition="C('yh_gaico')">
+				<label class="tqk-pr-20"><img src="{:C('yh_gaico')}"	width="16" height="16">  {:C('yh_gaicp')} </label>
+			</if>
 			<a href="http://beian.miit.gov.cn" target="_blank" rel="nofollow">{:C('yh_site_icp')}</a>
+			<br>
+			{:C('yh_site_name')}是一家中立的导购网站，不参与商品的交易、销售、物流等行为。商品信息仅供参考，具体以淘宝、天猫、京东、拼多多为准。
+
 		<br>
 		</p>
 	{:C('yh_statistics_code')}
@@ -37,7 +40,7 @@
 <script>
 	layui.config({
 		base: '/Public/skin2/static/tqkpc/js/',
-		version: 1.87,
+		version: 1.81,
 		debug: false
 	}).use(['tqk','tqktools','cookie']);
 </script>

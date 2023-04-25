@@ -1,6 +1,6 @@
   <volist name='list' id="vo"> 
 	           	<div class="goods-item">
-					<a href="javascript:jumpto('{$vo.coupon_price}','{$vo.jdd_num}','{$vo.oetime}','{$vo.num_iid}','{$vo.coupon_click_url}','{$vo.commission_rate}');">
+					<a href="{:U('/item/',array('id'=>$vo['num_iid']))}','{$vo.commission_rate}');">
 	               <div class="goods-pic">
 	                   <img src="{$vo.pic_url}_400x400.jpg" class="goods-pic">
 	    <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">

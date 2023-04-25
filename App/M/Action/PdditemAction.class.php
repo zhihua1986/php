@@ -147,16 +147,18 @@ public function jumpout(){
  $id=I('id');
  $t = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
  $data = $this->pddPromotionUrl($id,'',$t);
-  if(!$data['url']){
+  if(!$data['mobile_url']){
 	$data = $this->pddPromotionUrl($id,'',$t,'true');
  }
- if($data['url']){
+ 
+
+ if($data['mobile_url']){
 	 
 	//if($t && $t!==null){
 	//	$data['url'] = urldecode($data['url']);
 	//	$data['url'] = str_replace('&goods_sign','&customParameters='.$t.'&goods_sign',$data['url']);
 	//}
-    echo('<script>window.location.href="'.$data['url'].'"</script>');	 
+    echo('<script>window.location.href="'.$data['mobile_url'].'"</script>');	 
 	 exit;
  }
  echo('<script>alert("获取领券链接失败，请稍后再试！");history.go(-1)</script>');

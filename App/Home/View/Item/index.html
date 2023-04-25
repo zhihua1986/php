@@ -1,196 +1,221 @@
-<include file="Public:tqk-meta" />
-	<body>
-<include file="Public:tqk-head" />
+<include file="Public:tqk-meta"/>
+<body>
+<include file="Public:tqk-head"/>
 
 <div class="layui-fluid tqk-index-grey">
-<div class="layui-container container">
-<div class="tqk-pt-20"></div>
+    <div class="layui-container container">
+        <div class="tqk-pt-20"></div>
 
-		<div class="layui-row">
-						<div class="layui-col-xs9">
-							<div class="tqk-bg-white main-index">
-								<div class="layui-tab layui-tab-brief">
-	<div class="tqk-pl-20 tqk-pt-10">
-<br />
-</div>
+        <div class="layui-row">
+            <div class="layui-col-xs9">
+                <div class="tqk-bg-white main-index">
+                    <div class="layui-tab layui-tab-brief">
+                        <div class="tqk-pl-20 tqk-pt-10">
+                            <br/>
+                        </div>
 
-									<div class="layui-tab-content">
-										<div class="layui-tab-item layui-show">
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
 
-  <div class="layui-row">
-    <div class="layui-col-xs5 tqk-text-c">
-     <img src="{:$item['pic_url']}_400x400" width="280" alt="{$item.title}">
-    </div>
-    <div class="layui-col-xs7">
-    <div class="tqk-f-16"><i class="<if condition="$item.shop_type eq 'B'">tm-ico<else/>tb-ico</if>"></i>{$item.title}</div>
-    <div class="itemprice">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs5 tqk-text-c">
+                                        <img src="{:$item['pic_url']}_400x400" width="280" alt="{$item.title}">
+                                    </div>
+                                    <div class="layui-col-xs7">
+                                        <div class="tqk-f-16"><i class="<if condition=" $item.shop_type eq 'B'">tm-ico
+                                            <else/>
+                                            tb-ico</if>"></i>{$item.title}
+                                        </div>
+                                        <div class="itemprice">
 						<span class="tqk-c-red tqk-f-18">
 							{$item.coupon_price}元</span>
-						
-						<del class="tqk-c-999">￥{$item.price}</del>	
-						
-						<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+
+                                            <del class="tqk-c-999">￥{$item.price}</del>
+
+                                            <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
 	                   <span class="tqk-c-danger tqk-pl-15" style="text-decoration: none;">预计返￥
 	                   		{:Rebate1($item['coupon_price']*$item['commission_rate']/10000,$visitor['webmaster_rate'])}
 	                  </span>
-	                   </if>
-						
-						
-					<if condition="$item['quan']">	<span class="quan">{$item.quan}元券</span></if>
-						
-					</div>
-	<div class="time-num"><span class="time">活动结束时间：{$item.coupon_end_time|date="m-d H:i",###}</span>
-                        <span class="tqk-f-r">
+                                            </if>
+
+
+                                            <if condition="$item['quan']"><span class="quan">{$item.quan}元券</span>
+                                            </if>
+
+                                        </div>
+                                        <div class="time-num"><span class="time">活动结束时间：{$item.coupon_end_time|date="m-d H:i",###}</span>
+                                            <span class="tqk-f-r">
                             累计销量                            ：
                             <label style="color:#FF2E54 ">{$item.volume}</label>件                        </span>
-      </div>
-      
-      	<div>
-		TAG标签： 
-								<volist name="tag" id="vo">
-								<span class="layui-badge layui-bg-gray tqk-mr-10 tqk-mt-15"><a href="{:U('/cate/',array('k'=>$vo))}">{$vo}</a></span>
-								</volist>
-	</div>
-      
-      
-       <div class="layui-row">
-    <div class="layui-col-xs8 tqk-pt-20" style="padding-top: 50px;">
- 
- <input type="hidden" id="Pid" value="{$item.id}" />
-<input type="hidden" id="up_time" value="{$item.up_time}" />					
- <if condition="$islogin && !$visitor">
-<a rel="nofollow" style="width: 120px;" class="layui-btn layui-btn-fluid signin"  href="javascript:;" >立即领券</a>
-<else/>
-<a rel="nofollow" class="layui-btn layui-btn-fluid"  style="width: 120px;" <if condition='$act eq "yes"'> href="{$item.quanurl}" target="_blank" <elseif condition="$item['que'] eq 1 || $item['tk'] eq 0"/>  href="{:U('/out/action/quan/',array('id'=>$item['id']))}" target="_blank"  <else/> id="coupon" href="javascript:;" </if> >立即领券</a>
+                                        </div>
 
-</if>
+                                        <div>
+                                            TAG标签：
+                                            <volist name="tag" id="vo">
+                                                <span class="layui-badge layui-bg-gray tqk-mr-10 tqk-mt-15"><a
+                                                        href="{:U('/cate/',array('k'=>$vo))}">{$vo}</a></span>
+                                            </volist>
+                                        </div>
 
-<a rel="nofollow" style="width: 120px;" id="copy" class="layui-btn layui-btn-primary tqk-ml-30"  href="javascript:;" >复制优惠</a>
- 
+
+                                        <div class="layui-row">
+                                            <div class="layui-col-xs8 tqk-pt-20" style="padding-top: 50px;">
+
+                                                <input type="hidden" id="Pid" value="{$item.id}"/>
+                                                <input type="hidden" id="up_time" value="{$item.up_time}"/>
+                                                <if condition="$islogin && !$visitor">
+                                                    <a rel="nofollow" style="width: 120px;"
+                                                       class="layui-btn layui-btn-fluid signin"
+                                                       href="javascript:;">立即领券</a>
+                                                    <else/>
+                                                    <a rel="nofollow" id="half" href="javascript:;"
+                                                       class="layui-btn layui-btn-fluid"
+                                                       style="width: 120px;">立即领券</a>
+
+                                                </if>
+
+                                                <a rel="nofollow" style="width: 120px;" id="copy"
+                                                   class="layui-btn layui-btn-primary tqk-ml-30" href="javascript:;">复制优惠</a>
+
+                                            </div>
+                                            <div class="layui-col-xs4">
+                                                <if condition="$islogin && !$visitor">
+                                                    <br/>
+                                                    <else/>
+                                                    <p class="tqk-f-12 tqk-pb-5">手机淘宝扫码领券购买</p>
+                                                    <img id="codeimg"
+                                                         src="{:U('item/qrcode')}?dataurl={:base64_encode($item['quanurl'])}"
+                                                         width="150" height="150">
+                                                </if>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-clear tqk-pd-10">
+
+                    </div>
+                </div>
+
+
+                <div class="layui-tab tqk-bg-white">
+                    <input type="hidden" id="getdesc" value="{:$item['num_iid']}"/>
+
+                    <ul class="layui-tab-title">
+                        <li class="layui-this" rel="{:$item['num_iid']}">
+                            <if condition="$Tagitem">
+                                相关商品推荐
+                                <else/>
+                                商品详情
+                            </if>
+                        </li>
+                    </ul>
+                    <div class="layui-tab-content">
+
+                        <div class="layui-tab-item layui-show tqk-text-c" id="images-content">
+
+                            <if condition="$Tagitem">
+                                <div class="flexbox">
+                                    <ul class="haoquan">
+                                        <volist name="Tagitem" id="vo">
+                                            <li style="width: 285px;">
+                                                <div class="goods_list">
+                                                    <a target="_blank"
+                                                       href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}">
+                                                        <div class="goods_img">
+                                                            <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+                                                                <span class="rank_num">约返{:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}元</span>
+                                                            </if>
+                                                            <img width="240" height="240" src="{$vo.pic_url}_400x400"
+                                                                 alt="{$vo.title}">
+                                                        </div>
+                                                        <p class="layui-elip tqk-hiden-25 tqk-text-l"><i
+                                                                class="<if condition=" $vo.shop_type eq 'B'">tm-ico
+                                                            <else/>
+                                                            tb-ico
+                            </if>
+                            "></i>{$vo.title}</p>
+                            <div class="tqk-text-l"><span class="dec tqk-pl-10">原价￥{$vo.price|formatprice}  </span>
+                                <span class="num tqk-pl-10">{$vo.volume}</span> 件
+                            </div>
+                            <div class="tqk-text-l">
+                                <label class="coupon-price">{$vo.quan}元券</label> <span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span>
+                            </div>
+                            </a>
+                        </div>
+                        </li>
+                        </volist>
+                        </ul>
+                    </div>
+                    </if>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
     </div>
-     <div class="layui-col-xs4">
-     	 <if condition="$islogin && !$visitor">
-     	 <br />
-     	 <else/>
-		<p class="tqk-f-12 tqk-pb-5">手机淘宝扫码领券购买</p>
-		<img id="codeimg" src="{:U('item/qrcode')}?dataurl={:base64_encode($item['quanurl'])}" width="150" height="150">
-        </if>
-    </div>
-    </div>
-    	
+
+    <div class="layui-col-xs3">
+
+
+        <div class="tqk-bg-white tqk-ml-10 tqk-mt-10 layui-tab-brief">
+
+            <ul class="layui-tab-title">
+                <li class="layui-this">特别推荐</li>
+
+            </ul>
+            <div class="bestseller">
+                <volist name="items_list" id="vo" key="i" mod="3">
+                    <div class="tqk-f-l best-left">
+                        <a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><img width="90"
+                                                                                                             height="90"
+                                                                                                             src="__SKIN2__/static/tqkpc/images/grey.gif"
+                                                                                                             class="load"
+                                                                                                             lay-src="{$vo.pic_url}_200x200"/></a>
+                    </div>
+                    <div class="tqk-f-l best-right">
+                        <div class="overflow tqk-f-12">
+                            <a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><i
+                                    class="<if condition=" $vo.shop_type eq 'B'">tm-ico
+                                <else/>
+                                tb-ico</if>"></i>{$vo.title}</a>
+                        </div>
+                        <div>
+                            <span class="dec tqk-pl-10">原价￥{$vo.price|formatprice} </span> <span
+                                class="num tqk-pl-10">{$vo.volume}</span> 件
+                        </div>
+                        <div>
+                            <label class="coupon-price">{$vo.quan}元券</label> <span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span>
+                        </div>
+                    </div>
+                    <div class="tqk-pb-20 layui-clear"></div>
+                </volist>
+            </div>
+            <div class="layui-clear"></div>
+        </div>
+
 
     </div>
-  </div>
 
-
-
-
-										</div>
-							
-									</div>
-
-								</div>
-								
-<div class="layui-clear tqk-pd-10">
-
-</div>	
-							</div>
-							
-			
-							
-<div class="layui-tab tqk-bg-white">
-	<input type="hidden" id="getdesc" value="{:$item['num_iid']}" />
-
-  <ul class="layui-tab-title">
-    <li class="layui-this" rel="{:$item['num_iid']}">
-	<if condition="$Tagitem">
-		相关商品推荐
-	<else/>
-	商品详情
-	</if>
-		</li>
-  </ul>
-  <div class="layui-tab-content">
-  	
-    <div class="layui-tab-item layui-show tqk-text-c" id="images-content">
-    	
-    	<if condition="$Tagitem">
-    	<div class="flexbox">
-												<ul class="haoquan">
-													<volist name="Tagitem" id="vo">
-														<li style="width: 285px;">
-															<div class="goods_list">
-																<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}">
-																	<div class="goods_img">
-					<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
-						<span class="rank_num">约返{:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}元</span>
-					</if>
-																		<img width="240" height="240" src="{$vo.pic_url}_400x400" alt="{$vo.title}">
-																	</div>
-																	<p class="layui-elip tqk-hiden-25 tqk-text-l"><i class="<if condition="$vo.shop_type eq 'B'">tm-ico<else/>tb-ico</if>"></i>{$vo.title}</p>
-																	<div class="tqk-text-l"><span class="dec tqk-pl-10">原价￥{$vo.price|formatprice}  </span> <span class="num tqk-pl-10">{$vo.volume}</span> 件</div>
-																	<div class="tqk-text-l">
-																		<label class="coupon-price">{$vo.quan}元券</label> <span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span></div>
-																</a>
-															</div>
-														</li>
-													</volist>
-												</ul>
-											</div>
-    	</if>
-    	
-    	
-    	
-    </div>
-    
-    
-  </div>
 
 </div>
-						</div>
-						
-						<div class="layui-col-xs3">
-
-
-							<div class="tqk-bg-white tqk-ml-10 tqk-mt-10 layui-tab-brief">
-								
-								<ul class="layui-tab-title">
-									<li class="layui-this">特别推荐</li>
-									
-								</ul>
-<div class="bestseller">
-<volist name="items_list" id="vo" key="i" mod="3">
-<div class="tqk-f-l best-left">
-<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><img width="90" height="90" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.pic_url}_200x200"/></a></div>
-<div class="tqk-f-l best-right">
-<div class="overflow tqk-f-12">
-<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}"><i class="<if condition="$vo.shop_type eq 'B'">tm-ico<else/>tb-ico</if>"></i>{$vo.title}</a>
-</div>
-<div>
-		<span class="dec tqk-pl-10">原价￥{$vo.price|formatprice} </span> <span class="num tqk-pl-10">{$vo.volume}</span> 件
-		</div>
-		<div>
-		<label class="coupon-price">{$vo.quan}元券</label> <span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span>
-		</div>
-</div>	
-<div class="tqk-pb-20 layui-clear"></div>
-</volist>
-</div>
-				<div class="layui-clear"></div>		
-							</div>
-
-
-						</div>
-
-				
-					</div>
-
-
 
 
 <div class="tqk-mt-30">
-	
-<div class="layui-clear tqk-pb-20"></div>	
+
+    <div class="layui-clear tqk-pb-20"></div>
 
 </div>
 
@@ -202,86 +227,99 @@
 </div>
 </div>
 
-<if condition="$Tbauth">
-<div id="taobaoauth"  class="tbauth">
-<a href="{:U('bindtb/index')}"><img src="__SKIN2__/static/tqkpc/images/grey.png" width="100%" height="100%"></a>
-</div>
-</if>
-
-<include file="Public:tqk-foot" />
+<include file="Public:tqk-foot"/>
 <script src="__SKIN2__/static/tqkpc/js/clipboard.min.js"></script>
 <script type="text/javascript">
- layui.use(['layer'], function(){ 
-  var $ = layui.jquery;
-  var QuanUrl = '{$item.quanurl}';
-  var Kouling = '{$item.quankouling}';
-  
-<if condition="$Tbauth">
- layer.open({
-  type: 1,
-  title: false,
-  closeBtn: 0,
-  shade: 0.8,
-  area: ['400px', '400px'],
-  skin: 'myskin',
-  shadeClose: false,
-  content: $('#taobaoauth')
-});
-</if> 
-  
-<if condition="$gconvert">
-						setTimeout(function(){
-							$.ajax({ 
-								url: "{:U('item/gconvert')}",  
-								type:'post',
-								dataType: "json",
-								timeout :3000,
-								data: {pic_urls:"{$item.pic_urls}",title: "{$item.title}",Quan_id:"{$item.Quan_id}",pic_url:"{$item.pic_url}",last_time:"{$item.last_time}",num_iid:"{$item.num_iid}" },
-								success: function(data){
-									if(data.status=='200'){
-										$("#codeimg").attr("src",data.result.src);
-										QuanUrl = data.result.quanurl;
-										Kouling = data.result.quankouling;
-									}
-								}  
-							});	
-						},500);
-
-</if>
-  
- <if condition="$islogin && !$visitor">
- $('#copy').on('click',function(){
-layer.confirm('需要登录后才可以领券哟!', {
-  btn: ['立即登录', '我知道啦'] 
-}, function(index, layero){
-window.location.href="{:U('login/index')}";
-}, function(index){
-layer.closeAll();
-return false
-});
-})
- 
- <else/>
-;(function() {
-clipboard = new ClipboardJS('#copy', {
-text: function(el) {
-return  Kouling;
+    layui.use(['layer'], function () {
+        var $ = layui.jquery;
+        var QuanUrl = '{$item.quanurl}';
+        var Kouling = '{$item.quankouling}';
+        <if condition="$gconvert">
+            setTimeout(function(){
+            $.ajax({
+                url: "{:U('item/gconvert')}",
+                type: 'post',
+                dataType: "json",
+                timeout: 3000,
+                data: {
+                    pic_urls: "{$item.pic_urls}",
+                    title: "{$item.title}",
+                    Quan_id: "{$item.Quan_id}",
+                    pic_url: "{$item.pic_url}",
+                    last_time: "{$item.last_time}",
+                    num_iid: "{$item.num_iid}"
+                },
+                success: function (data) {
+                    if (data.status == '200') {
+                        $("#codeimg").attr("src", data.result.src);
+                        QuanUrl = data.result.quanurl;
+                        Kouling = data.result.quankouling;
+                    }
                 }
             });
-clipboard.on('success', function(e) {
-	  layer.msg('复制成功,快去分享吧！',{time:1000});
-          
-});
-           
-})();
-</if>
-<if condition="C('yh_dn_item_desc') eq '0'">
-setTimeout(function () {
-          $("#getdesc").click();
-}, 800);
-</if>
+        },500);
 
-})
+        </if>
+
+        <if condition="$islogin && !$visitor">
+            $('#copy').on('click',function(){
+            layer.confirm('需要登录后才可以领券哟!', {
+                btn: ['立即登录', '我知道啦']
+            }, function (index, layero) {
+                window.location.href = "{:U('login/index')}";
+            }, function (index) {
+                layer.closeAll();
+                return false
+            });
+        })
+
+            <else/>
+            ;(function() {
+            clipboard = new ClipboardJS('#copy', {
+                text: function (el) {
+                    return Kouling;
+                }
+            });
+            clipboard.on('success', function(e) {
+            layer.msg('复制成功,快去分享吧！',{time:1000});
+
+        });
+
+        })();
+        </if>
+        <if condition="C('yh_dn_item_desc') eq '0'">
+            setTimeout(function () {
+            $("#getdesc").click();
+        }, 800);
+        </if>
+
+        $('#half').on('click', function () {
+
+            //登录后
+            <if condition="$visitor">
+
+                <if condition="$Tbauth">
+
+                    layer.confirm('淘宝官方要求，完成备案后才能获得返利。', {
+                    btn: ['开始备案','暂不备案']
+                }, function(){
+                    window.location.href = "{:U('auth/index',array('callback'=>$callback))}";
+                    return false;
+                }, function(){
+                    layer.close();
+                    window.location.href="{:$item['quanurl']}";
+                });
+                    return false;
+                </if>
+
+            </if>
+
+            window.location.href = "{:$item['quanurl']}";
+
+        })
+
+
+    })
 </script>
 </body>
 </html>

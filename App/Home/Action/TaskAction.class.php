@@ -1,4 +1,5 @@
 <?php
+
 namespace Home\Action;
 
 use Common\Model\userModel;
@@ -7,14 +8,17 @@ use Common\Model\itemsModel;
 use Common\Model\articleModel;
 use Common\Model\recordsModel;
 use Common\Api\Weixin;
+
 class TaskAction extends BaseAction
 {
     private $accessKey = '';
+
     public function _initialize()
     {
         parent::_initialize();
         $this->accessKey = trim(C('yh_gongju'));
     }
+
     public function run()
     {
         set_time_limit(30);
@@ -41,17 +45,28 @@ class TaskAction extends BaseAction
         } else {
             $Self = 1;
         }
+        $UsePid = 0;
+        if (C('yh_bingtaobao') == 0 && !is_null(C('yh_bingtaobao'))) {
+            $UsePid = 1;
+        }
+        $Special = 0;
+        if (C('yh_bingtaobao') == 2) {
+            $Special = 1;
+        }
         $task = array(
-            array('value' => 'bindspecial', 'query' => '/index.php?c=task&a=bindspecial&key=' . $this->accessKey, 'interval' => 180, 'status' => 1),
-          //  array('value' => 'OrderBind', 'query' => '/index.php?c=task&a=OrderBind&key=' . $this->accessKey, 'interval' => 90, 'status' => 1), 自动分配pid关联用户
-            array('value' => 'DelRecords', 'query' => '/index.php?c=task&a=DelRecords&key=' . $this->accessKey, 'interval' => 3500, 'status' => 1),
+            array('value' => 'UpdateElmOrder', 'query' => '/index.php?c=task&a=UpdateElmOrder&key=' . $this->accessKey, 'interval' => 200, 'status' => C('yh_elm')),
+            array('value' => 'AutoBindUser', 'query' => '/index.php?c=task&a=autobinduser&key=' . $this->accessKey, 'interval' => 660, 'status' => 1),
+            array('value' => 'bindspecial', 'query' => '/index.php?c=task&a=bindspecial&key=' . $this->accessKey, 'interval' => 180, 'status' => $Special),
+            array('value' => 'OrderBind', 'query' => '/index.php?c=task&a=OrderBind&key=' . $this->accessKey, 'interval' => 90, 'status' => $UsePid),
+            array('value' => 'DelRecords', 'query' => '/index.php?c=task&a=DelRecords&key=' . $this->accessKey, 'interval' => 3500, 'status' => $UsePid),
             array('value' => 'Tbcollect', 'query' => '/index.php?c=task&a=Tbcollect&key=' . $this->accessKey, 'interval' => 200, 'status' => 1),
             array('value' => 'Jdcollect', 'query' => '/index.php?c=task&a=Jdcollect&key=' . $this->accessKey, 'interval' => 240, 'status' => $jdstatus ? $jdstatus : 0),
             array('value' => 'Meituanreceipt', 'query' => '/index.php?c=task&a=Meituanreceipt&key=' . $this->accessKey, 'interval' => 480, 'status' => $mtstatus ? $mtstatus : 0),
             array('value' => 'Duomaireceipt', 'query' => '/index.php?c=task&a=Duomaireceipt&key=' . $this->accessKey, 'interval' => 480, 'status' => $dmstatus ? 1 : 0),
+            array('value' => 'VphOrderPay', 'query' => '/index.php?c=task&a=VphOrderPay&key=' . $this->accessKey, 'interval' => 600, 'status' => C('yh_vphpid')?1:0),
             array('value' => 'DmOrderPay', 'query' => '/index.php?c=task&a=DmOrderPay&key=' . $this->accessKey, 'interval' => 600, 'status' => $dmstatus ? 1 : 0),
-            array('value' => 'Tborderpay', 'query' => '/index.php?c=task&a=Tborderpay&key=' . $this->accessKey, 'interval' => 60, 'status' => $Self?$Self:0),
-            array('value'=>'UpdateItemId','query'=>'/index.php?c=task&a=UpdateItemId&key='.$this->accessKey,'interval'=>60,'status'=>1),
+            array('value' => 'Tborderpay', 'query' => '/index.php?c=task&a=Tborderpay&key=' . $this->accessKey, 'interval' => 60, 'status' => $Self ? $Self : 0),
+            array('value' => 'UpdateItemId', 'query' => '/index.php?c=task&a=UpdateItemId&key=' . $this->accessKey, 'interval' => 60, 'status' => 1),
             array('value' => 'Tborderscene', 'query' => '/index.php?c=task&a=Tborderscene&key=' . $this->accessKey, 'interval' => 180, 'status' => $Self ? $Self : 0),
             //array('value'=>'Tborderfail','query'=>'/index.php?c=task&a=Tborderfail&key='.$this->accessKey,'interval'=>240,'status'=>$Self?$Self:0),
             array('value' => 'DelFailure', 'query' => '/index.php?c=task&a=DelFailure&key=' . $this->accessKey, 'interval' => 1800, 'status' => 1),
@@ -63,7 +78,7 @@ class TaskAction extends BaseAction
             array('value' => 'sitemap', 'query' => '/index.php?c=task&a=sitemap&key=' . $this->accessKey, 'interval' => 7000, 'status' => 1),
             array('value' => 'Pddorderpay', 'query' => '/index.php?c=task&a=Pddorderpay&key=' . $this->accessKey, 'interval' => 200, 'status' => $pddstatus ? $pddstatus : 0),
             array('value' => 'PddReceipt', 'query' => '/index.php?c=task&a=PddReceipt&key=' . $this->accessKey, 'interval' => 900, 'status' => $pddstatus ? $pddstatus : 0),
-            array('value' => 'TqkOrderPay', 'query' => '/index.php?c=task&a=TqkOrderPay&key=' . $this->accessKey, 'interval' => 480, 'status' => $ThirdParty ? $ThirdParty : 0),
+            array('value' => 'TqkOrderPay', 'query' => '/index.php?c=task&a=TqkOrderPay&key=' . $this->accessKey, 'interval' => 300, 'status' => $ThirdParty ? $ThirdParty : 0),
             //array('value'=>'TqkOrderSettle','query'=>'/index.php?c=task&a=TqkOrderSettle&key='.$this->accessKey,'interval'=>1080,'status'=>$ThirdParty?$ThirdParty:0),
             //array('value'=>'TqkOrderFail','query'=>'/index.php?c=task&a=TqkOrderFail&key='.$this->accessKey,'interval'=>960,'status'=>$ThirdParty?$ThirdParty:0),
             array('value' => 'TqkOrderScene', 'query' => '/index.php?c=task&a=TqkOrderScene&key=' . $this->accessKey, 'interval' => 180, 'status' => $ThirdParty ? $ThirdParty : 0),
@@ -95,122 +110,243 @@ class TaskAction extends BaseAction
             S($lockName, null);
         }
     }
-	
-	public function UpdateItemId(){
-		$this->timeout();
-		$this->check_key();
-		$mod = new itemsModel();
-		$where['status'] = '1';
-		$result=$mod->where($where)->field('id,num_iid,item_id')->order('id desc')->limit(50)->select();
-		 if ($result) {
-		     $data = array();
-		   foreach ($result as $k => $v) {
-		   				$info = $this->taobaodetail($v['num_iid']);
-		   				if($info['num_iid']){
-		   					$num_iid = $info['num_iid'];
-		   					$data[$k]['num_iid'] = $num_iid;
-		   					 $data[$k]['volume'] = $info['volume']?$info['volume']:0;
-		   					 $data[$k]['id'] = $v['id'];
-		   					$item_id = explode('-',$num_iid);
-		   					$data[$k]['item_id'] = $item_id[1]?$item_id[1]:$num_iid;
-		   					 $data[$k]['status'] = 'underway';
-						 }else{
-						 	$res = $mod->where(array('num_iid'=>$num_iid))->delete();
-						 }
-		   }
-		     $res = $this->db_batch_update('tqk_items', array_values($data), 'id');
-		    $this->Log('UpdateItemId', $res);
-		 }
-		 
-		 $json = array('state' => 'yes', 'msg' => $res);
-		 exit(json_encode($json, JSON_UNESCAPED_UNICODE));
-		
-		
-	}
-	
-	protected function db_batch_update($table_name = 'tqk_items', $data = array(), $field = ''){
-		
-		if (!$table_name || !$data || !$field) {
-		    return false;
-		} else {
-		    $sql = 'UPDATE ' . $table_name;
-		}
-		$con = array();
-		$con_sql = array();
-		$fields = array();
-		foreach ($data as $key => $value) {
-		    $x = 0;
-		    foreach ($value as $k => $v) {
-		        if ($k != $field && !$con[$x] && $x == 0) {
-		            $con[$x] = " set {$k} = (CASE {$field} ";
-		        } elseif ($k != $field && !$con[$x] && $x > 0) {
-		            $con[$x] = " {$k} = (CASE {$field} ";
-		        }
-		        if ($k != $field) {
-		            $temp = $value[$field];
-		            $con_sql[$x] .= " WHEN '{$temp}' THEN '{$v}' ";
-		            $x++;
-		        }
-		    }
-		    $temp = $value[$field];
-		    if (!in_array($temp, $fields)) {
-		        $fields[] = $temp;
-		    }
-		}
-		$num = count($con) - 1;
-		foreach ($con as $key => $value) {
-		    foreach ($con_sql as $k => $v) {
-		        if ($k == $key && $key < $num) {
-		            $sql .= $value . $v . ' end),';
-		        } elseif ($k == $key && $key == $num) {
-		            $sql .= $value . $v . ' end)';
-		        }
-		    }
-		}
-		$str = implode(',', $fields);
-		$sql .= " where {$field} in({$str})";
-		$res = M()->execute($sql);
-		return $res;
-		
-	}
-	
+
+
+    public function UpdateElmOrder()
+    {
+        $this->timeout();
+        $this->check_key();
+        vendor("taobao.taobao");
+        $time = NOW_TIME;
+        $starttime = $time - 1200;
+        $start_time = date('Y-m-d H:i:s', $starttime);
+        $end_time = date('Y-m-d H:i:s', $time);
+        $pid = trim(C('yh_elmpid'));
+        $appkey = trim(C('yh_elmkey'));
+        $secret = trim(C('yh_elmsecret'));
+        $c = new \TopClient();
+        $c->appkey = $appkey;
+        $c->secretKey = $secret;
+        $req = new \AlibabaAlscUnionKbcpxPositiveOrderGetRequest();
+        $req->setDateType("4");
+        $req->setStartDate($start_time);
+        $req->setEndDate($end_time);
+        $req->setBizUnit("2");
+        $req->setPageSize("50");
+        $req->setPageNumber("1");
+        $resp = $c->execute($req);
+        $resparr = json_decode(json_encode($resp), true);
+        $data = $resparr['result']['order_detail_report_d_t_o'];
+        $result = [];
+
+        if($data){
+
+            if ($data['title']) {
+                $result[] = $data;
+            }else{
+                $result = $data;
+            }
+
+            $item = array();
+            foreach ($result as $k=>$val){
+
+                $item['orderid'] = $val['biz_order_id'];
+                $item['add_time'] = $val['pay_time'] ? strtotime($val['pay_time']) : strtotime($val['tk_create_time']);
+                $item['status'] = $this->ElmToTb($val['order_state']);
+                $item['nstatus'] = 1;
+                $item['price'] = $val['pay_amount'];
+                $item['pid'] = $val['pid'];
+                // $item['goods_iid'] = $val['item_id'];
+                $item['item_id'] =  $val['item_id'];
+                $item['goods_title'] = $val['title'];
+                $item['goods_num'] = $val['product_num'];
+                $item['ad_id'] =$val['ad_zone_id'];
+                $item['click_time'] = strtotime($val['trace_time']);
+                $item['up_time'] = $val['gmt_modified'] ? strtotime($val['gmt_modified']) : '';
+                $item['income'] = $val['settle'] > 0 ? $val['settle'] : $val['commission_fee'];
+                $item['ad_name'] = $val['ad_zone_name'];
+                $item['goods_rate'] = $val['commission_rate'] * 100;
+                $item['leve1'] = trim(C('yh_bili1'));
+                $item['leve2'] = trim(C('yh_bili2'));
+                $item['leve3'] = trim(C('yh_bili3'));
+
+                $this-> InsertElmOrder($item);
+
+            }
+
+        }
+
+        $this->Log('UpdateElmOrder', $resparr);
+        $json = array('state' => 'yes', 'msg' => $resparr);
+        exit(json_encode($json, JSON_UNESCAPED_UNICODE));
+
+    }
+
+
+    public function UpdateItemId()
+    {
+        $this->timeout();
+        $this->check_key();
+        $mod = M('items_temp');
+        $where = array('isshow' => 1);
+        $result = $mod->field('*')->where($where)->order('id asc')->limit(40)->select();
+
+        if ($result) {
+            foreach ($result as $k => $item_1) {
+                $info = $this->taobaodetail($item_1['num_iid']);
+                if ($info['num_iid']) {
+                    $volume = $info['volume'];
+                    $item_id = explode('-', $info['num_iid']);
+                    $data[] = array(
+                        'cate_id' => $item_1['cate_id'],
+                        'ali_id' => $item_1['ali_id'],
+                        'item_url' => $item_1['item_url'],
+                        'num_iid' => $info['num_iid'],
+                        'title' => $info['title'],
+                        'pic_url' => $item_1['pic_url'],
+                        'pic_urls' => serialize($info['small_images']['string']),
+                        'price' => $item_1['price'],
+                        'change_price' => $item_1['change_price'] ?: 0,
+                        'coupon_price' => $item_1['coupon_price'],
+                        'shop_type' => $item_1['shop_type'],
+                        'nick' => $item_1['nick'],
+                        'mobilezk' => $item_1['mobilezk'] ?: 0,
+                        'sellerId' => $item_1['sellerId'],
+                        'volume' => $volume ? $volume : 0,
+                        'commission_rate' => $item_1['commission_rate'], //佣金比例
+                        'tk_commission_rate' => $item_1['tk_commission_rate'],
+                        'commission' => '0',
+                        'coupon_rate' => $item_1['coupon_rate'],
+                        'intro' => $item_1['intro'],
+                      //  'Quan_condition' => $item_1['Quan_condition'],
+                        'isq' => 1,
+                        'ems' => 1,
+                        'pass' => 1,
+                        'isshow' => 1,
+                        'area' => 0,
+                        'hits' => 0,
+                        'tuisong' => 0,
+                        'status' => 'underway',
+                        'up_time' => $item_1['up_time'],
+                        'quan' => $item_1['quan'],
+                        'Quan_id' => $item_1['Quan_id'],
+                        'quanurl' => $item_1['quanurl'],
+                        'Quan_condition' => 0,
+                        'Quan_surplus' => $item_1['Quan_surplus'],
+                        'Quan_receive' => $item_1['Quan_receive'],
+                        'coupon_start_time' => strtotime(date('Y-m-d H:i:s')),
+                        'add_time' => strtotime(date('Y-m-d H:i:s')),
+                        'coupon_end_time' => $item_1['coupon_end_time'],
+                        'hao_id' => $item_1['hao_id'],
+                        'da_id' => $item_1['da_id'],
+                        'item_id' => $item_id[1] ? $item_id[1] : $item_1['num_iid']
+                    );
+
+                }
+                $did = $item_1['id'];
+            }
+
+            $res = M('items')->addAll($data, array(), true);
+
+            $this->Log('UpdateItemId', $res);
+            $des = $mod->where(array('id' => array('elt', $did)))->delete();
+
+        }
+
+        $json = array('state' => 'yes', 'msg' => $des);
+        exit(json_encode($json, JSON_UNESCAPED_UNICODE));
+
+
+    }
+
+    /**
+     * 反绑用户
+     * @return void
+     */
+    public function AutoBindUser()
+    {
+        $this->timeout();
+        $this->check_key();
+        $Mod = new userModel();
+        $Weektime = NOW_TIME - 86400 * 7;
+        $sql = 'select a.id,b.oid as oid from tqk_user as a LEFT JOIN tqk_order as b ON a.id = b.uid  where a.last_time>' . $Weektime . ' AND  a.oid IS  NULL AND b.oid IS NOT NULL ';
+        $list = M()->query($sql);
+        if($list){
+        $res = $this->dbSaveAll($list,'user', 'id');
+        }
+        $json = array('state' => 'yes', 'msg' => $res);
+        exit(json_encode($json, JSON_UNESCAPED_UNICODE));
+
+    }
+
+
+    /**批量更新数据
+     * @param $datas
+     * @param $database_table_name
+     * @param $primary_key
+     * @return false|int
+     */
+    protected function dbSaveAll($datas, $database_table_name, $primary_key)
+    {
+        $sql = '';
+        //Sql
+        $lists = [];
+        //记录集$lists
+        $pk = $primary_key;
+        //获取主键
+        foreach ($datas as $data) {
+            foreach ($data as $key => $value) {
+                if ($pk === $key) {
+                    $ids[] = $value;
+                } else {
+                    $lists[$key] .= sprintf("WHEN %u THEN '%s' ", $data[$pk], $value);
+                }
+            }
+        }
+        foreach ($lists as $key => $value) {
+            $sql .= sprintf("`%s` = CASE `%s` %s END,", $key, $pk, $value);
+        }
+        $sql = sprintf('UPDATE __%s__ SET %s WHERE %s IN ( %s )', strtoupper($database_table_name), rtrim($sql, ','), $pk, implode(',', $ids));
+        return M()->execute($sql);
+    }
+
+
+
     public function bindspecial()
     {
-			 $this->timeout();
-			 $this->check_key();
-            $weekend = strtotime(date("Y-m-d H:i:s", strtotime('-7 days')));
-			$special = $this->Getspecial();
-			$this->Log('bindspecial', $special);
-			if($special['code'] == 200){
-				$list = array();
-				foreach($special['result'] as $k=>$v){
-					if($v['external_id']){
-					$list[$v['external_id']] = $v['special_id'];
-					}
-				}
-				$listKey = array_keys($list);
-				$mod = new userModel();
-				$where = array('special_id' => array(array('exp', 'is null'), array('lt', 3), 'or'), 'last_time' => array('egt', $weekend));
-				$result = $mod->where($where)->field('id')->select();
-				foreach($result as $k=>$v){
-					
-					if(in_array($v['id'], $listKey)){
-						
-						$Data = [
-						    'special_id' =>$list[$v['id']],
-						];
-						
-						$res=$mod->where(['id'=>$v['id']])->save($Data);
-						
-					}
-					
-				}
-				
-				
-			}
-			
-		exit;	
+        $this->timeout();
+        $this->check_key();
+        $weekend = strtotime(date("Y-m-d H:i:s", strtotime('-7 days')));
+        $special = $this->Getspecial();
+        $this->Log('bindspecial', $special);
+        if ($special['code'] == 200) {
+            $list = array();
+            foreach ($special['result'] as $k => $v) {
+                if ($v['rtag']) {
+                    $list[$v['rtag']] = $v['relation_id'];
+                }
+            }
+            $listKey = array_keys($list);
+            $mod = new userModel();
+            $where = array('webmaster_pid' => array(array('exp', 'is null'), array('lt', 3), 'or'), 'last_time' => array('egt', $weekend));
+            $result = $mod->where($where)->field('id')->select();
+            foreach ($result as $k => $v) {
+                if (in_array($v['id'], $listKey)) {
+                    $Data = [
+                        'webmaster_pid' => $list[$v['id']],
+                        'webmaster' => 1
+                    ];
+                    $res = $mod->where(['id' => $v['id']])->save($Data);
+                }
+
+            }
+
+
+        }
+
+        exit;
     }
+
     public function DelRecords()
     {
         $this->timeout();
@@ -222,6 +358,56 @@ class TaskAction extends BaseAction
         $this->Log('DelRecords', $res);
         exit;
     }
+
+
+    public function VphOrderPay()
+    {
+        $this->timeout();
+        $this->check_key();
+        $starttime = NOW_TIME - 1200;
+        $endtime = NOW_TIME;
+        $json = $this->GetvipOrder($starttime, $endtime);
+        $json = json_decode($json,true);
+        $this->Log('VphOrderPay', $json);
+        if ($json['result']['orderInfoList']) {
+            $raw = array();
+            $n = 0;
+            foreach ($json['result']['orderInfoList'] as $key => $query) {
+                if ($query['orderSn']) {
+                    $raw = array(
+                        'ads_id' => $query['pid'],
+                        'goods_id' => $query['detailList'][0]['goodsId'],
+                        'orders_price' => $query['totalCost'],
+                        'goods_name' => '唯品会:'.$query['detailList'][0]['goodsName'],
+                        //  'goods_img'=>$query['details'][0]['goods_img'],
+                        'order_status' => $query['orderSubStatusName'],
+                        'order_commission' => $query['commission'],
+                        'order_sn' => $query['orderSn'],
+                        'order_time' => substr($query['orderTime'], 0, -3),
+                        'uid' => $query['openId'],
+                        'status' => $query['settled']==1?2:$query['status']-1,
+                        //   'settled' => $query['settled'],
+                        'src'=>'vip',
+                       // 'settledTime' => $query['settledTime'],
+                        'confirm_siter_commission' => $query['afterSaleChangeCommission'],
+                        'charge_time' => substr($query['settledTime'], 0, -3),
+                        'ads_name' => '默认',
+                        'leve1' => trim(C('yh_bili1')),
+                        'leve2' => trim(C('yh_bili2')),
+                        'leve3' => trim(C('yh_bili3')),
+                    );
+                    if ($this->_ajax_duomai_order($raw)) {
+                        $n++;
+                    }
+
+                }
+
+            }
+            $json = array('state' => 'yes', 'msg' => $n);
+            exit(json_encode($json, JSON_UNESCAPED_UNICODE));
+        }
+    }
+
     public function DmOrderPay()
     {
         $this->timeout();
@@ -245,7 +431,7 @@ class TaskAction extends BaseAction
                         'order_commission' => $query['details'][0]['order_commission'],
                         'order_sn' => $query['details'][0]['order_sn'],
                         'order_time' => strtotime($query['order_time']),
-                        'uid' => $query['euid'],
+                        'uid' => str_replace('m', '', $query['euid']),
                         'status' => $query['status'],
                         'confirm_price' => $query['confirm_price'],
                         'confirm_siter_commission' => $query['confirm_siter_commission'],
@@ -264,6 +450,7 @@ class TaskAction extends BaseAction
             exit(json_encode($json, JSON_UNESCAPED_UNICODE));
         }
     }
+
     public function dmorder()
     {
         $hash = trim(C('yh_dmsecret'));
@@ -284,7 +471,7 @@ class TaskAction extends BaseAction
                 'order_commission' => $query['siter_commission'],
                 'order_sn' => $query['order_sn'],
                 'order_time' => strtotime($query['order_time']),
-                'uid' => $query['euid'],
+                'uid' => str_replace('m', '', $query['euid']),
                 'status' => $query['status'],
                 'confirm_price' => $query['confirm_price'],
                 'confirm_siter_commission' => $query['confirm_siter_commission'],
@@ -304,6 +491,7 @@ class TaskAction extends BaseAction
         }
         exit($json);
     }
+
     protected function MtSign($params)
     {
         unset($params["sign"]);
@@ -317,12 +505,13 @@ class TaskAction extends BaseAction
         $sign = md5($str);
         return $sign;
     }
+
     public function mtorder()
     {
         //$this->check_key();
         if (empty($_POST) && false !== strpos($_SERVER['CONTENT_TYPE'], 'application/json')) {
             $content = file_get_contents('php://input');
-            $val = (array) json_decode($content, true);
+            $val = (array)json_decode($content, true);
         } else {
             $val = $_POST;
         }
@@ -341,12 +530,13 @@ class TaskAction extends BaseAction
         }
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function sitemap()
     {
         $this->timeout();
         $this->check_key();
         $mod = new articleModel();
-        $list = $mod->field('id,url')->where('status=1')->order('id desc')->limit(5000)->select();
+        $list = $mod->field('id,url,urlid')->where('status=1')->order('id desc')->limit(5000)->select();
         $data = '';
         $data = $data . C('yh_site_url') . "\r\n";
         if (C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL') == 2) {
@@ -370,16 +560,17 @@ class TaskAction extends BaseAction
             if (C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL') == 2) {
                 $data = $data . C('yh_site_url') . $val['url'] . "\r\n";
             } else {
-                $data = $data . C('yh_site_url') . U('/article/read', array('id' => $val['id'])) . "\r\n";
+                $data = $data . C('yh_site_url') . U('/article/read', array('id' => $val['urlid'])) . "\r\n";
             }
         }
         $WenJian = $_SERVER["DOCUMENT_ROOT"] . '/sitemap.txt';
         file_put_contents($WenJian, $data);
     }
+
     public function JdOrderPay()
     {
-		$this->timeout();
-       $this->check_key();
+        $this->timeout();
+        $this->check_key();
         $starttime = NOW_TIME - 1200;
         $endtime = NOW_TIME;
         $result = $this->jdorderquery($starttime, $endtime);
@@ -396,7 +587,7 @@ class TaskAction extends BaseAction
             }
             $raw['addTime'] = NOW_TIME;
             $raw['oid'] = $json['id'];
-            $raw['orderId'] = $json['parentId']?$json['parentId']:$json['orderId'];
+            $raw['orderId'] = $json['parentId'] ? $json['parentId'] : $json['orderId'];
             $raw['orderTime'] = strtotime($json['orderTime']);
             $raw['finishTime'] = strtotime($json['finishTime']);
             $raw['modifyTime'] = strtotime($json['modifyTime']);
@@ -405,6 +596,9 @@ class TaskAction extends BaseAction
             $raw['estimateCosPrice'] = $json['actualCosPrice'] > 0 ? $json['actualCosPrice'] : $json['estimateCosPrice'];
             //预估计佣金额
             $raw['estimateFee'] = $json['actualFee'] > 0 ? $json['actualFee'] : $json['estimateFee'];
+            if ($json['validCode'] == 17) {
+                $raw['estimateFee'] = $json['actualFee'];
+            }
             //推客的预估佣金
             $raw['actualCosPrice'] = $json['actualCosPrice'];
             //实际计算佣金的金额
@@ -425,11 +619,13 @@ class TaskAction extends BaseAction
             foreach ($json as $key => $val) {
                 if ($val['id']) {
                     $payMonth = strtotime($val['payMonth']);
-                    if ($val['validCode'] == '17') {
+                    $estimateFee = $val['estimateFee'];
+                    if ($val['validCode'] == '17') { //用户收货
                         $ComputingTime = abs(C('yh_ComputingTime')) * 86400;
                         $payMonth = NOW_TIME + $ComputingTime;
+                        $estimateFee = $val['actualFee'];
                     }
-                    $raw = array('addTime' => NOW_TIME, 'oid' => $val['id'], 'orderId' => $val['orderId'], 'orderTime' => strtotime($val['orderTime']), 'finishTime' => strtotime($val['finishTime']), 'modifyTime' => strtotime($val['modifyTime']), 'skuId' => $val['skuId'], 'skuName' => $val['skuName'], 'estimateCosPrice' => $val['estimateCosPrice'], 'estimateFee' => $val['estimateFee'], 'actualCosPrice' => $val['actualCosPrice'], 'actualFee' => $val['actualFee'], 'positionId' => $val['positionId'], 'validCode' => $val['validCode'], 'payMonth' => $payMonth, 'leve1' => trim(C('yh_bili1')), 'leve2' => trim(C('yh_bili2')), 'leve3' => trim(C('yh_bili3')));
+                    $raw = array('addTime' => NOW_TIME, 'oid' => $val['id'], 'orderId' => $val['orderId'], 'orderTime' => strtotime($val['orderTime']), 'finishTime' => strtotime($val['finishTime']), 'modifyTime' => strtotime($val['modifyTime']), 'skuId' => $val['skuId'], 'skuName' => $val['skuName'], 'estimateCosPrice' => $val['estimateCosPrice'], 'estimateFee' => $estimateFee, 'actualCosPrice' => $val['actualCosPrice'], 'actualFee' => $val['actualFee'], 'positionId' => $val['positionId'], 'validCode' => $val['validCode'], 'payMonth' => $payMonth, 'leve1' => trim(C('yh_bili1')), 'leve2' => trim(C('yh_bili2')), 'leve3' => trim(C('yh_bili3')));
                     if ($this->_ajax_jd_order_insert($raw)) {
                         $n++;
                     }
@@ -439,6 +635,7 @@ class TaskAction extends BaseAction
         $json = array('state' => 'yes', 'msg' => $n);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function Pddorderpay()
     {
         $this->timeout();
@@ -467,6 +664,7 @@ class TaskAction extends BaseAction
         $json = array('state' => 'yes', 'msg' => $n);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function TqkOrderPay()
     {
         $this->timeout();
@@ -496,6 +694,7 @@ class TaskAction extends BaseAction
         //付款订单
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function TqkOrderFail()
     {
         $this->timeout();
@@ -530,6 +729,7 @@ class TaskAction extends BaseAction
         }
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function TqkOrderSettle()
     {
         $this->timeout();
@@ -550,6 +750,7 @@ class TaskAction extends BaseAction
         $json = $this->UpdateSettleOrder($datares);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function JdReceipt()
     {
         $this->timeout();
@@ -572,6 +773,7 @@ class TaskAction extends BaseAction
         }
         exit;
     }
+
     public function PddReceipt()
     {
         $this->timeout();
@@ -594,6 +796,7 @@ class TaskAction extends BaseAction
         }
         exit;
     }
+
     public function Duomaireceipt()
     {
         $this->timeout();
@@ -616,6 +819,7 @@ class TaskAction extends BaseAction
         }
         exit;
     }
+
     public function Meituanreceipt()
     {
         $this->timeout();
@@ -638,6 +842,7 @@ class TaskAction extends BaseAction
         }
         exit;
     }
+
     public function Userreceipt()
     {
         $this->timeout();
@@ -669,6 +874,7 @@ class TaskAction extends BaseAction
         }
         exit;
     }
+
     public function Clearjditems()
     {
         $this->timeout();
@@ -679,6 +885,7 @@ class TaskAction extends BaseAction
         $this->Log('Clearjditems', $res);
         exit;
     }
+
     public function Clearpdditems()
     {
         $this->timeout();
@@ -689,6 +896,7 @@ class TaskAction extends BaseAction
         $this->Log('Clearpdditems', $res);
         exit;
     }
+
     public function Cleartbitems()
     {
         $this->timeout();
@@ -700,6 +908,7 @@ class TaskAction extends BaseAction
         $this->Log('Cleartbitems', $res);
         exit;
     }
+
     public function Hotcollect()
     {
         $this->timeout();
@@ -748,7 +957,7 @@ class TaskAction extends BaseAction
                 if (strpos($val['coupon_share_url'], 'https://') === false) {
                     $val['coupon_share_url'] = str_replace('//', 'https://', $val['coupon_share_url']);
                 }
-				$item_id = explode('-',$val['item_id']);
+                $item_id = explode('-', $val['item_id']);
                 $raw[] = array(
                     'link' => 'https://item.taobao.com/item.htm?id=' . $val['item_id'],
                     'click_url' => '',
@@ -763,7 +972,7 @@ class TaskAction extends BaseAction
                     'shop_type' => $val['user_type'] == 1 ? 'B' : 'C',
                     'ems' => 1,
                     'num_iid' => $val['item_id'],
-					'item_id' => $item_id[1]?$item_id[1]:$val['item_id'],
+                    'item_id' => $item_id[1] ? $item_id[1] : $val['item_id'],
                     'volume' => $val['volume'],
                     'commission' => '0',
                     'tuisong' => 1,
@@ -789,8 +998,8 @@ class TaskAction extends BaseAction
                     'quan' => $val['coupon_amount'],
                     'Quan_id' => $val['coupon_id'],
                     'Quan_condition' => 0,
-                    'Quan_surplus' => $receive * 10,
-                    'Quan_receive' => $receive,
+//                    'Quan_surplus' => $receive * 10,
+//                    'Quan_receive' => $receive,
                 );
                 $t++;
             }
@@ -798,6 +1007,7 @@ class TaskAction extends BaseAction
         M('items')->lock(true)->addAll($raw, array(), true);
         exit;
     }
+
     public function DelFailure()
     {
         $this->timeout();
@@ -816,16 +1026,16 @@ class TaskAction extends BaseAction
             exit(json_encode($json, JSON_UNESCAPED_UNICODE));
         }
         $model = M('items');
-		$splitArray = array_chunk( $itemId, 50 );
-		foreach($splitArray as $k=>$v){
-			$itemId = implode(",", $v);
-			$where = array('item_id' => array('in', $itemId));
-			$model->lock(true)->where($where)->delete();
-		}
+        $splitArray = array_chunk($itemId, 50);
+        foreach ($splitArray as $k => $v) {
+            $itemId = implode(",", $v);
+            $where = array('item_id' => array('in', $itemId));
+            $model->lock(true)->where($where)->delete();
+        }
         $json = array('data' => array(), 'result' => 'ok', 'state' => 'yes', 'msg' => '清理成功');
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
-	
+
     public function OrderBind()
     {
         $this->timeout();
@@ -861,6 +1071,7 @@ class TaskAction extends BaseAction
         }
         exit;
     }
+
     public function Userorderbind()
     {
         $this->timeout();
@@ -871,10 +1082,10 @@ class TaskAction extends BaseAction
         $mod = new orderModel();
         $stime = strtotime("-30 day");
         if ($AdzoneId) {
-           // $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.webmaster_pid=b.relation_id AND b.relation_id>0) where b.uid=0 and b.ad_id<>' . $AdzoneId . ' and b.settle=0 and b.add_time>' . $stime;
-			$sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.special_id=b.special_id AND b.special_id>2) where b.uid=0 and b.ad_id<>' . $AdzoneId . ' and b.settle=0 and b.add_time>' . $stime;
-		} else {
-            $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.special_id=b.special_id AND b.special_id>2) where b.uid=0 and b.settle=0 and b.add_time>' . $stime;
+            // $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.webmaster_pid=b.relation_id AND b.relation_id>0) where b.uid=0 and b.ad_id<>' . $AdzoneId . ' and b.settle=0 and b.add_time>' . $stime;
+            $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.special_id=b.special_id AND b.special_id>2) where b.uid=0 and b.ad_id<>' . $AdzoneId . ' and b.settle=0 and b.add_time>' . $stime;
+        } else {
+            $sql = 'select a.oid,a.webmaster_rate as rate,a.fuid,a.guid,a.id as uid,b.id,b.orderid,b.goods_title,b.price,b.income from tqk_user as a LEFT JOIN tqk_order as b ON a.oid=b.oid OR (a.special_id=b.special_id AND b.special_id>2) where b.uid=0 and b.settle=0 and b.add_time>' . $stime;
         }
         $Model = M();
         $list_child = $Model->cache(true, 5 * 60)->query($sql);
@@ -892,6 +1103,7 @@ class TaskAction extends BaseAction
         }
         exit;
     }
+
     public function Tborderfail()
     {
         $this->timeout();
@@ -930,9 +1142,11 @@ class TaskAction extends BaseAction
         if (!$result['add_time']) {
             file_put_contents($file, 0);
         }
+        $count = 0;
         $json = array('state' => 'yes', 'msg' => $count);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function Jdcollect()
     {
         $this->timeout();
@@ -968,6 +1182,7 @@ class TaskAction extends BaseAction
             exit;
         }
     }
+
     public function Pddcollect()
     {
         $this->timeout();
@@ -1004,6 +1219,7 @@ class TaskAction extends BaseAction
             exit;
         }
     }
+
     protected function getMultiCurlResult($data = [], $timeout = 30)
     {
         $request = [];
@@ -1038,6 +1254,7 @@ class TaskAction extends BaseAction
         curl_multi_close($requestResource);
         return $result;
     }
+
     protected function asycurl($url)
     {
         //  $time = time();
@@ -1076,6 +1293,7 @@ class TaskAction extends BaseAction
         return $result;
         // }
     }
+
     protected function timeout()
     {
         set_time_limit(30);
@@ -1088,10 +1306,11 @@ class TaskAction extends BaseAction
             fastcgi_finish_request();
         }
     }
+
     public function Tbcollect()
     {
-       $this->timeout();
-       $this->check_key();
+        $this->timeout();
+        $this->check_key();
         $file = TQK_DATA_PATH . 'start.txt';
         if (!file_exists($file)) {
             return false;
@@ -1119,7 +1338,7 @@ class TaskAction extends BaseAction
                     continue;
                 }
                 $link = 'https://item.taobao.com/item.htm?id=' . $val['num_iid'];
-				$item_id = explode('-',$val['num_iid']);
+                $item_id = explode('-', $val['num_iid']);
                 $raw[] = array(
                     'link' => $link,
                     'click_url' => '',
@@ -1135,7 +1354,7 @@ class TaskAction extends BaseAction
                     'shop_type' => $val['shop_type'],
                     'ems' => 1,
                     'num_iid' => $val['num_iid'],
-					'item_id' => $item_id[1]?$item_id[1]:$val['num_iid'],
+                    'item_id' => $item_id[1] ? $item_id[1] : $val['num_iid'],
                     // 'sellerId'=>$tbdetail['sellerid'],
                     'change_price' => $val['change_price'],
                     'volume' => $val['volume'],
@@ -1143,8 +1362,8 @@ class TaskAction extends BaseAction
                     'tuisong' => 0,
                     'area' => 0,
                     'pass' => 1,
-                   // 'status' => 'underway',
-				   'status' => '1',
+                    'status' => 'underway',
+                    //'status' => '1',
                     'isshow' => 1,
                     // 'commission_rate'=>'',
                     'commission_rate' => $val['tk_commission_rate'],
@@ -1161,7 +1380,7 @@ class TaskAction extends BaseAction
                     'up_time' => $val['up_time'],
                     'desc' => '',
                     'isq' => '1',
-                    'quanurl' => 'https://uland.taobao.com/coupon/edetail?e=&activityId=' . $val['Quan_id'] . '&itemId=' . $val['num_iid'] . '&pid=' . $PID . '',
+                    'quanurl' => 'https://uland.taobao.com/coupon/edetail?activityId=' . $val['Quan_id'] . '&itemId=' . $val['num_iid'] . '&pid=' . $PID . '',
                     'quan' => $val['quan'],
                     'Quan_id' => $val['Quan_id'],
                     'Quan_condition' => 0,
@@ -1170,7 +1389,7 @@ class TaskAction extends BaseAction
                     'is_commend' => $val['is_commend'] ? $val['is_commend'] : 0,
                 );
             }
-            $ret = M('items')->lock(true)->addAll($raw, array(), true);
+            $ret = M('items_temp')->addAll($raw, array(), true);
             file_put_contents($file, $startId);
             $json = array('data' => array(), 'total' => $count, 'result' => array(), 'state' => 'yes', 'msg' => '正常');
         } else {
@@ -1178,6 +1397,7 @@ class TaskAction extends BaseAction
         }
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     protected function check_key()
     {
         $json = array('state' => 'no', 'msg' => '通行密钥不正确');
@@ -1186,16 +1406,17 @@ class TaskAction extends BaseAction
             exit(json_encode($json, JSON_UNESCAPED_UNICODE));
         }
     }
+
     public function TqkOrderScene() //同步会员管理订单
     {
         $this->timeout();
         $this->check_key();
-		$time = NOW_TIME;
-		$starttime = $time - 1200;
-		$start_time = date('Y-m-d H:i:s', $starttime);
-		$end_time = date('Y-m-d H:i:s', $time);
+        $time = NOW_TIME;
+        $starttime = $time - 1200;
+        $start_time = date('Y-m-d H:i:s', $starttime);
+        $end_time = date('Y-m-d H:i:s', $time);
         $t = I('t');
-        $condition = array('query_type' => 4, 'start_time' => $start_time, 'end_time' => $end_time, 'order_scene' => 3, 'time' => NOW_TIME . $t, 'tqk_uid' => $this->tqkuid);
+        $condition = array('query_type' => 4, 'start_time' => $start_time, 'end_time' => $end_time, 'order_scene' => 2, 'time' => NOW_TIME . $t, 'tqk_uid' => $this->tqkuid);
         $token = $this->create_token(trim(C('yh_gongju')), $condition);
         $condition['token'] = $token;
         $url = $this->tqkapi . '/getorder';
@@ -1206,6 +1427,7 @@ class TaskAction extends BaseAction
         $json = $this->UpdateSceneOrder($datares);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function Tborderscene()
     {
         $this->timeout();
@@ -1225,7 +1447,7 @@ class TaskAction extends BaseAction
         //$req->setTkStatus("12");
         $req->setStartTime(date('Y-m-d H:i:s', $starttime));
         $req->setEndTime(date('Y-m-d H:i:s', $endtime));
-        $req->setOrderScene("3"); //会员管理
+        $req->setOrderScene("2"); //会员管理
         $resp = $c->execute($req);
         $resp = json_decode(json_encode($resp), true);
         $this->Log('Tborderscene', $resp);
@@ -1233,6 +1455,7 @@ class TaskAction extends BaseAction
         $json = $this->UpdateSceneOrder($datares);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     private function UpdateSceneOrder($datares)
     {
         $apppid = trim(C('yh_taobao_pid'));
@@ -1243,15 +1466,15 @@ class TaskAction extends BaseAction
             $item = array();
             $count = 0;
             $item['orderid'] = $val['trade_id'];
-            $item['add_time'] = $val['tb_paid_time']?strtotime($val['tb_paid_time']):strtotime($val['modified_time']);
+            $item['add_time'] = $val['tb_paid_time'] ? strtotime($val['tb_paid_time']) : strtotime($val['modified_time']);
             $item['status'] = $val['tk_status'];
             $item['price'] = $val['alipay_total_price'];
             $item['goods_iid'] = $val['item_id'];
             $item['goods_title'] = $val['item_title'];
             $item['goods_num'] = $val['item_num'];
-			$item_id = explode('-',$val['item_id']);
-			 $item_id = $item_id[1]?$item_id[1]:$val['item_id'];
-			 $item['item_id'] = $item_id;
+            $item_id = explode('-', $val['item_id']);
+            $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
+            $item['item_id'] = $item_id;
             $item['ad_id'] = $val['adzone_id'];
             $item['click_time'] = strtotime($val['click_time']);
             $item['income'] = $val['pub_share_pre_fee'];
@@ -1272,13 +1495,13 @@ class TaskAction extends BaseAction
             foreach ($datares as $val) {
                 if ($val['site_id'] == $AdzoneId) {
                     $item['orderid'] = $val['trade_id'];
-                    $item['add_time'] = $val['tb_paid_time']?strtotime($val['tb_paid_time']):strtotime($val['modified_time']);
+                    $item['add_time'] = $val['tb_paid_time'] ? strtotime($val['tb_paid_time']) : strtotime($val['modified_time']);
                     $item['status'] = $val['tk_status'];
                     $item['price'] = $val['alipay_total_price'];
                     $item['goods_iid'] = $val['item_id'];
-					$item_id = explode('-',$val['item_id']);
-					 $item_id = $item_id[1]?$item_id[1]:$val['item_id'];
-					 $item['item_id'] = $item_id;
+                    $item_id = explode('-', $val['item_id']);
+                    $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
+                    $item['item_id'] = $item_id;
                     $item['goods_title'] = $val['item_title'];
                     $item['goods_num'] = $val['item_num'];
                     $item['ad_id'] = $val['adzone_id'];
@@ -1303,6 +1526,7 @@ class TaskAction extends BaseAction
         $json = array('state' => 'yes', 'msg' => $count);
         return $json;
     }
+
     public function Tbordersettle()
     {
         $this->timeout();
@@ -1328,6 +1552,7 @@ class TaskAction extends BaseAction
         $json = $this->UpdateSettleOrder($datares);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     public function Tborderpay()
     {
         $this->timeout();
@@ -1353,6 +1578,7 @@ class TaskAction extends BaseAction
         $json = $this->UpdatePayOrder($datares);
         exit(json_encode($json, JSON_UNESCAPED_UNICODE));
     }
+
     protected function Log($name, $data)
     {
         if (function_exists('opcache_invalidate')) {
@@ -1362,6 +1588,7 @@ class TaskAction extends BaseAction
         }
         F('task/' . $name, $data);
     }
+
     private function UpdateFailOrder($datares)
     {
         $val = $datares;
@@ -1372,9 +1599,9 @@ class TaskAction extends BaseAction
             $item['orderid'] = $val['trade_id'];
             $item['price'] = $val['alipay_total_price'];
             $item['goods_iid'] = $val['item_id'];
-			$item_id = explode('-',$val['item_id']);
-			 $item_id = $item_id[1]?$item_id[1]:$val['item_id'];
-			 $item['item_id'] = $item_id;
+            $item_id = explode('-', $val['item_id']);
+            $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
+            $item['item_id'] = $item_id;
             if ($this->api_yh_publish_fail($item)) {
                 $count++;
             }
@@ -1386,9 +1613,9 @@ class TaskAction extends BaseAction
                 $item['status'] = 2;
                 $item['price'] = $val['alipay_total_price'];
                 $item['goods_iid'] = $val['item_id'];
-				$item_id = explode('-',$val['item_id']);
-				$item_id = $item_id[1]?$item_id[1]:$val['item_id'];
-				$item['item_id'] = $item_id;
+                $item_id = explode('-', $val['item_id']);
+                $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
+                $item['item_id'] = $item_id;
                 if ($this->api_yh_publish_fail($item)) {
                     $count++;
                 }
@@ -1399,6 +1626,7 @@ class TaskAction extends BaseAction
         $json = array('state' => 'yes', 'msg' => $count);
         return $json;
     }
+
     private function UpdateSettleOrder($datares)
     {
         $val = $datares;
@@ -1411,9 +1639,9 @@ class TaskAction extends BaseAction
             $item['income'] = $val['pub_share_fee'];
             //新增
             $item['goods_iid'] = $val['item_id'];
-			$item_id = explode('-',$val['item_id']);
-			$item_id = $item_id[1]?$item_id[1]:$val['item_id'];
-			$item['item_id'] = $item_id;
+            $item_id = explode('-', $val['item_id']);
+            $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
+            $item['item_id'] = $item_id;
             $item['up_time'] = strtotime($val['tk_earning_time']);
             if ($this->api_yh_publish_update($item)) {
                 $count++;
@@ -1428,9 +1656,9 @@ class TaskAction extends BaseAction
                 $item['income'] = $val['pub_share_fee'];
                 //新增
                 $item['goods_iid'] = $val['item_id'];
-				$item_id = explode('-',$val['item_id']);
-				$item_id = $item_id[1]?$item_id[1]:$val['item_id'];
-				$item['item_id'] = $item_id;
+                $item_id = explode('-', $val['item_id']);
+                $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
+                $item['item_id'] = $item_id;
                 $item['up_time'] = strtotime($val['tk_earning_time']);
                 if ($this->api_yh_publish_update($item)) {
                     $count++;
@@ -1442,6 +1670,7 @@ class TaskAction extends BaseAction
         $json = array('state' => 'yes', 'msg' => $count);
         return $json;
     }
+
     private function UpdatePayOrder($datares)
     {
         $apppid = trim(C('yh_taobao_pid'));
@@ -1450,18 +1679,18 @@ class TaskAction extends BaseAction
         $val = $datares;
         if ($val['site_id'] == $AdzoneId && $datares) {
             $item = array();
-			
-			$item_id = explode('-',$val['item_id']);
-			$item_id = $item_id[1]?$item_id[1]:$val['item_id'];
+
+            $item_id = explode('-', $val['item_id']);
+            $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
             $count = 0;
             $item['orderid'] = $val['trade_id'];
             $item['add_time'] = $val['tb_paid_time'] ? strtotime($val['tb_paid_time']) : strtotime($val['tk_create_time']);
             $item['status'] = $val['tk_status'];
             $item['nstatus'] = 1;
-			$item['refund_tag'] = $val['refund_tag']; // 1 维权
+            $item['refund_tag'] = $val['refund_tag']; // 1 维权
             $item['price'] = $val['alipay_total_price'];
             $item['goods_iid'] = $val['item_id'];
-			$item['item_id'] = $item_id;
+            $item['item_id'] = $item_id;
             $item['goods_title'] = $val['item_title'];
             $item['goods_num'] = $val['item_num'];
             $item['ad_id'] = $val['adzone_id'];
@@ -1490,12 +1719,12 @@ class TaskAction extends BaseAction
                     $item['add_time'] = $val['tb_paid_time'] ? strtotime($val['tb_paid_time']) : strtotime($val['tk_create_time']);
                     $item['status'] = $val['tk_status'];
                     $item['nstatus'] = 1;
-					$item['refund_tag'] = $val['refund_tag']; // 1 维权
+                    $item['refund_tag'] = $val['refund_tag']; // 1 维权
                     $item['price'] = $val['alipay_total_price'];
                     $item['goods_iid'] = $val['item_id'];
-					$item_id = explode('-',$val['item_id']);
-					$item_id = $item_id[1]?$item_id[1]:$val['item_id'];
-					$item['item_id'] = $item_id;
+                    $item_id = explode('-', $val['item_id']);
+                    $item_id = $item_id[1] ? $item_id[1] : $val['item_id'];
+                    $item['item_id'] = $item_id;
                     $item['goods_title'] = $val['item_title'];
                     $item['goods_num'] = $val['item_num'];
                     $item['ad_id'] = $val['adzone_id'];
@@ -1523,6 +1752,7 @@ class TaskAction extends BaseAction
         $json = array('state' => 'yes', 'msg' => $count);
         return $json;
     }
+
     private function Decords($id)
     {
         $mod = D('records');

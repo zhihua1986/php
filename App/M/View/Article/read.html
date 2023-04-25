@@ -81,4 +81,13 @@ $str = content_strip($info['info']);
 		</main>
 <include file="Public:foot" />
 <include file="Public:alertad_noscript" />
+<script type="application/ld+json">
+{
+	"@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+	"@id": "{:str_replace('/index.php/m','',C('yh_headerm_html'))}<if condition="C('URL_MODEL') eq 2">{$info.url}<else/>{:U('m/article/read',array('id'=>$info['id']))}</if>",
+	"title": "{$page_seo.title}",
+	"pubDate": "{:str_replace('CST','T',date('Y-m-dTh:i:s',$info['add_time']))}",
+	"upDate": "{:str_replace('CST','T',date('Y-m-dTh:i:s',$info['add_time']))}"
+}
+</script>
 </body></html>

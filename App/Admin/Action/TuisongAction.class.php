@@ -64,19 +64,24 @@ class TuisongAction extends BaseAction
                 }
 
             }else{
-                $this->error('推送商品失败');
+                $this->error('暂时没有可以推送的商品');
             }
         } else {
-            if(C('url_model') == 1){
-                $item_url = C('yh_site_url')."/index.php/article/read/id/";
-            } else {
-                $item_url = C('yh_site_url')."/view_";
-            }
-            $article_list = $article_mo->where('tuisong=0')->order('id desc')->field("id")->limit($url_num)->select();
+//            if(C('url_model') == 1){
+//                $item_url = C('yh_site_url')."/index.php/article/read/id/";
+//            } else {
+//                $item_url = C('yh_site_url');
+//            }
+            $article_list = $article_mo->where('tuisong=0')->order('id desc')->field("id,urlid,url")->limit($url_num)->select();
             $i = 0;
             if(count($article_list)>0){
                 foreach ($article_list as $key => $val) {
-                    $urls[$i] = $item_url. $val['id'];
+
+                    if (C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL') == 2) {
+                        $urls[$i] =trim(C('yh_site_url')) . $val['url'];
+                    } else {
+                        $urls[$i] = trim(C('yh_site_url')) . U('/article/read', array('id' => $val['urlid']));
+                    }
                     $i ++;
                 }
                 
@@ -104,7 +109,7 @@ class TuisongAction extends BaseAction
                 }
 
             }else{
-                $this->error('推送文章失败');
+                $this->error('暂时没有可以推送的文章');
             }
         }
     }  

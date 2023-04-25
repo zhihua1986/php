@@ -26,6 +26,7 @@ public function _initialize()
 	
 	if($this->visitor->is_login){
         $info = $this->CreateJdPid($this->memberinfo);
+        $info = $this->CreateElmPid($this->memberinfo);
     }
 	
 	// if($this->memberinfo && cookie('setsid') == 1){

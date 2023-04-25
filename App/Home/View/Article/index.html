@@ -31,13 +31,14 @@
 										<div class="layui-tab-item layui-show">
 
 <volist name='list' id="cateid">
-<div class="layui-row tqk-mb-20" style="border-bottom: 1px dotted #D7D7D7;">
+<div class="{$cateid.ccid} layui-row tqk-mb-20" style="border-bottom: 1px dotted #D7D7D7;">
 	
-    <div class="layui-col-xs2 ">
- <a href="{$cateid.linkurl}{$trackurl}" ><img src="{$cateid.pic}" alt="" width="140" height="120"></a>
+    <div class="{$cateid.ccid} layui-col-xs2 ">
+	<!-- <a class="{$cateid.ccid} href=""> </a> -->
+ <a class="{$cateid.ccid}" href="{$cateid.linkurl}" ><img src="{$cateid.pic}" alt="" width="140" height="120"></a>
     </div>
-   <div class="layui-col-xs10 tqk-pl-20">
-<a href="{$cateid.linkurl}{$trackurl}"  class="tit">{$cateid.title}</a>
+   <div class="{$cateid.ccid} layui-col-xs10 tqk-pl-20">
+<a href="{$cateid.linkurl}"  class="{$cateid.ccid} tit">{$cateid.title}</a>
 										<div class="tqk-f-12 cl">
 											<span class="tqk-f-l tqk-c-red tqk-mr-5">{$cateid.catename}</span>
 											<span class="tqk-f-r tqk-c-999">{$cateid.add_time}</span>

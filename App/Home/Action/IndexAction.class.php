@@ -149,7 +149,7 @@ class IndexAction extends BaseAction
         if (C('yh_openduoduo')) {
 			$PddData = S('pddhomedata');
 			if(!$PddData){
-				$data = $this->PddGoodsSearch('','','','','24',30,true);
+				$data = $this->PddGoodsSearch('','','','','4',30,true);
 				S('pddhomedata',$data['goodslist']);
 			}else{
 				$data['goodslist'] = $PddData;
@@ -167,7 +167,9 @@ class IndexAction extends BaseAction
         $this->assign('link', $link);
 		
 		 $this->assign('takeout',$this->Takeout());
-
         $this->display();
+		
+		 
+		
     }
 }

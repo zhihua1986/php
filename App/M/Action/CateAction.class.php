@@ -34,7 +34,7 @@ if($this->FilterWords($key)){
 $this->_404();
 }
     
-
+/*
 if(false !== strpos($key,'https://')) {
 	$linkid =$this->_itemid($key);
 }
@@ -80,11 +80,9 @@ echo('<script>window.location.href="'.$url.'"</script>');
 exit;
 }
  
-}
+} */
 
 }
-
-
 
 
 if($key){

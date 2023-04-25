@@ -34,6 +34,7 @@ class BaseAction extends FirstendAction
 
         if ($this->visitor->is_login) {
             $info = $this->CreateJdPid($this->memberinfo);
+            $info = $this->CreateElmPid($this->memberinfo);
         }
 		
 		// if($this->memberinfo && cookie('setsid') == 1){
@@ -54,17 +55,6 @@ class BaseAction extends FirstendAction
         return $adlist;
     }
 
-    protected function fullurl()
-    {
-		$mdomain = ((int)$_SERVER['SERVER_PORT'] == 80 ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'];
-        $url = $_SERVER["REQUEST_URI"];
-		$requestUrl = strtolower($url);
-		if(strpos($url, 'pdditem')>0 || strpos($url, 'jditem')>0){
-			$requestUrl = $url;
-		}
-		$url=urlencode($mdomain.$requestUrl);
-		return $url;
-    }
 
     protected function nav()
     {

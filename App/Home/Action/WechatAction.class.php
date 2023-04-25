@@ -18,7 +18,7 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 	
 		if(C('yh_site_tiaozhuan') == 1){
 			
-			 $this->memberInfo=$mod->field('id,special_id,webmaster_rate')->where(array('opid'=>$this->openid))->find();
+			 $this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid')->where(array('opid'=>$this->openid))->find();
 			 $this->uid = $this->memberInfo['id'];
 			if(!$this->memberInfo){
 				$json=array(
@@ -29,10 +29,10 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 	
 		}elseif(C('yh_qrcode') == 2){ //关闭登录提醒
 		
-		$this->memberInfo=$mod->field('id,special_id,webmaster_rate')->where(array('openid'=>$this->openid))->find();
+		$this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid')->where(array('openid'=>$this->openid))->find();
 		$this->uid = $this->memberInfo['id'];
 		}else{
-		$this->memberInfo=$mod->field('id,special_id,webmaster_rate')->where(array('opid'=>$this->openid))->find();
+		$this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid')->where(array('opid'=>$this->openid))->find();
 		$this->uid = $this->memberInfo['id'];
 		if(!$this->uid){
 			$json=array(
@@ -42,7 +42,7 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 		}
 			
 		}
-	S('wechat_'.$this->openid,$this->memberInfo,3600);
+	S('wechat_'.$this->openid,$this->memberInfo,60);
 	}
 
  }
@@ -302,6 +302,9 @@ exit(json_encode($data));
 		'uid'=>$this->memberInfo['id'],
 		'rate'=>$this->memberInfo['webmaster_rate'],
 		'sid'=>$this->memberInfo['special_id'],
+		'rid'=>$this->memberInfo['webmaster_pid'],
+		'isauth'=>C('yh_bingtaobao'), //2 开启
+		'ismsg'=>C('yh_qrcode'), //1 开启 2 关闭
 		'state'=>1
 		);
 		exit(json_encode($data));
@@ -313,14 +316,21 @@ exit(json_encode($data));
 		$num_iid = I('numiid');
 		$Arr = explode('-',$num_iid);
 		$num_iid = $Arr[1]?$Arr[1]:$num_iid;
-		if($this->uid && $num_iid){
+		if($this->uid && $num_iid && C('yh_bingtaobao') == 0 && !is_null(C('yh_bingtaobao'))){
 		$R = A("Records");
-		$res= $R ->content($num_iid,$this->uid);
+        if(is_numeric($num_iid)){
+            $itemId = $this->uid;
+        }else{
+            $itemId = $num_iid;
+        }
+
+        $res= $R ->content($itemId,$this->uid);
 		$Repid = $res['pid'];
 			if($Repid){
 			$data=array(
 			'pid'=>$Repid,
 			'rate'=>$res['rate'],
+            'uid'=>$this->uid,
 			'state'=>1
 			);
 			

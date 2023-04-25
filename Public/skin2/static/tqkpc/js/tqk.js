@@ -397,6 +397,7 @@ carousel.render({
 			})
 		$('#search-bd li').click(function(){
 			var index = $(this).index();
+			$('#sourl').val($(this).attr('rel'));
 			$('#search-hd .pholder').eq(index).show().siblings('.pholder').hide(0);
 			$('#search-hd .search-input').eq(index).show().siblings('.search-input').hide(0);
 			$(this).addClass('selected').siblings().removeClass('selected');
@@ -408,25 +409,41 @@ carousel.render({
 
 
 form.on('submit(SoSo)',function(data){
-var loadIndex=layer.load(1,{shade:[0.5,'#000']});
-$.ajax({
-            url:'/index.php?c=cate&a=so',
-            type:'post',
-            data:data.field,
-            dataType:"json",
-            success:function(data){
-	       if(data.status === 0){
-	       layer.msg(data.msg);
-	       }
-	       if(data.code == 200 && data.msg == 'jump'){
-	       	window.location.href=data.result;
-	       	return false;
-	       }
-	      layer.close(loadIndex);
-           }
-            
-        });
-   	 return false; 
+
+var url = data.field.url;
+ if(data.field.tb){
+	window.location.href=url + "?k=" + data.field.tb ;
+	return false;
+ }
+ if(data.field.jd){
+ 	window.location.href=url + data.field.jd ;
+ 	return false;
+ }
+ if(data.field.pdd){
+ 	window.location.href=url + "?k=" + data.field.pdd ;
+ 	return false;
+ }
+ layer.msg('搜索词不能为空！');
+return false;
+// var loadIndex=layer.load(1,{shade:[0.5,'#000']});
+// $.ajax({
+//             url:'/index.php?c=cate&a=so',
+//             type:'post',
+//             data:data.field,
+//             dataType:"json",
+//             success:function(data){
+// 	       if(data.status === 0){
+// 	       layer.msg(data.msg);
+// 	       }
+// 	       if(data.code == 200 && data.msg == 'jump'){
+// 	       	window.location.href=data.result;
+// 	       	return false;
+// 	       }
+// 	      layer.close(loadIndex);
+//            }
+//             
+//         });
+//    	 return false; 
    
   });
 

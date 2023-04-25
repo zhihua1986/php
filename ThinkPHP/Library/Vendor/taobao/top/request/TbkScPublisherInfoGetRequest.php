@@ -3,10 +3,20 @@
  * TOP API: taobao.tbk.sc.publisher.info.get request
  * 
  * @author auto create
- * @since 1.0, 2019.11.19
+ * @since 1.0, 2022.05.07
  */
 class TbkScPublisherInfoGetRequest
 {
+	/** 
+	 * 淘宝客外部用户标记，如自身系统账户ID；微信ID等
+	 **/
+	private $externalId;
+	
+	/** 
+	 * 1-微信、2-微博、3-抖音、4-快手、5-QQ，0-其他；默认为0
+	 **/
+	private $externalType;
+	
 	/** 
 	 * 类型，必选 1:渠道信息；2:会员信息
 	 **/
@@ -39,6 +49,28 @@ class TbkScPublisherInfoGetRequest
 	
 	private $apiParas = array();
 	
+	public function setExternalId($externalId)
+	{
+		$this->externalId = $externalId;
+		$this->apiParas["external_id"] = $externalId;
+	}
+
+	public function getExternalId()
+	{
+		return $this->externalId;
+	}
+
+	public function setExternalType($externalType)
+	{
+		$this->externalType = $externalType;
+		$this->apiParas["external_type"] = $externalType;
+	}
+
+	public function getExternalType()
+	{
+		return $this->externalType;
+	}
+
 	public function setInfoType($infoType)
 	{
 		$this->infoType = $infoType;

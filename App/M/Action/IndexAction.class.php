@@ -33,13 +33,17 @@ class IndexAction extends BaseAction
         }
         $this->assign('ad_list_1', $adlist[1]);
         $this->assign('ad_list_6', $adlist[6]);
+		
+		if(C('yh_openjd') == 1){
+			$this->assign('openjd',ture);
+		}
 
         if (C('yh_openduoduo')) {
 			
-			$PddData = S('pddhomedata');
+			$PddData = S('pddwapdata');
 			if(!$PddData){
-				$data = $this->PddGoodsSearch('','','','','24',10,true);
-				S('pddhomedata',$data['goodslist']);
+				$data = $this->PddGoodsSearch('','','','','4',10,true);
+				S('pddwapdata',$data['goodslist']);
 			}else{
 				$data['goodslist'] = $PddData;
 			}
@@ -111,7 +115,7 @@ class IndexAction extends BaseAction
         $modarticle=new articleModel();
         $article_list =$modarticle->where('ordid>0 and status=1')
 ->order('ordid asc,id desc')
-->field('title,cate_id,add_time,id,pic,info,url')
+->field('title,cate_id,add_time,id,pic,info,url,urlid')
 ->limit(4)
 ->select();
         if ($article_list) {
@@ -126,7 +130,7 @@ class IndexAction extends BaseAction
                 if (C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL') == 2) {
                     $goodslist[$k]['linkurl']=$v['url'];
                 } else {
-                    $goodslist[$k]['linkurl']=U('article/read', ['id'=>$v['id']]);
+                    $goodslist[$k]['linkurl']=U('article/read', ['id'=>$v['urlid']]);
                 }
             }
             $this->assign('articlelist', $goodslist);

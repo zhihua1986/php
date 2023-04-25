@@ -19,7 +19,7 @@ class LitemAction extends BaseAction
 
     public function gconvert()
     {
-        $id = I('num_iid', 0, 'number_int');
+        $id = I('num_iid');
         $item = $this->GetTbDetail($id);
         $quan = $item['coupon_amount'];
         $coupon_price = $item['zk_final_price']- $quan;
@@ -51,7 +51,7 @@ class LitemAction extends BaseAction
             if ($result['code']==200 && $result['content']) {
                 $json=[
                     'status'=>200,
-                    'result'=>$result['content']
+                    'result'=>'8'.$result['content'].'://'
                 ];
                 exit(json_encode($json));
             }
@@ -66,7 +66,7 @@ class LitemAction extends BaseAction
 
     public function index()
     {
-        $id = I('id', 0, 'number_int');
+        $id = I('id');
         $item = $this->GetTbDetail($id);
         $quan = $item['coupon_amount'];
         $coupon_price = $item['zk_final_price']- $quan;

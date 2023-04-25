@@ -221,11 +221,11 @@ $res= $this->_curl($apiurl,$apidata, false);
 $res = json_decode($res, true);
 $me=$res['me'];
 if(strlen($me)>5 && $this->params['quanid']){
-$quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.'&activityId='.$this->params['quanid'].'&itemId='.$this->params['num_iid'].'&pid='.trim(C('yh_taobao_pid')).'&af=1';
+$quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.'&activityId='.$this->params['quanid'].'&pid='.trim(C('yh_taobao_pid')).'&af=1';
 $this->Exitjson(200,'成功',$quanurl);
 
 }elseif(strlen($me)>5){
-$quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.'&itemId='.$this->params['num_iid'].'&pid='.trim(C('yh_taobao_pid')).'&af=1';	
+$quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.'&pid='.trim(C('yh_taobao_pid')).'&af=1';	
 $this->Exitjson(200,'成功',$quanurl);
 }
 

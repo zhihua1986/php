@@ -50,8 +50,9 @@ class ItemAction extends BaseAction
 
     public function index()
     {
-        if ($this->memberinfo && C('yh_bingtaobao') == 2 && !$this->visitor->get('webmaster_pid')) {
+        if ($this->memberinfo && C('yh_bingtaobao') == 2 && $this->visitor->get('webmaster')!=1) {
             $this->assign('Tbauth', true);
+			$this->assign('callback',$this->fullurl());
         }
 		
         //$id = I('id', 0, 'number_int');
@@ -59,7 +60,7 @@ class ItemAction extends BaseAction
         $item = $this->_mod->field('ordid,ali_id,zc_id,orig_id,tag,qq', true)->where([
             'num_iid' => $id
         ])->find();
-
+		$item && $item['pic_urls']=unserialize($item['pic_urls']);
         if (!$item) {
             $item = $this->GetTbDetail($id);
             !$item && $this->_404();
@@ -78,6 +79,7 @@ class ItemAction extends BaseAction
             $quanurl = $item['coupon_share_url'];
             $item['quanurl']=$quanurl ? 'https:'.$quanurl : 'https:'.$item['url'];
             $item['Quan_id']=$item['coupon_id'];
+			$item['pic_urls']=$item['small_images']['string'];
             $this->assign('act', 'yes');
         } else {
             !$item && $this->_404();
@@ -87,7 +89,9 @@ class ItemAction extends BaseAction
             $last_time=date('Y-m-d', $item['last_time']);
             $today=date('Y-m-d', time());
             if ($last_time!=$today && $item['ems']==1) {
-                $this->assign('gconvert', true);
+				$item['quanurl'] = $this->Tbconvert($item['num_iid'],$this->memberinfo,$item['Quan_id']);
+				$item['quankouling']=kouling($item['pic_url'], $item['title'], $item['quanurl']);
+                // $this->assign('gconvert', true);
             }
         }
 		
@@ -176,13 +180,13 @@ class ItemAction extends BaseAction
         $Tag= $this->GetTags($item['title'], 4);
         $this->assign('tag', $Tag);
 
-if(C('yh_dn_item_desc') == '1'){
-        $map=[
-            'title'=> ['like', '%' . $Tag[0] . '%']
-        ];
-        $Tagitem = $this->_mod->where($map)->field('id,pic_url,shop_type,num_iid,volume,title,coupon_price,price,quan,click_url,coupon_start_time,coupon_end_time,commission_rate')->limit('0,9')->order('id desc')->select();
-        $this->assign('Tagitem', $Tagitem);
-}		
+        if(C('yh_dn_item_desc') == '1'){
+                $map=[
+                    'title'=> ['like', '%' . $Tag[0] . '%']
+                ];
+                $Tagitem = $this->_mod->where($map)->field('id,pic_url,shop_type,num_iid,volume,title,coupon_price,price,quan,click_url,coupon_start_time,coupon_end_time,commission_rate')->limit('0,9')->order('id desc')->select();
+                $this->assign('Tagitem', $Tagitem);
+        }
 		
 
         $this->_config_seo(C('yh_seo_config.item'), [
@@ -226,7 +230,7 @@ if(C('yh_dn_item_desc') == '1'){
                 $me=$res['me'];
                 if (\strlen($me)>5) {
                     $activityId =$Quan_id ? '&activityId='.$Quan_id : '';
-                    $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&itemId='.$num_iid.'&pid='.trim(C('yh_taobao_pid')).'&af=1';
+                    $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&pid='.trim(C('yh_taobao_pid')).'&af=1';
                     $kouling=kouling($pic_url, $title, $quanurl);
                     if (!$pic_urls) {
                         $pic_urls=$this->taobaodetail($num_iid);

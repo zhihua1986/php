@@ -1,0 +1,110 @@
+<include file="Public:tqk-meta" />
+<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+<div class="layui-container container">
+<div class="tqk-pt-20"></div>
+<div class="tqk-bg-white">
+
+
+<div class="flexbox">
+	
+	   <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-header tqk-f-20">淘宝渠道备案</div>
+        <div class="layui-card-body" style="padding: 50px;">
+          
+   
+   <div class="layui-row">
+   	
+    <div class="layui-col-xs1">&nbsp;</div>
+   	
+    <div class="layui-col-xs5">
+		<div style="margin: 0 auto; padding: 40px; text-align: center;">
+		<p class="tqk-pb-15">使用手机淘宝扫码备案</p>
+		<img id="codeimg" src="{:U('item/qrcode')}?dataurl={:base64_encode($inviterCode)}" width="150" height="150">
+		</div>
+   <div class="layui-form-item">
+        <a href="javascript:;"  id="CheckBtn"  class="layui-btn layui-btn-danger" style="width: 100%;">验证授权</button>
+  </div>
+
+      <div class="layui-form-item">
+            <a href="{$callback}" class="layui-btn layui-btn-primary" style="width: 100%;">返回</a>
+      </div>
+	  
+    </div>
+    
+    <div class="layui-col-xs1" style="border-right: 1px solid #ddd; height: 260px;">&nbsp;</div>
+     <div class="layui-col-xs1" >&nbsp;</div>
+     <div class="layui-col-xs4">
+      
+      视频教程<br /><br />
+	  
+	  <div style="margin: 0 auto; padding-top: 0.8rem; width: 100%;">
+	  		<video width="100%" poster="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01YRSOL42MgYoqPRVgf_!!3175549857.jpg" src="https://cloud.video.taobao.com//play/u/3175549857/p/1/e/6/t/1/391249690294.mp4"  preload="auto"  controls="controls" autoplay="autoplay"  playsinline="true"  webkit-playsinline="true"  x5-video-player-type='h5' x5-video-player-fullscreen='true' >您的浏览器不支持 video 标签。</video>
+	  </div>
+      
+    </div>
+    
+    
+   </div>
+   
+   
+
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+	
+</div>
+
+
+<div class="tqk-mt-30">
+	
+<div class="layui-clear tqk-pb-20"></div>	
+
+</div>
+
+
+</div>
+
+<div class="tqk-pt-20"></div>
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+<script type="text/javascript">
+ layui.use(['layer'], function(){ 
+  var $ = layui.jquery;
+  
+  $('#CheckBtn').on('click',function(){
+	  
+	$.ajax({
+				url: '{:U('auth/getrelation')}',
+				type: 'post',
+				dataType : 'json',    
+				success: function(res) {
+				if(res.status == 1){
+				layer.alert('验证成功，现在下单可以拿返利啦！', {icon: 6});
+				setTimeout(function(){
+					window.location.href="{$callback}";
+				}, 2000);
+				return false;
+				}
+				layer.alert('验证失败，请联系客服处理！', {icon: 2});
+				 
+				}
+			});
+	  
+  });
+  
+	
+})
+</script>
+
+</body>
+</html>

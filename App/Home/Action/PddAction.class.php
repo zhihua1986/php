@@ -40,7 +40,27 @@ class PddAction extends BaseAction
             $hash = 'true';
             $this->assign('stype', $stype);
         }
+
+        if($page>5 && !$this->memberinfo['id']){
+
+            echo('<script>alert("请登录后再浏览！");history.go(-1)</script>');
+            exit;
+        }
+
         $data = $this->PddGoodsSearch($cid, $page, $key, $sort, '', $size = 40, $hash);
+
+        if($data['res']){
+            $back = $_SERVER["HTTP_REFERER"];
+            if ($back) {
+                $url = U('auth/pdd',array('back'=>urlencode($back),'auth'=>urlencode($data['res'])));
+                redirect($url);
+            }
+
+
+
+        }
+
+
         $count = $data['count'];
         if (!$count) {
             $count = 2000;

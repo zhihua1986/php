@@ -39,7 +39,7 @@ class ActivityAction extends BaseAction
 		    $me=$res['me'];
 		    if (\strlen($me)>5){
 		        $activityId =$item['Quan_id'] ? '&activityId='.$item['Quan_id'] : '';
-		        $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&itemId='.$id.'&pid='.trim(C('yh_taobao_pid')).'&af=1';
+		        $quanurl='https://uland.taobao.com/coupon/edetail?e='.$me.$activityId.'&pid='.trim(C('yh_taobao_pid')).'&af=1';
 		        $item['kouling']=kouling($item['pic_url'], $item['title'], $quanurl);
 		    }else{
 				

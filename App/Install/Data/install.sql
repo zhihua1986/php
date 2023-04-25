@@ -45,12 +45,12 @@ CREATE TABLE `tqk_ad` (
 --
 
 INSERT INTO `tqk_ad` (`id`, `name`, `url`, `img`, `add_time`, `ordid`, `status`, `type`, `beginTime`, `endTime`) VALUES
-(1, '三只松鼠', '#', 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN015qWf9d2MgYgn3ErJj_!!3175549857.jpg', 0, 255, 8, 1, 1604966400, 1668038400),
-(2, '百雀羚', '#', 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN018vaUBl2MgYgkxRvGU_!!3175549857.jpg', 0, 255, 8, 1, 1604966400, 1668038400),
-(3, 'T恤', '#', 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01WtrUfE2MgYgqpxKPc_!!3175549857.jpg', 0, 255, 8, 1, 1604966400, 1668038400),
-(39, '手机', 'http://www.tuiquanke.com/article_view/1987', '/data/upload/ad/5971438c5f4f5.png', 0, 255, 1, 1, 1604966400, 1668038400),
-('40', '饿了么广告', '/index.php?m=m&amp;c=elm&amp;a=index', '/data/upload/ad/5ece87d549441.png', '0', '255', '7', 1, 1604966400, 1668038400),
-(41, 'banner', 'http://www.tuiquanke.com', '/data/upload/ad/5971438c5f4f5.png', 0, 255, 0, 1, 1604966400, 1668038400);
+(1, '三只松鼠', '#', 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN015qWf9d2MgYgn3ErJj_!!3175549857.jpg', 0, 255, 8, 1, 1604966400, 1857516672),
+(2, '百雀羚', '#', 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN018vaUBl2MgYgkxRvGU_!!3175549857.jpg', 0, 255, 8, 1, 1604966400, 1857516672),
+(3, 'T恤', '#', 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01WtrUfE2MgYgqpxKPc_!!3175549857.jpg', 0, 255, 8, 1, 1604966400, 1857516672),
+(39, '手机', 'http://www.tuiquanke.com/article_view/1987', '/data/upload/ad/5971438c5f4f5.png', 0, 255, 1, 1, 1604966400, 1857516672),
+('40', '饿了么广告', '/index.php?m=m&amp;c=elm&amp;a=index', '/data/upload/ad/5ece87d549441.png', '0', '255', '7', 1, 1604966400, 1857516672),
+(41, 'banner', 'http://www.tuiquanke.com', '/data/upload/ad/5971438c5f4f5.png', 0, 255, 0, 1, 1604966400, 1857516672);
 
 -- --------------------------------------------------------
 
@@ -389,7 +389,7 @@ INSERT INTO `tqk_articlecate` (`id`, `name`, `pid`, `spid`, `ordid`, `status`, `
 
 CREATE TABLE IF NOT EXISTS `tqk_dmorder` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `ads_id` varchar(20) DEFAULT NULL COMMENT '计划id',
+  `ads_id` varchar(50) DEFAULT NULL COMMENT '计划id',
   `goods_id` varchar(50) DEFAULT NULL COMMENT '商品编号',
   `goods_name` varchar(100) DEFAULT NULL COMMENT '商品名称',
   `orders_price` decimal(10,2) DEFAULT NULL COMMENT '订单金额',
@@ -408,6 +408,7 @@ CREATE TABLE IF NOT EXISTS `tqk_dmorder` (
   `leve2` int(3) DEFAULT NULL,
   `leve3` int(3) DEFAULT NULL,
   `settle` tinyint(1) DEFAULT '0',
+  `src` varchar(20) DEFAULT 'duomai' COMMENT '订单来源',
   `settle_time` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_order_sn` (`order_sn`) USING BTREE,
@@ -682,6 +683,89 @@ CREATE TABLE IF NOT EXISTS `tqk_mtorder` (
   UNIQUE KEY `idx_orderid` (`orderid`) USING BTREE,
   KEY `idx_id` (`id`) USING BTREE
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='美团订单' AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `tqk_items_temp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ordid` int(11) DEFAULT '9999' COMMENT '自定义排序',
+  `cate_id` int(11) DEFAULT '0' COMMENT '属于分类',
+  `ali_id` varchar(50) DEFAULT NULL,
+  `zc_id` int(11) DEFAULT '0' COMMENT '专场',
+  `orig_id` smallint(6) DEFAULT '1',
+  `num_iid` varchar(50) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `intro` varchar(255) DEFAULT NULL,
+  `tags` varchar(50) DEFAULT NULL,
+  `nick` varchar(50) NOT NULL,
+  `change_price` varchar(20) DEFAULT NULL,
+  `mobilezk` varchar(20) NOT NULL,
+  `area` varchar(10) NOT NULL,
+  `sellerId` varchar(21) DEFAULT NULL,
+  `uid` int(10) unsigned NOT NULL DEFAULT '1',
+  `uname` varchar(20) NOT NULL DEFAULT 'admin',
+  `pic_url` varchar(200) NOT NULL,
+  `pic_urls` text COMMENT '宽版图片',
+  `price` decimal(11,2) NOT NULL,
+  `link` varchar(200) DEFAULT NULL,
+  `click_url` varchar(200) NOT NULL DEFAULT '0',
+  `ding` int(1) NOT NULL DEFAULT '0' COMMENT '0',
+  `volume` int(11) NOT NULL,
+  `commission` decimal(11,2) NOT NULL,
+  `commission_rate` int(11) NOT NULL,
+  `tk_commission_rate` int(11) DEFAULT NULL,
+  `coupon_type` int(11) DEFAULT NULL,
+  `coupon_price` decimal(11,2) NOT NULL,
+  `coupon_rate` int(11) NOT NULL,
+  `coupon_start_time` int(11) DEFAULT NULL,
+  `coupon_end_time` int(11) DEFAULT NULL,
+  `pass` int(11) DEFAULT '0' COMMENT '是否审核',
+  `status` varchar(20) DEFAULT 'underway' COMMENT '出售状态',
+  `fail_reason` varchar(60) DEFAULT NULL COMMENT '未通过理由',
+  `shop_name` varchar(50) DEFAULT NULL,
+  `shop_type` varchar(11) DEFAULT NULL,
+  `item_url` varchar(55) DEFAULT NULL COMMENT '宝贝地址',
+  `ems` int(2) DEFAULT '0',
+  `qq` varchar(11) DEFAULT NULL,
+  `mobile` varchar(13) DEFAULT '',
+  `realname` varchar(25) DEFAULT NULL,
+  `hits` int(11) DEFAULT '0' COMMENT '点击量',
+  `isshow` int(11) DEFAULT '1',
+  `likes` int(11) DEFAULT '0',
+  `inventory` int(11) DEFAULT '0' COMMENT '库存',
+  `seo_title` varchar(255) DEFAULT NULL,
+  `seo_keys` varchar(255) DEFAULT NULL,
+  `seo_desc` text,
+  `add_time` int(11) DEFAULT NULL,
+  `last_rate_time` int(10) NOT NULL DEFAULT '0',
+  `is_collect_comments` int(1) DEFAULT '0' COMMENT '是否采集了淘宝评论1表示已经采集了淘宝评论',
+  `isq` smallint(1) NOT NULL DEFAULT '0',
+  `quan` int(10) NOT NULL,
+  `quanurl` text,
+  `quankouling` varchar(200) DEFAULT NULL,
+  `quanshorturl` varchar(40) DEFAULT '0',
+  `Quan_condition` varchar(5) NOT NULL,
+  `Quan_surplus` int(5) NOT NULL,
+  `Quan_receive` int(5) NOT NULL,
+  `tk` int(1) NOT NULL DEFAULT '0' COMMENT '默认0',
+  `que` int(1) NOT NULL DEFAULT '0' COMMENT '默认0',
+  `quan_pl` varchar(1) DEFAULT '0',
+  `quan_rq` varchar(1) DEFAULT '0',
+  `last_time` int(11) DEFAULT '0',
+  `Quan_id` varchar(32) NOT NULL,
+  `desc` text,
+  `tuisong` int(1) NOT NULL DEFAULT '0' COMMENT '是否推送',
+  `is_commend` tinyint(1) DEFAULT '0',
+  `up_time` varchar(20) DEFAULT '0',
+  `item_id` varchar(40) DEFAULT NULL COMMENT 'member商品ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `num_iid` (`num_iid`),
+  UNIQUE KEY `idx_item_id` (`item_id`) USING BTREE,
+  KEY `idx_ordid` (`ordid`),
+  KEY `idx_is_commend` (`is_commend`),
+  KEY `idx_volume` (`volume`),
+  KEY `idx_coupon_price` (`coupon_price`),
+  KEY `idx_id` (`id`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1076,7 +1160,6 @@ INSERT INTO `tqk_menu` (`id`, `name`, `pid`, `module_name`, `action_name`, `data
 (356, '用户管理', 0, 'user', 'index', '', '', 0, 255, 1),
 (357, '用户列表', 356, 'user', 'index', '', '', 0, 255, 1),
 (358, '用户管理', 357, 'user', 'index', '', '', 0, 255, 1),
-(360, '直播配置', 359, 'zhibo', 'setting', '', '', 0, 255, 1),
 (363, '财务管理', 356, 'charge', 'index', '', '', 0, 255, 1),
 (364, '余额提现', 363, 'balance', 'index', '', '', 0, 255, 1),
 (365, '财务日志', 363, 'cash', 'index', '', '', 0, 255, 1),
@@ -1092,8 +1175,8 @@ INSERT INTO `tqk_menu` (`id`, `name`, `pid`, `module_name`, `action_name`, `data
 (390, '后台首页', 0, 'index', 'index', '', '', 0, 255, 0),
 (391, '退出登录', 390, 'index', 'logout', '', '', 0, 255, 0),
 (392, '中间页生成', 383, 'uland', 'index', '', '', 0, 255, 1),
-(393, 'SEO关键词', 349, 'topic', 'index', '', '', 0, 255, 1),
-(394, '淘宝PID管理', 2, 'pid', 'index', '', '', 0, 255, 1);
+(393, '淘宝PID管理',2, 'pid', 'index', '', '', 0, 255, 1),
+(394, 'SEO关键词', 349, 'topic', 'index', '', '', 0, 255, 1);
 
 -- --------------------------------------------------------
 
@@ -1377,6 +1460,11 @@ INSERT INTO `tqk_setting` (`name`, `data`, `remark`) VALUES
 ('payment_alipay', '1', ''),
 ('payment_wechat', '0', ''),
 ('apitype', '2', ''),
+('elm', '0', '饿了么开启状态'),
+('elmkey', '', ''),
+('elmsecret', '', ''),
+('elmpid', '', ''),
+('vphpid', '', '唯品会pid'),
 ('zhunru', '', '');
 -- --------------------------------------------------------
 
@@ -1429,6 +1517,7 @@ CREATE TABLE IF NOT EXISTS `tqk_user` (
    `jd_pid` bigint(18) NULL,
    `opid` VARCHAR(80) NULL,
 	`unionid` varchar(80) DEFAULT NULL,
+    `elm_pid` VARCHAR(30) NULL DEFAULT '0',
   `tbname` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 

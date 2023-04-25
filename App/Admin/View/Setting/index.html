@@ -116,6 +116,44 @@
               <span class="gray ml10"><font class="red">⇑</font> <a href="https://www.tuiquanke.com/view/40304074486" target="_blank" style="color: #1800f5;">PID设置必读</a>此PID必须要和上面的appkey 属于同一站点下的。</span>
 	           </td>
         </tr>
+
+		<tr>
+			<th width="150">开启饿了么 :</th>
+			<td>
+				<label><input type="radio" class="J_change_status" <if condition="C('yh_elm') eq '1'">checked="checked"</if> value="1" name="setting[elm]"> {:L('open')}</label> &nbsp;&nbsp;
+				<label><input type="radio" class="J_change_status" <if condition="C('yh_elm') eq '0'">checked="checked"</if> value="0" name="setting[elm]"> {:L('close')}</label>
+				<label class="gray ml10">（如果不想推广饿了么产品可以关闭此项）</label>
+			</td>
+		</tr>
+		<tr>
+			<th width="10%">饿了么AppKey:</th>
+			<td width="40%">
+				<input type="text" name="setting[elmkey]" class="input-text" size="45" value="{:C('yh_elmkey')}">
+				<span class="gray ml10">AppKey和AppSecret如何获取 <a href="https://www.tuiquanke.com/topics/1mt5uxha0vrte" target="_blank">点这里</a> </span>
+
+			</td>
+		</tr>
+
+		<tr>
+			<th width="10%">饿了么AppSecret :</th>
+			<td width="40%">
+				<input type="text" name="setting[elmsecret]" class="input-text" size="45" value="{:C('yh_elmsecret')}">
+			</td>
+		</tr>
+		<tr>
+			<th width="150">饿了么PID:</th>
+			<td>
+				<input type="text" name="setting[elmpid]" placeholder="如：alsc_17920829_1878003_4530104 " class="input-text" size="50" value="{:C('yh_elmpid')}" />
+			</td>
+		</tr>
+
+		<tr>
+			<th width="150">唯品会PID:</th>
+			<td>
+				<input type="text" name="setting[vphpid]" placeholder=" " class="input-text" size="50" value="{:C('yh_vphpid')}" />
+				<span class="gray ml10"><font class="red">⇑</font>如何获取唯品会PID <a href="https://www.tuiquanke.com/view/3325505495" target="_blank">点这里</a>。 </span>
+			</td>
+		</tr>
         
          <tr>
             <th width="150">开启拼多多 :</th>

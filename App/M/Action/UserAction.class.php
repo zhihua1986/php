@@ -17,9 +17,16 @@ class UserAction extends BaseAction
         }
         $this->artmod=D('article')->cache(true, 10 * 60);
         $this->assign('user', $user);
+		
+		$opid = I('opid');
+		if($opid){
+		  $res = M('user')->where(array('id'=>$user['id']))->save(array('opid'=>$opid));
+		  S('wechat_'.$opid,NULL);
+		}
+		
 		setcookie("nickname", $user['nickname'],time()+3600*24,'/');
         if (!$user['phone'] && C('yh_index_ems')!=1) {
-            $url=U('login/fillphone', '', '');
+            $url=U('login/fillphone', array('opid'=>I('opid')), '');
             redirect($url);
         }
         if ($user['tbname'] == 1) {
@@ -248,12 +255,6 @@ class UserAction extends BaseAction
 
         $NowTime=NOW_TIME;
         $moduser= new userModel();
-		$opid = I('opid');
-		if($opid){
-		  $res = $moduser->where(array('id'=>$uid))->save(array('opid'=>$opid));
-		  S('wechat_'.$opid,NULL);
-		}
-		
 		// if($this->visitor->get('special_id') < 2 ){
 		// $this->Getspecial();
 		// }
@@ -293,7 +294,7 @@ class UserAction extends BaseAction
             }
             $this->assign('qrcode', $image);
         }
-        $article=$this->artmod->where('cate_id=2')->field('id,title')->limit(5)->select();
+        $article=$this->artmod->where('cate_id=2')->field('id,title,urlid,url')->limit(5)->select();
         $this->assign('article', $article);
         $where=[
             'oid'=>$this->visitor->get('oid'),

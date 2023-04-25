@@ -1,0 +1,51 @@
+<include file="NewPublic:meta" />
+<body>
+<div class="pagebox">
+
+
+
+  <div class="topfixed fixs">
+    <a class="back" href="{:U('pdd/index')}">返回</a>
+    <p>拼多多渠道备案</p>
+  </div>
+  <div class="topfixedZw"> </div>
+
+  <div id="addshowcontent">
+    <div class="wd_page">
+      <div class="am-panel am-panel-danger">
+        <div class="copy-box">
+          <div style="text-align: center;">
+            拼多多官方要求，必须备案了才可以继续使用。
+          </div>
+          <div class="am-panel-hd" style="text-align: center">
+           长按识别下方二维码完成备案
+          </div>
+          <div class="am-panel-bd" style="text-align: center">
+            <img id="codeimg" src="{:U('item/qrcode')}?dataurl={:base64_encode($inviterCode)}" width="150" height="150">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+    <div class="dealbtn">
+      <a href="{$inviterCode}" style="width: 60%;height:2rem;font-size:0.8rem" class="weui-btn weui-btn_warn copya2">进入授权页面</a>
+      <a href="{$callback}" style="width: 60%;height:2rem;font-size:0.8rem" class="weui-btn weui-btn_default">我已完成授权</a>
+
+    </div>
+
+
+    <div class="clear" style="padding-top: 1.9rem;"></div>
+
+
+  </div>
+
+
+</div>
+</body>
+
+</html>
