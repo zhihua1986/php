@@ -423,6 +423,12 @@ var url = data.field.url;
  	window.location.href=url + "?k=" + data.field.pdd ;
  	return false;
  }
+
+	if(data.field.vph){
+		window.location.href=url + "?k=" + data.field.vph ;
+		return false;
+	}
+
  layer.msg('搜索词不能为空！');
 return false;
 // var loadIndex=layer.load(1,{shade:[0.5,'#000']});

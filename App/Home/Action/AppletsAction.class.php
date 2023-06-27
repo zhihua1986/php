@@ -179,14 +179,14 @@ protected function bdmenu(){
 	  ),
 	  );
 	  
-	  $dc = array(
-	  				array(
-	  				'name'=>'高德打车',
-	  				'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01iiNSAc2MgYkfGJWWA_!!3175549857.jpg',
-	  				'id'=>'gaode',
-	  				'tab'=>'dc'
-	  				)
-	  		);
+//	  $dc = array(
+//	  				array(
+//	  				'name'=>'高德打车',
+//	  				'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01iiNSAc2MgYkfGJWWA_!!3175549857.jpg',
+//	  				'id'=>'gaode',
+//	  				'tab'=>'dc'
+//	  				)
+//	  		);
 	$dyp = array(
 					array(
 					'name'=>'淘票票',
@@ -207,7 +207,7 @@ protected function bdmenu(){
 		
 		if($tab == 'all'){
 			
-			$data = array_merge($dc,$dyp,$elm);
+			$data = array_merge($dyp,$elm);
 			if(C('yh_openmt') == '1'){
 			$data = array_merge($mt,$data);
 			}
@@ -329,12 +329,12 @@ protected function bdmenu(){
         }
 
         $part3 = [
-			[
-			    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lH6WbT2MgYkx01LPz_!!3175549857.png',
-			    'name'=>'高德打车',
-			    'url'=>'gaode',
-			    'type'=>2,
-			],
+//			[
+//			    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lH6WbT2MgYkx01LPz_!!3175549857.png',
+//			    'name'=>'高德打车',
+//			    'url'=>'gaode',
+//			    'type'=>2,
+//			],
 			[
 			    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01vyZmbD2MgYkvpxc0R_!!3175549857.png',
 			    'name'=>'淘票票',

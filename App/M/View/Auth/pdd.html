@@ -21,7 +21,7 @@
            长按识别下方二维码完成备案
           </div>
           <div class="am-panel-bd" style="text-align: center">
-            <img id="codeimg" src="{:U('item/qrcode')}?dataurl={:base64_encode($inviterCode)}" width="150" height="150">
+            <img id="codeimg" src="{:U('item/qrcode')}?dataurl={:urlencode($inviterCode)}" width="150" height="150">
           </div>
         </div>
 

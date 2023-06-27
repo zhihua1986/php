@@ -1,0 +1,39 @@
+<volist name='list' id="vo">
+
+  <div class="weui-col-50 ">
+    <div class="goods-col tqk-bg-white tqk-rad-12">
+      <div class="goods-vertical">
+        <div>
+          <div class="pic">
+            <a href="{:U('douyin/item',array('id'=>$vo['productId'],'sp'=>'f'))}">
+              <img src="{$vo.cover}"/>
+            </a>
+
+          </div>
+          <div class="title">
+            <i class="iconfont tqk-douyin tqk-c-red">
+            </i>
+            {$vo.title}
+          </div>
+          <div class="my">
+                                                <span class="my_qh">
+                                                    售价
+                                                </span>
+            <div class="fl">
+              <i>
+                ¥
+              </i>
+              <span class="price">
+                                                     {$vo.newUserPrice}
+                                                    </span>
+            </div>
+          </div>
+
+          <div class="num">
+            已售{$vo.sales|floatNumber}件
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</volist>

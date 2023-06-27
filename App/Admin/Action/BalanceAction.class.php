@@ -74,7 +74,7 @@ class BalanceAction extends BaseAction
 		
 		$info = M('balance')->where(array('id'=>$id))->find();
 		
-		if(C('yh_payment_wechat') == '1' && $info['method'] == '1'){
+		if(C('yh_payment_wechat') == '1' && $info['method'] == '1' && C('yh_payment') == '1'){
 		
 		 $res = $this->wechatpay($uid,$info['money'],$id);
 		 if($res['code']==200){

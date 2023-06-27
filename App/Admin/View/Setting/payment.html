@@ -31,6 +31,7 @@
 		<tr class="J_closed_reason">
 				<th>微信转账方式:</th>
 				<td>
+					<label><input type="radio" class="J_change_status" <if condition="C('yh_payment') eq '3'">checked="checked"</if> value="3" name="setting[payment]"> 手工转账</label> &nbsp;
 			    	<label><input type="radio" class="J_change_status" <if condition="C('yh_payment') eq '2'">checked="checked"</if> value="2" name="setting[payment]"> 自动转账</label> &nbsp;&nbsp;
 			        <label><input type="radio" class="J_change_status" <if condition="C('yh_payment') eq '1'">checked="checked"</if> value="1" name="setting[payment]"> 审核后转账</label>
 				</td>

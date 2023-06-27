@@ -12,6 +12,29 @@ class ArticleAction extends BaseAction
     }
 
     /**
+     * @return void
+     */
+    public function guide(){
+
+        $this->_config_seo(array(
+            'title' => '新手必读 - '. C('yh_site_name'),
+        ));
+        $ac = I('ac');
+        switch ($ac){
+
+            case 'tb':
+                $this->display('tb');
+                break;
+            default:
+                $this->display();
+        }
+
+
+
+    }
+
+
+    /**
      * * 首页（全部）
      */
     public function index()

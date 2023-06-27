@@ -17,9 +17,11 @@
 		<form method="post" action="{:U('user/tixian')}" id="mloginbox">
 			<div class="am-container">
 				<div class="input-box">
-					
-					<if condition="C('yh_payment_wechat') eq 1 ">
+
+					<if condition="C('yh_payment_wechat') eq 1 and C('yh_payment') neq 3">
 							<div style="padding: 5px; color: #F05040;">如果您关注过我们的公众号，提现金额会优先转入您的微信零钱包。</div>
+						<else/>
+						<div style="padding: 5px; color: #F05040;">请加客服微信{:C('yh_zhibo_url')}，获得优先处理特权！</div>
 					</if>
 					
 					<div class="input-row">
@@ -33,6 +35,7 @@
 					    <div class="formControls">
 					     <if condition="C('yh_payment_wechat') eq 1">
 							  <label style="text-align: center;">
+								  <input type="hidden" name="wAction" value="{:C('yh_payment')}"/>
 							    <input type="radio" id="wechat" name="method" value="1">
 							  微信
 							  </label>
@@ -84,11 +87,18 @@
 			var value = $('input:radio:checked').val();
 			if(value == '1'){
 				$('#payname').html('微信账号');
-				 $('.J_closed_reason').fadeOut();
+				 //$('.J_closed_reason').fadeOut();
 			}else{
 				$('#payname').html('支付宝账号');
 				 $('.J_closed_reason').fadeIn();
 			}
+
+
+			if($("input[name='wAction']").val() != 3 && $('input:radio[name="method"]:checked').val()!=2){
+
+				$('.J_closed_reason').fadeOut();
+			}
+
 			
 			
 		})

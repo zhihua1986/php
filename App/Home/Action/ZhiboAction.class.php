@@ -3,6 +3,7 @@
 namespace Home\Action;
 
 use Common\Api\Weixin;
+use Common\Model\userModel;
 use Duomai\CpsClient\Client;
 use Duomai\CpsClient\Endpoints\Products;
 
@@ -16,8 +17,11 @@ class ZhiboAction extends BaseAction
     }
 
 
+     public function index(){
 
 
+
+     }
 
 
 }

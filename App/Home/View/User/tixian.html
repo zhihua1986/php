@@ -16,9 +16,11 @@
      
      		<div class="mianbar">
 				
-				<if condition="C('yh_payment_wechat') eq 1">
+				<if condition="C('yh_payment_wechat') eq 1 and C('yh_payment') neq 3">
 						<blockquote class="layui-elem-quote">如果您关注过我们的公众号，提现金额会优先转入您的微信零钱包。</blockquote>
-						</if>	
+                    <else/>
+                    <blockquote class="layui-elem-quote">请加客服微信{:C('yh_zhibo_url')}，获得优先处理特权！</blockquote>
+				</if>
 				
 					<div class="taobaonum tqk-text-c">
 		
@@ -37,6 +39,7 @@
     <label class="layui-form-label">提现方式</label>
    <div class="layui-word-aux tqk-text-l">
 	   <if condition="C('yh_payment_wechat') eq 1">
+           <input type="hidden" name="wAction" value="{:C('yh_payment')}"/>
 	        <input type="radio" id="wechat" lay-filter="method" name="method" <if condition="C('yh_payment_alipay') eq 0"> checked="checked"</if> value="1" title="微信" >
 		</if>
 		<if condition="C('yh_payment_alipay') eq 1">
@@ -66,7 +69,7 @@
 	 </div>
      
   </div>
-  
+
   
    <div class="layui-form-item">
     <label class="layui-form-label">提现金额</label>
@@ -121,19 +124,27 @@
 	 $ = layui.jquery;
 	 var layer = layui.layer,
 	  form = layui.form;
-	  
 	 if($('#alipay').is(':checked')){
 		 $('.J_closed_reason').fadeIn(); 
 	 }
+
 	form.on('radio(method)', function (data) {
+
+
+        if($("input[name='wAction']").val() != 3 && $('input:radio[name="method"]:checked').val()!=2){
+
+            $('.J_closed_reason').fadeOut();
+        }
+
 	    if( data.value == 1){
 	        $('#payname').html('微信账号');
-			 $('.J_closed_reason').fadeOut();
 	    }else{
 	　　　　　  $('#payname').html('支付宝账号');
 			 $('.J_closed_reason').fadeIn();
 	　　 }
 	});
+
+
 	
 	})
 	

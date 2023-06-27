@@ -1,0 +1,60 @@
+<volist name='list' id="vo">
+
+  <php>
+    $price = $vo['estimatePrice']?$vo['estimatePrice']:$vo['vipPrice'];
+  </php>
+
+  <div class="weui-col-50 ">
+    <div class="goods-col tqk-bg-white tqk-rad-12">
+      <div class="goods-vertical">
+        <div>
+          <div class="pic">
+            <a href="{:U('vph/item',array('id'=>$vo['goodsId']))}">
+              <img src="{$vo.goodsMainPicture}"/>
+            </a>
+            <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+                                  <span class="share-info">
+                                                    预计返￥{:Rebate1($price*($vo['commissionRate']*0.7)/100,$visitor['webmaster_rate'])}
+                                                </span>
+            </if>
+          </div>
+          <div class="title">
+            <i class="iconfont tqk-vips tqk-c-red">
+            </i>
+            {$vo.goodsName}
+          </div>
+          <div class="my">
+                                                <span class="my_qh">
+                                                    售价
+                                                </span>
+            <div class="fl">
+              <i>
+                ¥
+              </i>
+              <span class="price">
+                                                {$price}
+                                                    </span>
+            </div>
+          </div>
+          <if condition="$vo['couponInfo']['buy']">
+            <div class="tag">
+              <div class="fr">
+                                                    <span class="tags_quan">
+                                                        <span class="quan">
+                                                            券
+                                                        </span>
+                                                        <span>
+                                                            {$vo.couponInfo.buy}元
+                                                        </span>
+                                                    </span>
+              </div>
+            </div>
+          </if>
+          <div class="num">
+            已售{$vo.productSales}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</volist>

@@ -2142,7 +2142,7 @@ public function pddlist(){
             $resp = $resp['result_list']['map_data'];
             $patterns = "/\d+/";
             foreach ($resp as $k=>$v) {
-               if(($key && $this->FilterWords($key)) || $this->FilterWords($v['title'])){
+               if(($key && $this->FilterWords($key)) || $this->FilterWords($v['title']) || !$v['item_id']){
                continue;
                }
                 $goodslist[$k+$count]['quan']=formatprice($v['coupon_amount']);

@@ -1,0 +1,260 @@
+<include file="NewPublic:meta" />
+<body>
+<div class="pagebox">
+  <div class="weui-tab">
+
+    <div class="swiper mySwiper" style="margin:0 auto;">
+      <a href="javascript:history.back(-1)" class="iconfont tqk-fanhuiiconx"
+         style="background: rgba(0, 0, 0, 0.3); color: rgb(255, 255, 255);"></a>
+      <div class="swiper-wrapper">
+        <if condition="$item['goodsCarouselPictures']">
+          <volist name="item.goodsCarouselPictures" key="k" id="img">
+            <div class="swiper-slide"><img src="{$img}" alt=""></div>
+          </volist>
+          <else />
+          <div class="swiper-slide"><img src="{$item.goodsThumbUrl}" alt=""></div>
+        </if>
+
+      </div>
+      <div class="swiper-scrollbar"></div>
+      <php>
+        $price = $item['estimatePrice']?$item['estimatePrice']:$item['vipPrice'];
+      </php>
+      <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+					<span class="share-info">
+						预计返￥{:Rebate1($price*$item['commissionRate']/100,$visitor['webmaster_rate'])}</span>
+      </if>
+    </div>
+
+    <div class="box-title tqk-p-5">
+
+      <div class="weui-row">
+        <div class="weui-col-66">
+          <i class="tqk-c-red">￥</i>
+          <label class="coupon_price tqk-c-red">{$price}</label>
+          <label class="through_price tqk-pl-5">原价 ￥{$item.marketPrice}</label>
+        </div>
+        <div class="weui-col-33 tqk-line-200">已售<i class="tqk-c-red">{$item.productSales}</i></div>
+      </div>
+
+      <div class="goods_title">
+          <i class="iconfont tqk-vips tqk-c-red"></i>
+        {$item.goodsName}
+      </div>
+
+      <if condition="$item['couponInfo']['buy'] gt 0">
+        <div class="coupon-box">
+          <div class="coupon-left">
+            <i>{:$item['couponInfo']['buy']?$item['couponInfo']['buy']:0}</i>
+            <label>
+              有效期：
+              {:date('m.d',substr($item['couponInfo']['useBeginTime'],0,-3))}-{:date('m.d',substr($item['couponInfo']['useEndTime'],0,-3))}
+            </label>
+          </div>
+          <div class="coupon-right">
+            <a rel="2" class="cpsLink" href="javascript:;">
+              立即领取</a>
+          </div>
+        </div>
+      </if>
+
+    </div>
+
+    <if condition="$item['brandName']">
+      <div class="clear" style="padding-top: .5rem;"></div>
+
+      <div class="tqk-bg-white copywriting tqk-rad-12">
+        <img src="{$item.brandLogoFull}" height="30" />
+        <div class="recommend-desc"> {$item.brandName}</div>
+      </div>
+    </if>
+
+    <if condition="$item['goodsDetailPictures']">
+      <div class="clear" style="padding-top: .5rem;"></div>
+      <div class="tqk-bg-white tqk-rad-12">
+        <div class="goods-des-title">
+          <div class="phb-content-title"><span>商品详情</span></div>
+        </div>
+        <div class="goods-des" style="padding-top: 1rem;">
+          <volist name="item.goodsDetailPictures" key="k" id="img">
+            <img src="{$img}" align="absmiddle">
+          </volist>
+        </div>
+      </div>
+    </if>
+
+
+    <if condition="$orlike">
+      <div class="clear" style="padding-top: .5rem;"></div>
+      <div class="tqk-rad-12">
+        <div class="goods-des-title">
+          <div class="phb-content-title"><span>为你推荐</span></div>
+        </div>
+        <div class="goods-des">
+
+
+          <div class="weui-row weui-no-gutter">
+            <volist name="orlike" id="val">
+              <div class="weui-col-50 ">
+
+                <div class="goods-col tqk-bg-white tqk-rad-12">
+                  <div class="goods-vertical">
+                    <div>
+                      <div class="pic">
+                        <a href="{:U('item/index',array('id'=>$val['num_iid']))}{$trackurl}"><img
+                                src="{$val.pic_url}_300x300.jpg"></a>
+                        <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+													<span class="share-info">
+														预计返￥{:Rebate1($val['coupon_price']*$val['commission_rate']/10000,$visitor['webmaster_rate'])}</span>
+                        </if>
+                      </div>
+                      <div class="title">
+                        <i class="iconfont <if condition=" $val['shop_type']
+                        eq 'B'">tqk-tianmaoT<else/>tqk-taobao1</if> tqk-c-red"></i>
+    {$val.title}
+  </div>
+  <div class="my">
+    <span class="my_qh">券后</span>
+    <div class="fl"><i>¥</i><span class="price">{$val.coupon_price}</span>
+    </div>
+  </div>
+  <if condition="$val.quan">
+    <div class="tag">
+      <div class="fr"><span class="tags_quan"><span class="quan">券</span>
+															<span>{$val.quan}元</span></span></div>
+    </div>
+  </if>
+  <div class="num">已售{$val.volume}</div>
+</div>
+</div>
+</div>
+
+
+</div>
+
+</volist>
+
+
+
+</div>
+
+
+</div>
+</div>
+
+</if>
+
+</div>
+
+
+</div>
+
+<div class="footzw"> </div>
+
+
+<div class="footer" id="box">
+  <a class="lina" href="/">
+    <i class="iconfont tqk-shouye1"></i>
+    <span>首页</span>
+  </a>
+  <a class="lina cpsLink" rel="1" href="javascript:ShareBtn();">
+    <i class="iconfont tqk-fenxiao"></i>
+    <span>分享</span>
+  </a>
+  <div>
+			<span class="right">
+				<a rel="2" class="buy cpsLink" href="javascript:;">
+					立即下单
+				</a>
+			</span>
+
+  </div>
+
+
+</div>
+
+
+<div id="share" class='weui-popup__container popup-bottom'>
+  <div class="weui-popup__overlay"></div>
+  <div class="weui-popup__modal">
+    <div class="toolbar">
+      <div class="toolbar-inner">
+        <a href="javascript:;" class="picker-button close-popup iconfont tqk-xiangzuojiantou"></a>
+        <h1 class="title">分享文案</h1>
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="weui-grids">
+        <div class="copy-box">
+          <div class="am-panel am-panel-danger">
+            <div class="am-panel-hd">分享给Ta人购买，获得返利。</div>
+            <div class="am-panel-bd">
+              <h4 id="CopyMsg2">
+<textarea maxlength="200" id="getCode" enterkeyhint="return" class="sharebox"
+                                              style="overflow-y: auto;">
+{$item.goodsName}&#13;
+【售价】：￥{$price}&#13;<if condition="$item['couponInfo']['buy'] gt 0">
+【优惠券】：￥{$item.couponInfo.buy}&#13;</if>
+  下单链接:
+</textarea>
+              </h4>
+            </div>
+          </div>
+          <button data-clipboard-target="#getCode" id="copy_share"
+                  style="width: 60%;height:2rem;font-size:0.8rem" class="weui-btn weui-btn_warn">一键复制</button>
+          <a href="javascript:$.closePopup();" style="width: 60%;height:2rem;font-size:0.8rem"
+             class="weui-btn weui-btn_default">关闭页面</a>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<include file="Item:foot" />
+<include file="Public:stat" />
+
+<script type="text/javascript">
+
+  $('.cpsLink').click(function(){
+
+    let rel = $(this).attr('rel');
+
+      $.ajax({
+        url: "{:U('vph/shortLink')}",
+        type:'post',
+        dataType: "json",
+        timeout :3000,
+        data: {id:"{$item.goodsId}"},
+        success: function(data){
+
+if(data.result.urlInfoList[0].url && rel == 1){
+
+  <php>
+    $coupon = $item['couponInfo']['buy'];
+  </php>
+
+var html ='{$item.goodsName}&#13;'+
+'【售价】：￥{$price}&#13;<if condition="$coupon gt 0">【优惠券】：￥{$coupon}&#13;</if>'+
+'下单链接:'+data.result.urlInfoList[0].url;
+            $('#getCode').html(html);
+
+          }
+
+
+          if(data.result.urlInfoList[0].ulUrl && rel == 2){
+            window.location.href = data.result.urlInfoList[0].ulUrl
+          }
+        }
+      });
+
+
+  });
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<include file="NewPublic:cate" />
+<style>
+  .topfixed {background: #060716;}
+  .topfixed .weui-search-bar{background: #060716;}
+  .topfixed .weui-search-bar__form {background: #060716;}
+  .weui-search-bar__cancel-btn2{ background: #FE2C55}
+  .weui-navbar{ position: relative}
+</style>
+<body>
+<div class="pagebox">
+  <div class="weui-tab">
+    <div class="topfixed fixs">
+      <a class="backlist" href="javascript:history.back(-1)"><i class="tqk-fanhui2 iconfont"></i>
+        <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01B0Saeu2MgYrxC2rEL_!!3175549857.png" width="80" />
+      </a>
+      <div class="weui-search-bar" id="searchBar">
+        <form class="weui-search-bar__form" action="{:U('douyin/index')}" method="get" id="search">
+          <div class="weui-search-bar__box">
+            <input type="search" name="k" class="weui-search-bar__input" id="searchInput" value="{$sokey}"  required="">
+            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+          </div>
+          <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+            <span>请输入商品名称查询</span>
+          </label>
+        </form>
+        <a href="javascript:" class="weui-search-bar__cancel-btn2" id="searchbtn">搜索</a>
+      </div>
+
+    </div>
+
+    <div style="padding-top: 2.5rem; clear:both;"></div>
+
+    <div class="tabnav" id="subnav" style="background: #060716;">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><a href="{:U('douyin/index')}" <empty name="cid">class="active"</empty>>全部商品</a></div>
+        <volist name="catetree" id="tree" key="i">
+          <div class="swiper-slide"><a rel="{$i}" href="{:U('douyin/index',array('cid'=>$key))}" <if condition="$cid eq $key">class="active"</if> >{$tree.0}</a></div>
+        </volist>
+      </div>
+    </div>
+
+            <div class="weui-tab">
+                <div class="weui-navbar">
+                    <a class="weui-navbar__item weui-bar__item--on" href="{:U('douyin/fen')}">
+                      抖音一分购
+                    </a>
+                    <a class="weui-navbar__item" href="{:U('live/index')}">
+                       抖音直播
+                    </a>
+                    <a class="weui-navbar__item" href="{:U('douyin/index')}">
+                  抖音精选
+                    </a>
+                </div>
+
+            </div>
+
+    <div class="goods-des">
+      <div class="weui-row weui-no-gutter" id="list">
+        <volist name='list' id="vo">
+
+          <div class="weui-col-50 ">
+            <div class="goods-col tqk-bg-white tqk-rad-12">
+              <div class="goods-vertical">
+                <div>
+                  <div class="pic">
+                    <a href="{:U('douyin/item',array('id'=>$vo['productId'],'sp'=>'f'))}">
+                      <img src="{$vo.cover}"/>
+                    </a>
+
+                  </div>
+                  <div class="title">
+                    <i class="iconfont tqk-douyin tqk-c-red">
+                    </i>
+                    {$vo.title}
+                  </div>
+                  <div class="my">
+                                                <span class="my_qh">
+                                                    售价
+                                                </span>
+                    <div class="fl">
+                      <i>
+                        ¥
+                      </i>
+                      <span class="price">
+                                                     {$vo.newUserPrice}
+                                                    </span>
+                    </div>
+                  </div>
+
+                  <div class="num">
+                    已售{$vo.sales|floatNumber}件
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </volist>
+
+
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+
+</div>
+
+
+<div class="weui-loadmore" style="display: none;">
+  <i class="weui-loading"></i>
+  <span class="weui-loadmore__tips">正在加载...</span>
+</div>
+<div class="nomore" id="nomore" style="display: none;"><span>没有更多数据了</span></div>
+<input  type="hidden" id="page" value="2"/>
+
+
+<div class="footzw"> </div>
+
+
+
+
+<img class="tqk-totop" src="/Public/static/wap/images/icon/mescroll-totop.png" width="36" height="36" />
+<include file="NewPublic:foot" />
+<include file="Public:stat" />
+<script type="text/javascript">
+  $(function () {
+    $(window).scroll(function () {
+      var scrollT = $(document).scrollTop();
+      var offsetT = $(".pagebox").offset().top;
+      if (scrollT >= offsetT) {
+        $(".tqk-totop").show()
+      } else {
+        $(".tqk-totop").hide()
+      }
+    })
+    $(".tqk-totop").click(function(){
+      $("html,body").animate({
+        scrollTop:0
+      },1000)
+    })
+  })
+
+  window.onload = function() {
+    let index = $(".active").attr('rel');
+    let mySwiper = new Swiper('#subnav',{
+      freeMode : true,
+      slidesPerView : 'auto',
+      // preventClicks: false,
+      slideToClickedSlide: true,
+      preventClicksPropagation:true,
+      initialSlide:index?index:0
+    });
+
+  }
+
+  $(document.body).infinite();
+  var loading = false;  //状态标记
+  $(document.body).infinite().on("infinite", function() {
+    if(loading) return;
+    loading = true;
+    $('.weui-loadmore').show()
+    var page = $('#page').val();
+    var word = "{$sokey}";
+    var cid = "{$cid}";
+    $.get("{:U('douyin/fenlist')}",{page:page,k:word,cid:cid},function(res){
+              if(res == 1){
+                loading = false;
+                $(document.body).destroyInfinite()
+                $('.weui-loadmore').hide()
+                $('#nomore').show();
+                return;
+              }
+              $("#list").append(res);
+              $('#page').val(Number(page)+1);
+              loading = false;
+
+
+            },
+            'html'
+    );
+
+
+  });
+  document.onkeydown = function(e){
+    var ev = document.all ? window.event : e;
+    if(ev.keyCode==13) {
+      $("#searchbtn").click();
+
+    }
+  }
+  $("#searchbtn").click(function(event) {
+    var word = $('#searchInput').val();
+    if(!word){
+      $.alert('搜索内容不能为空');
+      return false
+    }
+    $('#search').submit();
+  });
+</script>
+<include file="Public:stat" />
+</body>
+</html>

@@ -38,10 +38,9 @@ class AuthAction extends BaseAction{
     public function  pdd(){
 
         $callback = urldecode(I('back'));
-        $url = urldecode(I('auth'));
+        $url = urldecode(I('ac'));
         $this->assign('callback', $callback);
         $this->assign('inviterCode', $url);
-
         $this->_config_seo([
             'title' => '拼多多渠道备案-'.C('yh_site_name'),
         ]);

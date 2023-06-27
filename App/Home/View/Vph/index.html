@@ -1,0 +1,115 @@
+<include file="Public:tqk-meta" />
+<style>
+  .layui-flow-more{ margin: 0 auto; padding-top: 20px;}
+</style>
+<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+  <div class="layui-container container">
+    <div class="tqk-pt-20"></div>
+
+
+    <div class="filter-items">
+      <ul class="row-channel clearfix">
+        <li class="active"><a>唯品会</a></li>
+      </ul>
+    </div>
+
+      <div class="flexbox tqk-mt-20 tqk-ml-15">
+        <ul class="haoquan itemlist" id="ID-flow-demo">
+          <volist name="list" id="vo">
+            <php>
+              $price = $vo['estimatePrice']?$vo['estimatePrice']:$vo['vipPrice'];
+            </php>
+              <li>
+                <div class="goods_list">
+                    <div class="goods_img">
+                      <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+                        <span class="rank_num">约返{:Rebate1($price*$vo['commissionRate']/100,$visitor['webmaster_rate'])}元</span>
+                      </if>
+                      <a href="{:U('vph/item',array('id'=>$vo['goodsId']))}" >
+                      <img width="240" height="240" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.goodsMainPicture}" alt=" {$vo.goodsName}">  </a>
+                    </div>
+                    <p class="layui-elip tqk-hiden-25">{$vo.goodsName}</p>
+                  <div>
+
+                    <span class="price tqk-pl-5">￥<i> {$price|formatprice}</i></span>
+                   <label class="tqk-f-r"> 已售<span class="num tqk-pl-10">{$vo.productSales}</span> </label>
+                  </div>
+            </div>
+      </li>
+
+      </volist>
+      </ul>
+    </div>
+
+
+    <div class="tqk-mt-30">
+      <input type="hidden" name="page" id="page" value="{$nextPage}">
+      <div id="yw0" class="pager">
+        {$page}
+      </div>
+
+      <div class="layui-clear tqk-pb-20"></div>
+
+    </div>
+
+
+  </div>
+
+
+</div>
+</div>
+
+<include file="Public:tqk-foot" />
+
+<script>
+  // 流加载实例
+  layui.use(function(){
+    var $ = layui.jquery
+            ,flow = layui.flow;
+  flow.load({
+    elem: '#ID-flow-demo', // 流加载容器
+    isAuto:false,
+    done: function(page, next){ // 执行下一页的回调
+      // 模拟数据插入
+      var p = $('#page').val();
+      var word = "{$sokey}";
+      $.get("{:U('vph/catelist')}",{page:p,k:word},function(res){
+                if(res == 1){
+                  layer.alert("抱歉！登录后才能查看更多商品哟", "系统提示");
+                   next(res,page<2);
+                  return;
+                }
+
+              if(res){
+                next(res);
+              }else{
+                next(res,page<p);
+              }
+
+
+                if(word){
+                  $('#page').val(Number(p)+1);
+                }else{
+                  $('#page').val(Number(p)+20);
+                }
+
+
+
+
+
+              },
+              'html'
+      );
+
+
+
+    }
+  });
+  });
+</script>
+
+</body>
+</html>

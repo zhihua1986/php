@@ -671,6 +671,7 @@ $item['goods_num'] = $val['item_num'];
 $item['ad_id'] = $val['adzone_id'];
 $item['income'] = $val['pub_share_pre_fee'];
 $item['tb_deposit_time'] = $val['tb_deposit_time'];
+$item['click_time'] = strtotime($val['click_time']);
 $item['ad_name'] = $val['adzone_name'];
 $item['goods_rate'] = $val['total_commission_rate']*100;
 $item['oid'] = substr($val['trade_id'],-6,6);
@@ -745,6 +746,7 @@ $item['ad_id'] = $val['adzone_id'];
 $item['income'] = $val['pub_share_pre_fee'];
 $item['tb_deposit_time'] = $val['tb_deposit_time'];
 $item['ad_name'] = $val['adzone_name'];
+$item['click_time'] = strtotime($val['click_time']);
 $item['goods_rate'] = $val['total_commission_rate']*100;
 $item['oid'] = substr($val['trade_id'],-6,6);
 $item['leve1'] = trim(C('yh_bili1'));
@@ -929,7 +931,7 @@ if(is_file($alixls)){
  foreach($csvdata as $k=>$val)
  {
 
- $data[$i]['orderid'] = trim($val['淘宝子订单号']);
+ $data[$i]['orderid'] = trim($val['子订单号']);
  $data[$i]['status'] = trim($val['订单状态']);
  $data[$i]['income'] = trim($val['付款预估收入']);
  $data[$i]['up_time'] = strtotime(trim($val['结算时间']));
@@ -1007,7 +1009,7 @@ if(is_file($alixls)){
 				{
 			
 				$data[$i]['click_time'] = strtotime(trim($val['点击时间']));
-				$data[$i]['orderid'] = trim($val['淘宝子订单号']);
+				$data[$i]['orderid'] = trim($val['子订单号']);
 				$data[$i]['add_time'] = strtotime(trim($val['创建时间']));
 				$data[$i]['status'] = trim($val['订单状态']);
 				$data[$i]['price'] = number_format(trim($val['付款金额']),2, '.', '');
@@ -1018,8 +1020,8 @@ if(is_file($alixls)){
 				$data[$i]['site_id'] = trim($val['媒体ID']);
 				$data[$i]['income'] = trim($val['付款预估收入']);
 				$data[$i]['ad_name'] = trim($val['媒体名称']);
-				$data[$i]['goods_rate'] = trim($val['收入比例']);
-				$data[$i]['oid'] = substr(trim($val['淘宝子订单号']),-6,6);
+				$data[$i]['goods_rate'] = str_replace('%','',trim($val['收入比率']));
+				$data[$i]['oid'] = substr(trim($val['子订单号']),-6,6);
 				$data[$i]['relation_id'] = trim($val['渠道关系ID']);
 				$data[$i]['deposit_price'] = number_format(trim($val['定金付款金额']),2, '.', '');
 				
@@ -1056,7 +1058,7 @@ $item['goods_num'] = $val['goods_num'];
 $item['ad_id'] = $val['ad_id'];
 $item['income'] = $val['income'];
 $item['ad_name'] = $val['ad_name'];
-$item['goods_rate'] = $val['goods_rate'];
+$item['goods_rate'] = $val['goods_rate']*100;
 $item['oid'] = $val['oid'];
 $item['relation_id'] = $val['relation_id'];
 $item['deposit_price'] = $val['deposit_price'];

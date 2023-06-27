@@ -1,0 +1,49 @@
+<div class="footer" id="box">
+  <if condition="C('APP_SUB_DOMAIN_DEPLOY') && C('URL_MODEL')==2">
+    <a class="lina" href="/">
+      <else/>
+      <a class="lina" href="/index.php/m">
+  </if>
+  <i class="iconfont tqk-shouye1"></i>
+  <span>首页</span>
+  </a>
+
+  <a class="lina" href="{:U('jiu/index')}">
+    <i class="iconfont tqk-kuai1"></i>
+    <span>9块9包邮</span>
+  </a>
+
+
+  <if condition="C('yh_openjd') eq 1">
+
+    <a class="lina" href="{:U('jd/index')}">
+      <i class="iconfont tqk-jingdong4"></i>
+      <span>京东券</span>
+    </a>
+
+    <else/>
+
+    <a class="lina" href="{:U('top100/index')}">
+      <i class="iconfont tqk-huo"></i>
+      <span>热销榜</span>
+    </a>
+
+  </if>
+
+  <if condition="$openduoduo eq 1">
+    <a class="lina" href="{:U('pdd/index')}">
+      <i class="iconfont tqk-pinduoduo2"></i>
+      <span>拼多多券</span>
+    </a>
+    <else/>
+    <a class="lina" href="{:U('brand/index')}">
+      <i class="iconfont tqk-liwu"></i>
+      <span>品牌券</span>
+    </a>
+  </if>
+  <a class="lina" href="{:U('user/ucenter')}">
+    <i class="iconfont tqk-yonghu"></i>
+    <span>我的</span>
+  </a>
+
+</div>

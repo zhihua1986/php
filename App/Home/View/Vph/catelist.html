@@ -1,0 +1,23 @@
+<volist name="list" id="vo">
+  <php>
+    $price = $vo['estimatePrice']?$vo['estimatePrice']:$vo['vipPrice'];
+  </php>
+  <li>
+    <div class="goods_list">
+      <div class="goods_img">
+        <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+          <span class="rank_num">约返{:Rebate1($price*$vo['commissionRate']/100,$visitor['webmaster_rate'])}元</span>
+        </if>
+        <a href="{:U('vph/item',array('id'=>$vo['goodsId']))}" >
+          <img width="240" height="240" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.goodsMainPicture}" alt=" {$vo.goodsName}">  </a>
+      </div>
+      <p class="layui-elip tqk-hiden-25">{$vo.goodsName}</p>
+      <div>
+
+        <span class="price tqk-pl-5">￥<i> {$price|formatprice}</i></span>
+        <label class="tqk-f-r"> 已售<span class="num tqk-pl-10">{$vo.productSales}</span> </label>
+      </div>
+    </div>
+  </li>
+
+</volist>

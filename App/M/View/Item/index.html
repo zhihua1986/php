@@ -43,7 +43,7 @@
 					{$item.title}
 				</div>
 
-
+<if condition="$item['quan'] gt 0">
 				<div class="coupon-box">
 					<div class="coupon-left">
 						￥<i>{:$item['quan']?$item['quan']:0}</i>
@@ -57,7 +57,7 @@
 							立即领取</a>
 					</div>
 				</div>
-
+</if>
 
 			</div>
 

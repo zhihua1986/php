@@ -41,6 +41,11 @@ class PddAction extends BaseAction
             $this->assign('stype', $stype);
         }
 
+        if($key && !$this->memberinfo['id']){
+            echo('<script>alert("请登录再搜索！");history.go(-1)</script>');
+            exit;
+        }
+
         if($page>5 && !$this->memberinfo['id']){
 
             echo('<script>alert("请登录后再浏览！");history.go(-1)</script>');
@@ -52,7 +57,7 @@ class PddAction extends BaseAction
         if($data['res']){
             $back = $_SERVER["HTTP_REFERER"];
             if ($back) {
-                $url = U('auth/pdd',array('back'=>urlencode($back),'auth'=>urlencode($data['res'])));
+                $url = U('auth/pdd',array('back'=>urlencode($back),'ac'=>urlencode($data['res'])));
                 redirect($url);
             }
 

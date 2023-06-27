@@ -650,11 +650,11 @@ class FirstendAction extends TopAction
     protected function Takeout()
     {
 
-        $part1[] = [
-            'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01D23onG2MgYl28v3kI_!!3175549857.jpg',
-            'name' => '100元高德打车券',
-            'url' => '/index.php?c=elm&a=gaode&type=1'
-        ];
+//        $part1[] = [
+//            'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01D23onG2MgYl28v3kI_!!3175549857.jpg',
+//            'name' => '100元高德打车券',
+//            'url' => '/index.php?c=elm&a=gaode&type=1'
+//        ];
         if (C('yh_elm') == 1) {
             $part1[] = [
                 'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01luBsIV2MgYq3UVufb_!!3175549857.jpg',
@@ -669,9 +669,9 @@ class FirstendAction extends TopAction
             ];
 
             $part1[] = [
-                'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01gUKofC2MgYq8CCuca_!!3175549857.jpg',
-                'name' => '饿了么浏览店铺得红包',
-                'url' => '/index.php?c=elm&a=elmlink&id=10174&type=3',
+                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01cPWI8G2MgYrsOQJ9t_!!3175549857.png',
+                'name' => '饿了么水果生鲜满48减20',
+                'url' => '/index.php?c=elm&a=elmlink&id=10468&type=3',
             ];
 
 

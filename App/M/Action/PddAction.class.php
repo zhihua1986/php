@@ -43,6 +43,11 @@ $this->_404();
  $this->assign('sokey', $key);
 }
 
+if($key && !$this->memberinfo['id']){
+echo('<script> alert("请登录后再搜索！");window.history.back()</script>');
+exit;
+}
+
 
 $stype    = I("stype");
 $hash='false';
@@ -55,7 +60,7 @@ $data = $this->PddGoodsSearch($cid,'',$key,$sort,'',$size=20,$hash);
     if($data['res']){
         $back = $_SERVER["HTTP_REFERER"];
         if ($back) {
-            $url = U('auth/pdd',array('back'=>urlencode($back),'auth'=>urlencode($data['res'])));
+            $url = U('auth/pdd',array('back'=>urlencode($back),'ac'=>urlencode($data['res'])));
             echo('<script>window.location.href="'.$url.'"</script>');
             exit;
         }
@@ -91,7 +96,7 @@ $this->display();
 
 
 public function catelist(){
-$page	= I('p',0,'trim');
+$page	= I('page',0,'trim');
 $cid		= I('cid',0 ,'intval');
 $sort	= I('sort', '8', 'intval');
 $this->assign('txt_sort', $sort);
@@ -106,9 +111,18 @@ if($stype == 1){
 }
 
 
+if($key && !$this->memberinfo['id']){
+
+//    echo('<script>alert("请登录再搜索！");</script>');
+    echo 1;
+    exit;
+}
+
+
 if($page>5 && !$this->memberinfo['id']){
 
-    echo('<script>alert("请登录后再浏览！");</script>');
+//    $this->assign('islogin','请登录后再浏览');
+echo 1;
     exit;
 }
 

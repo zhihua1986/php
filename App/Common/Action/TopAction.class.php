@@ -580,7 +580,7 @@ class TopAction extends FuncAction
         if ($opid && !in_array($opid,$tags)) {
            $where['opt_id'] = $opid;
         }
-        if ($key && !$this->hasEmoji($key) && $this->memberinfo) {
+        if ($key && !$this->hasEmoji($key)) {
             $where['keyword'] = $key;
         }
         if ($page) {

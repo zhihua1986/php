@@ -40,6 +40,6 @@ define('APP_PATH', './App/');
 define('TQK_IMG_DATA_PATH', './');
 define('RUNTIME_PATH', './data/Runtime/');
 define('TQK_DATA_PATH', './data/');
-define('TQK_VERSION', '4.2.7.1');
-define('TQK_RELEASE', '2023-04-25');
+define('TQK_VERSION', '4.2.8.1');
+define('TQK_RELEASE', '2023-06-26');
 require './ThinkPHP/ThinkPHP.php';

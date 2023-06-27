@@ -163,7 +163,7 @@ class TaskAction extends BaseAction
                 $item['ad_id'] =$val['ad_zone_id'];
                 $item['click_time'] = strtotime($val['trace_time']);
                 $item['up_time'] = $val['gmt_modified'] ? strtotime($val['gmt_modified']) : '';
-                $item['income'] = $val['settle'] > 0 ? $val['settle'] : $val['commission_fee'];
+                $item['income'] = $val['settle'] > 0 ? $val['settle'] : $val['income'];
                 $item['ad_name'] = $val['ad_zone_name'];
                 $item['goods_rate'] = $val['commission_rate'] * 100;
                 $item['leve1'] = trim(C('yh_bili1'));
@@ -1054,6 +1054,7 @@ class TaskAction extends BaseAction
         }
         $Model = M();
         $list_child = $Model->query($sql);
+
         $this->Log('OrderBind', $list_child);
         foreach ($list_child as $k => $v) {
             if ($v['uid'] && $v['bid']) {

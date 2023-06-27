@@ -1,263 +1,236 @@
-<include file="Public:meta" />
+<include file="NewPublic:cate" />
 <style>
-.swiper-container{position:fixed;top:20px;left:0;right:0;bottom:0; z-index: -100; max-width: 750px;}
+	.topfixed {background: #FF5001;}
+	.topfixed .weui-search-bar{background: #FF5001;}
+	.topfixed .weui-search-bar__form {background: #FF5001;}
+	.weui-search-bar__cancel-btn2{ background: #ff9000}
 </style>
-<include file="Public:cate_head" />
-<div style="max-width: 750px; margin: 0 auto;">
-<div class="listpanel">
-	<div style="display:flex">
-    <div class="scrollx mescroll-touch-x">
-                <div id="scrollxContent" class="scrollx-content">
-                    <ul id="nav" class="nav">
-    <li i="0"><a href="{:U('cate/index')}{$trackurl}" class="menu-item <empty name="cid">active</empty>">全部商品</a></li>
-    <volist name="catetree" id="tree" key="i">
-     <li i="{$i}">
-     <a class="menu-item <if condition="$cid eq $tree['id']">active</if>" href="{:U('cate/index',array('cid'=>$tree['id']))}{$trackurl}">{$tree.name}</a>
-     </li>
-      </volist>
-    </ul>
-                </div>
-            </div>
-<div class="cxx-more-cate" style="display: none;">
-    <ul style="width:100%">	
-    	<volist name="catetree" id="tree">
-        <li data-id="{$i}"><a <if condition="$cid eq $tree['id']">class="am-btn am-btn-default am-round"</if> href="{:U('cate/index',array('cid'=>$tree['id']))}{$trackurl}"><span>{$tree.name}</span></a></li>
-      </volist>
-	    </ul>
-</div>
-<div class="cxx-transparent-bg"></div>  
-    <div id="drop-down" class="drop-down" data-action="down"><i class="iconfont tqk-jiantou_down maincolor"></i></div>
-    <div class="cate"></div>
-   </div>
-    
-    <!-- filter -->
-    <div class="filter">
-        <div class="filter-item"><a href="{:U("jiu/index",array('sort'=>'new'))}?k={:urldecode($sokey)}">综合</a> <empty name="txt_sort"><i class="icon-caret down"></i></empty> <if condition='$txt_sort eq "new"'><i class="icon-caret down-"></i></if></div>
-        <div class="filter-item"><a href="{:U("jiu/index",array('sort'=>'hot'))}?k={:urldecode($sokey)}">月销量</a><if condition='$txt_sort eq "hot"'><i class="icon-caret down-"></i></if></div>
-        <div class="filter-item"><a href="{:U("jiu/index",array('sort'=>'rate'))}?k={:urldecode($sokey)}">大额券</a><if condition='$txt_sort eq "rate"'><i class="icon-caret down-"></i></if></div>
-        <div class="filter-item">
-            <a href="{:U("jiu/index",array('sort'=>'price'))}?k={:urldecode($sokey)}">券后价</a><if condition='$txt_sort eq "price"'><i class="icon-caret down-"></i></if>
-        </div>
-    </div>
+<body>
+<div class="pagebox">
+	<div class="weui-tab">
+		<div class="topfixed fixs">
+			<a class="backlist" href="javascript:history.back(-1)"><i class="tqk-fanhui2 iconfont"></i>
+			<img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01pOzvss2MgYrh6oqO6_!!3175549857.png" width="80" />
+			</a>
+			<div class="weui-search-bar" id="searchBar">
+				<form class="weui-search-bar__form" action="{:U('jiu/index')}" method="get" id="search">
+					<div class="weui-search-bar__box">
+						<input type="search" name="k" class="weui-search-bar__input" id="searchInput" value="{$sokey}"  required="">
+						<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+					</div>
+					<label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+						<span>输入商品名或手淘分享的链接</span>
+					</label>
+				</form>
+				<a href="javascript:" class="weui-search-bar__cancel-btn2" id="searchbtn">搜索</a>
+			</div>
+
+		</div>
+		<div class="tabnav" id="subnav" style="background: #FF5001; padding-top: 2.5rem">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide"><a href="{:U('cate/index')}" <empty name="cid">class="active"</empty>>全部商品</a></div>
+				<volist name="catetree" id="tree" key="i">
+					<div class="swiper-slide"><a rel="{$i}" href="{:U('cate/index',array('cid'=>$tree['id']))}" <if condition="$cid eq $tree['id']">class="active"</if> >{$tree.name}</a></div>
+				</volist>
+			</div>
+		</div>
+		<if condition="$cid">
+			<php>
+				$Catepid = $ItemCate['s'][$cid];
+			</php>
+			<div class="tabnav" id="header">
+				<div class="swiper-wrapper">
+					<volist name="Catepid" id="vt" key="k">
+						<div class="swiper-slide">
+							<div><a href="{:U('/cate/',array('cid'=>$cid,'sid'=>$vt['ali_id']))}"><img src="{$vt.remark}" width="50px" height="50px" />
+							</a></div>
+							<div rel="{$k}" <if condition="$sid eq $vt['ali_id']">class="active2"</if> >{$vt.name}</div>
+				</div>
+				</volist>
+			</div>
+	</div>
+	</if>
+
+	<div class="filter">
+		<div class="weui-row">
+			<div class="weui-col-25"><a href="{:U("jiu/index",array('sort'=>'new'))}?k={:urldecode($sokey)}">综合</a><if condition='$txt_sort eq "new" or !$txt_sort'><i class="icon-caret"></i></if></div>
+			<div class="weui-col-25"><a href="{:U("jiu/index",array('sort'=>'hot'))}?k={:urldecode($sokey)}">销量</a><if condition='$txt_sort eq "hot"'><i class="icon-caret"></i></if></div>
+			<div class="weui-col-25"><a href="{:U("jiu/index",array('sort'=>'rate'))}?k={:urldecode($sokey)}">大额券</a><if condition='$txt_sort eq "rate"'><i class="icon-caret"></i></if></div>
+			<div class="weui-col-25"><a href="{:U("jiu/index",array('sort'=>'price'))}?k={:urldecode($sokey)}">券后价</a><if condition='$txt_sort eq "price"'><i class="icon-caret"></i></if></div>
+		</div>
+	</div>
+	<div class="goods-des">
+		<div class="weui-row weui-no-gutter" id="list">
+			<volist name='list' id="vo">
+				<div class="weui-col-50 ">
+					<div class="goods-col tqk-bg-white tqk-rad-12">
+						<div class="goods-vertical">
+							<div>
+								<div class="pic">
+									<a href="{$vo.linkurl}">
+										<img src="{$vo.pic_url}_300x300.jpg"/>
+									</a>
+									<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+                                  <span class="share-info">
+                                                    预计返￥{:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}
+                                                </span>
+									</if>
+								</div>
+								<div class="title">
+									<i class="iconfont <if condition="$vo.shop_type eq 'B'">tqk-tianmaoT<else/>tqk-taobao1</if> tqk-c-red">
+									</i>
+									{$vo.title}
+								</div>
+								<div class="my">
+                                                <span class="my_qh">
+                                                    券后
+                                                </span>
+									<div class="fl">
+										<i>
+											¥
+										</i>
+										<span class="price">
+                                                     {$vo.coupon_price}
+                                                    </span>
+									</div>
+								</div>
+								<if condition="$vo['quan']">
+									<div class="tag">
+										<div class="fr">
+                                                    <span class="tags_quan">
+                                                        <span class="quan">
+                                                            券
+                                                        </span>
+                                                        <span>
+                                                            {$vo.quan}元
+                                                        </span>
+                                                    </span>
+										</div>
+									</div>
+								</if>
+								<div class="num">
+									已售{$vo.volume}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</volist>
+
+
+		</div>
+	</div>
+
+
+
+
+
 </div>
 
-<!--<div id="swiper" class="swiper-container">
-<div id="swiperWrapper" class="swiper-wrapper" >-->
-<div id="mescroll" class="mescroll">
 
- <div class="goods-wrap">
- <div class="goods">
-  <volist name='list' id="vo"> 
-	<div class="goods-item">
-					<a href="{$vo.linkurl}{$trackurl}">
-	               <div class="goods-pic">
-	                   <img src="{$vo.pic_url}_400x400.jpg" class="goods-pic">
-	   <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
-	    <span class="share-info" >
-	    	预计返￥ {:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}</span>
-	  </if>             
-	               </div>
-	               <div class="goods-info">
-	                   <i class="icon-type  <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
-	                   <p class="goods-name ellipsis-2">{$vo.title}</p>
-	               </div>
-	               <div class="goods-mid">
-	                   <p class="f-12 c-999">现价 ￥{$vo.price}</p>
-	                   <p class="goods-share maincolor">
-	                   	月销{$vo.volume}件
-	                   </p>
-	               </div>
-	               <div class="goods-bot">
-	                   <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
-	                   <div class="goods-coupon">
-	                       <p class="f-10 c-white">{$vo.quan}元券</p>
-	                   </div>
-	               </div>
-					</a>
-	            </div>
-</volist>
-</div>
-<div id="dataList">
-	
-</div>
 </div>
 
 
+<div class="weui-loadmore" style="display: none;">
+	<i class="weui-loading"></i>
+	<span class="weui-loadmore__tips">正在加载...</span>
 </div>
-<!--</div></div>-->
-</div>
-<include file="Public:footer" />
-<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.min.js"/>
-<tqkjs  href="__STATIC__/wap/js/mescroll.min.js,__STATIC__/wap/js/swiper.min.js"/>
+<div class="nomore" id="nomore" style="display: none;"><span>没有更多数据了</span></div>
+<input  type="hidden" id="page" value="2"/>
+
+
+<div class="footzw"> </div>
+
+
+
+
+<img class="tqk-totop" src="/Public/static/wap/images/icon/mescroll-totop.png" width="36" height="36" />
+<include file="NewPublic:foot" />
+<include file="Public:stat" />
 <script type="text/javascript">
-var curNavDom;
-var i=$('.active').parent().index('li');
-$("#nav li").each(function(n,dom){
-    if (dom.getAttribute("i")==i) {
-        dom.classList.add("active");
-        curNavDom=dom;
-    } else{
-        dom.classList.remove("active");
-    }
-});
+	$(function () {
+		$(window).scroll(function () {
+			var scrollT = $(document).scrollTop();
+			var offsetT = $(".pagebox").offset().top;
+			if (scrollT >= offsetT) {
+				$(".tqk-totop").show()
+			} else {
+				$(".tqk-totop").hide()
+			}
+		})
+		$(".tqk-totop").click(function(){
+			$("html,body").animate({
+				scrollTop:0
+			},1000)
+		})
+	})
 
-var isFirst = true;
-var issave=false;
-var ispage=1;
-var posname="pos_jiu_{$txt_sort}_{$sokey}_{:CONTROLLER_NAME}";
-var htname="ht_jiu_{$txt_sort}_{$sokey}_{:CONTROLLER_NAME}";
-var pgname="pg_jiu_{$txt_sort}_{$sokey}_{:CONTROLLER_NAME}";
-var pgnum = parseInt(sessionStorage.getItem(pgname));
-if(pgnum>0){
-var pageIndex = pgnum;		
-}else{
-var pageIndex = 0;	
-}
-page = {num:1};
- 
-var mescroll = new MeScroll("mescroll", {
-            up: {
-                use:true,
-                auto:true,
-                callback: getListData,
-                isBounce: false,
-                hardwareClass:'mescroll-hardware',
-                	warpClass: "mescroll-upwarp",
-                clearEmptyId: "dataList",
-                toTop:{ 
-                    src : "__STATIC__/wap/images/icon/mescroll-totop.png",
-                },
-                onScroll:function(mescroll){
-                <if condition="$isweixin">
-                	if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
-                 var pos=mescroll.getScrollTop();
-                 sessionStorage.setItem(posname,pos); 
-                 var datahtml =$('#dataList').html();
-                 sessionStorage.setItem(htname,datahtml);
-                 issave = true; 
-                 sessionStorage.setItem(pgname,ispage); 
-                 }
-                	</if>
-                 
-                }
-            }
-        });
-        
+	window.onload = function() {
+		let index = $(".active").attr('rel');
+		let mySwiper = new Swiper('#subnav',{
+			freeMode : true,
+			slidesPerView : 'auto',
+			slideToClickedSlide: true,
+			preventClicksPropagation:true,
+			initialSlide:index?index:0
+		});
+		var index2 = $(".active2").attr('rel') -1 ;
+		let mySwiper2 = new Swiper('#header',{
+			freeMode : true,
+			slidesPerView : 'auto',
+			slideToClickedSlide: true,
+			preventClicksPropagation:true,
+			initialSlide:index2?index2:0
+		});
+	}
 
-var scrollxContent=document.getElementById("scrollxContent");
-var star = scrollxContent.scrollLeft;
-var end = curNavDom.offsetLeft + curNavDom.clientWidth/2 - document.body.clientWidth/2;
-mescroll.getStep(star, end, function(step,timer){
-scrollxContent.scrollLeft=step; 
-});
-
-  
-
-    function getListData(page){
-                getListDataFromNet(page.num+pageIndex,function(curPageData){
-                    mescroll.endByPage(20, {$page_size});
-                    setListData(curPageData);
-                }, function(){
-                    mescroll.endErr();
-                });
-            }
-    function getListDataFromNet(pageNum,successCallback,errorCallback) {
-             var ajaxurl="{:U('jiu/catelist',array('cid'=>$cid,'sort'=>$txt_sort))}";
-                  ajaxurl=ajaxurl+"?k={$sokey}&p="+pageNum;
-                  
-                  ispage=pageNum;
-                  
-                    $.ajax({
-                        type: 'GET',
-                        url: ajaxurl,
-                        dataType: 'html',
-                        success: function(data){
-                            successCallback(data);
-                        },
-                        error: errorCallback
-                    });
-         
-            }
-    
-
-    
-function setListData(curPageData){
-                var listDom=document.getElementById("dataList");
-                var liDom=document.createElement("div");
-                liDom.className = 'goods';  
-                liDom.innerHTML=curPageData;
-                listDom.appendChild(liDom);
-                
-<if condition="$isweixin">             
- if(isFirst){ //如果存在缓存
- var tops = parseInt(sessionStorage.getItem(posname));
- var htmldata = sessionStorage.getItem(htname);
- if(htmldata){
- $('#dataList').html(htmldata);
- mescroll.scrollTo(tops,0);
- }
-sessionStorage.removeItem(posname);
-sessionStorage.removeItem(htname);
-sessionStorage.removeItem(pgname);
-sessionStorage.clear();
-isFirst = false;
- }
- </if>
- 
- 
-}
+	$(document.body).infinite();
+	var loading = false;  //状态标记
+	$(document.body).infinite().on("infinite", function() {
+		if(loading) return;
+		loading = true;
+		$('.weui-loadmore').show()
+		var page = $('#page').val();
+		var word = "{$sokey}";
+		var cid = "{$cid}";
+		var sid = "{$sid}";
+		var sort ="{$sort}";
+		$.get("{:U('jiu/catelist')}",{page:page,k:word,sort:sort,cid:cid,sid:sid},function(res){
 
 
+					if(res == 1){
+						loading = false;
+						$(document.body).destroyInfinite()
+						$('.weui-loadmore').hide()
+						$('#nomore').show();
+						return;
+					}
+					$("#list").append(res);
+					$('#page').val(Number(page)+1);
+					loading = false;
 
-function jumpto(quan,num_id,quanurl,commission_rate){
-      var num_id=num_id;
-      var quan=quan;
-      var quanurl=quanurl;
-      var commission_rate = commission_rate;
-      var trackurl='{$trackurl}';
-      $.ajax({
-        type:"post",
-        data:{numid:num_id,quan:quan,quanurl:quanurl,commission_rate:commission_rate},
-        url:"{:U('jumpto/jumpclick')}",
-        dataType: 'json',
-        success:function(json){
-            if(json.status==1){
-                window.location.href=json.urls+trackurl;
-            }
-        }
-      });
-    }
-;$(function(){
-    $('#drop-down, .drop-down').click(
-    	function(){
-    		var action = $('#drop-down, .drop-down').attr('data-action');
-    		if(action == 'down'){
-    			$('.drop-down i').attr({ class: "iconfont tqk-jiantou_up maincolor" });
-    			$('.cxx-more-cate').slideDown('fast');
-    			$('.cxx-transparent-bg').show();
-    			$('#drop-down, .drop-down').attr('data-action','up');	
-    		}
-    		if(action == 'up'){
-                $('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
-                $('.cxx-transparent-bg').hide();
-    			$('.cxx-more-cate').slideUp('fast');
-    			$('.cxx-transparent-bg').hide();
-    			$('#drop-down, .drop-down').attr('data-action','down');
-    		}		
-    	}
-    );
-    $('.cxx-transparent-bg').on('click',function(){
-        var action = $('#drop-down, .drop-down').attr('data-action');
-        if(action == 'up'){
-            $('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
-            $('.cxx-transparent-bg').hide();
-            $('.cxx-more-cate').slideUp('fast');
-            $('.cxx-transparent-bg').hide();
-            $('#drop-down, .drop-down').attr('data-action','down');
-        }
-    	$('.cxx-transparent-bg').hide();	
-    });
-});
+
+				},
+				'html'
+		);
+
+
+	});
+	document.onkeydown = function(e){
+		var ev = document.all ? window.event : e;
+		if(ev.keyCode==13) {
+			$("#searchbtn").click();
+
+		}
+	}
+	$("#searchbtn").click(function(event) {
+		var word = $('#searchInput').val();
+		if(!word){
+			$.alert('搜索内容不能为空');
+			return false
+		}
+		$('#search').submit();
+	});
 </script>
 <include file="Public:stat" />
 </body>

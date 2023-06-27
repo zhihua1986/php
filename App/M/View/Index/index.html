@@ -2,7 +2,7 @@
 <include file="Public:top" />
  <style>
 #newslist{position:absolute;top:8px;left:1.8%;width:82%;line-height:20px}#contain{overflow:hidden;margin:0;padding:0;width:84%;height:50px;list-style:none;text-overflow:ellipsis}#contain li img{width:50px;height:50px;white-space:nowrap;line-height:60px}#contain li a{overflow:hidden;margin:0;color:#333;text-overflow:ellipsis;font-size:14px}.gg{position:absolute;top:5px;right:1.6%;overflow:hidden;width:60px;height:60px}.aui-my-info{position:relative;overflow:hidden;height:64px;background:#fff}.aui-page-my .aui-icon{width:22px;height:20px}.aui-page-my .aui-menu-list ul li h3{color:#4f4f4f;font-size:14px}.icon1-type.tmall1{top:16px;width:12px;height:12px;background-position:-11.9px 0}.icon1-type{position:absolute;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}.icon1-type.taobao1{width:11.9px;height:11.9px;background-position:0 0}.icon1-type{position:absolute;top:16px;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}
-.dot-tip{padding:2px;background:-webkit-linear-gradient(324deg,#ff5b3e,#ff0707);background:linear-gradient(126deg,#ff5b3e,#ff0707);border-radius:3px;font-size:12px;color:#fff;line-height:100%;position:absolute;margin-left:50px;-webkit-transform-origin:left bottom;transform-origin:left bottom;-webkit-animation:of_D4HAg 2.4s infinite;animation:of_D4HAg 2.4s infinite}
+.dot-tip{padding:2px;background:-webkit-linear-gradient(324deg,#ff5b3e,#ff0707);background:linear-gradient(126deg,#ff5b3e,#ff0707);border-radius:3px;font-size:12px;color:#fff;line-height:100%;position:absolute;margin-left:50px;margin-top:0;-webkit-transform-origin:left bottom;transform-origin:left bottom;-webkit-animation:of_D4HAg 2.4s infinite;animation:of_D4HAg 2.4s infinite}
 </style> 
 	    <!--banner-->
 	    <div class="banner">
@@ -17,8 +17,10 @@
 	    <!-- category -->
 <div class="category">
 <if condition="C('yh_dm_cid_kfc') eq 1">
-<div class="category-item"><a rel="nofollow" href="{:U('elm/other',array('id'=>'5933','type'=>1))}" target="_blank">
-<div class="dot-tip">5折起</div>
+<div class="category-item">
+	<div class="dot-tip">5折起</div>
+	<a rel="nofollow" href="{:U('elm/other',array('id'=>'5933','type'=>1))}" target="_blank">
+
 <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01vv0lrn2MgYl2HB95o_!!3175549857.png" class="category-icon">
 <p class="category-name">肯德基</p></a></div>
 </if>
@@ -29,10 +31,11 @@
 </if>
 
 <if condition="C('yh_dm_cid_dy') eq 1">
-<div class="category-item"><a href="{:U('live/index')}">
-<div class="dot-tip">返</div>
+<div class="category-item">
+	<div class="dot-tip">返</div>
+	<a href="{:U('douyin/index')}">
 <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01DImHGL2MgYktgKkCY_!!3175549857.png" class="category-icon">
-<p class="category-name">抖音直播</p></a></div>
+<p class="category-name">抖音精选</p></a></div>
 </if>
 
 <if condition="C('yh_dm_cid_dd') eq 1">
@@ -49,12 +52,13 @@
 </div>
 
 <div class="category">
-<div class="category-item"><a href="{:U('elm/gaode')}" rel="nofollow" target="_blank">
-<img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lH6WbT2MgYkx01LPz_!!3175549857.png" class="category-icon"><p class="category-name">高德打车券</p></a></div>
+<div class="category-item"><a href="{:U('vph/index')}" rel="nofollow" >
+<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN018T0JF82MgYrv4Lu75_!!3175549857.png" class="category-icon"><p class="category-name">唯品会</p></a></div>
 <!-- <div class="category-item"><a href="{:U('top100/index')}"><img src="__STATIC__/wap/images/icon/cjmbq-5.png" class="category-icon"><p class="category-name">实时热榜</p></a></div> -->
 	
-<div class="category-item"><a href="{:U('uxuan/index',array('id'=>4956))}">
+<div class="category-item">
 	<div class="dot-tip">享补贴</div>
+	<a href="{:U('uxuan/index',array('id'=>4956))}">
 	<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01LJdLke2MgYqLLxz7y_!!3175549857.png" class="category-icon"><p class="category-name">超级U选</p></a></div>
 <if condition="C('yh_dm_cid_mt') eq 1 or C('yh_openmt' eq 1)">
 	<div class="category-item">
@@ -63,8 +67,9 @@
 </div>
 </if>
 <if condition="$openjd">
-<div class="category-item"><a href="{:U('recharge/index')}">
-<div class="dot-tip">特惠</div>
+<div class="category-item">
+	<div class="dot-tip">特惠</div>
+	<a href="{:U('recharge/index')}">
 <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01NNZXb62MgYkpHmTRi_!!3175549857.png" class="category-icon"><p class="category-name">话费充值</p></a></div>
 <else/>
  <div class="category-item"><a href="{:U('koubei/index')}"><img src="__STATIC__/wap/images/icon/koubei-4.png" class="category-icon"><p class="category-name">口碑红包</p></a></div>

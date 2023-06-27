@@ -164,7 +164,8 @@ class CateAction extends BaseAction
             $resp=$resp['result_list']['map_data'];
             $patterns = "/\d+/";
             foreach ($resp as $k=>$v) {
-                if ($this->FilterWords($v['title'])) {
+
+                if ($this->FilterWords($v['title']) || !$v['item_id']) {
                     continue;
                 }
 

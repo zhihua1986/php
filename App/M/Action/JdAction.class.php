@@ -49,8 +49,8 @@ $this->assign('isweixin',true);
 }
 $this->assign('ItemCate', $this->_mod->Jdcate());
 	
-$size	= 40;
-$cid		= I('cid',0,'number_int');
+$size	= 10;
+$cid	= I('cid',0,'number_int');
 $sort	= I('sort', 'new', 'trim');
 $page	= I('p',1 ,'number_int');
 $this->assign('txt_sort', $sort);
@@ -106,7 +106,7 @@ $this->assign('gid', $categoryid);
 }
 
 $data = $this->JdGoodsList($size,$where,$order,$page,false,$key,$categoryid);
- $this->assign('total_item', count($data['goodslist']));
+//$this->assign('total_item', count($data['goodslist']));
 $this->assign('list',$data['goodslist']);
 
 if($cid){
@@ -136,9 +136,9 @@ $this->display();
 
 
 public function catelist(){
-$page	= I('p',0,'intval');
+$page	= I('page',0,'intval');
 $size	= 10;
-$cid		= I('cid','','intval');
+$cid	= I('cid','','intval');
 $sort	= I('sort', 'new', 'trim');
 $start = $size * $page;
 $this->assign('txt_sort', $sort);

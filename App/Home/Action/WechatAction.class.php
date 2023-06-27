@@ -203,6 +203,30 @@ $skuid = I('goods_id');
 }
 
 
+public  function  sodouyin(){
+    $this->check_key();
+    $goodsid = I('goods_id');
+    $url = 'https://haohuo.jinritemai.com/ecommerce/trade/detail/index.html?id='.$goodsid.'&origin_type=open_platform&pick_source=v.Epyxi';
+    $data = $this->DuomaiLink('14882',$url,array('euid'=>$this->uid?$this->uid:'m001'));
+    if($data['url']){
+        $Mod = new userModel();
+        $rate=$Mod->where(array('id'=>$this->uid))->getField('webmaster_rate');
+        $data = [
+            'kouling'=>$data['url'],
+            'rate'=>$rate
+        ];
+        exit(json_encode($data));
+    }
+
+
+    exit;
+
+
+
+
+}
+
+
 public function soduoduo(){
 $this->check_key();	
 $goodsid = I('goods_id');
