@@ -21,16 +21,24 @@ class PddAction extends BaseAction
     {
         $cats = $this->PddGoodsCats();
         $this->assign('ItemCate', $cats);
+
         $cid = I('cid', 0, 'intval');
         $page = I('p', 1, 'intval');
         $key = I("k");
         $key = urldecode($key);
+
         if ($key) {
             if ($this->FilterWords($key)) {
                 $this->_404();
             }
             $this->assign('k', $key);
         }
+
+        if($key && !$this->memberinfo['id']){
+            echo('<script> alert("请登录后再搜索！");window.history.back()</script>');
+            exit;
+        }
+
         $sort = I('sort', '12', 'intval');
         $this->assign('txt_sort', $sort);
         $this->assign('cid', $cid);
@@ -41,40 +49,24 @@ class PddAction extends BaseAction
             $this->assign('stype', $stype);
         }
 
-        if($key && !$this->memberinfo['id']){
-            echo('<script>alert("请登录再搜索！");history.go(-1)</script>');
-            exit;
-        }
+        $file = 'pdd_list'.md5($key.$cid.$page.$sort.$stype);
+        if (false === $data = S($file)) {
 
-        if($page>5 && !$this->memberinfo['id']){
-
-            echo('<script>alert("请登录后再浏览！");history.go(-1)</script>');
-            exit;
-        }
-
-        $data = $this->PddGoodsSearch($cid, $page, $key, $sort, '', $size = 40, $hash);
-
-        if($data['res']){
-            $back = $_SERVER["HTTP_REFERER"];
-            if ($back) {
-                $url = U('auth/pdd',array('back'=>urlencode($back),'ac'=>urlencode($data['res'])));
-                redirect($url);
+            $data = $this->PddGoodsSearch($cid, $page, $key, $sort, '', $size = 40, $hash);
+            if($data['res']){
+                $back = $_SERVER["HTTP_REFERER"];
+                if ($back) {
+                    $url = U('auth/pdd',array('back'=>urlencode($back),'ac'=>urlencode($data['res'])));
+                    redirect($url);
+                }
             }
 
-
-
+            S($file,$data);
+        }else{
+            $data = S($file);
         }
-
-
-        $count = $data['count'];
-        if (!$count) {
-            $count = 2000;
-        }
-        $pager = new Page($count, 40);
-        $this->assign('p', $page);
-        $this->assign('page', $pager->show());
-        $this->assign('total_item', $count);
-        $this->assign('page_size', $size);
+        $this->assign('search_id', $data['search_id']);
+        $this->assign('list_id', $data['list_id']);
         $this->assign('list', $data['goodslist']);
         if ($cid) {
             $cateinfo['name'] = $cats[$cid];
@@ -91,4 +83,56 @@ class PddAction extends BaseAction
         }
         $this->display();
     }
+
+
+    public function catelist(){
+
+        $page = I('p', 1, 'intval');
+        if($key && !$this->memberinfo['id']){
+            echo 1;
+            exit;
+        }
+        if($page>1 && !$this->memberinfo['id']){
+            echo 1;
+            exit;
+        }
+        $cid = I('cid', 0, 'intval');
+        $key = I("k");
+        $key = urldecode($key);
+        if ($key) {
+            if ($this->FilterWords($key)) {
+                $this->_404();
+            }
+            $this->assign('k', $key);
+        }
+
+        $sort = I('sort', '12', 'intval');
+        $this->assign('txt_sort', $sort);
+        $this->assign('cid', $cid);
+        $stype = I("stype");
+        $hash = 'false';
+        if ($stype == 1) {
+            $hash = 'true';
+            $this->assign('stype', $stype);
+        }
+        $lid = I('lid');
+
+        $file = 'pdd_list'.md5($key.$lid.$cid.$page.$sort.$stype);
+        if (false === $data = S($file)) {
+            $data = $this->PddGoodsSearch($cid, $page, $key, $sort, '', $size = 40, $hash);
+            S($file,$data);
+        }else{
+            $data = S($file);
+        }
+
+        $this->assign('list',$data['goodslist']);
+
+        $this->display('catelist');
+
+
+    }
+
+
+
+
 }

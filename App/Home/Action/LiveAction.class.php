@@ -40,7 +40,7 @@ public function getlink(){
 	
 	$uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
 	$authorid = I('openid');
-	$data = $this->DuomaiLink('14633','',array('euid'=>$uid?$uid:'m001','douyin_openid'=>$authorid));
+	$data = $this->DuomaiLink('14633','',array('euid'=>$uid?$uid:'m001','douyin_buyinid'=>$authorid));
 	if($data['qr_code']){
 	$data = [
 		'link'=>$data['qr_code'],

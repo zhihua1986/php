@@ -1,0 +1,64 @@
+<include file="Public:head_nosearch" />
+<style>
+
+</style>
+		<!--header-->
+<!--		<header data-am-widget="header" class="am-header am-header-default am-header-fixed">-->
+<!--		    <div class="am-header-left am-header-nav">-->
+<!--		        <a href="javascript:history.go(-1)"><i class="iconfont tqk-fanhui"></i></a>-->
+<!--		    </div>-->
+<!--		    <h1 class="am-header-title">淘宝签到红包教程</h1>-->
+<!--		</header>-->
+<main>
+	<div class="headlines">
+
+		<div class="videobox" ontouchmove="return false;">
+			<video webkit-playsinline="true" preload="auto" autoplay="true" poster="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01EDXpew2MgYsjQAAhd_!!3175549857.jpg" id="mainvideo"  src="https://cloud.video.taobao.com//play/u/3175549857/p/1/e/6/t/1/420984691232.mp4" x5-video-player-type="h5"  x5-video-player-fullscreen="true" ></video>
+		</div>
+
+	</div>
+
+
+</main>
+<script src="__SKIN3__/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+	$('#mainvideo').height(window.innerHeight);
+	$('#mainvideo').height(window.innerHeight);
+	$(window).resize(function() {
+		$('#mainvideo').attr('height', window.innerHeight);
+		$('#mainvideo').attr('width', window.innerWidth);
+	});
+
+	var video = document.querySelector('#mainvideo');
+	var videobox = document.querySelector('.videobox');
+	var audio = document.getElementById('mainvideo');
+	audio.play(); //安卓手机可以直接播放
+	// 为iOS做兼容,为了保险起见,触摸事件都给他加上
+	if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+		var noPlay = true;
+		$('html').one('touchstart', function () {
+			if (noPlay) {
+				audio.play();
+				noPlay = false;
+			}
+		})
+		$('html').one('touchmove', function () {
+			if (noPlay) {
+				audio.play();
+				noPlay = false;
+			}
+		})
+		$('html').one('touchend', function () {
+			if (noPlay) {
+				audio.play();
+				noPlay = false;
+			}
+		})
+	}
+//	$("#mainvideo").trigger("play")
+
+
+</script>
+</body></html>
+
+

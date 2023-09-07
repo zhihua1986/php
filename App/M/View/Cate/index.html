@@ -67,7 +67,7 @@
 						<div class="goods-vertical">
 							<div>
 								<div class="pic">
-									<a href="{$vo.linkurl}">
+									<a href="{:U('item/index',array('id'=>$vo['num_iid']))}">
 										<img src="{$vo.pic_url}_300x300.jpg"/>
 									</a>
 									<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
@@ -146,7 +146,6 @@
 
 <img class="tqk-totop" src="/Public/static/wap/images/icon/mescroll-totop.png" width="36" height="36" />
 <include file="NewPublic:foot" />
-<include file="Public:stat" />
 <script type="text/javascript">
 		$(function () {
 		$(window).scroll(function () {
@@ -184,8 +183,12 @@ window.onload = function() {
 		});
 	}
 
-	$(document.body).infinite();
-	var loading = false;  //状态标记
+
+
+
+$(document.body).infinite();
+		var loading = false;  //状态标记
+
 	$(document.body).infinite().on("infinite", function() {
 		if(loading) return;
 		loading = true;
@@ -196,6 +199,10 @@ window.onload = function() {
 		var sid = "{$sid}";
 		var sort ="{$sort}";
 		$.get("{:U('cate/catelist')}",{page:page,k:word,sort:sort,cid:cid,sid:sid},function(res){
+
+
+
+
 					if(res == 1){
 						loading = false;
 						$(document.body).destroyInfinite()
@@ -208,12 +215,65 @@ window.onload = function() {
 					loading = false;
 
 
+
+
+
 				},
 				'html'
 		);
 
 
 	});
+
+
+
+		<if condition="$isweixin">
+
+		var isFirst = true;
+		var issave=false;
+		var posname="pos_{$cid}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+		var htname="ht_{$cid}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+		var pgname="pg_{$cid}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+		var pgnum = parseInt(sessionStorage.getItem(pgname));
+		if(pgnum>0){
+			var pageIndex = pgnum;
+		}else{
+			var pageIndex = 1;
+		}
+
+
+			if(isFirst){
+			var tops = parseInt(sessionStorage.getItem(posname));
+			var htmldata = sessionStorage.getItem(htname);
+			if(htmldata){
+			$('#list').html(htmldata);
+			$("html,body").scrollTop(tops);
+		}
+			$('#page').val(pageIndex);
+			sessionStorage.removeItem(posname);
+			sessionStorage.removeItem(htname);
+			sessionStorage.removeItem(pgname);
+			sessionStorage.clear();
+			isFirst = false;
+		}
+
+			window.addEventListener('scroll',function(){
+			if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
+			var pos=$(document).scrollTop();
+			sessionStorage.setItem(posname,pos);
+			var datahtml =$('#list').html();
+			sessionStorage.setItem(htname,datahtml);
+			issave = true;
+			sessionStorage.setItem(pgname,Number(page)+1);
+
+		};
+		});
+
+		</if>
+
+
+
+
 	document.onkeydown = function(e){
 		var ev = document.all ? window.event : e;
 		if(ev.keyCode==13) {
@@ -221,6 +281,7 @@ window.onload = function() {
 
 		}
 	}
+
 	$("#searchbtn").click(function(event) {
 		var word = $('#searchInput').val();
 		if(!word){

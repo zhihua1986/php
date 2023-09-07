@@ -1465,6 +1465,9 @@ INSERT INTO `tqk_setting` (`name`, `data`, `remark`) VALUES
 ('elmsecret', '', ''),
 ('elmpid', '', ''),
 ('vphpid', '', '唯品会pid'),
+('ddpid', '', '滴滴pid'),
+('ddappkey', '', '滴滴key'),
+('ddsecret', '', '滴滴密钥'),
 ('zhunru', '', '');
 -- --------------------------------------------------------
 

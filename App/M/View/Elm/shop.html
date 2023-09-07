@@ -1,0 +1,341 @@
+<include file="NewPublic:cate" />
+<style>
+    .topfixed {background: #1a71ff;}
+    .topfixed .weui-search-bar{background: #1a71ff;}
+    .topfixed .weui-search-bar__form {background: #1a71ff;}
+    .weui-search-bar__cancel-btn2{ background: #ff9000}
+    .topfixed-title{ color: #ffffff; text-align: center; float: left; width: 90%; font-size: large;}
+    .tabnav .swiper-slide{padding:0 .5rem;text-align:center;width:33%}
+    .page-list{ padding: 5px; background: #ffffff; margin-bottom: 4px; margin-top: 4px; width: 100%}
+    .page-list img{ width: 95%; border-radius: 10px;}
+    .weui-cells__title{ padding-left: 3px; padding-right: 3px;}
+    .canvas-pics{text-align: center}
+    .canvas-pic{ width: 80%; margin: 0 auto; text-align: center}
+</style>
+<body>
+<div class="pagebox">
+
+    <div class="weui-tab">
+
+    <div class="topfixed fixs">
+        <a class="backlist"  href="javascript:history.back(-1)"><i class="tqk-fanhui2 iconfont"></i>
+
+        </a>
+        <a href="javascript:" id="location" style="word-break:keep-all;white-space:nowrap;overflow:hidden; text-overflow:ellipsis;">
+            <img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01QN3Vd22MgYtdLFDx0_!!3175549857.png" width="13px" height="13px">
+            <label id="city">{$city}</label>
+          </a>
+        <div class="weui-search-bar" id="searchBar">
+            <form class="weui-search-bar__form" action="{:U('elm/shop',array('from'=>'sdp'))}" method="get" id="search">
+                <div class="weui-search-bar__box">
+                    <input type="search" name="k" class="weui-search-bar__input" id="searchInput" value="{$sokey}"  required="">
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                    <span>输入店铺名称</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn2" id="searchbtn">搜索</a>
+        </div>
+
+    </div>
+
+
+        <div class="tabnav" id="subnav" style="background: #1a71ff; padding-top: 2.5rem">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><a href="{:U('elm/index',array('from'=>'hot'))}"  <if condition="$platform eq 'hot'">class="active"</if> >热门活动</a></div>
+                <div class="swiper-slide"><a href="{:U('elm/index',array('from'=>'bwc'))}" <if condition="$platform eq 'bwc'">class="active"</if>>霸王餐</a></div>
+                <div class="swiper-slide"><a  href="{:U('elm/shop',array('from'=>'sdp'))}" <if condition="$platform eq 'sdp'">class="active"</if>>搜店铺</a></div>
+            </div>
+        </div>
+
+
+    </div>
+
+<!--    <div class="topfixed fixs">-->
+<!--        <a class="backlist" href="javascript:history.back(-1)"><i class="tqk-fanhui2 iconfont"></i>-->
+<!--        </a>-->
+<!--        <div class="topfixed-title">-->
+<!--            饿了么外卖-->
+<!--        </div>-->
+
+<!--    </div>-->
+
+
+
+    <div class="weui-row weui-no-gutter" id="list">
+<if condition="$list">
+        <volist name="list" id="vo">
+            <div class="weui-row page-list">
+                <div class="weui-col-40"><img src="{$vo.shop_logo}"> </div>
+                <div class="weui-col-60">
+                    <strong>  {$vo.title}</strong>
+
+                    <div class="weui-cells__title"> {$vo.indistinct_monthly_sales}</div>
+                    <a href="javascript:;" rel="{$vo.shop_id}" title="{$vo.title}"  class="weui-btn weui-btn_mini weui-btn_warn buy-btn">获取店铺链接</a>
+                </div>
+            </div>
+        </volist>
+    <else/>
+
+    <div class="weui-msg" style="margin: 0 auto">
+        <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg-primary"></i></div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">温馨提示</h2>
+            <p class="weui-msg__desc">没有查询到相关店铺！</p>
+        </div>
+    </div>
+
+</if>
+
+    </div>
+
+</div>
+
+
+
+<div class="weui-loadmore" style="display: none;">
+    <i class="weui-loading"></i>
+    <span class="weui-loadmore__tips">正在加载...</span>
+</div>
+<div class="nomore" id="nomore" style="display: none;"><span>没有更多数据了</span></div>
+<input  type="hidden" id="page" value="2"/>
+<input  type="hidden" id="session" value="{$sessionId}"/>
+
+<div class="footzw"> </div>
+
+<div style="padding-top: 5rem"></div>
+
+
+<img class="tqk-totop" src="/Public/static/wap/images/icon/mescroll-totop.png" width="36" height="36" />
+<include file="NewPublic:foot" />
+<include file="Public:stat" />
+
+<div id="half" class='weui-popup__container popup-bottom'>
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+        <div class="toolbar"  style="background: #1a71ff">
+            <div class="toolbar-inner">
+                <a href="javascript:;" class="picker-button close-popup iconfont tqk-xiangzuojiantou"></a>
+                <h1 class="title" id="title"></h1>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="weui-grids">
+                <div class="copy-box">
+                    <div class="am-panel am-panel-danger">
+                        <div class="am-panel-hd">长按图片识别或发送给好友</div>
+                        <div class="am-panel-bd">
+
+                            <div class="canvas-mask" style="height:auto; width:100%; overflow: hidden; padding: 0;">
+                                <div class="canvas-container" style="padding-top:0px ; margin-top: 0px;">
+                                    <div class="canvas-wrap">
+                                        <div class="canvas-pics" style="position:relative">
+                                            <img id="canvas-pic" src="https://img.alicdn.com/imgextra/i3/6000000001594/O1CN0187p2Km1Ne68biBOa5_!!6000000001594-2-o2oad.png" class="canvas-pic" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <a href="javascript:$.closePopup();" style="width: 60%;height:2rem;font-size:0.8rem"
+                       class="weui-btn weui-btn_default">关闭页面</a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(window).scroll(function () {
+            var scrollT = $(document).scrollTop();
+            var offsetT = $(".pagebox").offset().top;
+            if (scrollT >= offsetT) {
+                $(".tqk-totop").show()
+            } else {
+                $(".tqk-totop").hide()
+            }
+        })
+        $(".tqk-totop").click(function(){
+            $("html,body").animate({
+                scrollTop:0
+            },1000)
+        })
+    })
+
+    $(document.body).infinite();
+    var loading = false;  //状态标记
+
+    $(document.body).infinite().on("infinite", function() {
+        if(loading) return;
+        loading = true;
+        $('.weui-loadmore').show()
+        var page = $('#page').val();
+        var word = "{$sokey}";
+        var cid = $('#session').val();
+        $.get("{:U('elm/shops')}",{k:word,cid:cid},function(res){
+
+                if(res == 1){
+                    loading = false;
+                    $(document.body).destroyInfinite()
+                    $('.weui-loadmore').hide()
+                    $('#nomore').show();
+                    return;
+                }
+
+                var html ='';
+
+                if (!res || typeof res === 'undefined') {
+                    $.alert('没有查询到相关店铺！');
+                    return;
+                }
+
+                var list = res.records.store_promotion_dto;
+
+                $('#session').val(res.session_id);
+
+                for(let i = 0; i < list.length; i++) {
+
+                    html+='<div class="weui-row page-list">\n' +
+                        '                <div class="weui-col-40"><img src="'+list[i]['shop_logo']+'"> </div>\n' +
+                        '                <div class="weui-col-60">\n' +
+                        '                    <strong> '+list[i]['title']+'</strong>\n' +
+                        '\n' +
+                        '                    <div class="weui-cells__title"> '+list[i]['indistinct_monthly_sales']+'</div>\n' +
+                        '                    <a href="javascript:;" rel="'+list[i]['shop_id']+'" title="'+list[i]['title']+'"  class="weui-btn weui-btn_mini weui-btn_warn buy-btn">获取店铺链接</a>\n' +
+                        '                </div>\n' +
+                        '            </div>' +
+                        '';
+
+                }
+
+                $("#list").append(html);
+                loading = false;
+
+            },
+            'json'
+        );
+
+
+    });
+
+    function LoginMsg(){
+        $.modal({
+            title: "系统提示",
+            text: "请登录后再下单！",
+            buttons: [
+                { text: "开始登录", onClick: function(){
+                        window.location.href="{:U('login/index')}";
+                    } },
+                { text: "暂不登录", className: "default",onClick: function(){
+                        $.closePopup()
+                    } },
+            ]
+        });
+    }
+
+$('.buy-btn').live('click',function (){
+
+    <if condition="$islogin && !$visitor">
+        LoginMsg();
+        return false;
+    </if>
+
+    var id = $(this).attr('rel');
+    var title = $(this).attr('title');
+    $('#title').html(title);
+
+    $.ajax({
+        url: "{:U('elm/getshoplink')}",
+        type:'post',
+        dataType: "json",
+        timeout :3000,
+        data: {id:id},
+        success: function(data){
+
+            if(data.link){
+                $("#half").popup();
+
+                $('#canvas-pic').attr('src',data.link.picture);
+
+
+            }else {
+                $.alert('获取链接失败！');
+            }
+        }
+    });
+
+
+
+});
+
+
+
+    $("#searchbtn").click(function(event) {
+        var word = $('#searchInput').val();
+        if(!word){
+            $.alert('搜索内容不能为空');
+            return false
+        }
+        $('#search').submit();
+    });
+
+    $(document).on("click", "#location", function() {
+        $.prompt({
+            text: "如：无锡市广南路月星国际 ",
+            title: "输入要查询的位置",
+            onOK: function(text) {
+                if(text){
+                    text=text.replace(/\s+/g,"");
+                    var word = "{$sokey}";
+                    $.get("{:U('elm/shops')}",{k:word,local:text},function(res){
+                        var html ='';
+
+                            if (!res || typeof res === 'undefined') {
+                                $.alert('没有查询到相关店铺！');
+                                return;
+                            }
+
+                            var list = res.records.store_promotion_dto;
+
+                        $('#session').val(res.session_id);
+                        $('#city').html(res.city)
+
+                        for(let i = 0; i < list.length; i++) {
+
+                            html+='<div class="weui-row page-list">\n' +
+                                '                <div class="weui-col-40"><img src="'+list[i]['shop_logo']+'"> </div>\n' +
+                                '                <div class="weui-col-60">\n' +
+                                '                    <strong> '+list[i]['title']+'</strong>\n' +
+                                '\n' +
+                                '                    <div class="weui-cells__title"> '+list[i]['indistinct_monthly_sales']+'</div>\n' +
+                                '                    <a href="javascript:;" rel="'+list[i]['shop_id']+'" title="'+list[i]['title']+'"  class="weui-btn weui-btn_mini weui-btn_warn buy-btn">获取店铺链接</a>\n' +
+                                '                </div>\n' +
+                                '            </div>' +
+                                '';
+
+                        }
+
+                        $("#list").html(html);
+
+
+                    },
+                        'json')
+
+
+                }
+
+            },
+            onCancel: function() {
+            },
+            input: ''
+        });
+    });
+
+</script>
+</body>
+</html>

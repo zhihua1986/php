@@ -213,10 +213,25 @@ a,a:focus,a:hover{color: #ff2020;}
 #activity {position: relative;display: none;}
 #activity .cancel{position: absolute;top: 0;right: 14%;width: 8%;height: 8%;}
 .actcopy{position: absolute;left: 50%;margin-left: -28%;bottom: 8%;width: 56%;height: 9%;background: none;border: none;}
-
+.search-coupon{
+    position: fixed;
+    top: 3.8rem;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 750px;
+    height: 6rem;
+    margin: 0 auto;
+    z-index: 10;
+    padding: 8px;
+    display: flex;
+    background-color: #FF472B;
+    align-items: center;
+    justify-content: space-between;
+}
 /* menu */
 .menu-wrap{max-width: 750px;height: 36px; background-color: #fff;display: flex;align-items: center;justify-content: space-between; overflow: hidden;}
-.menu-fixed{position: fixed;left: 0;right: 0;top: 49px;margin: 0 auto;z-index: 10;z-index: 999;}
+.menu-fixed{position: fixed;left: 0;right: 0;top: 89px;margin: 0 auto;z-index: 10;z-index: 999;}
 .menu{flex: 1;height: 36px;}
 .menu .swiper-slide{width: auto!important;text-align: center;}
 .menu-item{padding: 0 16px 0 10px;display: block;font-size: 15px;color: #111;line-height: 36px;height: 36px;/*font-weight: 500;*/}
@@ -232,7 +247,6 @@ a,a:focus,a:hover{color: #ff2020;}
 .cxx-more-cate ul li a{color:#5F5F5F}
 .cxx-more-cate .am-btn.am-btn-default{font-size:14px;color:#fff;border-color:#ff7137;background-color:#ff7137}
 
-
 /* filter */
 .filter-wrap{display:none;max-width: 750px;position: fixed;left: 0;right: 0;top: 85px;margin: 0 auto;z-index: 10;}
 .filter{display: flex;justify-content:space-around;width: 100%;height: 30px;background-color: #fff;border-bottom: 1px solid #e1e1e1;}
@@ -243,7 +257,7 @@ a,a:focus,a:hover{color: #ff2020;}
 .icon-caret.down{background-image: url(/Public/static/wap/images/icon/caret-down.png);}
 
 /* banner */
-.banner{margin-top: 85px;}
+.banner{margin-top: 125px;}
 .banner .am-slider-a1 .am-control-nav li{margin: 0 3px;}
 .banner .am-slider-a1 .am-control-nav li a{width: 6px;height: 6px;background-color: #fff;box-shadow: none;}
 .banner .am-slider-a1 .am-control-nav li a.am-active{background-color: #000;}

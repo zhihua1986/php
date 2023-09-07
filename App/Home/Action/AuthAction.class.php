@@ -34,8 +34,8 @@ class AuthAction extends BaseAction{
 
     public function  pdd(){
 
-        $callback = urldecode(I('back'));
-        $url = urldecode(I('ac'));
+        $callback = urldecode(urldecode(I('back')));
+        $url = urldecode(urldecode(I('ac')));
         $this->assign('callback', $callback);
         $this->assign('inviterCode', $url);
 

@@ -147,9 +147,8 @@
 
 <img class="tqk-totop" src="/Public/static/wap/images/icon/mescroll-totop.png" width="36" height="36" />
 <include file="NewPublic:foot" />
-<include file="Public:stat" />
 <script type="text/javascript">
-    $(function () {
+    $(function () {x
         $(window).scroll(function () {
             var scrollT = $(document).scrollTop();
             var offsetT = $(".pagebox").offset().top;
@@ -207,6 +206,52 @@
 
 
     });
+
+
+    <if condition="$isweixin">
+
+        var isFirst = true;
+        var issave=false;
+        var posname="pos_{$cid}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+        var htname="ht_{$cid}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+        var pgname="pg_{$cid}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+        var pgnum = parseInt(sessionStorage.getItem(pgname));
+        if(pgnum>0){
+        var pageIndex = pgnum;
+    }else{
+        var pageIndex = 1;
+    }
+
+
+        if(isFirst){
+        var tops = parseInt(sessionStorage.getItem(posname));
+        var htmldata = sessionStorage.getItem(htname);
+        if(htmldata){
+        $('#list').html(htmldata);
+        $("html,body").scrollTop(tops);
+    }
+        $('#page').val(pageIndex);
+        sessionStorage.removeItem(posname);
+        sessionStorage.removeItem(htname);
+        sessionStorage.removeItem(pgname);
+        sessionStorage.clear();
+        isFirst = false;
+    }
+
+        window.addEventListener('scroll',function(){
+        if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
+        var pos=$(document).scrollTop();
+        sessionStorage.setItem(posname,pos);
+        var datahtml =$('#list').html();
+        sessionStorage.setItem(htname,datahtml);
+        issave = true;
+        sessionStorage.setItem(pgname,Number(page)+1);
+
+    };
+    });
+
+    </if>
+
     document.onkeydown = function(e){
         var ev = document.all ? window.event : e;
         if(ev.keyCode==13) {

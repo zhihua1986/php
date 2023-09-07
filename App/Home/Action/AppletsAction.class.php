@@ -119,6 +119,7 @@ protected function bdmenu(){
 		);
 		$data = array_merge($data,$meituan);
 		}
+
 		if(C('yh_openduoduo') == '1'){
 		$chongzhi = array(
 		array(
@@ -187,14 +188,14 @@ protected function bdmenu(){
 //	  				'tab'=>'dc'
 //	  				)
 //	  		);
-	$dyp = array(
-					array(
-					'name'=>'淘票票',
-					'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01qeGnZN2MgYkfMi9g3_!!3175549857.jpg',
-					'id'=>'taopiaopiao',
-					'tab'=>'dyp'
-					)
-			);
+//	$dyp = array(
+//					array(
+//					'name'=>'淘票票',
+//					'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01qeGnZN2MgYkfMi9g3_!!3175549857.jpg',
+//					'id'=>'taopiaopiao',
+//					'tab'=>'dyp'
+//					)
+//			);
 	  
 	  $kb = array(
 	  				array(
@@ -207,7 +208,7 @@ protected function bdmenu(){
 		
 		if($tab == 'all'){
 			
-			$data = array_merge($dyp,$elm);
+			$data = array_merge($elm);
 			if(C('yh_openmt') == '1'){
 			$data = array_merge($mt,$data);
 			}
@@ -276,7 +277,7 @@ protected function bdmenu(){
 			 $part2[] =  [
 			  'img'=>'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01EXx3Df2MgYl2PEl7y_!!3175549857.png',
 			  'name'=>'滴滴打车',
-			  'url'=>'/pages/other/share?id=12485&tab=didi&cur=0',
+			  'url'=>'/pages/other/share?id=12485&tab=didi&cur=0&aid=207059212323',
 			  'id'=>'12485',
 			  'type'=>1,
 			 ];
@@ -284,7 +285,7 @@ protected function bdmenu(){
 			 $part2[] =  [
 			  'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01p7y0ck2MgYl2aiDUn_!!3175549857.png',
 			  'name'=>'汽车加油',
-			  'url'=>'/pages/other/share?id=15200&tab=didi&cur=1',
+			  'url'=>'/pages/other/share?id=15200&tab=didi&cur=1&aid=206888136013',
 			  'id'=>'15200',
 			  'type'=>1,
 			 ];
@@ -335,12 +336,12 @@ protected function bdmenu(){
 //			    'url'=>'gaode',
 //			    'type'=>2,
 //			],
-			[
-			    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01vyZmbD2MgYkvpxc0R_!!3175549857.png',
-			    'name'=>'淘票票',
-			    'url'=>'taopiaopiao',
-			    'type'=>2,
-			],
+//			[
+//			    'img'=>'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01vyZmbD2MgYkvpxc0R_!!3175549857.png',
+//			    'name'=>'淘票票',
+//			    'url'=>'taopiaopiao',
+//			    'type'=>2,
+//			],
             [
                 'img'=>'https://img.alicdn.com/imgextra/i1/3175549857/O1CN0185ADWl2MgYl1MitES_!!3175549857.gif',
                 'name'=>'百亿补贴',

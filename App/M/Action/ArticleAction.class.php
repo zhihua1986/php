@@ -25,6 +25,18 @@ class ArticleAction extends BaseAction
             case 'tb':
                 $this->display('tb');
                 break;
+            case 'jd':
+                $this->display('jd');
+                break;
+            case 'dy':
+                $this->display('dy');
+                break;
+            case 'pdd':
+                $this->display('pdd');
+                break;
+            case 'vph':
+                $this->display('vph');
+                break;
             default:
                 $this->display();
         }

@@ -204,7 +204,7 @@ class DouyinAction extends BaseAction
 
         $goodsid = I('id');
         $url = 'https://haohuo.jinritemai.com/ecommerce/trade/detail/index.html?id='.$goodsid.'&origin_type=open_platform&pick_source=v.Epyxi';
-        $data = $this->DuomaiLink('14882',$url,array('euid'=>$this->uid?$this->uid:'m001'));
+        $data = $this->DuomaiLink('14882',$url,array('euid'=>$this->memberinfo['id']?$this->memberinfo['id']:'m001'));
         $this->assign('jump',$data['deep_link']);
 
         $this->display();

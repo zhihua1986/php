@@ -26,6 +26,7 @@ public function other(){
 	$ac = I('ac');
 	$type = I('type');
 	$id = I('id');
+
 	$uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
 	switch($id){
 		case '5933':
@@ -35,21 +36,45 @@ public function other(){
 		case '6680':
 		$url ='https://qz-m.oaqhsgl.cn/starbucks/?platformId=10130';
 		break;
+
+        case '10130':
+            $url= "https://i.meituan.com";
+            break;
+
+        case '10124':
+            $url= "https://i.meituan.com";
+            break;
+
+        case '10127':
+            $url= "https://i.meituan.com";
+            break;
 		
 		default:
 		$url = 'https://www.didiglobal.com/';
-		break;
+
+            if(C('yh_ddappkey') && C('yh_ddpid')) {
+
+                $LinkInfo = $this->CreateDidiLink($uid ? $uid : 'm001', I('aid'));
+
+                $data = array(
+                    'link'=>$LinkInfo['wx_qrcode'],
+                    'type'=>$type
+                );
+
+                exit(json_encode($data));
+
+            }
+
+        break;
 	}
-	if($id==10124 || $id==10127 || $id == 10130){
-		$url= "https://i.meituan.com";
-	}
+
     $data = $this->DuomaiLink($id,$url,array('euid'=>$uid?$uid:'m001'));
 	if($data['url']){
 	$link = base64_encode($data['url']);
 	if($type == 3){
 	$link = $data['wx_qrcode'];
 	}
-	
+
 	$data = array(
 	'link'=>$link,
 	'type'=>$type

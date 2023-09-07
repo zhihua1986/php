@@ -650,33 +650,6 @@ class FirstendAction extends TopAction
     protected function Takeout()
     {
 
-//        $part1[] = [
-//            'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01D23onG2MgYl28v3kI_!!3175549857.jpg',
-//            'name' => '100元高德打车券',
-//            'url' => '/index.php?c=elm&a=gaode&type=1'
-//        ];
-        if (C('yh_elm') == 1) {
-            $part1[] = [
-                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01luBsIV2MgYq3UVufb_!!3175549857.jpg',
-                'name' => '饿了么外卖红包',
-                'url' => '/index.php?c=elm&a=elmlink&id=10144&type=3',
-            ];
-
-            $part1[] = [
-                'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN019MQJbg2MgYqKRWwmo_!!3175549857.jpg',
-                'name' => '饿了么果蔬超市红包',
-                'url' => '/index.php?c=elm&a=elmlink&id=10247&type=3',
-            ];
-
-            $part1[] = [
-                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01cPWI8G2MgYrsOQJ9t_!!3175549857.png',
-                'name' => '饿了么水果生鲜满48减20',
-                'url' => '/index.php?c=elm&a=elmlink&id=10468&type=3',
-            ];
-
-
-        }
-
         if (C('yh_openjd') == 1) {
             $part1[] = [
                 'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01ZVLZFa2MgYl9OJjgs_!!3175549857.jpg',
@@ -704,30 +677,57 @@ class FirstendAction extends TopAction
             $part1[] = [
                 'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN012ghZIt2MgYl860dth_!!3175549857.jpg',
                 'name' => '滴滴打车 最高立减10元',
-                'url' => '/index.php?c=elm&a=other&id=12485&type=3',
+                'url' => '/index.php?c=elm&a=other&id=12485&type=3&aid=207059212323',
             ];
             $part1[] = [
                 'img' => 'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01xJ4TV52MgYlCmAFwB_!!3175549857.jpg',
                 'name' => '汽车加油 最高立减20',
-                'url' => '/index.php?c=elm&a=other&id=15200&type=3'
+                'url' => '/index.php?c=elm&a=other&id=15200&type=3&aid=206888136013'
             ];
             $part1[] = [
                 'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01FThA9Z2MgYlDYYxy5_!!3175549857.jpg',
                 'name' => '滴滴货运券 最高立减15',
-                'url' => '/index.php?c=elm&a=other&id=12644&type=3'
+                'url' => '/index.php?c=elm&a=other&id=12644&type=3&aid=209118946358'
             ];
             $part1[] = [
                 'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN018ljXs02MgYlDYdStB_!!3175549857.jpg',
                 'name' => '花小猪打车，首单立减10元',
-                'url' => '/index.php?c=elm&a=other&id=14801&type=3'
+                'url' => '/index.php?c=elm&a=other&id=14801&type=3&aid=208743698546'
             ];
         }
 
-//        $part1[] = [
-//            'img' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01YQ6aQ62MgYl6UfWlP_!!3175549857.jpg',
-//            'name' => '饿了么商超红包 29减10',
-//            'url' => '/index.php?c=elm&a=minapp&ac=sc&type=3',
-//        ];
+
+        if (C('yh_elm') == 1) {
+            $CacheName = 'ElmListhot';
+            if(false === $data = S($CacheName)){
+                $apiurl=$this->tqkapi.'/elmlist';
+                $data=[
+                    'key'=>$this->_userappkey,
+                    'time'=>time(),
+                    'tqk_uid'=>	$this->tqkuid,
+                    'type'=>$type,
+                ];
+                $token=$this->create_token(trim(C('yh_gongju')), $data);
+                $data['token']=$token;
+                $result=$this->_curl($apiurl, $data, true);
+                $data=json_decode($result, true);
+                S($CacheName,$data);
+            }
+            $time = time();
+            foreach ($data as $k=>$v){
+                if(strtotime($v['time'])>$time){
+                    $part1[] = [
+                        'img' => $v['img'],
+                        'name' => $v['title'],
+                        'url' => '/index.php?c=elm&a=elmlink&id='.$v['id'].'&type=3'
+                    ];
+
+                }
+            }
+
+
+        }
+
 
         $part2 = [];
         if (C('yh_dm_cid_mt') == 1) {
@@ -915,6 +915,7 @@ array(
                 'name' => '滴滴打车',
                 'title' => '滴滴打车券',
                 'id' => "12485",
+                'activity'=>'207059212323',
                 'color' => '#FF7E01',
                 'banner' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01SayEZs2MgYl89Txs6_!!3175549857.jpg',
                 'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01MegUt02MgYl6ILQPh_!!3175549857.jpg"),
@@ -923,6 +924,7 @@ array(
                 'name' => '滴滴加油',
                 'title' => '滴滴加油券',
                 'id' => "15200",
+                'activity'=>'206888136013',
                 'color' => '#FE911B',
                 'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01rzLOYt2MgYkzT3xg3_!!3175549857.jpg',
                 'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01cKSNtx2MgYl8AFUul_!!3175549857.jpg"),
@@ -931,6 +933,7 @@ array(
                 'name' => '滴滴货运',
                 'title' => '滴滴货运券',
                 'id' => "12644",
+                'activity'=>'209118946358',
                 'color' => '#01C897',
                 'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01ud9kMk2MgYl13KDKI_!!3175549857.jpg',
                 'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i2/3175549857/O1CN01qblzKE2MgYkwT5pHM_!!3175549857.jpg"),
@@ -939,6 +942,7 @@ array(
                 'name' => '花小猪打车',
                 'title' => '花小猪打车券',
                 'id' => "14801",
+                'activity'=>'208743698546',
                 'color' => '#A300ED',
                 'banner' => 'https://img.alicdn.com/imgextra/i3/3175549857/O1CN01XqgD572MgYl2izGXn_!!3175549857.jpg',
                 'poster' => trim(C('yh_site_url')) . '/?c=outputpic&a=outimg&url=' . base64_encode("https://img.alicdn.com/imgextra/i4/3175549857/O1CN01vaP5wg2MgYl6IIGyv_!!3175549857.jpg"),
@@ -946,6 +950,242 @@ array(
         );
 
         return $data;
+    }
+
+
+
+    /**
+     * @param $pr
+     * @param $accesskey
+     * @return string
+     */
+    protected function get_didi_sign($pr, $accesskey)
+    {
+        ksort($pr);
+        $ptr = array();
+        foreach ($pr as $key => $val) {
+            array_push($ptr, $key . "=" . $val);
+        }
+        $source = urlencode(implode("&", $ptr)).$accesskey;
+        $sign = urlencode(base64_encode(sha1($source)));
+        return $sign;
+    }
+
+    /**
+     * @param $url
+     * @param $jsonStr
+     * @param $header
+     * @return bool|string
+     */
+    protected  function DidiPost($url, $jsonStr, $header){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonStr);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $parse_url = parse_url($url);
+        if($parse_url["scheme"]=="https"){
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        }
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+
+    /**
+     * @param $url
+     * @param $params
+     * @param $header
+     * @return bool|string
+     */
+    protected  function DidiGet($url, $params, $header){
+        $query = '';
+        foreach ($params as $param => $value) {
+            $query .= $param.'='.$value .'&';
+        }
+        $url = $url.'?'.$query;
+        $ch = curl_init((string)$url);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $parse_url = parse_url($url);
+        if($parse_url["scheme"]=="https"){
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        }
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+
+    /**
+     * @param $source_id
+     * @param $activity
+     * @return array|false|mixed|void|null
+     */
+    protected function CreateDidiLink($source_id='m001',$activity,$link_type='h5'){
+        $CacheName = 'Didi_'.$source_id.$activity;
+        $data =  F($CacheName);
+        if(!$data){
+            $generate_link_url = "https://union.didi.cn/openapi/v1.0/link/generate";
+            $generate_code_url = "https://union.didi.cn/openapi/v1.0/code/generate";
+
+            $param_to_sign = array(
+                "App-Key"      =>    trim(C('yh_ddappkey')),
+                "Timestamp"    =>    time(),
+                "source_id"    =>    $source_id, //	来源ID
+                "activity_id"  =>    $activity,  //活动ID
+                "link_type"    =>    $link_type, //mini  or  h5
+                "promotion_id" =>    trim(C('yh_ddpid')) //推广位ID
+            );
+
+            $sign = $this->get_didi_sign($param_to_sign, trim(C('yh_ddsecret')));
+            $json = sprintf("{\"activity_id\":%d,\"source_id\":\"%s\",\"link_type\":\"%s\",\"promotion_id\":%s}", $activity, $source_id, $link_type, trim(C('yh_ddpid')));
+            $header = array(
+                "App-Key: ".$param_to_sign['App-Key'],
+                "Timestamp: ". $param_to_sign['Timestamp'],
+                "Sign: ".$sign,
+                "Content-Type: application/json",
+                "Content-Length: ".strlen($json)
+            );
+
+            $link_response = json_decode($this->DidiPost($generate_link_url, $json, $header), true);
+
+            if ($link_response["errno"] != 0) {
+                return;
+            }
+            $Timestamp = time();
+            $dsi = $link_response["data"]["dsi"];
+            $param_to_sign = array(
+                "App-Key"      =>    trim(C('yh_ddappkey')),
+                "Timestamp"    =>    $Timestamp,
+                "source_id"    =>    $source_id,
+                "dsi"          =>    $dsi,
+                "type"         =>    "mini"
+            );
+            $param = array(
+                "source_id"    =>    $source_id,
+                "dsi"          =>    $dsi,
+                "type"         =>    "mini"
+            );
+            $sign = $this->get_didi_sign($param_to_sign, trim(C('yh_ddsecret')));
+            $header = array(
+                "App-Key: ".trim(C('yh_ddappkey')),
+                "Timestamp: ". $Timestamp,
+                "Sign: ".$sign
+            );
+            $response = json_decode($this->DidiGet($generate_code_url, $param, $header),true);
+            $data = array(
+                'wx_qrcode'=>$response['data']['code_link'],
+                'cps_short'=>$link_response["data"]["link"],
+                'wx_path'=>$link_response['data']['link'],
+                'wx_appid'=>$link_response["data"]["app_id"],
+            );
+
+            F($CacheName,$data);
+
+        }
+
+        return $data;
+
+    }
+
+
+    /**
+     * @param $sid
+     * @param $key
+     * @param $page
+     * @param $sort
+     * @param $items_list
+     * @return array
+     */
+    protected function GetApiList($sid,$key,$page,$sort,$items_list,$goodslist){
+
+        $appkey=trim(C('yh_taobao_appkey'));
+        $appsecret=trim(C('yh_taobao_appsecret'));
+        $apppid=trim(C('yh_taobao_pid'));
+        $apppid=explode('_', $apppid);
+        $AdzoneId=$apppid[3];
+        $count=count($items_list);
+
+        if(!empty($appkey) && !empty($appsecret)  && $count<=20 && !empty($AdzoneId)){
+            vendor('taobao.taobao');
+            $c = new \TopClient();
+            $c->appkey = $appkey;
+            $c->secretKey = $appsecret;
+            $c->format = 'json';
+            $req = new \TbkDgMaterialOptionalRequest();
+            $req->setAdzoneId($AdzoneId);
+            $req->setPlatform("1");
+            $req->setPageSize("20");
+            if ($sid) {
+                $req->setCat("".$sid."");
+            }
+            if ($key) {
+                if(mb_strlen($key)>20){
+                    $key = mb_substr($key, 0, -1);
+                };
+                $req->setQ((string)$key);
+            }
+            if ($page>0) {
+                $req->setPageNo("".$page."");
+            } else {
+                $req->setPageNo(1);
+            }
+            if ($sort=='hot') {
+                $req->setSort("total_sales_des");
+            } elseif ($sort=='price') {
+                $req->setSort("price_asc");
+            } elseif ($sort=='rate') {
+                $req->setSort("tk_rate_des");
+            } else {
+                $req->setSort("tk_des");
+            }
+            $resp = $c->execute($req);
+            $resp = json_decode(json_encode($resp), true);
+
+            $resp=$resp['result_list']['map_data'];
+            $patterns = "/\d+/";
+            foreach($resp as $k=>$v){
+                if($this->FilterWords($v['title']) || !$v['item_id']){
+                    continue;
+                }
+                preg_match_all($patterns,$v['coupon_info'],$arr);
+                $quan=$arr[0];
+                $goodslist[$k+$count]['quan']=$v['coupon_amount'];
+                $goodslist[$k+$count]['coupon_click_url']=$v['coupon_share_url']?$v['coupon_share_url']:$v['url'];
+                $goodslist[$k+$count]['num_iid']=$v['num_iid'];
+                $goodslist[$k+$count]['title']=$v['title'];
+                $goodslist[$k+$count]['coupon_price']=$v['zk_final_price']-$goodslist[$k+$count]['quan'];
+                if($v['user_type']=="1"){
+                    $goodslist[$k+$count]['shop_type']='B';
+                }else{
+                    $goodslist[$k+$count]['shop_type']='C';
+                }
+                $goodslist[$k+$count]['commission_rate']=$v['commission_rate']; //比例
+                $goodslist[$k+$count]['price']=$v['zk_final_price'];
+                $goodslist[$k+$count]['volume']=$v['volume'];
+                $goodslist[$k+$count]['pic_url']=$v['pict_url'];
+                $goodslist[$k+$count]['category_id']=$v['category_id'];
+                if(C('APP_SUB_DOMAIN_DEPLOY')){
+                    $goodslist[$k]['linkurl']=U('/item/',array('id'=>$v['item_id']));
+                }else{
+                    $goodslist[$k]['linkurl']=U('item/index',array('id'=>$v['item_id']));
+                }
+            }
+
+            return $goodslist;
+
+        }
+
+
+        return $goodslist;
+
+
     }
 
 

@@ -1,4 +1,4 @@
 <?php
-define('TQK_VERSION', '4.2.8.1');
-define('TQK_RELEASE', '2023-06-26');
+define('TQK_VERSION', '4.2.8.5');
+define('TQK_RELEASE', '2023-09-07');
 ?>

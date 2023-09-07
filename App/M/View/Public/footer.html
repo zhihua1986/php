@@ -16,6 +16,12 @@
                 <span class="am-navbar-label">9块9包邮</span>
             </a>
         </li>
+        <li>
+            <a href="{:U('so/index')}">
+                <i class="iconfont tqk-search" style="font-size: 21px"></i>
+                <span class="am-navbar-label">超级搜索</span>
+            </a>
+        </li>
         <if condition="C('yh_openjd') eq 1">
         <li>
             <a href="{:U('jd/index')}">
@@ -31,24 +37,7 @@
             </a>
         </li>
         </if>
-        <if condition="$openduoduo eq 1">
-        <li>
-            <a href="{:U('pdd/index')}{$trackurl}">
-                <i class="iconfont tqk-pinduoduo" style="font-size: 30px;"></i>
-                <span class="am-navbar-label">拼多多券</span>
-            </a>
-        </li>
-        <else/>
-         <li>
-            <a href="{:U('brand/index')}{$trackurl}">
-                <i class="iconfont tqk-pinpaiguan" style="font-size: 20px;"></i>
-                <span class="am-navbar-label">品牌券</span>
-            </a>
-        </li>
-        
-        </if>
-        
-        
+
         <li>
             <a href="{:U('user/ucenter')}">
                   <i class="iconfont tqk-yonghu"></i>

@@ -1,6 +1,6 @@
 <include file="Public:tqk-meta" />
 <style>
-  .layui-flow-more{ margin: 0 auto; padding-top: 20px;}
+  .layui-flow-more{ margin: 0 auto; padding: 20px; width: 100%;}
 </style>
 <body>
 <include file="Public:tqk-head" />
@@ -77,9 +77,10 @@
       var p = $('#page').val();
       var word = "{$sokey}";
       $.get("{:U('vph/catelist')}",{page:p,k:word},function(res){
-                if(res == 1){
+
+                if(res == 1 && page>1){
                   layer.alert("抱歉！登录后才能查看更多商品哟", "系统提示");
-                   next(res,page<2);
+                  next(res,page<2);
                   return;
                 }
 

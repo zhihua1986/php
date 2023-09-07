@@ -15,7 +15,7 @@ $options = array(
 	'encodingaeskey'=>trim(C('yh_wxaeskey')), 
 	'appid'=>$this->_wx_appkey, 
 	'appsecret'=>$this->_wx_appsecret,
-	'debug'=>false, //改为true 表示开启调试，false表示关闭调试
+	'debug'=>true, //改为true 表示开启调试，false表示关闭调试
 	'_logcallback'=>'logdebug', 
 	);
 	
@@ -141,21 +141,11 @@ protected function sendtpl($openid,$userInfo,$fuid=''){
 		        "touser"=>$openid,
 		        "template_id"=>$tempid,
 		        "data"=> array(
-		                "first" => array(
-		                        "value"=>'您已在电脑端成功登录！',
-		                        "color"=>"#666666"
+		                "time3"=>array(
+		                        "value"=>date('Y-m-d H:i',time())
 		                ),
-		                "keyword1"=>array(
-		                        "value"=>$nickname,
-		                        "color"=>"#666666"
-		                ),
-		                "keyword2"=>array(
-		                        "value"=>date('Y-m-d H:i',time()),
-		                        "color"=>"#666666"
-		                ),
-		                "remark"=> array(
-		                        "value"=>'感谢使用，请注意账号安全。',
-		                        "color"=>"#666666"
+		                "thing6"=> array(
+		                        "value"=>$nickname
 		                ),
 		        )
 		);

@@ -6,6 +6,28 @@ layui.define(['carousel','form','ClipboardJS','element'], function(exports){
   
   $(function(){
 
+      $('#dataList').on('click','.search-title',function (){
+          var title = $(this).attr('rel');
+          var copysearch = new ClipboardJS(".search-title", {
+              text: function() {
+                  return title;
+              }
+          });
+
+          layer.open({
+              title: '系统提示'
+              ,type: 0
+              ,content: '商品标题复制成功，现在去打开【手机淘宝】搜索下单吧！'
+              ,btn: ['我知道了']
+          });
+
+
+          // copysearch.on('success', function(e) {
+          //     layer.msg('标题复制成功，现在打开淘宝App搜索下单吧！', {time:2000});
+          // });
+      });
+
+
 var clipboard = new ClipboardJS('.copycode');
 clipboard.on('success', function(e) {
 layer.msg('复制成功，现在去打开【手机淘宝】吧！'); 
@@ -15,13 +37,17 @@ clipboard.on('error', function(e) {
 layer.msg('复制失败'); 
 });
 
+
+
+
+
 form.on('submit(TqkSoTaolijin)',function(data){
 $.ajax({
-            url:'/index.php?m=m&c=taolijin&a=so',
-            type:'post',
-            data:data.field,
-            dataType:"json",
-            success:function(data){
+url:'/index.php?m=m&c=taolijin&a=so',
+type:'post',
+data:data.field,
+dataType:"json",
+success:function(data){
 if(data.status == 1){
 
 var lijinhtml = '';
@@ -116,7 +142,7 @@ layer.msg('数据获取中', {
                 success: function(res) {
                 	
                 	if(res.msg){
-                		 layer.alert(res.msg)
+                		layer.alert(res.msg)
                 		return false;
                 	}
                  
@@ -178,18 +204,18 @@ layer.msg('复制失败');
 });
 	
 
-                }
-                else{
+}
+else{
 	             
-                   layer.msg(data.msg)
-                }
+ layer.msg(data.msg)
+}
   $("#content").val("");
-            },
-            error:function(e){
-            layer.alert("操作失败,请刷新页面重试！")
-            },
-            
-        });
+},
+error:function(e){
+layer.alert("操作失败,请刷新页面重试！")
+},
+
+});
    	 return false; 
    
   });

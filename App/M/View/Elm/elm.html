@@ -1,0 +1,238 @@
+<include file="NewPublic:cate" />
+<style>
+    .topfixed {background: #1a71ff;}
+    .topfixed .weui-search-bar{background: #1a71ff;}
+    .topfixed .weui-search-bar__form {background: #1a71ff;}
+    .weui-search-bar__cancel-btn2{ background: #ff9000}
+    .topfixed-title{ color: #ffffff; text-align: center; float: left; width: 90%; font-size: large;}
+    .tabnav .swiper-slide{padding:0 .5rem;text-align:center;width:33%}
+    .page-list{ padding: 5px; background: #ffffff; margin-bottom: 4px; margin-top: 4px; width: 100%}
+.page-list img{ width: 95%; border-radius: 10px;}
+.weui-cells__title{ padding-left: 3px; padding-right: 3px;}
+</style>
+<body>
+<div class="pagebox">
+
+    <div class="topfixed fixs">
+        <a class="backlist" href="javascript:history.back(-1)"><i class="tqk-fanhui2 iconfont"></i>
+        </a>
+        <div class="topfixed-title">
+            饿了么外卖
+        </div>
+
+    </div>
+
+    <div class="tabnav" id="subnav" style="background: #1a71ff; padding-top: 2.5rem">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><a href="{:U('elm/index',array('from'=>'hot'))}"  <if condition="$platform eq 'hot'">class="active"</if> >热门活动</a></div>
+                <div class="swiper-slide"><a href="{:U('elm/index',array('from'=>'bwc'))}" <if condition="$platform eq 'bwc'">class="active"</if>>霸王餐</a></div>
+                <div class="swiper-slide"><a  href="{:U('elm/shop',array('from'=>'sdp'))}" <if condition="$platform eq 'sdp'">class="active"</if>>搜店铺</a></div>
+        </div>
+    </div>
+
+    <div class="weui-row weui-no-gutter">
+
+        <volist name="list" id="vo">
+        <div class="weui-row page-list">
+            <div class="weui-col-50"><img src="{$vo.img}"> </div>
+            <div class="weui-col-50">
+              <strong>  {$vo.title}</strong>
+              <div class="weui-cells__title"> {$vo.des}</div>
+                <a href="javascript:;" rel="{$vo.id}" title="{$vo.title}"  class="weui-btn weui-btn_mini weui-btn_warn buy-btn">获取活动链接</a>
+            </div>
+        </div>
+        </volist>
+
+    </div>
+
+</div>
+
+
+
+<div style="padding-top: 5rem"></div>
+
+
+<include file="NewPublic:foot" />
+
+<div id="half" class='weui-popup__container popup-bottom'>
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+        <div class="toolbar"  style="background: #1a71ff">
+            <div class="toolbar-inner">
+                <a href="javascript:;" class="picker-button close-popup iconfont tqk-xiangzuojiantou"></a>
+                <h1 class="title" id="title"></h1>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="weui-grids">
+                <div class="copy-box">
+                    <div class="am-panel am-panel-danger">
+                        <div class="am-panel-hd">长按图片识别或发送给好友</div>
+                        <div class="am-panel-bd">
+
+                            <div class="canvas-mask" style="height:auto; width:100%; overflow: hidden; padding: 0;">
+                                <div class="canvas-container" style="padding-top:0px ; margin-top: 0px;">
+                                    <div class="canvas-wrap">
+                                        <div class="canvas-pics" style="position:relative">
+                                            <img id="canvas-pic" src="https://img.alicdn.com/imgextra/i3/6000000001594/O1CN0187p2Km1Ne68biBOa5_!!6000000001594-2-o2oad.png" class="canvas-pic" />
+                                        </div>
+                                        <div class="text-box" style="width:100%; text-align: center;">
+                                            <label style="display:block; margin: 0 auto;">
+                                                <img id="qr-code" width="160" height="160" src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN011oXJuK2MgYeivutfs_!!3175549857.png" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <a href="javascript:;" id="copy_btn" style="width: 60%;height:2rem;font-size:0.8rem"
+                       class="weui-btn weui-btn_warn copya">点击领取</a>
+                    <a href="javascript:$.closePopup();" style="width: 60%;height:2rem;font-size:0.8rem"
+                       class="weui-btn weui-btn_default">关闭页面</a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="__SKIN2__/ui/js/html2canvas.js?v=1"></script>
+<include file="Public:stat" />
+<script type="text/javascript">
+
+    $('.buy-btn').click(function(){
+        //要求登录后才能领券
+        <if condition="$islogin && !$visitor">
+            LoginMsg();
+            return false;
+        </if>
+
+        var id = $(this).attr('rel');
+        var title = $(this).attr('title');
+        $('#title').html(title);
+
+        $.ajax({
+            url: "{:U('elm/getelmlink')}",
+            type:'post',
+            dataType: "json",
+            timeout :3000,
+            data: {id:id},
+            success: function(data){
+                if(data.id){
+                    $("#half").popup();
+
+                    $('#canvas-pic').attr('src',data.picture);
+                    $('#qr-code').attr('src',data.link.mini_qrcode);
+
+                    if(data.link.h5_url){
+
+                        $('#copy_btn').attr('href',data.link.h5_url);
+
+                    }else{
+                        $('#copy_btn').remove();
+                    }
+
+
+
+                }else {
+                    $.alert('获取链接失败！');
+                }
+            }
+        });
+
+
+
+        return false;
+
+    });
+
+
+    function LoginMsg(){
+        $.modal({
+            title: "系统提示",
+            text: "请登录后再下单！",
+            buttons: [
+                { text: "开始登录", onClick: function(){
+                        window.location.href="{:U('login/index')}";
+                    } },
+                { text: "暂不登录", className: "default",onClick: function(){
+                        $.closePopup()
+                    } },
+            ]
+        });
+    }
+
+
+
+    $("#so").click(function(event) {
+        var word = $('#search').val();
+        if(!word){
+            $.alert('搜索内容不能为空');
+            return false
+        }
+        $('#super').submit();
+    });
+
+    ! function(win, $) {
+        function $$(selector) {
+            return document.querySelector(selector);
+        }
+
+        var main = {
+            init:function(){
+                main.setListener();
+            },
+            setListener:function(){
+                // $(".canvasimg").on("click", function() {
+                main.html2Canvas();
+                //   });
+            },
+            getPixelRatio:function(context){
+                var backingStore = context.backingStorePixelRatio ||
+                    context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;
+                return (window.devicePixelRatio || 1) / backingStore;
+            },
+            html2Canvas: function () {
+                var shareContent = $$(".canvas-mask");
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                width="100%";
+                height="auto";
+                offsetTop=0;
+                scaleBy=2;
+                canvas.width = width * scaleBy;
+                canvas.height = (height + offsetTop) * scaleBy;
+                context.scale(scaleBy, scaleBy);
+                var opts = {
+                    allowTaint:false,
+                    useCORS:true,
+                    tainttest:true,
+                    scale:scaleBy,
+                    canvas:canvas,
+                    logging: false,
+                    width:width,
+                    height:height
+                };
+                html2canvas(shareContent, opts).then(function (canvas) {
+                    var dataUrl = canvas.toDataURL("image/png");
+
+                    $('#haibaoimg').attr('src',dataUrl);
+
+                });
+            }
+        };
+        main.init();
+    }(window, jQuery);
+
+</script>
+</body>
+</html>

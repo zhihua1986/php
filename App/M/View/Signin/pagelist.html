@@ -1,0 +1,26 @@
+<volist name="topone" id="vo">
+
+	<li><a href="{:U('item/index',array('id'=>$vo['itemid']))}"><img class="shop-img"  src="{$vo.itempic}_400x400.jpg"></a>
+		<div class="shop-box">
+			<p class="shop-title">
+				<a href="{:U('item/index',array('id'=>$vo['itemid']))}">
+					{$vo.itemtitle}</a></p>
+
+			<div class="shop-tips"><p class="layui-badge-rim">领取签到红包可再叠加抵扣！</p></div>
+			<div class="shop-tips" style="padding-top: 4px"><p class="layui-badge-rim layui-bg-gray">{$vo.shopname}</p></div>
+
+			<div class="coupon-wrap2 clearfix"><span class="price"><div class="tip"> </div><i>￥</i><span>{$vo.itemendprice|formatprice}</span></span>
+				<if condition="$vo['couponmoney'] gt 0">
+					<b class="coupon fr"><i>{$vo.couponmoney}</i> 元券</b>
+				</if>
+			</div>
+
+			<div class="layui-btn-container">
+				<button type="button" coupon="{$vo.activityid}" rel="{$vo.itemid}" class="layui-btn layui-btn-xs layui-btn-radius LijinBtnOne">立即领券</button>
+				<button type="button" rel="{$vo.itemtitle}" class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm search-title">搜索下单</button>
+			</div>
+
+
+		</div>
+	</li>
+</volist>

@@ -136,7 +136,8 @@ class JditemAction extends BaseAction
         } else {
             !$result && $this->_404();
         }
-		
+
+
 		if(!$result['detailImages']){
 			$info = $this->JdGoodsQuery($id);
 			$imglist = explode(",", $info['data'][0]['detailImages']);

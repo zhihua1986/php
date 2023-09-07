@@ -7,18 +7,29 @@ class DidiAction extends BaseAction
 	{
 	    parent::_initialize();
 	}
-	
+
+
 	
 	
 	public function index(){
-		$index = I('tab');
-		$data = $this->DidiTab();
-		$this->assign('Tab',$data);
-		$PageInfo = $data[$index?$index:0];
-		$this->assign('PageInfo',$PageInfo);
-		$uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
-		$LinkInfo = $this->DuomaiLink($PageInfo['id'],'https://www.didiglobal.com/',array('euid'=>$uid?$uid:'m001'));
-		$this->assign('info',$LinkInfo);
+
+        $index = I('tab');
+        $data = $this->DidiTab();
+        $this->assign('Tab',$data);
+        $PageInfo = $data[$index?$index:0];
+        $this->assign('PageInfo',$PageInfo);
+        $uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
+
+        if(C('yh_ddappkey') && C('yh_ddpid')){
+
+            $LinkInfo =  $this->CreateDidiLink($uid?$uid:'m001',$PageInfo['activity']);
+
+        }else{
+                $LinkInfo = $this->DuomaiLink($PageInfo['id'],'https://www.didiglobal.com/',array('euid'=>$uid?$uid:'m001'));
+
+        }
+
+        $this->assign('info',$LinkInfo);
 		$this->_config_seo([
 		    'title' => $PageInfo['title'].'每天免费领取-'.C('yh_site_name'),
 			'keywords'=>$PageInfo['title'],

@@ -3276,6 +3276,7 @@ if (typeof define === 'function' && define.amd) {
       $(this).remove();
     });
     $(".weui-dialog--visible").removeClass("weui-dialog--visible").transitionEnd(function() {
+      $('.weui-dialog').remove()
       $(this).remove();
     });
   };
@@ -3365,7 +3366,7 @@ if (typeof define === 'function' && define.amd) {
     }
 
     var modal = $.modal({
-      text: '<p class="weui-prompt-text">'+(config.text || '')+'</p><input type="text" class="weui-input weui-prompt-input" id="weui-prompt-input" value="' + (config.input || '') + '" />',
+      text: '<p class="weui-prompt-text">'+(config.text || '')+'</p><input type="text" class="weui-input weui-prompt-input" name="weui-prompt-input" value="' + (config.input || '') + '" />',
       title: config.title,
       autoClose: false,
       buttons: [
@@ -3381,7 +3382,7 @@ if (typeof define === 'function' && define.amd) {
         text: defaults.buttonOK,
         className: "primary",
         onClick: function() {
-          var input = $("#weui-prompt-input").val();
+          var input = $("input[name='weui-prompt-input']").val();
           if (!config.empty && (input === "" || input === null)) {
             modal.find('.weui-prompt-input').focus()[0].select();
             return false;

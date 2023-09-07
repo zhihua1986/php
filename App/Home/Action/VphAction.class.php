@@ -20,6 +20,14 @@ class VphAction extends BaseAction{
 
         $key = I('k');
         $page = I('p', 1, 'intval');
+
+        if ($key) {
+            if ($this->FilterWords($key)) {
+                $this->_404();
+            }
+            $this->assign('k', $key);
+        }
+
         if($key && !$this->memberinfo['id']){
             echo('<script> alert("请登录后再搜索！");window.history.back()</script>');
             exit;
@@ -158,13 +166,11 @@ class VphAction extends BaseAction{
         $key    = urldecode($key);
 
         if($key && !$this->memberinfo['id']){
-//    echo('<script>alert("请登录再搜索！");</script>');
             echo 1;
             exit;
         }
 
         if($page>5 && !$this->memberinfo['id']){
-//    $this->assign('islogin','请登录后再浏览');
             echo 1;
             exit;
         }

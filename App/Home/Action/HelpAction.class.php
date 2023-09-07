@@ -11,11 +11,13 @@ class HelpAction extends BaseAction
 		$where = array(
 		'url'=>$id
 		);
-        $help = $help_mod->field('id,title,info')->where($where)->find();
-        // $helps = $help_mod->field('id,title,url')->select();
+        $help = $help_mod->field('id,title,info,seo_title,seo_keys,seo_desc')->where($where)->find();
         $this->_config_seo(array(
-            'title' => $help['title']
+            'title' => $help['seo_title']?$help['seo_title']:$help['title'].'_'.C('yh_site_name'),
+            'keywords'=>$help['seo_keys'],
+            'description'=>$help['seo_desc']
         ));
+
         // $this->assign('helps', $helps);
         $this->assign('id', $id);
         $this->assign('help', $help); // 分类选中

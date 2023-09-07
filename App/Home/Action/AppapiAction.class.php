@@ -492,12 +492,12 @@ public function topic(){
 ( select SUM(income*leve1/100) from tqk_order where nstatus=1 and (status =1 or status =3) and uid = '.$uid.' and  add_time>'.$pre_month[1].') as u_month,
 ( select SUM(income*leve2/100) from tqk_order where nstatus=1 and (status =1 or status =3) and fuid = '.$uid.' and add_time>'.$pre_month[1].') as f_month,
 ( select SUM(income*leve3/100) from tqk_order where nstatus=1 and (status =1 or status =3) and guid = '.$uid.' and add_time>'.$pre_month[1].') as g_month,
-( select SUM(promotion_amount*leve1/100) from tqk_pddorder where status <>4 and uid = '.$uid.' and order_settle_time>'.$pre_month[1].') as udd_month,
-( select SUM(promotion_amount*leve2/100) from tqk_pddorder where status <>4 and fuid = '.$uid.' and order_settle_time>'.$pre_month[1].') as fdd_month,
-( select SUM(promotion_amount*leve3/100) from tqk_pddorder where status <>4 and guid = '.$uid.' and order_settle_time>'.$pre_month[1].') as gdd_month,
-( select SUM(estimateFee*leve1/100) from tqk_jdorder where validCode >1 and uid = '.$uid.' and modifyTime>'.$pre_month[1].') as ujd_month,
-( select SUM(estimateFee*leve2/100) from tqk_jdorder where validCode >1 and fuid = '.$uid.' and modifyTime>'.$pre_month[1].') as fjd_month,
-( select SUM(estimateFee*leve3/100) from tqk_jdorder where validCode >1 and guid = '.$uid.' and modifyTime>'.$pre_month[1].') as gjd_month,
+( select SUM(promotion_amount*leve1/100) from tqk_pddorder where status <>4 and uid = '.$uid.' and order_pay_time>'.$pre_month[1].') as udd_month,
+( select SUM(promotion_amount*leve2/100) from tqk_pddorder where status <>4 and fuid = '.$uid.' and order_pay_time>'.$pre_month[1].') as fdd_month,
+( select SUM(promotion_amount*leve3/100) from tqk_pddorder where status <>4 and guid = '.$uid.' and order_pay_time>'.$pre_month[1].') as gdd_month,
+( select SUM(estimateFee*leve1/100) from tqk_jdorder where validCode >1 and uid = '.$uid.' and orderTime>'.$pre_month[1].') as ujd_month,
+( select SUM(estimateFee*leve2/100) from tqk_jdorder where validCode >1 and fuid = '.$uid.' and orderTime>'.$pre_month[1].') as fjd_month,
+( select SUM(estimateFee*leve3/100) from tqk_jdorder where validCode >1 and guid = '.$uid.' and orderTime>'.$pre_month[1].') as gjd_month,
 ( select SUM(profit*leve1/100) from tqk_mtorder where status<9 and uid = '.$uid.' and settle_time>'.$pre_month[1].') as umt_month,
 ( select SUM(profit*leve2/100) from tqk_mtorder where status<9 and fuid = '.$uid.' and settle_time>'.$pre_month[1].') as fmt_month,
 ( select SUM(profit*leve3/100) from tqk_mtorder where status<9 and guid = '.$uid.' and settle_time>'.$pre_month[1].') as gmt_month,
@@ -1172,7 +1172,7 @@ public function topic(){
 		$uid = $this->params['uid'];
 		$authorid = $this->params['authorid'];
 		
-		$data = $this->DuomaiLink('14633','',array('euid'=>$uid?$uid:'m001','douyin_openid'=>$authorid));
+		$data = $this->DuomaiLink('14633','',array('euid'=>$uid?$uid:'m001','douyin_buyinid'=>$authorid));
 		
 		if($data['url']){
 			
@@ -1548,6 +1548,28 @@ public function topic(){
 		switch($tab){
 			
 			case 'didi':
+
+            if(C('yh_ddappkey') && C('yh_ddpid')) {
+
+                $Activity = array(
+                    '12485'=>'207059212323',
+                    '15200'=>'206888136013',
+                    '12644'=>'209118946358',
+                    '14801'=>'208743698546'
+                );
+                $data = $this->CreateDidiLink($uid ? $uid : 'm001', $Activity[$id],'mini');
+                $res = array(
+                    'data'=>$data['wx_path'],
+                    'tab'=>'didi',
+                    'appid'=>$data['wx_appid'],
+                    'qrcode'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode($data['wx_qrcode']),
+                    'tabs'=> $this->DidiTab()
+                );
+
+
+            }else{
+
+
 			$data = $this->DuomaiLink($id,'https://www.didiglobal.com/',array('euid'=>$uid?$uid:'m001'));
 			$res = array(
 			'data'=>$data['wx_path'],
@@ -1556,6 +1578,9 @@ public function topic(){
 			'qrcode'=>trim(C('yh_site_url')).'/?c=outputpic&a=outimg&url='.base64_encode($data['wx_qrcode']),
 			'tabs'=> $this->DidiTab()
 			);
+
+                }
+
 			break;
 			case 'cz':
 			
@@ -2118,6 +2143,9 @@ public function pddlist(){
                 $req->setCat("".$ali_id."");
             }
             if ($key) {
+                if(mb_strlen($key)>20){
+                    $key = mb_substr($key, 0, -1);
+                };
                 $req->setQ((string)$key);
             }
             if ($page>0) {
@@ -2542,7 +2570,12 @@ if($list){
 	$this->Exitjson(200,'成功',$data);
 }
 
-$this->Exitjson(200,'没有数据了');	
+    $data = [
+        'Tab'=>array(),
+        'List'=>array()
+    ];
+
+$this->Exitjson(200,'没有数据了',$data);
 
 	
 }

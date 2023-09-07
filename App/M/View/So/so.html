@@ -1,0 +1,206 @@
+<include file="NewPublic:cate" />
+<style>
+    .topfixed {background: #CE3522;}
+    .topfixed .weui-search-bar{background: #CE3522;}
+    .topfixed .weui-search-bar__form {background: #CE3522;}
+    .weui-search-bar__cancel-btn2{ background: #ff9000}
+    .topfixed-title{ color: #ffffff; text-align: center; float: left; width: 90%; font-size: large;}
+    .tabnav .swiper-slide{padding:0 .5rem;text-align:center;width:20%}
+    .so-top{position: relative;}
+    .so-top .back{position: absolute;left: 12px;top: 12px;display: block;width: 40px;height: 40px;background: rgba(0,0,0,0.7);text-align: center;line-height: 40px;color: #fff;border-radius: 50%;font-size: 24px;}
+    .so-top>img{width: 100%;}
+    .so-top-box{position: absolute;top: -40px;left: 12px;right:20px;height: 44px;background-color: rgba(255, 255, 255, 0.8);border-radius: 16px;border:2px solid #fff;text-align: center;line-height: 44px;}
+    .so-top-box .icon-search{font-size: 20px;color: #323232;position: absolute;left: 9px;}
+    .so-top-box input{display: block;width: 90%; height: 40px; border: none; position: absolute; left: 20px; top: 0; background: transparent;border-radius: 16px;padding: 5px 10px;font-size: 14px;}
+    .so-top-box input::-webkit-input-placeholder{font-size: 14px;color: #646464;text-indent: 20px;}
+    .so-top-box input:-moz-placeholder {font-size: 14px;color: #646464;text-indent: 20px;}
+    .so-top-box input::-moz-placeholder{font-size: 14px;color: #646464;text-indent: 20px;}
+    .so-top-box input:-ms-input-placeholder{font-size: 14px;color: #646464;text-indent: 20px;}
+    .so-top-btn{position: absolute;top: -40px;right: 1px;width: 70px;height: 44px;font-size: 16px;color: #fff;border-top-right-radius: 16px;border-bottom-right-radius: 16px;border: none;background-image: -webkit-linear-gradient(to right,#ff7438,#ff1f1f);background-image: -webkit-gradient(linear,left top, right top,from(#ff7438),to(#ff1f1f));background-image: -webkit-linear-gradient(left,#ff7438,#ff1f1f);background-image: -o-linear-gradient(left,#ff7438,#ff1f1f);background-image: linear-gradient(to right,#ff7438,#ff1f1f);}
+    .so-explain{font-size: 14px;color: #646464;text-align: center;margin-top: 20px;}
+    .so-title{display: inline-block;background-color: #ff4b37;padding: 10px 20px;border-radius: 20px;margin-top: 20px;}
+    .so-title p{font-size: 18px;color: #fff;text-align: center;}
+    .so-step{margin-top: 20px;padding: 0 12px;}
+    .so-step>img{width: 100%;}
+    .tqk-text-c{text-align: center;}
+    .weui-icon-clear{position: absolute;top: -25px;right: 52px;width: 40px;height: 44px;}
+    .so-btn{display: block;width: 230px;margin: 40px auto;}
+    .weui-search-bar{padding: 0;}
+    .n5jj_hdhd{position:absolute;left:0;bottom:-10px;height:40px;width:100%;z-index:1}@keyframes wave-animation-1{0%{background-position:0 top}100%{background-position:600px top}}@keyframes wave-animation-2{0%{background-position:0 top}100%{background-position:600px top}}.n5jj_hdhd_1{background:url(__STATIC__/wap/images/so/water-1.svg) repeat-x;background-size:600px;-webkit-animation:wave-animation-1 3.5s infinite linear;animation:wave-animation-1 3.5s infinite linear}.n5jj_hdhd_2{top:5px;background:url(__STATIC__/wap/images/so/water-2.svg) repeat-x;background-size:600px;-webkit-animation:wave-animation-2 6s infinite linear;animation:wave-animation-2 6s infinite linear}.n5jj_hdhd_1,.n5jj_hdhd_2{position:absolute;width:100%;height:30px}
+</style>
+<body>
+<div class="pagebox">
+
+    <div class="topfixed fixs">
+        <a class="backlist" href="javascript:history.back(-1)"><i class="tqk-fanhui2 iconfont"></i>
+        </a>
+        <div class="topfixed-title">
+        超级搜索
+        </div>
+
+    </div>
+
+    <div class="tabnav" id="subnav" style="background: #CE3522; padding-top: 2.5rem">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><a href="{:U('so/index',array('from'=>'tb'))}?k={$k}"  <if condition="$platform eq 'tb'">class="active"</if> >淘宝</a></div>
+            <if condition="C('yh_openjd') eq 1">
+            <div class="swiper-slide"><a href="{:U('so/index',array('from'=>'jd'))}?k={$k}" <if condition="$platform eq 'jd'">class="active"</if>>京东</a></div>
+            </if>
+                <if condition="C('yh_openduoduo') eq 1">
+            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'pdd'))}?k={$k}" <if condition="$platform eq 'pdd'">class="active"</if>>拼多多</a></div>
+            </if>
+            <if condition="C('yh_vphpid')">
+            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'vph'))}?k={$k}" <if condition="$platform eq 'vph'">class="active"</if>>唯品会</a></div>
+            </if>
+            <if condition="C('yh_dm_cid_dy') eq 1">
+            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'dy'))}?k={$k}" <if condition="$platform eq 'dy'">class="active"</if> >抖音</a></div>
+            </if>
+        </div>
+    </div>
+
+    <div class="weui-search-bar so-top">
+        <form action="{:U('so/search')}" method="post" id="super">
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01gqi7Ue2MgYtN8Vetw_!!3175549857.jpg" width="100%"/>
+            <div style="position: absolute;bottom: 17%;width: 95%;padding-left:5%; padding-right: 5%;">
+                <div class="so-top-box">
+                    <span class="iconfont tqk-search tqk-ml-5 icon-search" ></span>
+                    <input type="text" required="required" class="weui-search-bar__input" value="{$k}" name="key" id="search"  placeholder="{$placeholder}">
+                    </div>
+                <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                <input type="hidden" name="platfrom" value="{$platform}">
+                <button type="submit" id="so" class="so-top-btn">搜索</button>
+            </div>
+
+
+
+        </form>
+
+        <div class="n5jj_hdhd">
+            <div class="n5jj_hdhd_1"></div>
+            <div class="n5jj_hdhd_2"></div>
+        </div>
+    </div>
+
+    <if condition ="$list">
+        <div class="weui-row weui-no-gutter" id="list">
+
+            <if condition="$platform eq 'tb'">
+                <include file="So:tb" />
+                <elseif condition="$platform eq 'jd'"/>
+                    <include file="So:jd" />
+                <elseif condition="$platform eq 'pdd'"/>
+                <include file="So:pdd" />
+                <elseif condition="$platform eq 'vph'"/>
+                <include file="So:vph" />
+                <elseif condition="$platform eq 'dy'"/>
+                <include file="So:dy" />
+                </else>
+
+            </if>
+
+
+
+        </div>
+
+        <elseif condition="$platform eq 'jd'"/>
+
+        <h4 class="so-explain">商品查券 教程说明</h4>
+        <div class="tqk-text-c">
+            <div class="so-title ">
+                <p>如何查找京东商品是否有券？</p>
+            </div>
+        </div>
+        <div class="so-step" style="padding: 0;">
+            <img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lCmhZv2MgYtGy7J0A_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01825M7R2MgYtJ0EnD9_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01mn0YKb2MgYtJ8T12j_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01AIvRkv2MgYtKGYZwT_!!3175549857.jpg" width="100%"/>
+        </div>
+
+
+        <elseif condition="$platform eq 'pdd'"/>
+
+        <h4 class="so-explain">商品查券 教程说明</h4>
+        <div class="tqk-text-c">
+            <div class="so-title ">
+                <p>如何查找拼多多商品是否有券？</p>
+            </div>
+        </div>
+        <div class="so-step" style="padding: 0;">
+            <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01ZmNdbP2MgYsK23Dz6_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01u3lKpB2MgYtFC8KC0_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01MwczSx2MgYtFC6RqM_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01vkzj1O2MgYtNwuHq4_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01AIvRkv2MgYtKGYZwT_!!3175549857.jpg" width="100%"/>
+        </div>
+
+
+        <elseif condition="$platform eq 'vph'"/>
+
+        <h4 class="so-explain">商品查券 教程说明</h4>
+        <div class="tqk-text-c">
+            <div class="so-title ">
+                <p>如何查找唯品会商品是否有券？</p>
+            </div>
+        </div>
+        <div class="so-step" style="padding: 0;">
+            <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01AlRK4W2MgYtFCt7SM_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01aM03HT2MgYtGzinYi_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN012b8qcp2MgYtNVw1uA_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01AIvRkv2MgYtKGYZwT_!!3175549857.jpg" width="100%"/>
+        </div>
+
+        <elseif condition="$platform eq 'dy'"/>
+
+        <h4 class="so-explain">商品查券 教程说明</h4>
+        <div class="tqk-text-c">
+            <div class="so-title ">
+                <p>如何查找抖音商品是否有券？</p>
+            </div>
+        </div>
+        <div class="so-step" style="padding: 0;">
+            <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01A80cDp2MgYtIyjwJz_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01KAB2vM2MgYtJ2TUMl_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01EHfwbh2MgYtJ2QKxR_!!3175549857.jpg" width="100%"/>
+            <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01AIvRkv2MgYtKGYZwT_!!3175549857.jpg" width="100%"/>
+        </div>
+
+        <else/>
+
+    <h4 class="so-explain">商品查券 教程说明</h4>
+    <div class="tqk-text-c">
+        <div class="so-title ">
+            <p>如何查找淘宝/天猫商品是否有券？</p>
+        </div>
+    </div>
+    <div class="so-step" style="padding: 0;">
+        <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01UZYUaY2MgYtGl0JXb_!!3175549857.jpg" width="100%"/>
+        <img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01X9CaGx2MgYtGl1O40_!!3175549857.jpg" width="100%"/>
+        <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01NgD1bb2MgYtKFyOQL_!!3175549857.jpg" width="100%"/>
+        <img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01AIvRkv2MgYtKGYZwT_!!3175549857.jpg" width="100%"/>
+    </div>
+
+
+    </if>
+
+
+</div>
+
+<div style="padding-top: 5rem"></div>
+
+<include file="NewPublic:foot" />
+<include file="Public:stat" />
+<script type="text/javascript">
+
+    $("#so").click(function(event) {
+        var word = $('#search').val();
+        if(!word){
+            $.alert('搜索内容不能为空');
+            return false
+        }
+        $('#super').submit();
+    });
+
+</script>
+</body>
+</html>

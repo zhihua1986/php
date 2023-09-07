@@ -506,6 +506,111 @@ class TaskAction extends BaseAction
         return $sign;
     }
 
+    protected function DidiStatus($id){
+
+        switch ($id){
+
+            case '2':
+                $val = '已付款';
+                break;
+            case '8':
+                $val = '已退款';
+                break;
+            case '4':
+                $val = '(花小猪司机)已完成首单';
+                break;
+            case '5':
+                $val = '(滴滴租车)已取车';
+                break;
+            default:
+                $val = '未知';
+                break;
+
+        }
+return $val;
+
+    }
+
+    /**
+     * @return void
+     */
+    public function DidiOrder()
+    {
+        if (empty($_POST) && false !== strpos($_SERVER['CONTENT_TYPE'], 'application/json')) {
+            $content = file_get_contents('php://input');
+            $val = (array)json_decode($content, true);
+        } else {
+            $val = $_POST;
+        }
+
+       if ($val['order_id']) {
+                $raw = array(
+                    'ads_id'=>$val['activity_id'],
+                    'goods_id'=>$val['product_id'],
+                    'goods_name'=>$val['title'],
+                    'orders_price'=>$val['pay_price']/100,
+                    'order_status'=>$this->DidiStatus($val['order_status']),
+                    'order_commission'=>$val['cps_profit']/100,
+                    'order_sn'=>$val['order_id'],
+                    'order_time'=>$val['pay_time'],
+                    'uid'=>is_numeric($val['source_id'])?$val['source_id']:'m001',
+                    'leve1' => trim(C('yh_bili1')),
+                    'leve2' => trim(C('yh_bili2')),
+                    'leve3' => trim(C('yh_bili3')),
+                    'src' => 'didi',
+                    'ads_name'=>'默认',
+                    'status'=>$this->Ddstatus($val['status']),
+                );
+
+                if($val['status'] == 7){
+
+                    $raw['charge_time'] = time();
+
+                }
+
+
+                if ($this->_ajax_duomai_order($raw)) {
+                    $json = array('code' => 0, 'msg' => 'ok');
+                } else {
+                    $json = array('errcode' => 1, 'msg' => 'err');
+                }
+
+            }else{
+
+             $json = array('errcode' => 1, 'msg' => 'err');
+        }
+
+
+
+        exit(json_encode($json));
+    }
+
+    protected function Ddstatus($id){
+        switch ($id){
+
+            case 7:
+                $val = 2;
+                break;
+            case 8:
+                $val = -1;
+                break;
+            case 4:
+                $val = 1;
+                break;
+            default:
+                $val = 0;
+                break;
+
+        }
+
+        return $val;
+
+    }
+
+
+    /**
+     * @return void
+     */
     public function mtorder()
     {
         //$this->check_key();

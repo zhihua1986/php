@@ -595,11 +595,15 @@ class TopAction extends FuncAction
 		if($uid){
 		$where['custom_parameters']=$uid;
 		}
+        $where['goods_img_type']=2; //白底图
+
         $where['sign']=$this->create_pdd_sign(trim(C('yh_pddsecretkey')), $where);
 		
         $pdd_api='http://gw-api.pinduoduo.com/api/router';
         $result=$this->_curl($pdd_api, $where, true);
+
         $items_list=json_decode($result, true);
+
         if($items_list['error_response']['sub_code'] == '60001'){
 
           $AuthLink =  $this->GetPddAuthLink($uid);
@@ -643,6 +647,8 @@ class TopAction extends FuncAction
 		$data = array(
 		'goodslist'=>array_values($goodslist),
 		'count'=> $items_list['goods_search_response']['total_count'],
+            'list_id'=>$items_list['goods_search_response']['list_id'],
+            'search_id'=>$items_list['goods_search_response']['search_id'],
             'res'=>$AuthLink
 		);
 		
@@ -713,7 +719,7 @@ class TopAction extends FuncAction
 		$total_count =$mod->where($where)->count();
 		}
 		}
-		
+
 		if($items_list){
 		$today=date('Ymd');
 		$goodslist=array();
@@ -752,33 +758,33 @@ class TopAction extends FuncAction
 		if($count<$size && $key){
 		
 		 $Extend = $this->JdExtendedSearch($key,$page,$categoryid);
+
 		if($Extend){
 		foreach($Extend as $k=>$v){
-		$goodslist[$k+$count]['goods_id']=$v['goods_id'];
-		$goodslist[$k+$count]['itemid']=$v['goods_id'];
-		$goodslist[$k+$count]['title']=$v['goods_name'];
-		$goodslist[$k+$count]['pic_url']=$v['goods_image'];
+		$goodslist[$k+$count]['goods_id']=$v['skuId'];
+		$goodslist[$k+$count]['itemid']=$v['skuId'];
+		$goodslist[$k+$count]['title']=$v['skuName'];
+		$goodslist[$k+$count]['pic_url']=$v['whiteImage'];
 		//$goodslist[$k+$count]['coupon_price']=round($v['coupon_price'],2);
-		$goodslist[$k+$count]['price']=round($v['goods_price'],2);
-		$goodslist[$k+$count]['coupon_price']=round($v['goods_price']-$v['coupon_amount'],2);
-		$goodslist[$k+$count]['commission_rate']=str_replace('%','',$v['rate']);
-		$goodslist[$k+$count]['quan']=$v['coupon_amount'];
-		$goodslist[$k+$count]['quanurl']=$v['coupon_url'];
-		$goodslist[$k+$count]['item_type']=$v['item_type'];
+		$goodslist[$k+$count]['price']=round($v['price'],2);
+		$goodslist[$k+$count]['coupon_price']=round($v['lowestPrice']-$v['couponList']['discount'],2);
+		$goodslist[$k+$count]['commission_rate']=str_replace('%','',$v['commissionShare']);
+		$goodslist[$k+$count]['quan']=$v['couponList']['discount'];
+		$goodslist[$k+$count]['quanurl']=$v['couponList']['link'];
+		$goodslist[$k+$count]['item_type']=$v['lowestPriceType'];
 		$goodslist[$k+$count]['owner']=$v['owner'];
-		$goodslist[$k+$count]['cate_id']=$v['goods_cate1'];
-		$goodslist[$k+$count]['comments']=$v['OrderCountIn30Days'];
+		$goodslist[$k+$count]['cate_id']=$v['cid1'];
+		$goodslist[$k+$count]['comments']=$v['comments'];
 		if(C('APP_SUB_DOMAIN_DEPLOY')){
-		$goodslist[$k+$count]['linkurl']=U('/jditems/',array('id'=>$v['goods_id']));
+		$goodslist[$k+$count]['linkurl']=U('/jditems/',array('id'=>$v['skuId']));
 		}else{
-		$goodslist[$k+$count]['linkurl']=U('jditems/index',array('id'=>$v['goods_id']));
+		$goodslist[$k+$count]['linkurl']=U('jditems/index',array('id'=>$v['skuId']));
 		}
 			
 		}
-		
+
 		}
-		
-			
+
 		}
 		
 		$data = array(
@@ -799,19 +805,32 @@ class TopAction extends FuncAction
         if ($this->FilterWords($key) || $this->hasEmoji($key)) {
             return false;
         }
-        $Url = 'https://www.duomai.com/api/jd.query.php';
-        $Data = [
-            'page'=>$page,
-            'isCoupon'=>1,
-            'keyword'=>$key,
-        ];
-		if($cid){
-			$Data['cid1'] = $cid;
-		}
-        $Result = $this->_curl($Url, $Data);
-        $Result = json_decode($Result, true);
-        if ($Result['data']) {
-            return $Result['data'];
+
+        if ($this->getRobot()!==false) {
+            return false;
+        }
+
+        $file = 'jd_list'.md5($key);
+        if (false === $data = S($file)) {
+
+            $apiurl = $this->tqkapi . '/jdgoodslist';
+            $data = [
+                'key' => $this->_userappkey,
+                'time' => time(),
+                'tqk_uid' => $this->tqkuid,
+                'sokey' => $key,
+            ];
+            $token = $this->create_token(trim(C('yh_gongju')), $data);
+            $data['token'] = $token;
+            $result = $this->_curl($apiurl, $data, true);
+            $Extend = json_decode($result, true);
+            if ($Extend['code'] == 200) {
+                S($file,$Extend['result']);
+                return $Extend['result'];
+            }
+
+        }else{
+            return S($file);
         }
 
         return false;
@@ -1902,7 +1921,8 @@ $text = '';
         $data = array(
               'duomai'=>'多麦',
             'vip'=>'唯品会',
-            'douyin'=>'抖音'
+            'douyin'=>'抖音',
+            'didi'=>'滴滴'
         );
 
         if($txt){

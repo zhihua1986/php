@@ -11,7 +11,7 @@ static private function weobj()
 	'encodingaeskey'=>trim(C('yh_wxaeskey')), 
 	'appid'=>trim(C('yh_wxappid')),
 	'appsecret'=>trim(C('yh_wxappsecret')),
-	'debug'=>true, //调试开关
+	'debug'=>false, //调试开关
 	'_logcallback'=>'logdebug', 
 	);
    $weobj = new \Wechat($options);
@@ -37,25 +37,14 @@ public static function settlement($data){
 		        "template_id"=>$tempid,
 		        "url"=>$domain.'/index.php?m=m&c=user&a=journal',
 		        "data"=> array(
-		                "first" => array(
-		                        "value"=>$data['first'],
-		                        "color"=>"#666666"
+		                "time2"=>array(
+		                        "value"=>date('Y-m-d H:i',time())
 		                ),
-		                "keyword1"=>array(
-		                        "value"=>date('Y-m-d H:i',time()),
-		                        "color"=>"#666666"
+		                "amount3"=>array(
+		                        "value"=>number_format($data['keyword2'],'2').'元'
 		                ),
-		                "keyword2"=>array(
-		                        "value"=>number_format($data['keyword2'],'2').'元',
-		                        "color"=>"#666666"
-		                ),
-		                "keyword3"=>array(
-		                        "value"=>number_format($info['money'],'2').'元',
-		                        "color"=>"#666666"
-		                ),
-		                "remark"=> array(
-		                        "value"=>'账户余额满'.C('yh_Quota').'元就可以提现啦！',
-		                        "color"=>"#666666"
+		                "thing10"=> array(
+		                        "value"=>$data['first']
 		                ),
 		        )
 		);
@@ -143,30 +132,19 @@ public static function Cashout($data){
 	        "template_id"=>$tempid,
 	        "url"=>"",
 	        "data"=> array(
-	                "first" => array(
-	                        "value"=>"用户发起了提现申请，请及时处理",
-	                        "color"=>"#666666"
+	                "thing3"=>array(
+	                        "value"=>$data['name']
 	                ),
-	                "keyword1"=>array(
-	                        "value"=>$data['name'],
-	                        "color"=>"#666666"
+	                "time8"=>array(
+	                        "value"=>date('Y-m-d H:i',time())
 	                ),
-	                "keyword2"=>array(
-	                        "value"=>date('Y-m-d H:i',time()),
-	                        "color"=>"#666666"
+	                "amount6"=>array(
+	                        "value"=>number_format($data['money'],'2').'元'
 	                ),
-	                "keyword3"=>array(
-	                        "value"=>number_format($data['money'],'2').'元',
-	                        "color"=>"#666666"
+	                "thing4"=>array(
+	                        "value"=>$data['payment']
 	                ),
-	                "keyword4"=>array(
-	                        "value"=>$data['payment'],
-	                        "color"=>"#666666"
-	                ),
-	                "remark"=> array(
-	                        "value"=>$data['content']?:'请登录网站后台【余额提现】页面查看',
-	                        "color"=>"#666666"
-	                ),
+
 	        )
 	);
 	self::weobj()->sendTemplateMessage($post_data);
@@ -198,34 +176,18 @@ public static function Cashout($data){
                 "template_id"=>$tempid,
                 "url"=>$domain.'/index.php?m=m&'.$data['url'],
                 "data"=> array(
-                        "first" => array(
-                                "value"=>"亲，您有新订单了，请注意查收！",
-                                "color"=>"#666666"
+                        "time4"=>array(
+                                "value"=>date('Y-m-d H:i',time())
                         ),
-                        "keyword1"=>array(
-                                "value"=>$data['keyword1'],
-                                "color"=>"#666666"
+                        "thing7"=>array(
+                                "value"=>utf_substr($data['keyword2'],28).'...'
                         ),
-                        "keyword2"=>array(
-                                "value"=>$data['keyword2'],
-                                "color"=>"#666666"
+                        "amount8"=>array(
+                                "value"=>$keyword3?:'0'.'元'
                         ),
-                        "keyword3"=>array(
-                                "value"=>$keyword3?:'0'.'元',
-                                "color"=>"#666666"
-                        ),
-                        "keyword4"=>array(
-                                "value"=>number_format($data['keyword4'],'2').'元',
-                                "color"=>"#666666"
-                        ),
-						"keyword5"=>array(
-						        "value"=>'已下单',
-						        "color"=>"#666666"
+						"character_string9"=>array(
+						        "value"=>$data['keyword1']
 						),
-                        "remark"=> array(
-                                "value"=>"订单结算后，我们会第一时间告知您！",
-                                "color"=>"#666666"
-                        ),
                 )
         );
     	self::weobj()->sendTemplateMessage($post_data);

@@ -14,8 +14,8 @@ class PddAction extends BaseAction{
 		exit;
 		}
 		
-        $mod = D('pdditems');
-        $this->_mod = $mod ->cache(true, 5 * 60);
+//        $mod = D('pdditems');
+//        $this->_mod = $mod ->cache(true, 5 * 60);
     }
 	
 public function index(){

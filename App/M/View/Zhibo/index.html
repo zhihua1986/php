@@ -17,7 +17,7 @@
         </style>
 	</head>
 	<body>
-	
+
 	<div id="full" class="clearfix">
 	<header data-am-widget="header" class="am-header am-header-default am-header-fixed white-nav">
 	      	<div class="am-header-left am-header-nav">
@@ -31,9 +31,9 @@
 			<div class="bg-xuhua"></div>
 			<div class="viewport">
 				<div class="live-box">
-	
+
 					<!--余额显示-->
-					
+
 					<!--<a href="{:U('user/ucenter')}" ><div class="live-balance fr">余额：<span id="money">{$money}</span><label>元</label></div></a>-->
 				</div>
 				<!--商品内容-->
@@ -73,14 +73,14 @@
 							</div>
 
 
-</volist>	 
+</volist>
 
 							</div>
 
 						</div>
 					</div>
 				</div>
-					
+
 				<!--hongbao-->
 
 				<div id="petalbox">
@@ -89,13 +89,13 @@
 
 
 	</div>
-<include file="Public:footer" />	
+<include file="Public:footer" />
 	<tqkjs href="__STATIC__/wap/js/jquery.min.js,__STATIC__/zhibo/js/iscroll.js,__STATIC__/zhibo/js/live-updown-loading.js,__STATIC__/zhibo/js/live.js,__STATIC__/zhibo/js/flexible.js"/>
 	<tqkjs href="__STATIC__/zhibo/js/live.js,__STATIC__/zhibo/js/flexible.js"/>
 <script language="JavaScript">
 function zhibo(){
-$.ajax({ 
-url: "{:U('zhibo/zhibo_push')}",  
+$.ajax({
+url: "{:U('zhibo/zhibo_push')}",
 type:'get',
 dataType: "json",
 timeout :5000,
@@ -110,11 +110,11 @@ myScroll.scrollToElement(document.querySelector('#content .live-product-box:last
 }
 
 }
-});	
+});
 }
 
 $(document).ready(function() {
-var t2 = window.setInterval("zhibo()",60000);	
+var t2 = window.setInterval("zhibo()",60000);
 $(".am-gotop").on("click",function(){
 	myScroll.scrollTo(0,0,1000)
 })

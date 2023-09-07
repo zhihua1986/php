@@ -96,7 +96,7 @@ return array (
     array (
 	'view/:id'  => 'view/index',
     '/^index$/' => 'index',
-    '/^index\/so\/k\/(.*?)\/p\/(\d+)$/' => 'index/so?k=:1&p=:2',
+    #'/^index\/so\/k\/(.*?)\/p\/(\d+)$/' => 'index/so?k=:1&p=:2',
     '/^index\/search\/key\/(.*?)\/p\/(\d+)$/' => 'index/search?key=:1&p=:2',
     '/^index\/index\/sort\/(\w+)$/' => 'index/index?&sort=:1',
     '/^index\/index\/sort\/(\w+)\/p\/(\d+)$/' => 'index/index?sort=:1&p=:2',
@@ -119,6 +119,8 @@ return array (
     '/^chaxun\/$/' => 'chaxun/index',
     '/^score\/$/' => 'score/index',
     '/^sou\/$/' => 'sou/index',
+        '/^so\/$/' => 'so/index',
+    '/^so\/from\/(.*?)$/' => 'so/index?from=:1&k:2',
     'sou/:id' => 'sou/index',
     '/^comment\/$/' => 'comment/index',
     '/^comment\/p\/(\d+)$/' => 'comment/index?p=:1',

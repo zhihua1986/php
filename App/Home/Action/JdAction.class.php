@@ -13,6 +13,67 @@ class JdAction extends BaseAction
         $this->_mod = $mod ->cache(true, 5 * 60);
     }
 
+
+    public function  MoreData(){
+
+        $cid	= I('cid', 0, 'intval');
+        $sort	= I('sort', 'new', 'trim');
+        $page	= I('p', 1, 'intval');
+        $key    = I("k");
+        $key    = urldecode($key);
+        if ($key) {
+            if ($this->FilterWords($key)) {
+                $this->_404();
+            }
+            $where['title'] = ['like', '%' . $key . '%'];
+        }
+        $stype    = I("stype");
+        if ($stype) {
+            $where['item_type'] = $stype;
+        }
+
+        $pop   = I("pop");
+        if ($pop == 1) {
+            $where['owner'] = 'g';
+        }
+
+        if ($cid) {
+            $where['cate_id'] = $cid;
+        }
+        switch ($sort) {
+            case 'new':
+                $order = 'id DESC';
+                break;
+            case 'price':
+                $order = 'coupon_price asc';
+                break;
+            case 'rate':
+                $order = 'quan desc';
+                $where['quan'] = ['gt', 0];
+                break;
+            case 'hot':
+                $order = 'comments DESC';
+                break;
+            default:
+                $order = 'id desc';
+        }
+        $size = 20;
+        $categoryid = I('gid');
+        if (is_numeric($categoryid)) {
+            $categoryid	= $categoryid;
+        }
+
+        $data = $this->JdGoodsList($size, $where, $order, $page, true, $key, $categoryid);
+
+        $this->assign('list', $data['goodslist']);
+        $this->display('moredata');
+
+    }
+
+
+    /**
+     * @return void
+     */
     public function index()
     {
         $this->assign('ItemCate', $this->_mod->Jdcate());
@@ -69,7 +130,7 @@ class JdAction extends BaseAction
             default:
                 $order = 'id desc';
 }
-        $size = 40;
+        $size = 20;
         $categoryid = I('gid');
         if (is_numeric($categoryid)) {
             $categoryid	= $categoryid;
@@ -77,12 +138,6 @@ class JdAction extends BaseAction
         }
 
         $data = $this->JdGoodsList($size, $where, $order, $page, true, $key, $categoryid);
-        $count =$data['total'];
-        $pager = new Page($count, $size);
-        $this->assign('p', $page);
-        $this->assign('page', $pager->show());
-        $this->assign('total_item', $count);
-        $this -> assign('page_size', $size);
         $this->assign('list', $data['goodslist']);
 
         if ($cid) {

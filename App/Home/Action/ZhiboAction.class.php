@@ -16,7 +16,6 @@ class ZhiboAction extends BaseAction
 
     }
 
-
      public function index(){
 
 

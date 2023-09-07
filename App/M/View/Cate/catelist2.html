@@ -5,7 +5,7 @@
 			<div class="goods-vertical">
 				<div>
 					<div class="pic">
-						<a href="{$vo.linkurl}">
+						<a href="{:U('item/index',array('id'=>$vo['num_iid']))}">
 							<img src="{$vo.pic_url}_300x300.jpg"/>
 						</a>
 						<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">

@@ -1,130 +1,93 @@
 <include file="Public:meta" />
 <include file="Public:top" />
- <style>
-#newslist{position:absolute;top:8px;left:1.8%;width:82%;line-height:20px}#contain{overflow:hidden;margin:0;padding:0;width:84%;height:50px;list-style:none;text-overflow:ellipsis}#contain li img{width:50px;height:50px;white-space:nowrap;line-height:60px}#contain li a{overflow:hidden;margin:0;color:#333;text-overflow:ellipsis;font-size:14px}.gg{position:absolute;top:5px;right:1.6%;overflow:hidden;width:60px;height:60px}.aui-my-info{position:relative;overflow:hidden;height:64px;background:#fff}.aui-page-my .aui-icon{width:22px;height:20px}.aui-page-my .aui-menu-list ul li h3{color:#4f4f4f;font-size:14px}.icon1-type.tmall1{top:16px;width:12px;height:12px;background-position:-11.9px 0}.icon1-type{position:absolute;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}.icon1-type.taobao1{width:11.9px;height:11.9px;background-position:0 0}.icon1-type{position:absolute;top:16px;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}
-.dot-tip{padding:2px;background:-webkit-linear-gradient(324deg,#ff5b3e,#ff0707);background:linear-gradient(126deg,#ff5b3e,#ff0707);border-radius:3px;font-size:12px;color:#fff;line-height:100%;position:absolute;margin-left:50px;margin-top:0;-webkit-transform-origin:left bottom;transform-origin:left bottom;-webkit-animation:of_D4HAg 2.4s infinite;animation:of_D4HAg 2.4s infinite}
-</style> 
-	    <!--banner-->
-	    <div class="banner">
-			<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{"directionNav":false}' >
-			  <ul class="am-slides">
-	<volist name="ad_list_1" id="ad">
-			    <li><a rel="nofollow" href="{$ad.url}" target="_blank"><img width="100%" src="{$ad.img}" /></a></li>
- </volist>
-			  </ul>
+<style>
+	#newslist{position:absolute;top:8px;left:1.8%;width:82%;line-height:20px}#contain{overflow:hidden;margin:0;padding:0;width:84%;height:50px;list-style:none;text-overflow:ellipsis}#contain li img{width:50px;height:50px;white-space:nowrap;line-height:60px}#contain li a{overflow:hidden;margin:0;color:#333;text-overflow:ellipsis;font-size:14px}.gg{position:absolute;top:5px;right:1.6%;overflow:hidden;width:60px;height:60px}.aui-my-info{position:relative;overflow:hidden;height:64px;background:#fff}.aui-page-my .aui-icon{width:22px;height:20px}.aui-page-my .aui-menu-list ul li h3{color:#4f4f4f;font-size:14px}.icon1-type.tmall1{top:16px;width:12px;height:12px;background-position:-11.9px 0}.icon1-type{position:absolute;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}.icon1-type.taobao1{width:11.9px;height:11.9px;background-position:0 0}.icon1-type{position:absolute;top:16px;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}
+	.dot-tip{padding:2px;background:-webkit-linear-gradient(324deg,#ff5b3e,#ff0707);background:linear-gradient(126deg,#ff5b3e,#ff0707);border-radius:3px;font-size:10px;color:#fff;line-height:100%;position:absolute;margin-left:44px;margin-top:0;-webkit-transform-origin:left bottom;transform-origin:left bottom;-webkit-animation:of_D4HAg 2.4s infinite;animation:of_D4HAg 2.4s infinite}
+	.banner img{border-radius: 15px;}
+	.swiper{width:100%;height:100%}
+	.swiper-slide{text-align:center;font-size:18px;background:#fff;display:-webkit-box;display:-ms-flexbox;display:-webkit-flex;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;-webkit-align-items:center;align-items:center}
+	.swiper-wrapper{position:relative;width:100%;height:100%;z-index:1;display:flex;transition-property:transform;box-sizing:content-box}
+	.swiper-slide img{object-fit:cover}
+	.swiper-pointer-events{touch-action:pan-y}
+	.swiper{margin-left:auto;margin-right:auto;position:relative;overflow:hidden;list-style:none;padding:0;z-index:1}
+	.newsubnav{display:flex;flex-direction:row;flex-wrap:wrap;width:100%;padding-top:1rem;justify-content:flex-start}
+	.newsubnav-item{width:20%;display:inline-flex;align-content:center;justify-content:center}
+	.newsubnav-item img{width:40px;height:40px}
+	.newsubnav-item .category-name{font-size:12px;color:#666;margin-top:5px}
+	.swiper-pagination-bullet-active{background:#ff5b3e}
+	.swiper-pagination-bullet{width:18px;height:8px;display:inline-block;border-radius:5px}
+</style>
+<!--banner-->
+<div class="banner">
+	<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{"directionNav":false}' >
+		<ul class="am-slides">
+			<volist name="ad_list_1" id="ad">
+				<li><a rel="nofollow" href="{$ad.url}" target="_blank"><img width="100%" src="{$ad.img}" /></a></li>
+			</volist>
+		</ul>
+	</div>
+</div>
+
+<div class="swiper mySwiper">
+	<div class="swiper-wrapper">
+		<div class="swiper-slide newsubnav">
+			<volist name="subNav" id="vo" key="i">
+				<div class="newsubnav-item">
+					<if condition="$vo['tip']">
+						<div class="dot-tip">{$vo.tip}</div>
+					</if>
+					<a rel="nofollow" href="{$vo.link}" target="_blank">
+						<img src="{$vo.img}" class="category-icon">
+						<p class="category-name">{$vo.name}</p></a>
+				</div>
+				<if condition="($i % 10) eq 0 ">
+		</div>
+		<div class="swiper-slide newsubnav">
+			</if>
+			</volist>
+
+
+		</div>
+
+	</div>
+
+</div>
+<div style="margin: 0 auto; width: 120px;padding-top: 10px; padding-bottom: 15px">
+	<div class="swiper-pagination"></div>
+</div>
+
+<volist name="ad_list_6" id="ad" offset="0" length="1">
+	<a rel="nofollow" href="{$ad.url}" target="_blank"><img width="100%" src="{$ad.img}" /></a>
+</volist>
+
+<if condition="$articlelist">
+	<div style="background:#ffffff;height:5px;"></div>
+	<div style="background:#F8F8F8;height:8px;"></div>
+	<div class="aui-container">
+		<div class="aui-page">
+			<div class="aui-page-my">
+				<div class="aui-my-info">
+					<a href="{:U('article/index')}"><img src="https://img.alicdn.com/imgextra/i2/2053469401/O1CN012JJhrsTXsatcg9H-2053469401.gif" class="gg"></a>
+					<div id="newslist">
+						<ul id="contain">
+							<volist name="articlelist" id="vo" key="i">
+								<li><a href="{$vo.linkurl}"><img src="{$vo.pic}">&nbsp;&nbsp;{$vo.title}</a></li></volist>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
-	    <!-- category -->
-<div class="category">
-<if condition="C('yh_dm_cid_kfc') eq 1">
-<div class="category-item">
-	<div class="dot-tip">5折起</div>
-	<a rel="nofollow" href="{:U('elm/other',array('id'=>'5933','type'=>1))}" target="_blank">
+	</div>
+	<script language="javascript">
+		function xx(){
+			var container=document.getElementById("contain");
+			container.appendChild(container.firstChild);
+		}
+		setInterval(function(){
+			xx();
+		},2000);
 
-<img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01vv0lrn2MgYl2HB95o_!!3175549857.png" class="category-icon">
-<p class="category-name">肯德基</p></a></div>
-</if>
-<if condition="C('yh_dm_cid_qz') eq 1">
-<div class="category-item"><a rel="nofollow" href="{:U('elm/other',array('id'=>'6680','type'=>1))}" target="_blank">
-<img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN012RSNtR2MgYl0bzAJP_!!3175549857.png" class="category-icon">
-<p class="category-name">特惠电影票</p></a></div>
-</if>
-
-<if condition="C('yh_dm_cid_dy') eq 1">
-<div class="category-item">
-	<div class="dot-tip">返</div>
-	<a href="{:U('douyin/index')}">
-<img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01DImHGL2MgYktgKkCY_!!3175549857.png" class="category-icon">
-<p class="category-name">抖音精选</p></a></div>
-</if>
-
-<if condition="C('yh_dm_cid_dd') eq 1">
-<div class="category-item"><a href="{:U('didi/index')}">
-<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01EXx3Df2MgYl2PEl7y_!!3175549857.png" class="category-icon">
-<p class="category-name">滴滴打车券</p></a></div>
-
-<div class="category-item"><a href="{:U('didi/index',array('tab'=>1))}">
-<img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01p7y0ck2MgYl2aiDUn_!!3175549857.png" class="category-icon">
-<p class="category-name">汽车加油券</p></a></div>
-</if>
-
-
-</div>
-
-<div class="category">
-<div class="category-item"><a href="{:U('vph/index')}" rel="nofollow" >
-<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN018T0JF82MgYrv4Lu75_!!3175549857.png" class="category-icon"><p class="category-name">唯品会</p></a></div>
-<!-- <div class="category-item"><a href="{:U('top100/index')}"><img src="__STATIC__/wap/images/icon/cjmbq-5.png" class="category-icon"><p class="category-name">实时热榜</p></a></div> -->
-	
-<div class="category-item">
-	<div class="dot-tip">享补贴</div>
-	<a href="{:U('uxuan/index',array('id'=>4956))}">
-	<img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01LJdLke2MgYqLLxz7y_!!3175549857.png" class="category-icon"><p class="category-name">超级U选</p></a></div>
-<if condition="C('yh_dm_cid_mt') eq 1 or C('yh_openmt' eq 1)">
-	<div class="category-item">
-<a href="{:U('takeout/index')}"><img src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01MgRSKf2MgYktTWx1Q_!!3175549857.png" class="category-icon">
-<p class="category-name">美团外卖券</p></a>
-</div>
-</if>
-<if condition="$openjd">
-<div class="category-item">
-	<div class="dot-tip">特惠</div>
-	<a href="{:U('recharge/index')}">
-<img src="https://img.alicdn.com/imgextra/i4/3175549857/O1CN01NNZXb62MgYkpHmTRi_!!3175549857.png" class="category-icon"><p class="category-name">话费充值</p></a></div>
-<else/>
- <div class="category-item"><a href="{:U('koubei/index')}"><img src="__STATIC__/wap/images/icon/koubei-4.png" class="category-icon"><p class="category-name">口碑红包</p></a></div>
-</if>
-			
-			 <div class="category-item"><a href="{:U('brand/index')}{$trackurl}"><img src="__STATIC__/wap/images/icon/cjmbq-3.png" class="category-icon"><p class="category-name">品牌券</p></a></div>
-	    </div>
-		<div class="category">
-			<if condition="C('yh_elm') eq 1">
-			 <div class="category-item"><a href="{:U('elm/index')}"><img src="/Public/skin2/static/home/images/elm-4.png" class="category-icon"><p class="category-name">饿了么红包</p></a></div>
-			</if>
-		    <!-- <div class="category-item"><a href="{:U('special/index',array('id'=>3158))}"><img src="https://img.alicdn.com/imgextra/i4/126947653/O1CN0106TnZX26P7kiJHX71_!!126947653.png" class="category-icon"><p class="category-name">1元购</p></a></div> -->
-		    <div class="category-item"><a href="{:U('special/index',array('id'=>4620))}"><img src="https://img.alicdn.com/imgextra/i4/126947653/O1CN01WEGWHb26P7kkTh09r_!!126947653.png" class="category-icon"><p class="category-name">百亿补贴</p></a></div>
-		     <if condition="C('yh_taolijin') gt 0">
-				  <div class="category-item"><a href="{:U('topljin/index')}"><img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01Tijl0c2MgYkyo5tKZ_!!3175549857.png" class="category-icon"><p class="category-name">淘礼金专区</p></a></div>
-				 <else/>
-				  <div class="category-item"><a href="{:U('chaohuasuan/index')}"><img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01vemkIN2MgYkrJyOCb_!!3175549857.png" class="category-icon"><p class="category-name">超划算</p></a></div>
-			 </if>
-			<div class="category-item"><a href="{:U('special/index',array('id'=>3022))}"><img src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN01TNF99w2MgYkpOR0ym_!!3175549857.png" class="category-icon"><p class="category-name">天猫超市</p></a></div>
-			<div class="category-item"><a href="{:U('haitao/index')}"><img src="https://img.alicdn.com/imgextra/i1/3175549857/O1CN01IHtgDr2MgYl2aIT3v_!!3175549857.png" class="category-icon"><p class="category-name">海淘优选</p></a></div>
-		</div>
-	    
-	  
-<volist name="ad_list_6" id="ad" offset="0" length="1">
-<a rel="nofollow" href="{$ad.url}" target="_blank"><img width="100%" src="{$ad.img}" /></a>
-</volist>
-	
-<if condition="$articlelist">
-<div style="background:#ffffff;height:5px;"></div>
-<div style="background:#F8F8F8;height:8px;"></div>
-<div class="aui-container">
-<div class="aui-page">
-<div class="aui-page-my">
-<div class="aui-my-info">
-<a href="{:U('article/index')}"><img src="https://img.alicdn.com/imgextra/i2/2053469401/O1CN012JJhrsTXsatcg9H-2053469401.gif" class="gg"></a> 
- 	<div id="newslist">
-<ul id="contain">
- <volist name="articlelist" id="vo" key="i">
-<li><a href="{$vo.linkurl}"><img src="{$vo.pic}">&nbsp;&nbsp;{$vo.title}</a></li></volist>
-</ul>
-                   </div>
-               </div>   
-               </div>
-               </div>
-</div>
-<script language="javascript">
-function xx(){ 
-var container=document.getElementById("contain"); 
-container.appendChild(container.firstChild); 
-}
-setInterval(function(){
-xx();
-},2000);
-
-</script>
+	</script>
 </if>
 
 <div style="background:#F8F8F8;height:8px;"></div>
@@ -132,59 +95,59 @@ xx();
 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="table1">
 	<tr>
 		<td>
-		<a  href="{:U('chaohuasuan/index')}{$trackurl}">
-		<img border="0" src="https://img.alicdn.com/imgextra/i3/126947653/O1CN012tBZsV26P7kbM4f1a_!!126947653.gif" width="37.592%"></a>
-		
-		<a href="{:U('juhuasuan/index')}{$trackurl}"><img border="0" src="/Public/static/wap/images/icon/fl-2.png?v=5" width="62.408%"></a><br>
-		<a href="{:U('jiu/index')}{$trackurl}">
-		<img border="0" src="/Public/static/wap/images/icon/fl-1.png" width="37.592%"></a><a href="{:U('cate/index',array('cid'=>1))}{$trackurl}"><img border="0" src="/Public/static/wap/images/icon/fl-4.png" width="31.574%"></a><a  href="{:U('cate/index',array('cid'=>8))}{$trackurl}"><img border="0" src="/Public/static/wap/images/icon/fl-5.png" width="30.834%"></a></td>
+			<a  href="{:U('chaohuasuan/index')}{$trackurl}">
+				<img border="0" src="https://img.alicdn.com/imgextra/i3/126947653/O1CN012tBZsV26P7kbM4f1a_!!126947653.gif" width="37.592%"></a>
+
+			<a href="{:U('juhuasuan/index')}{$trackurl}"><img border="0" src="/Public/static/wap/images/icon/fl-2.png?v=5" width="62.408%"></a><br>
+			<a href="{:U('jiu/index')}{$trackurl}">
+				<img border="0" src="/Public/static/wap/images/icon/fl-1.png" width="37.592%"></a><a href="{:U('cate/index',array('cid'=>1))}{$trackurl}"><img border="0" src="/Public/static/wap/images/icon/fl-4.png" width="31.574%"></a><a  href="{:U('cate/index',array('cid'=>8))}{$trackurl}"><img border="0" src="/Public/static/wap/images/icon/fl-5.png" width="30.834%"></a></td>
 	</tr>
 </table>
 
 
 <if condition="$jingxuan">
-<div style="background:#F8F8F8;height:8px;"></div>
+	<div style="background:#F8F8F8;height:8px;"></div>
 	<div class="tqk-baokuan-liwu">
-	  <div class="goods-title"><div class="btn-violet-gradient btn-tag btn-md">今日福利购</div><div class="f-12 c-666">券后折上折 • 天天抢免单</div></div>
-			
-			<div class="liwu-main">
-			
-		<volist name='jingxuan' offset="0" length='5' id="vo">
-		<div  class="liwu-list">
-		<div class="liwu-left"> 
-			<a href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}" class="link">
-		<img src="{$vo.pic_url}_300x300.jpg" width="120" height="120">
-		</a>
-		</div>
-		<div class="liwu-right">
-			<a  href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}" class="link">
-			  <div class="goods-info">
-	                   <i class="icon-type  <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
-	                   <p class="goods-name ellipsis-2">{$vo.title}</p>
-	               </div>
-	               <div class="goods-mid">
-	                   <p class="f-12 c-999">现价 ￥{$vo.price}</p>
-	                   <p class="goods-share maincolor">
-	                   	月销{$vo.volume}件
-	                   </p>
-	               </div>
-	               <div class="goods-bot">
-	                   <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
-	                   <div class="goods-coupon">
-	                       <p class="f-10 c-white">{$vo.quan}元券</p>
-	                   </div>
-	               </div>
-			</a>
-		</div>
-		</div>
-		</volist>
-		
-				
-			</div>
-			
-			
-		</div>
-	
+		<div class="goods-title"><div class="btn-violet-gradient btn-tag btn-md">今日福利购</div><div class="f-12 c-666">券后折上折 • 天天抢免单</div></div>
+
+		<div class="liwu-main">
+
+			<volist name='jingxuan' offset="0" length='5' id="vo">
+				<div  class="liwu-list">
+					<div class="liwu-left">
+						<a href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}" class="link">
+							<img src="{$vo.pic_url}_300x300.jpg" width="120" height="120">
+						</a>
+					</div>
+					<div class="liwu-right">
+						<a  href="{:U('/item/',array('id'=>$vo['num_iid']))}{$trackurl}" class="link">
+							<div class="goods-info">
+								<i class="icon-type  <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
+<p class="goods-name ellipsis-2">{$vo.title}</p>
+</div>
+<div class="goods-mid">
+	<p class="f-12 c-999">现价 ￥{$vo.price}</p>
+	<p class="goods-share maincolor">
+		月销{$vo.volume}件
+	</p>
+</div>
+<div class="goods-bot">
+	<p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+	<div class="goods-coupon">
+		<p class="f-10 c-white">{$vo.quan}元券</p>
+	</div>
+</div>
+</a>
+</div>
+</div>
+</volist>
+
+
+</div>
+
+
+</div>
+
 
 </if>
 
@@ -192,160 +155,169 @@ xx();
 <div style="background:#F8F8F8;height:8px;"></div>
 <if condition="$pdditems">
 	<!--pin-->
-		<div class="pin-wrap">
-			<div class="btn-blue-gradient btn-tag btn-md index-title">拼多多限时秒杀</div>
-			<div class="swiper-container pin">
-			  <div class="swiper-wrapper">
-			  <volist name="pdditems" id="vo">
-			    <div class="swiper-slide">
-			   <div class="pin-item">
-			    		<div class="pin-pic">
-			    			<a href="{:U('/pdditem/',array('s'=>$vo['goods_sign']))}{$trackurl}"><img src="{$vo.pic_url}" class="pin-pic-img" /></a>
-			    			<span class="f-12 c-white pin-pic-count">已拼{$vo.volume}件</span>
-			    		</div>
-			    		<div class="pin-main">
-			    			<p class="am-text-truncate f-12 c-111 pin-tit"><img src="__STATIC__/wap/images/icon/icon-pin.png" width="12" height="12" class="pin-tit-icon"/>{$vo.title}</p>
-			    			<div class="am-cf">
-			    				<p class="f-12 c-666 am-fl">现价：<span class="maincolor">￥{$vo.price|formatprice}</span></p>
-			    				<p class="f-12 c-666 am-fr">拼团：<span class="maincolor">￥{$vo.group_price|formatprice}</span></p>
-			    			</div>
-			    		</div>
-			    		<div class="pin-footer">
-			    			<div class="coupon_pin">
-								<if condition="$vo['quan']">
-			    				<div class="coupon_pin-name"><p class="f-12 c-white">{$vo.quan}元券</p></div>
-								</if>
-			    				<div class="coupon_pin-count"><p class="f-12 maincolor">券后{$vo.coupon_price|formatprice}元</p></div>
-			    			</div>
-			    		</div>
-			    	</div>
-			    </div>
-			    </volist>	
-			
-			    </div>
-			  </div>
-			</div>
-</if>
-		
-	    <!-- goods -->
-	    <div class="goods-wrap">
-	       <div class="goods-title"><div class="btn-violet-gradient btn-tag btn-md">全网最热优惠券</div><div class="f-12 c-666">百万商品实时更新</div></div>
-          <div style="background:#ffffff;height:10px;"></div>
-	       <div class="goods">
+	<div class="pin-wrap">
+		<div class="btn-blue-gradient btn-tag btn-md index-title">拼多多限时秒杀</div>
+		<div class="swiper-container pin">
+			<div class="swiper-wrapper">
+				<volist name="pdditems" id="vo">
+					<div class="swiper-slide">
+						<div class="pin-item">
+							<div class="pin-pic">
+								<a href="{:U('/pdditem/',array('s'=>$vo['goods_sign']))}{$trackurl}"><img src="{$vo.pic_url}" class="pin-pic-img" /></a>
+								<span class="f-12 c-white pin-pic-count">已拼{$vo.volume}件</span>
+							</div>
+							<div class="pin-main">
+								<p class="am-text-truncate f-12 c-111 pin-tit"><img src="__STATIC__/wap/images/icon/icon-pin.png" width="12" height="12" class="pin-tit-icon"/>{$vo.title}</p>
+								<div class="am-cf">
+									<p class="f-12 c-666 am-fl">现价：<span class="maincolor">￥{$vo.price|formatprice}</span></p>
+									<p class="f-12 c-666 am-fr">拼团：<span class="maincolor">￥{$vo.group_price|formatprice}</span></p>
+								</div>
+							</div>
+							<div class="pin-footer">
+								<div class="coupon_pin">
+									<if condition="$vo['quan']">
+										<div class="coupon_pin-name"><p class="f-12 c-white">{$vo.quan}元券</p></div>
+									</if>
+									<div class="coupon_pin-count"><p class="f-12 maincolor">券后{$vo.coupon_price|formatprice}元</p></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</volist>
 
-			   <volist name='list' id="vo">
-	            <div class="goods-item">
-					<a href="{$vo.linkurl}{$trackurl}">
-	               <div class="goods-pic">
-	                   <img data-original="{$vo.pic_url}_400x400.jpg" class="goods-pic lazy">
-	   <if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
+			</div>
+		</div>
+	</div>
+</if>
+
+<!-- goods -->
+<div class="goods-wrap">
+	<div class="goods-title"><div class="btn-violet-gradient btn-tag btn-md">实时热销爆款</div><div class="f-12 c-666">2小时热销榜</div></div>
+	<div style="background:#ffffff;height:10px;"></div>
+	<div class="goods">
+
+		<volist name='list' id="vo">
+			<div class="goods-item">
+				<a href="{$vo.linkurl}{$trackurl}">
+					<div class="goods-pic">
+						<img data-original="{$vo.pic_url}_400x400.jpg" class="goods-pic lazy">
+						<if condition="($visitor or $isfanli eq 0) and $isfanli neq 2">
 	    <span class="share-info" >
 	    	预计返￥ {:Rebate1($vo['coupon_price']*$vo['commission_rate']/10000,$visitor['webmaster_rate'])}</span>
-	  </if>             
-	               </div>
-	               <div class="goods-info">
-	                   <i class="icon-type  <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
-	                   <p class="goods-name ellipsis-2">{$vo.title}</p>
-	               </div>
-	               <div class="goods-mid">
-	                   <p class="f-12 c-999">现价 ￥{$vo.price}</p>
-	                   <p class="goods-share maincolor">
-	                   	月销{$vo.volume}件
-	                   </p>
-	               </div>
-	               <div class="goods-bot">
-	                   <p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
-	                   <div class="goods-coupon">
-	                       <p class="f-10 c-white">{$vo.quan}元券</p>
-	                   </div>
-	               </div>
-					</a>
-	            </div>
+						</if>
+					</div>
+					<div class="goods-info">
+						<i class="icon-type  <if condition="$vo.shop_type eq 'B'">tmall<else/>taobao</if>"></i>
+						<p class="goods-name ellipsis-2">{$vo.title}</p>
+					</div>
+					<div class="goods-mid">
+						<p class="f-12 c-999">现价 ￥{$vo.price}</p>
+						<p class="goods-share maincolor">
+							2小时{$vo.twoHoursSales}件
+						</p>
+					</div>
+					<div class="goods-bot">
+						<p class="f-12 c-111 lh-22">券后&nbsp;¥&nbsp;<span class="am-text-lg maincolor">{$vo.coupon_price}</span></p>
+						<div class="goods-coupon">
+							<p class="f-10 c-white">{$vo.quan}元券</p>
+						</div>
+					</div>
+				</a>
+			</div>
 
-</volist>
-	       </div>
-	       <div class="am-text-center am-padding" style="padding-bottom: 50px;">
-		       	<a href="{:U('cate/index')}" class="btn am-btn btn-default radius">查看更多优惠商品</a>
-	       </div>
-	    </div>
-		<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.js"/>
-		<tqkjs  href="__STATIC__/wap/js/amazeui.lazyload.min.js,__STATIC__/wap/js/swiper.min.js"/>
-	    <!--footer-->
-	<include file="Public:footer" />
-	<include file="Public:alertad" />
-		<script type="text/javascript">
-			var menuSwiper = new Swiper('.menu', {
-				slidesPerView :'auto' ,
-				resistanceRatio : 0.7,
-				navigation: {
-				    nextEl: '.swiper-button-next'
+		</volist>
+	</div>
+	<div class="am-text-center am-padding" style="padding-bottom: 50px;">
+		<a href="{:U('cate/index')}" class="btn am-btn btn-default radius">查看更多优惠商品</a>
+	</div>
+</div>
+<tqkjs  href="__STATIC__/wap/js/jquery.min.js,__STATIC__/wap/js/amazeui.js"/>
+<tqkjs  href="__STATIC__/wap/js/amazeui.lazyload.min.js,__STATIC__/wap/js/swiper.min.js"/>
+<!--footer-->
+<include file="Public:footer" />
+<include file="Public:alertad" />
+<script type="text/javascript">
+	var menuSwiper = new Swiper('.menu', {
+		slidesPerView :'auto' ,
+		resistanceRatio : 0.7,
+		navigation: {
+			nextEl: '.swiper-button-next'
+		}
+	})
+
+
+	var swiper = new Swiper(".mySwiper", {
+		autoplay: true,
+		pagination: {
+			el: ".swiper-pagination",
+			dynamicBullets: true,
+		},
+	});
+
+	var pinSwiper = new Swiper('.pin',{
+		slidesPerView :'auto',
+		spaceBetween : 12,
+		resistanceRatio : 0.7
+	})
+	$("img.lazy").lazyload();
+	var minute = 59,second = 59
+	setInterval(function(){
+		if(second<10){
+			$('.timmer_s').html('0'+second);
+		}else{
+			$('.timmer_s').html(second);
+		}
+		second--;
+		if(second<=0){
+			second=59;
+			minute--;
+		}
+	},1000)
+
+
+	$(window).scroll(function(){
+		if($(".goods-wrap").offset().top - $(window).scrollTop()>115){
+			$(".filter-wrap").fadeOut()
+		}else{
+			$(".filter-wrap").fadeIn()
+		}
+	})
+
+	$(function(){
+		$(".watch-heart:gt(1)").hide()
+	})
+	;$(function(){
+		$('#drop-down, .drop-down').click(
+				function(){
+					var action = $('#drop-down, .drop-down').attr('data-action');
+					if(action == 'down'){
+						$('.drop-down i').attr({ class: "iconfont tqk-jiantou_up maincolor" });
+						$('.cxx-more-cate').slideDown('fast');
+						$('.cxx-transparent-bg').show();
+						$('#drop-down, .drop-down').attr('data-action','up');
+					}
+					if(action == 'up'){
+						$('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
+						$('.cxx-transparent-bg').hide();
+						$('.cxx-more-cate').slideUp('fast');
+						$('.cxx-transparent-bg').hide();
+						$('#drop-down, .drop-down').attr('data-action','down');
+					}
 				}
-			})
-			
-			var pinSwiper = new Swiper('.pin',{
-				slidesPerView :'auto',
-				spaceBetween : 12,
-				resistanceRatio : 0.7
-			})
-$("img.lazy").lazyload();
-			var minute = 59,second = 59
-			setInterval(function(){
-		        if(second<10){
-		            $('.timmer_s').html('0'+second);
-		        }else{
-		            $('.timmer_s').html(second);
-		        }
-		        second--;
-		        if(second<=0){
-		            second=59;
-		            minute--;
-		        }
-		    },1000)
-			
-			
-            $(window).scroll(function(){
-            	if($(".goods-wrap").offset().top - $(window).scrollTop()>115){
-            		$(".filter-wrap").fadeOut()
-            	}else{
-            		$(".filter-wrap").fadeIn()
-            	}
-            })
-            
-            $(function(){
-            	$(".watch-heart:gt(1)").hide()
-            })
-;$(function(){
-    $('#drop-down, .drop-down').click(
-    	function(){
-    		var action = $('#drop-down, .drop-down').attr('data-action');
-    		if(action == 'down'){
-    			$('.drop-down i').attr({ class: "iconfont tqk-jiantou_up maincolor" });
-    			$('.cxx-more-cate').slideDown('fast');
-    			$('.cxx-transparent-bg').show();
-    			$('#drop-down, .drop-down').attr('data-action','up');	
-    		}
-    		if(action == 'up'){
-                $('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
-                $('.cxx-transparent-bg').hide();
-    			$('.cxx-more-cate').slideUp('fast');
-    			$('.cxx-transparent-bg').hide();
-    			$('#drop-down, .drop-down').attr('data-action','down');
-    		}		
-    	}
-    );
-    $('.cxx-transparent-bg').on('click',function(){
-        var action = $('#drop-down, .drop-down').attr('data-action');
-        if(action == 'up'){
-            $('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
-            $('.cxx-transparent-bg').hide();
-            $('.cxx-more-cate').slideUp('fast');
-            $('.cxx-transparent-bg').hide();
-            $('#drop-down, .drop-down').attr('data-action','down');
-        }
-    	$('.cxx-transparent-bg').hide();	
-    });
-});
+		);
+		$('.cxx-transparent-bg').on('click',function(){
+			var action = $('#drop-down, .drop-down').attr('data-action');
+			if(action == 'up'){
+				$('.drop-down i').attr({ class: "iconfont tqk-jiantou_down maincolor" });
+				$('.cxx-transparent-bg').hide();
+				$('.cxx-more-cate').slideUp('fast');
+				$('.cxx-transparent-bg').hide();
+				$('#drop-down, .drop-down').attr('data-action','down');
+			}
+			$('.cxx-transparent-bg').hide();
+		});
+	});
 </script>
 <include file="Public:stat" />
-	</body>
+</body>
 </html>
