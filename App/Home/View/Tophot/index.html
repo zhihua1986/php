@@ -1,0 +1,122 @@
+<include file="Public:tqk-meta" />
+<style>
+    .layui-flow-more{ margin: 0 auto; padding: 20px; width: 100%;}
+</style>
+<body>
+<include file="Public:tqk-head" />
+
+<div class="layui-fluid tqk-index-grey">
+    <div class="layui-container container">
+        <div class="tqk-pt-20"></div>
+        <div>
+
+            <div class="filter-items">
+
+                <ul class="row-channel clearfix">
+                    <volist name="cate" id="tree" key="i">
+                        <li <if condition="($platform eq $tree['id']) or (!$platform and $i eq 1)">class="active"</if>><a href="{:U('tophot/index',array('id'=>$tree['id'],'op'=>$tree['op'],'r'=>$i))}">{$tree.name}</a></li>
+                    </volist>
+                </ul>
+
+                <if condition="$tips">
+                    <div class="brand indexblock" style="margin-top: 8px;">
+                        <div class="tit">
+
+                            <div class="layui-row">
+                                <div class="layui-col-xs1">
+                                    <img src="https://img.alicdn.com/imgextra/i1/126947653/O1CN01KIwi7R26P7y7vEJU2_!!126947653.jpg" width="20" height="20">
+                                </div>
+                                <div class="layui-col-xs11">
+                                    <marquee direction="left" scrollamount="3">
+                                        {$tips}
+                                    </marquee>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </if>
+
+            </div>
+
+            <div class="flexbox tqk-mt-20 tqk-ml-15">
+                <ul class="haoquan itemlist" id="ID-flow-demo">
+
+                    <volist name="list" id="vo">
+
+                        <li>
+                            <div class="goods_list">
+                                <a href="{:U('/item/',array('id'=>$vo['num_iid']))}" >
+                                    <div class="goods_img">
+                                        <img width="240" height="240" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.pic_url}_400x400" alt="{$vo.title}">
+                                    </div>
+                                    <p class="layui-elip tqk-hiden-25"><i class="<if condition="$vo.shop_type eq 'B'">tm-ico<else/>tb-ico</if>"></i>{$vo.title}</p>
+                                    <span class="dec tqk-pl-10">原价￥{$vo.price|formatprice} </span> <span class="num tqk-pl-10">{$vo.volume}</span> 件
+                                    <div>
+                                        <if condition="$vo['quan']"><label class="coupon-price">{$vo.quan}元券</label> </if>
+                                        <span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span></div>
+                                </a>
+                            </div>
+                        </li>
+
+                    </volist>
+                </ul>
+            </div>
+
+
+            <div class="tqk-mt-30">
+                <div id="yw0" class="pager">
+                    {$page}
+                </div>
+
+                <div class="layui-clear tqk-pb-20"></div>
+
+            </div>
+
+            <input type="hidden" name="page" id="page" value="2">
+
+        </div>
+
+
+    </div>
+</div>
+
+<include file="Public:tqk-foot" />
+
+<script>
+    // 流加载实例
+    layui.use(function(){
+        var $ = layui.jquery
+            ,flow = layui.flow;
+        flow.load({
+            elem: '#ID-flow-demo', // 流加载容器
+            isAuto:false,
+            done: function(page, next){ // 执行下一页的回调
+                // 模拟数据插入
+                var page = $('#page').val();
+                var id = "{$platform}";
+                var op = "{$op}";
+                $.get("{:U('tophot/catelist')}",{page:page,id:id,op:op},function(res){
+
+                        if(res){
+                            next(res);
+                        }else{
+                            next(res,page<page);
+                        }
+
+                        $('#page').val(Number(page)+1);
+
+                    },
+                    'html'
+                );
+
+
+
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
