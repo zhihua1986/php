@@ -1,7 +1,7 @@
 <include file="Public:meta" />
 <include file="Public:top" />
 <style>
-	#newslist{position:absolute;top:8px;left:1.8%;width:82%;line-height:20px}#contain{overflow:hidden;margin:0;padding:0;width:84%;height:50px;list-style:none;text-overflow:ellipsis}#contain li img{width:50px;height:50px;white-space:nowrap;line-height:60px}#contain li a{overflow:hidden;margin:0;color:#333;text-overflow:ellipsis;font-size:14px}.gg{position:absolute;top:5px;right:1.6%;overflow:hidden;width:60px;height:60px}.aui-my-info{position:relative;overflow:hidden;height:64px;background:#fff}.aui-page-my .aui-icon{width:22px;height:20px}.aui-page-my .aui-menu-list ul li h3{color:#4f4f4f;font-size:14px}.icon1-type.tmall1{top:16px;width:12px;height:12px;background-position:-11.9px 0}.icon1-type{position:absolute;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}.icon1-type.taobao1{width:11.9px;height:11.9px;background-position:0 0}.icon1-type{position:absolute;top:16px;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}
+	#newslist{position:absolute;top:8px;left:1.8%;width:82%;line-height:20px}#contain{overflow:hidden;margin:0;padding:0;width:84%;height:40px;list-style:none;text-overflow:ellipsis}#contain li img{width:40px;height:40px;white-space:nowrap;line-height:40px}#contain li a{overflow:hidden;margin:0;color:#333;text-overflow:ellipsis;font-size:14px}.gg{position:absolute;top:5px;right:1.6%;overflow:hidden;width:50px;height:50px}.aui-my-info{position:relative;overflow:hidden;height:54px;background:#fff}.aui-page-my .aui-icon{width:22px;height:20px}.aui-page-my .aui-menu-list ul li h3{color:#4f4f4f;font-size:14px}.icon1-type.tmall1{top:16px;width:12px;height:12px;background-position:-11.9px 0}.icon1-type{position:absolute;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}.icon1-type.taobao1{width:11.9px;height:11.9px;background-position:0 0}.icon1-type{position:absolute;top:16px;margin:2px 0 0 2px;background-image:url(/Public/static/wap/images/icon/icon-type.png);background-size:36px 12px;background-repeat:no-repeat}
 	.dot-tip{padding:2px;background:-webkit-linear-gradient(324deg,#ff5b3e,#ff0707);background:linear-gradient(126deg,#ff5b3e,#ff0707);border-radius:3px;font-size:10px;color:#fff;line-height:100%;position:absolute;margin-left:44px;margin-top:0;-webkit-transform-origin:left bottom;transform-origin:left bottom;-webkit-animation:of_D4HAg 2.4s infinite;animation:of_D4HAg 2.4s infinite}
 	.banner img{border-radius: 15px;}
 	.swiper{width:100%;height:100%}
@@ -16,6 +16,7 @@
 	.newsubnav-item .category-name{font-size:12px;color:#666;margin-top:5px}
 	.swiper-pagination-bullet-active{background:#ff5b3e}
 	.swiper-pagination-bullet{width:18px;height:8px;display:inline-block;border-radius:5px}
+	#newslist img{ border-radius: 8px;}
 </style>
 <!--banner-->
 <div class="banner">
@@ -27,6 +28,37 @@
 		</ul>
 	</div>
 </div>
+
+
+<if condition="$articlelist">
+	<div style="background:#ffffff;height:5px;"></div>
+	<div class="aui-container">
+		<div class="aui-page">
+			<div class="aui-page-my">
+				<div class="aui-my-info">
+					<a href="{:U('article/index')}"><img src="https://img.alicdn.com/imgextra/i2/2053469401/O1CN012JJhrsTXsatcg9H-2053469401.gif" class="gg"></a>
+					<div id="newslist">
+						<ul id="contain">
+							<volist name="articlelist" id="vo" key="i">
+								<li><a href="{$vo.linkurl}"><img src="{$vo.pic}">&nbsp;&nbsp;{$vo.title}</a></li></volist>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="background:#F8F8F8;height:8px;"></div>
+	<script language="javascript">
+		function xx(){
+			var container=document.getElementById("contain");
+			container.appendChild(container.firstChild);
+		}
+		setInterval(function(){
+			xx();
+		},2000);
+
+	</script>
+</if>
 
 <div class="swiper mySwiper">
 	<div class="swiper-wrapper">
@@ -60,35 +92,6 @@
 	<a rel="nofollow" href="{$ad.url}" target="_blank"><img width="100%" src="{$ad.img}" /></a>
 </volist>
 
-<if condition="$articlelist">
-	<div style="background:#ffffff;height:5px;"></div>
-	<div style="background:#F8F8F8;height:8px;"></div>
-	<div class="aui-container">
-		<div class="aui-page">
-			<div class="aui-page-my">
-				<div class="aui-my-info">
-					<a href="{:U('article/index')}"><img src="https://img.alicdn.com/imgextra/i2/2053469401/O1CN012JJhrsTXsatcg9H-2053469401.gif" class="gg"></a>
-					<div id="newslist">
-						<ul id="contain">
-							<volist name="articlelist" id="vo" key="i">
-								<li><a href="{$vo.linkurl}"><img src="{$vo.pic}">&nbsp;&nbsp;{$vo.title}</a></li></volist>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script language="javascript">
-		function xx(){
-			var container=document.getElementById("contain");
-			container.appendChild(container.firstChild);
-		}
-		setInterval(function(){
-			xx();
-		},2000);
-
-	</script>
-</if>
 
 <div style="background:#F8F8F8;height:8px;"></div>
 

@@ -2,7 +2,11 @@
 namespace M\Action;
 class ElmAction extends BaseAction
 {
-	
+
+public function _initialize() {
+    parent::_initialize();
+}
+
 public function other(){
 	
 	$ac = I('ac');

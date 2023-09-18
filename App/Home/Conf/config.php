@@ -171,6 +171,12 @@ return array (
     '/^m\/cate\/cid\/(\d+)\/sort\/(\w+)\/p\/(\d+)$/' => 'index/cate?cid=:1&sort=:2&p=:3',
     '/^m\/detail\/id\/(.*?)$/' => 'm/detail/index?id=:1',
     '/^brand\/cateid\/(\d+)$/' => 'brand/index?cateid=:1',
+    '/^topics\/$/' => 'topics/index',
+    'topics/:id' => 'topics/index',
+    '/^tophot$/' => 'tophot/index',
+    '/^tophot\/id\/(\d+)$/' => 'tophot/index?id=:1',
+    '/^tophot\/id\/(\d+)\/r\/(\d+)$/' => 'tophot/index?id=:1&r=:2',
+    '/^tophot\/id\/(\d+)\/op\/(\d+)\/r\/(\d+)$/' => 'tophot/index?id=:1&op=:2&r=:3',
   ),
 
 

@@ -22,6 +22,9 @@ class IndexAction extends BaseAction
         $this->_ad = D('ad')->cache(true, 10 * 60);
     }
 
+    /**
+     * @return void
+     */
     public function index()
     {
         $ItemMod = new itemsModel();
@@ -140,6 +143,10 @@ class IndexAction extends BaseAction
 
         //$bestseller = $this->TbkDgMaterial(20,3786);
 
+        $MyCate = $this->CallTophot();
+        $data = $this->CallTophot('goods',4,1,$MyCate['result'][0]['id'],1);
+        $this->assign('jingxuan', $data['result']);
+
         $bestseller = $ItemMod->GoodsList(13, ['quan'=>['gt', 100], 'coupon_price'=>['gt', 200]], 'id desc');
         $this->assign('bestseller', $bestseller);
 
@@ -172,4 +179,7 @@ class IndexAction extends BaseAction
 		 
 		
     }
+
+
+
 }

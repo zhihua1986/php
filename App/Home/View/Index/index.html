@@ -125,7 +125,57 @@
 					</div>
 
 				</div>
-				<div class="layui-clear tqk-pt-15"></div>		
+
+
+
+<if condition="$jingxuan">
+				<div class="layui-clear tqk-pt-10"></div>
+				<div class="tqk-bg-white">
+					<div class="layui-row">
+						<div class="layui-col-xs3" style="width: 250px">
+							<a href="{:U('tophot/index')}" title="人工精选">
+						<img src="https://img.alicdn.com/imgextra/i3/126947653/O1CN01wZvLs626P7yCTR52S_!!126947653.png" width="220">
+							</a>
+						</div>
+						<div class="layui-col-xs9">
+
+							<div class="flexbox">
+								<ul class="haoquan">
+									<volist name="jingxuan" id="vo">
+										<li style="width: 219px;">
+											<div class="goods_list">
+												<a target="_blank" href="{:U('/item/',array('id'=>$vo['num_iid']))}">
+													<div class="goods_img">
+														<img width="200" height="200" src="__SKIN2__/static/tqkpc/images/grey.gif" class="load" lay-src="{$vo.pic_url}_400x400" alt="{$vo.title}">
+													</div>
+													<p class="layui-elip tqk-hiden-25"><i class="<if condition="$vo.shop_type eq 'B'">tm-ico<else/>tb-ico</if>"></i>{$vo.title}</p>
+				<span class="dec tqk-pl-10">原价￥{$vo.price|formatprice} </span> <span class="num tqk-pl-10">{$vo.volume}</span> 件
+				<div>
+					<if condition="$vo['quan'] gt 0"><label class="coupon-price">{$vo.quan}元券</label></if>
+					<span class="price">￥<i>{$vo.coupon_price|formatprice}</i></span></div>
+				</a>
+			</div>
+			</li>
+			</volist>
+			</ul>
+		</div>
+
+
+
+
+		</div>
+					</div>
+
+
+
+
+
+					<div class="layui-clear"></div>
+				</div>
+		</if>
+
+
+				<div class="layui-clear tqk-pt-10"></div>
 <div class="tqk-bg-white">
 					<legend><span class="tqk-pl-10 tqk-c-333">本地生活券</span> <span class="tqk-f-14 tqk-pl-10">先领券再下单能省钱</span>
 					<span class="tqk-f-r">

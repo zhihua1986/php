@@ -101,11 +101,7 @@ class FirstendAction extends TopAction
         }
 
 
-        // if($memberinfo && $memberinfo['special_id'] < 2 ){
-        // 	$apidata['ExternalId'] = $memberinfo['id'];
-        // }elseif($memberinfo){
-        // 	$apidata['SpecialId'] = $memberinfo['special_id'];
-        // }
+
         if ($memberinfo && $memberinfo['webmaster_pid'] > 2 && C('yh_ipban_switch') == 2) {
             $apidata['RelationId'] = $memberinfo['webmaster_pid'];
             $apidata['protype'] = 2; //推广赚
@@ -231,6 +227,51 @@ class FirstendAction extends TopAction
             return false;
 
         }
+    }
+
+
+    /**
+     * @param $type
+     * @param $size
+     * @param $p
+     * @param $id
+     * @return mixed
+     */
+    protected function  CallTophot($type='',$size='',$p='',$id='',$op=''){
+
+        $CacheName = md5('TophotCate'.$type.$size.$p.$id,$op);
+        if(false === $data = S($CacheName)){
+
+            $apiurl=$this->tqkapi.'/tophot';
+            $data=[
+                'key'=>$this->_userappkey,
+                'time'=>time(),
+                'tqk_uid'=>	$this->tqkuid,
+            ];
+            if($type){
+                $data['type']= $type;
+            }
+            if($size){
+                $data['size']= $size;
+            }
+            if($id){
+                $data['id']= $id;
+            }
+            if($p){
+                $data['p']= $p;
+            }
+            if($op){
+                $data['op']= $op;
+            }
+            $token=$this->create_token(trim(C('yh_gongju')), $data);
+            $data['token']=$token;
+            $result=$this->_curl($apiurl, $data, true);
+            $data=json_decode($result, true);
+
+            S($CacheName,$data,300);
+        }
+
+        return $data;
     }
 
     /**

@@ -1,0 +1,238 @@
+<include file="NewPublic:cate" />
+<style>
+    .topfixed {background: #ffa033;}
+    .topfixed .weui-search-bar{background: #ffa033;}
+    .topfixed .weui-search-bar__form {background: #ffa033;}
+    .weui-search-bar__cancel-btn2{ background: #ff9000}
+    .filter{height: 33px}
+    .topfixed-title{ color: #ffffff; text-align: center; float: left; width: 90%; font-size: large;}
+    .tabnav .swiper-slide{padding:0 .5rem;text-align:center;}
+    .page-list{ padding: 5px; background: #ffffff; margin-bottom: 4px; margin-top: 4px; width: 100%}
+    .page-list img{ width: 95%; border-radius: 10px;}
+    .weui-cells__title{ padding-left: 3px; padding-right: 3px;}
+</style>
+<body>
+<div class="pagebox">
+
+    <div class="topfixed fixs">
+        <a class="backlist" href="javascript:history.back(-1)"><i class="tqk-fanhui2 iconfont"></i>
+        </a>
+        <div class="topfixed-title">
+            人工精选
+        </div>
+
+    </div>
+
+    <div class="tabnav" id="subnav" style="background: #ffa033; padding-top: 2.5rem">
+        <div class="swiper-wrapper">
+            <volist name="cate" id="tree" key="i">
+            <div class="swiper-slide"><a  rel="{:$i-1}" href="{:U('tophot/index',array('id'=>$tree['id'],'op'=>$tree['op'],'r'=>$i))}"  <if condition="($platform eq $tree['id']) or (!$platform and $i eq 1)">class="active"</if> >{$tree.name}</a></div>
+            </volist>
+
+        </div>
+
+
+    </div>
+<if condition="$tips">
+    <div class="filter">
+        <div class="weui-row">
+            <div class="weui-col-20 tqk-pl-5"><img src="https://img.alicdn.com/imgextra/i1/126947653/O1CN01KIwi7R26P7y7vEJU2_!!126947653.jpg" width="20" height="20"></div>
+            <div class="weui-col-80"><marquee direction="left" scrollamount="3">
+                {$tips}
+            </marquee></div>
+        </div>
+    </div>
+</if>
+
+    <div class="goods-des">
+        <div class="weui-row weui-no-gutter" id="list">
+            <volist name='list' id="vo">
+                <div class="weui-col-50 ">
+                    <div class="goods-col tqk-bg-white tqk-rad-12">
+                        <div class="goods-vertical">
+                            <div>
+                                <div class="pic">
+                                    <a href="{:U('item/index',array('id'=>$vo['num_iid']))}">
+                                        <img src="{$vo.pic_url}_300x300.jpg"/>
+                                    </a>
+
+                                </div>
+                                <div class="title">
+                                    <i class="iconfont <if condition="$vo.shop_type eq 'B'">tqk-tianmaoT<else/>tqk-taobao1</if> tqk-c-red">
+                                    </i>
+                                    {$vo.title}
+                                </div>
+                                <div class="my">
+                                                <span class="my_qh">
+                                                    券后
+                                                </span>
+                                    <div class="fl">
+                                        <i>
+                                            ¥
+                                        </i>
+                                        <span class="price">
+                                                     {$vo.coupon_price}
+                                                    </span>
+                                    </div>
+                                </div>
+                                <if condition="$vo['quan']">
+                                    <div class="tag">
+                                        <div class="fr">
+                                                    <span class="tags_quan">
+                                                        <span class="quan">
+                                                            券
+                                                        </span>
+                                                        <span>
+                                                            {$vo.quan}元
+                                                        </span>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </if>
+                                <div class="num">
+                                    已售{$vo.volume}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </volist>
+
+
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+<div class="weui-loadmore" style="display: none;">
+    <i class="weui-loading"></i>
+    <span class="weui-loadmore__tips">正在加载...</span>
+</div>
+<div class="nomore" id="nomore" style="display: none;"><span>没有更多数据了</span></div>
+<input  type="hidden" id="page" value="2"/>
+
+
+<div class="footzw"> </div>
+
+
+<div style="padding-top: 5rem"></div>
+
+
+<include file="NewPublic:foot" />
+
+<img class="tqk-totop" src="/Public/static/wap/images/icon/mescroll-totop.png" width="36" height="36" />
+<include file="Public:stat" />
+<script type="text/javascript">
+    $(function () {
+        $(window).scroll(function () {
+            var scrollT = $(document).scrollTop();
+            var offsetT = $(".pagebox").offset().top;
+            if (scrollT >= offsetT) {
+                $(".tqk-totop").show()
+            } else {
+                $(".tqk-totop").hide()
+            }
+        })
+        $(".tqk-totop").click(function(){
+            $("html,body").animate({
+                scrollTop:0
+            },1000)
+        })
+    })
+
+    window.onload = function() {
+        let index = $(".active").attr('rel');
+        let mySwiper = new Swiper('#subnav',{
+            freeMode : true,
+            slidesPerView : 'auto',
+            slideToClickedSlide: true,
+            preventClicksPropagation:true,
+            initialSlide:index?index:0
+        });
+
+
+    }
+
+    $(document.body).infinite();
+    var loading = false;  //状态标记
+
+    $(document.body).infinite().on("infinite", function() {
+        if(loading) return;
+        loading = true;
+        $('.weui-loadmore').show()
+        var page = $('#page').val();
+        var id = "{$platform}";
+        var op = "{$op}";
+        $.get("{:U('tophot/catelist')}",{page:page,id:id,op:op},function(res){
+
+                if(res == 1){
+                    loading = false;
+                    $(document.body).destroyInfinite()
+                    $('.weui-loadmore').hide()
+                    $('#nomore').show();
+                    return;
+                }
+                $("#list").append(res);
+                $('#page').val(Number(page)+1);
+                loading = false;
+
+            },
+            'html'
+        );
+
+
+    });
+
+    <if condition="$isweixin">
+
+        var isFirst = true;
+        var issave=false;
+        var posname="pos_{$platform}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+        var htname="ht_{$platform}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+        var pgname="pg_{$platform}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+        var pgnum = parseInt(sessionStorage.getItem(pgname));
+        if(pgnum>0){
+        var pageIndex = pgnum;
+    }else{
+        var pageIndex = 1;
+    }
+
+
+        if(isFirst){
+        var tops = parseInt(sessionStorage.getItem(posname));
+        var htmldata = sessionStorage.getItem(htname);
+        if(htmldata){
+        $('#list').html(htmldata);
+        $("html,body").scrollTop(tops);
+    }
+        $('#page').val(pageIndex);
+        sessionStorage.removeItem(posname);
+        sessionStorage.removeItem(htname);
+        sessionStorage.removeItem(pgname);
+        sessionStorage.clear();
+        isFirst = false;
+    }
+
+        window.addEventListener('scroll',function(){
+        if(isNaN(parseInt(sessionStorage.getItem(posname))) || issave){
+        var pos=$(document).scrollTop();
+        sessionStorage.setItem(posname,pos);
+        var datahtml =$('#list').html();
+        sessionStorage.setItem(htname,datahtml);
+        issave = true;
+        sessionStorage.setItem(pgname,Number(page)+1);
+
+    };
+    });
+
+    </if>
+
+
+
+</script>
+</body>
+</html>

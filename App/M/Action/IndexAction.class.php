@@ -117,14 +117,20 @@ class IndexAction extends BaseAction
      * @return array|array[]
      */
     protected function SubNav(){
-
         $data = [
             array(
                 'name' => '签到红包',
                 'tip' => '省',
                 'link' => U('signin/index'),
                 'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01PCcjdW2MgYsptBPXb_!!3175549857.png'
+            ),
+            array(
+                'name' => '人工精选',
+                'tip' => '',
+                'link' => U('tophot/index'),
+                'img' => 'https://img.alicdn.com/imgextra/i3/126947653/O1CN01FwPRPB26P7yDFxiLb_!!126947653.gif'
             )
+
         ];
         if(C('yh_openjd') == 1) {
             $jd = array(

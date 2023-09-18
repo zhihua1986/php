@@ -36,6 +36,7 @@ class ItemAction extends BaseAction{
 		    $item['pic_url']=$item['pict_url'];
 		    $item['price']=$item['zk_final_price'];
 		    $item['link']=$item['item_url'];
+            $item['shop_type']=$item['user_type']==1?'B':'C';
 		    $item['quan']=$item['coupon_amount'];
 		    $item['commission_rate']=$item['commission_rate'];
 		    $item['tk_commission_rate']=$item['commission_rate'];
@@ -53,7 +54,7 @@ class ItemAction extends BaseAction{
 		} else {
 		    !$item && $this->_404();
 		}
-		
+
 		$this->assign('mdomain', str_replace('/index.php/m', '', C('yh_headerm_html')));
 		if (!$this->memberinfo && $this->getrobot=='no' && $item['Quan_id'] && $item['ems']==1) {
 		    $last_time=date('Y-m-d', $item['last_time']);
