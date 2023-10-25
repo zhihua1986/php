@@ -64,22 +64,6 @@ class ItemAction extends BaseAction
         if (!$item) {
             $item = $this->GetTbDetail($id);
             !$item && $this->_404();
-            $item['sellerId']=$item['seller_id'];
-            $item['pic_url']=$item['pict_url'];
-            $item['price']=$item['zk_final_price'];
-            $item['quan']=$item['coupon_amount'];
-            $item['link']=$item['item_url'];
-            $item['commission_rate']=$item['commission_rate'];
-            $item['tk_commission_rate']=$item['commission_rate'];
-            $item['click_url']='https:'.$item['url'];
-            $item['volume']=$item['volume'];
-            $item['coupon_price']=$item['zk_final_price']-$item['coupon_amount'];
-            $item['coupon_end_time']=$item['coupon_end_time'];
-            $item['ems']=2;
-            $quanurl = $item['coupon_share_url'];
-            $item['quanurl']=$quanurl ? 'https:'.$quanurl : 'https:'.$item['url'];
-            $item['Quan_id']=$item['coupon_id'];
-			$item['pic_urls']=$item['small_images']['string'];
             $this->assign('act', 'yes');
         } else {
             !$item && $this->_404();

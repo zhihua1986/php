@@ -111,10 +111,11 @@ class FirstendAction extends TopAction
         $apidata['token'] = $token;
         $res = $this->_curl($apiurl, $apidata, false);
         $res = json_decode($res, true);
+
         $me = $res['me'];
         if ($res && $memberinfo && $memberinfo['special_id'] < 2) {
 
-            $quanurl = $res['quanurl'];
+            $quanurl = $res['coupon_info']?$res['quanurl']:$res['item_url'];
             S($cacheName, $quanurl);
             return $quanurl;
 
@@ -123,13 +124,15 @@ class FirstendAction extends TopAction
                 $activityId = $Quan_id ? '&activityId=' . $Quan_id : '';
                 $quanurl = 'https://uland.taobao.com/coupon/edetail?e=' . $me . $activityId . '&pid=' . $pid . $relation . '&af=1';
             } else {
-                $quanurl = $res['quanurl'];
+                $quanurl = $res['coupon_info']?$res['quanurl']:$res['item_url'];
             }
             S($cacheName, $quanurl);
             return $quanurl;
 
         } else {
 
+            return false;
+    /*
             $link = 'https://uland.taobao.com/coupon/edetail?itemId=' . $num_iid . '&activityId=' . $Quan_id . '&pid=' . $pid . $relation . '';
 
             if ($Quan_id) {
@@ -139,6 +142,7 @@ class FirstendAction extends TopAction
             }
             S($cacheName, $quanurl);
             return $quanurl;
+            */
 
         }
 
@@ -348,7 +352,11 @@ class FirstendAction extends TopAction
         }
     }
 
-    protected function phoneBill($uid = '')
+    /**
+     * @param $uid
+     * @return false|mixed
+     */
+    protected function phoneBill($uid = '',$type='',$url='')
     {
 
         $pid = trim(C('yh_youhun_secret'));
@@ -359,12 +367,16 @@ class FirstendAction extends TopAction
                 'timestamp' => $this->msectime(),
                 'client_id' => trim(C('yh_pddappkey')),
                 'generate_we_app' => 'true',
-                'resource_type' => 39997,
+                'resource_type' => $type?$type:39997,
                 'pid' => $pid
             ];
 
             if ($uid) {
                 $where['custom_parameters'] = $uid;
+            }
+
+            if($url){
+                $where['url']=$url;
             }
 
             $where['sign'] = $this->create_pdd_sign(trim(C('yh_pddsecretkey')), $where);
@@ -379,6 +391,10 @@ class FirstendAction extends TopAction
 
     }
 
+    /**
+     * @param $id
+     * @return false|mixed
+     */
     protected function taobaodetail($id)
     {
         $appkey = trim(C('yh_taobao_appkey'));
@@ -389,7 +405,6 @@ class FirstendAction extends TopAction
             $c->appkey = $appkey;
             $c->secretKey = $appsecret;
             $req = new \TbkItemInfoGetRequest();
-            //  $req->setFields("free_shipment,ratesum,shop_dsr,is_prepay,num_iid,user_type,title,seller_id,volume,pict_url,reserve_price,zk_final_price,item_url,provcity,nick");
             $req->setPlatform("1");
             $req->setNumIids($id);
             $resp = $c->execute($req);
@@ -402,13 +417,17 @@ class FirstendAction extends TopAction
         return false;
     }
 
+    /**
+     * @param $id
+     * @return array|mixed
+     */
     protected function GetTbDetail($id)
     {
 
         $CacheName = md5($id);
         $CacheResult = S($CacheName);
         if ($CacheResult) {
-            return $CacheResult;
+           return $CacheResult;
         }
         $appkey = trim(C('yh_taobao_appkey'));
         $appsecret = trim(C('yh_taobao_appsecret'));
@@ -416,17 +435,13 @@ class FirstendAction extends TopAction
         $apppid = explode('_', $apppid);
         $AdzoneId = $apppid[3];
         $key = 'https://uland.taobao.com/item/edetail?id=' . $id;
-        if (is_numeric($id)) {
-            $key = 'https://item.taobao.com/item.htm?id=' . $id;
-        }
         vendor("taobao.taobao");
         $c = new \TopClient();
         $c->appkey = $appkey;
         $c->secretKey = $appsecret;
         $c->format = 'json';
-        $req = new \TbkDgMaterialOptionalRequest();
+        $req = new \TbkDgMaterialOptionalUpgradeRequest();
         $req->setAdzoneId($AdzoneId);
-        $req->setPlatform("1");
         $req->setPageSize("1");
         $req->setSort("tk_total_sales_des");
         if ($key) {
@@ -437,8 +452,36 @@ class FirstendAction extends TopAction
         $resp = $c->execute($req);
         $resp = json_decode(json_encode($resp), true);
         $resp = $resp['result_list']['map_data'][0];
-        S($CacheName, $resp);
-        return $resp;
+
+        if($resp){
+         $item = array();
+         $url = $resp['publish_info']['coupon_share_url'] ? $resp['publish_info']['coupon_share_url']:$resp['publish_info']['click_url'];
+        $item['title'] =  $resp['item_basic_info']['short_title']?$resp['item_basic_info']['short_title']:$resp['item_basic_info']['title'];
+        $item['sellerId']=$resp['item_basic_info']['seller_id'];
+        $item['pic_url']=$resp['item_basic_info']['white_image']?$resp['item_basic_info']['white_image']:$resp['item_basic_info']['pict_url'];
+        $item['price']=$resp['price_promotion_info']['zk_final_price'];
+        $item['quan']=$resp['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_fee'];
+        $item['link']='https:'.$url;
+        $item['commission_rate']=$resp['publish_info']['income_rate']*100;
+        $item['tk_commission_rate']=$resp['publish_info']['income_rate']*100;
+        $item['click_url']='https:'.$url;
+        $item['volume']=$resp['item_basic_info']['volume'];
+        $item['coupon_price']=$resp['price_promotion_info']['final_promotion_price']?$resp['price_promotion_info']['final_promotion_price']:$resp['price_promotion_info']['zk_final_price'];
+        $item['coupon_end_time']=substr($resp['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_end_time'],0,-3);
+        $item['ems']=2;
+        $item['quanurl']='https:'.$url;
+        $item['Quan_id']= $resp['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_id'];
+        $item['coupon_price']= $resp['price_promotion_info']['final_promotion_price']?$resp['price_promotion_info']['final_promotion_price']:$resp['price_promotion_info']['zk_final_price'];
+        $item['num_iid']=$resp['item_id'];
+        if ($resp['item_basic_info']['user_type']=="1") {
+            $item['shop_type']='B';
+        } else {
+            $item['shop_type']='C';
+        }
+        }
+
+        S($CacheName, $item);
+        return $item;
     }
 
     // 自动表单令牌验证
@@ -1159,10 +1202,20 @@ array(
             $c->appkey = $appkey;
             $c->secretKey = $appsecret;
             $c->format = 'json';
-            $req = new \TbkDgMaterialOptionalRequest();
-            $req->setAdzoneId($AdzoneId);
-            $req->setPlatform("1");
+            $req = new \TbkDgMaterialOptionalUpgradeRequest();
+
             $req->setPageSize("20");
+            $req->setPageNo($page?$page:1);
+            if ($sort=='hot') {
+                $req->setSort("total_sales_des");
+            } elseif ($sort=='price') {
+                $req->setSort("price_asc");
+            } elseif ($sort=='rate') {
+                $req->setSort("tk_rate_des");
+            } else {
+                $req->setSort("total_sales_des");
+            }
+
             if ($sid) {
                 $req->setCat("".$sid."");
             }
@@ -1172,52 +1225,39 @@ array(
                 };
                 $req->setQ((string)$key);
             }
-            if ($page>0) {
-                $req->setPageNo("".$page."");
-            } else {
-                $req->setPageNo(1);
-            }
-            if ($sort=='hot') {
-                $req->setSort("total_sales_des");
-            } elseif ($sort=='price') {
-                $req->setSort("price_asc");
-            } elseif ($sort=='rate') {
-                $req->setSort("tk_rate_des");
-            } else {
-                $req->setSort("tk_des");
-            }
+            $req->setAdzoneId($AdzoneId);
             $resp = $c->execute($req);
             $resp = json_decode(json_encode($resp), true);
-
             $resp=$resp['result_list']['map_data'];
+
             $patterns = "/\d+/";
-            foreach($resp as $k=>$v){
-                if($this->FilterWords($v['title']) || !$v['item_id']){
+            foreach ($resp as $k=>$v) {
+                $title = $v['item_basic_info']['short_title']?$v['item_basic_info']['short_title']:$v['item_basic_info']['title'];
+                if ($this->FilterWords($title) || !$v['item_id']) {
                     continue;
                 }
-                preg_match_all($patterns,$v['coupon_info'],$arr);
-                $quan=$arr[0];
-                $goodslist[$k+$count]['quan']=$v['coupon_amount'];
-                $goodslist[$k+$count]['coupon_click_url']=$v['coupon_share_url']?$v['coupon_share_url']:$v['url'];
-                $goodslist[$k+$count]['num_iid']=$v['num_iid'];
-                $goodslist[$k+$count]['title']=$v['title'];
-                $goodslist[$k+$count]['coupon_price']=$v['zk_final_price']-$goodslist[$k+$count]['quan'];
-                if($v['user_type']=="1"){
+                $coupon_price =  $v['price_promotion_info']['final_promotion_price']?$v['price_promotion_info']['final_promotion_price']:$v['price_promotion_info']['zk_final_price'];
+                $quan = $v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_fee'];
+                $coupon_id = $v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_id'];
+                $goodslist[$k+$count]['quan']=$quan;
+                $goodslist[$k+$count]['coupon_click_url']=$v['publish_info']['coupon_share_url'] ? $v['publish_info']['coupon_share_url']:$v['publish_info']['click_url'];
+                $goodslist[$k+$count]['num_iid']=$v['item_id'];
+                $goodslist[$k+$count]['title']=$title;
+                $goodslist[$k+$count]['coupon_id']=$coupon_id;
+                $goodslist[$k+$count]['coupon_price']=$coupon_price;
+                if ($v['item_basic_info']['user_type']=="1") {
                     $goodslist[$k+$count]['shop_type']='B';
-                }else{
+                } else {
                     $goodslist[$k+$count]['shop_type']='C';
                 }
-                $goodslist[$k+$count]['commission_rate']=$v['commission_rate']; //比例
-                $goodslist[$k+$count]['price']=$v['zk_final_price'];
-                $goodslist[$k+$count]['volume']=$v['volume'];
-                $goodslist[$k+$count]['pic_url']=$v['pict_url'];
-                $goodslist[$k+$count]['category_id']=$v['category_id'];
-                if(C('APP_SUB_DOMAIN_DEPLOY')){
-                    $goodslist[$k]['linkurl']=U('/item/',array('id'=>$v['item_id']));
-                }else{
-                    $goodslist[$k]['linkurl']=U('item/index',array('id'=>$v['item_id']));
-                }
+                $goodslist[$k+$count]['commission_rate']=$v['publish_info']['income_rate']*100; //比例
+                $goodslist[$k+$count]['price']=$v['price_promotion_info']['zk_final_price'];
+                $goodslist[$k+$count]['volume']=$v['item_basic_info']['volume'];
+                $goodslist[$k+$count]['pic_url']=$v['item_basic_info']['white_image']?$v['item_basic_info']['white_image']:$v['item_basic_info']['pict_url'];
+                $goodslist[$k+$count]['category_id']=$v['item_basic_info']['category_id'];
+
             }
+
 
             return $goodslist;
 

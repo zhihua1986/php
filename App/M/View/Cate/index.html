@@ -136,7 +136,7 @@
 	<span class="weui-loadmore__tips">正在加载...</span>
 </div>
 <div class="nomore" id="nomore" style="display: none;"><span>没有更多数据了</span></div>
-<input  type="hidden" id="page" value="2"/>
+<input  type="hidden" id="pageindex" value="2"/>
 
 
 <div class="footzw"> </div>
@@ -193,7 +193,7 @@ $(document.body).infinite();
 		if(loading) return;
 		loading = true;
 		$('.weui-loadmore').show()
-		var page = $('#page').val();
+		var page = $('#pageindex').val();
 		var word = "{$sokey}";
 		var cid = "{$cid}";
 		var sid = "{$sid}";
@@ -211,7 +211,7 @@ $(document.body).infinite();
 						return;
 					}
 					$("#list").append(res);
-					$('#page').val(Number(page)+1);
+					$('#pageindex').val(Number(page)+1);
 					loading = false;
 
 

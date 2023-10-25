@@ -352,7 +352,7 @@ class RobotsAction extends BaseAction
             $coll = 0;
             foreach ($json as $key => $val) {
                 $pic_url = str_replace("http://", "https://", $val['pic_url']);
-                $link = 'https://item.taobao.com/item.htm?id=' . $val['num_iid'];
+                $link = 'https://uland.taobao.com/item/edetail?id=' . $val['num_iid'];
 				$item_id = explode('-',$val['num_iid']);
                 $raw[] = array(
                     'link' => $link,
@@ -492,48 +492,87 @@ class RobotsAction extends BaseAction
             $c = new \TopClient();
             $c->appkey = $appkey;
             $c->secretKey = $appsecret;
-            $req = new \TbkDgMaterialOptionalRequest();
+            $req = new \TbkDgMaterialOptionalUpgradeRequest();
             $req->setPageSize("100");
             $req->setPageNo("" . $p . "");
-            $req->setPlatform("1");
-            //$req->setMaterialId("17004");
             if ($date['http_mode'] == 1) {
                 $req->setQ($date['keyword']);
             } else {
                 $req->setCat($date['tb_cid']);
             }
             $req->setHasCoupon("true");
-            $req->setNpxLevel("2");
-            $req->setNeedPrepay("true");
-//            $req->setIncludePayRate30("true");
-            $req->setIncludeGoodRate("true");
             $req->setAdzoneId($AdzoneId);
             $resp = $c->execute($req);
             $resp = json_decode(json_encode($resp), true);
             $datares = $resp['result_list']['map_data'];
-
-
-
         }
+
+
         if ($datares) {
             $t = 0;
             $coll = 0;
             $now = time();
-            foreach ($datares as $key => $val) {
-                $link = 'https://item.taobao.com/item.htm?id=' . $val['item_id'];
-                if (!empty($val['coupon_id']) && !empty($val['seller_id'])) {
-                    $receive = $val['coupon_total_count'];
-                    $coupon_price = $val['coupon_amount'];
-                    $pic_url = str_replace('http://', 'https://', $val['pict_url']);
-                    $pic_url = str_replace('_400x400', '', $pic_url);
-					$item_id = explode('-',$val['item_id']);
-                    $raw[] = array('link' => $link, 'click_url' => '', 'pic_url' => $pic_url, 'title' => $val['title'], 'coupon_start_time' => NOW_TIME, 'add_time' => strtotime(date('Y-m-d H:i:s')), 'coupon_end_time' => strtotime($val['coupon_end_time']), 'ali_id' => $date['recid'], 'cate_id' => $date['cid'] ?: $date['cate_id'], 'shop_name' => $val['shop_title'], 'shop_type' => $val['user_type'] == 1 ? 'B' : 'C', 'ems' => 1, 'num_iid' => $val['item_id'], 'item_id' =>$item_id[1]?$item_id[1]:$val['num_iid'],'volume' => $val['volume'], 'commission' => $val['commission_rate'], 'tuisong' => 0, 'pass' => 1, 'status' => 'underway', 'isshow' => 1, 'commission_rate' => $val['commission_rate'], 'tk_commission_rate' => $val['commission_rate'], 'sellerId' => $val['seller_id'], 'nick' => '0', 'area' => 0, 'mobilezk' => $val['mobilezk'] ?: 0, 'hits' => 0, 'price' => $val['zk_final_price'], 'coupon_price' => $val['zk_final_price'] - $coupon_price, 'coupon_rate' => intval(($val['zk_final_price'] - $coupon_price) / $val['zk_final_price'] * 100 * 100), 'intro' => '', 'up_time' => $now + $t, 'desc' => '', 'isq' => '1', 'quanurl' => $val['coupon_share_url'], 'quan' => $coupon_price, 'Quan_id' => $val['coupon_id'], 'Quan_condition' => 0, 'Quan_surplus' => $receive * 10, 'Quan_receive' => $receive);
+            foreach ($datares as $key => $v) {
+
+
+                $title = $v['item_basic_info']['short_title']?$v['item_basic_info']['short_title']:$v['item_basic_info']['title'];
+                if ($this->FilterWords($title) || !$v['item_id']) {
+                    continue;
+                }
+                $coupon_price =  $v['price_promotion_info']['final_promotion_price']?$v['price_promotion_info']['final_promotion_price']:$v['price_promotion_info']['zk_final_price'];
+                $quan = $v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data']['promotion_fee'];
+                $coupon_id = $v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data']['promotion_id'];
+                $link = 'https://uland.taobao.com/item/edetail?id=' . $v['item_id'];
+                $receive = 100;
+
+                if ($coupon_id && !is_numeric($coupon_id)) {
+                    $url = $v['publish_info']['coupon_share_url'] ? $v['publish_info']['coupon_share_url']:$v['publish_info']['click_url'];
+                    $pic_url =  $v['item_basic_info']['white_image']?$v['item_basic_info']['white_image']:$v['item_basic_info']['pict_url'];
+					$item_id = explode('-',$v['item_id']);
+                    $raw[] = array(
+                        'link' => $link,
+                        'click_url' => '',
+                        'pic_url' =>$pic_url,
+                        'title' => $title,
+                        'coupon_start_time' => NOW_TIME,
+                        'add_time' => strtotime(date('Y-m-d H:i:s')),
+                        'coupon_end_time' => substr($v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data']['promotion_end_time'],0,-3),
+                        'ali_id' => $v['item_basic_info']['category_id'],
+                        'cate_id' => $date['cid'] ?: $date['cate_id'],
+                        'shop_name' => $v['item_basic_info']['shop_title'],
+                        'shop_type' => $v['item_basic_info']['user_type'] == 1 ? 'B' : 'C',
+                        'ems' => 1,
+                        'num_iid' => $v['item_id'],
+                        'item_id' =>$item_id[1]?$item_id[1]:$v['num_iid'],
+                        'volume' => $v['item_basic_info']['volume'],
+                        'commission' => $v['publish_info']['income_rate']*100,
+                        'tuisong' => 0, 'pass' => 1, 'status' => 'underway', 'isshow' => 1,
+                        'commission_rate' =>  $v['publish_info']['income_rate']*100,
+                        'tk_commission_rate' =>  $v['publish_info']['income_rate']*100,
+                        'sellerId' => $v['item_basic_info']['seller_id'],
+                        'nick' => '0',
+                        'area' => 0,
+                        'mobilezk' => 0, 'hits' => 0,
+                        'price' => $v['price_promotion_info']['zk_final_price'],
+                        'coupon_price' => $coupon_price,
+                        'coupon_rate' => intval(($v['price_promotion_info']['zk_final_price'] - $quan) / $v['price_promotion_info']['zk_final_price'] * 100 * 100), 'intro' => '', 'up_time' => $now + $t, 'desc' => '', 'isq' => '1',
+                        'quanurl' => 'http:'.$url,
+                        'quan' => $quan,
+                        'Quan_id' => $coupon_id,
+                        'Quan_condition' => 0,
+                        'Quan_surplus' => $receive * 10,
+                        'Quan_receive' => $receive
+                    );
+
                     $coll++;
                     $totalcoll++;
                 }
+
                 $thiscount++;
                 $t++;
             }
+
+
             M('items')->addAll($raw, array(), true);
             if (function_exists('opcache_invalidate')) {
                 $basedir = $_SERVER['DOCUMENT_ROOT'];

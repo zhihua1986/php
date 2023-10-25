@@ -22,7 +22,8 @@ $this->_avatar=C('yh_site_zhibo');
 
 
 public function index(){
-	
+
+    exit;
 if(function_exists('opcache_invalidate')){
 $basedir = $_SERVER['DOCUMENT_ROOT']; 
 $dir=$basedir.'/data/runtime/Data/zhibo/disable_num_iids.php';

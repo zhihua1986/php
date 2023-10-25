@@ -25,31 +25,12 @@ class ItemAction extends BaseAction{
 			$this->assign('callback',$this->fullurl());
 		    $this->assign('Tbauth', true);
 		}
-		
 		$id = I('id');
 		$item = $this->_mod->field('ordid,ali_id,zc_id,orig_id,tag', true)->where(['num_iid' => $id])->find();
 		$item && $item['pic_urls']=unserialize($item['pic_urls']);
 		if (!$item) {
 		    $item = $this->GetTbDetail($id);
 		    !$item && $this->_404();
-		    $item['sellerId']=$item['seller_id'];
-		    $item['pic_url']=$item['pict_url'];
-		    $item['price']=$item['zk_final_price'];
-		    $item['link']=$item['item_url'];
-            $item['shop_type']=$item['user_type']==1?'B':'C';
-		    $item['quan']=$item['coupon_amount'];
-		    $item['commission_rate']=$item['commission_rate'];
-		    $item['tk_commission_rate']=$item['commission_rate'];
-		    $item['click_url']='https:'.$item['url'];
-		    $item['volume']=$item['volume'];
-		    $item['coupon_price']=$item['zk_final_price']-$item['coupon_amount'];
-		    $item['coupon_end_time']=strtotime($item['coupon_end_time']);
-			$item['coupon_start_time']=strtotime($item['coupon_start_time']);
-		    $item['ems']=2;
-		    $quanurl = $item['coupon_share_url'];
-		    $item['quanurl']=$quanurl ? 'https:'.$quanurl : 'https:'.$item['url'];
-		    $item['Quan_id']=$item['coupon_id'];
-			$item['pic_urls']=$item['small_images']['string'];
 		    $this->assign('act', 'yes');
 		} else {
 		    !$item && $this->_404();
@@ -74,20 +55,20 @@ class ItemAction extends BaseAction{
 		$this->assign('act', 'yes');
 		
 		}
-		
-		$file = 'orlike_m' .  md5($item['id']);
+
+		$file = 'orlike_m' .  md5($item['num_iid']);
 		if (false === $orlike = S($file)) {
 		    $cid = $item["cate_id"];
 		    $where=[
 		        'cate_id'=>$cid,
-		        'id'=>['neq', $id]
+		        'num_iid'=>['neq', $id]
 		    ];
 		    $orlike = $this->_mod->where($where)->field('id,volume,num_iid,quan,commission_rate,title,pic_url,coupon_price,price,shop_type')->limit('0,6')->order('id desc')->select();
 		    S($file, $orlike);
 		} else {
 		    $orlike = S($file);
 		}
-		
+
 		$this->assign('orlike', $orlike);
 		if (!$item['quankouling']) {
 		    $kouling=kouling($item['pic_url'].'_200x200.jpg', $item['title'], $item['quanurl']);
@@ -209,7 +190,7 @@ class ItemAction extends BaseAction{
             $imglist = $json['small_images']['string'];
             $desc = '';
             foreach ($imglist as $k=>$v) {
-                $desc = $desc.'<img class="lazy" src=' . $v . '>';
+                $desc = $desc.'<img align="absmiddle" src=' . $v . '>';
             }
             $json=[
                 'status'=>'ok',

@@ -111,7 +111,7 @@
     <span class="weui-loadmore__tips">正在加载...</span>
 </div>
 <div class="nomore" id="nomore" style="display: none;"><span>没有更多数据了</span></div>
-<input  type="hidden" id="page" value="{$nextPage}"/>
+<input  type="hidden" id="pageindex" value="{$nextPage}"/>
 
 
 <div class="footzw"> </div>
@@ -157,7 +157,7 @@
         if(loading) return;
         loading = true;
         $('.weui-loadmore').show()
-        var page = $('#page').val();
+        var page = $('#pageindex').val();
         var word = "{$sokey}";
         $.get("{:U('vph/catelist')}",{page:page,k:word},function(res){
                 if(res == 1){
@@ -171,9 +171,9 @@
                 $("#list").append(res);
 
                 if(word){
-                    $('#page').val(Number(page)+1);
+                    $('#pageindex').val(Number(page)+1);
                 }else{
-                    $('#page').val(Number(page)+20);
+                    $('#pageindex').val(Number(page)+20);
                 }
 
 

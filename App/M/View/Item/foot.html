@@ -19,7 +19,30 @@
 							});	
 						},500);
 
-</if>	
+</if>
+
+
+<if condition="C('yh_dn_item_desc') eq '0'">
+
+ $('#getdesc').on('click',function(){
+//var num_iid = $(this).attr('rel');
+    var num_iid = $(this).val();
+    $.ajax({
+    url:"/index.php?c=item&a=productinfo&numiid="+num_iid,
+    type:'get',
+    dataType:'json',
+    success: function(data){
+    var imglist=data.content;
+    $('#images-content').html(imglist);
+}
+})
+
+});
+
+  setTimeout(function () {
+  $("#getdesc").click();
+}, 800);
+</if>
 
 function half(kl = 0){
 	//要求登录后才能领券

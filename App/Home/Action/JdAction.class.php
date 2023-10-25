@@ -122,14 +122,14 @@ class JdAction extends BaseAction
                 break;
             case 'rate':
                 $order = 'quan desc';
-           $where['quan'] = ['gt', 0];
+                $where['quan'] = ['gt', 0];
                 break;
             case 'hot':
                 $order = 'comments DESC';
                 break;
             default:
                 $order = 'id desc';
-}
+        }
         $size = 20;
         $categoryid = I('gid');
         if (is_numeric($categoryid)) {

@@ -46,6 +46,7 @@
 
     <div class="goods-des">
         <div class="weui-row weui-no-gutter" id="list">
+
             <volist name='list' id="vo">
                 <div class="weui-col-50 ">
                     <div class="goods-col tqk-bg-white tqk-rad-12">
@@ -113,7 +114,7 @@
     <span class="weui-loadmore__tips">正在加载...</span>
 </div>
 <div class="nomore" id="nomore" style="display: none;"><span>没有更多数据了</span></div>
-<input  type="hidden" id="page" value="2"/>
+<input type="hidden" id="pageindex" name="page" value="2" />
 
 
 <div class="footzw"> </div>
@@ -164,9 +165,12 @@
         if(loading) return;
         loading = true;
         $('.weui-loadmore').show()
-        var page = $('#page').val();
+        var page = $('#pageindex').val();
         var id = "{$platform}";
         var op = "{$op}";
+
+
+
         $.get("{:U('tophot/catelist')}",{page:page,id:id,op:op},function(res){
 
                 if(res == 1){
@@ -176,8 +180,8 @@
                     $('#nomore').show();
                     return;
                 }
-                $("#list").append(res);
-                $('#page').val(Number(page)+1);
+               $("#list").append(res);
+                $('#pageindex').val(Number(page)+1);
                 loading = false;
 
             },
@@ -191,23 +195,22 @@
 
         var isFirst = true;
         var issave=false;
-        var posname="pos_{$platform}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
-        var htname="ht_{$platform}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
-        var pgname="pg_{$platform}_{$sort}_{$sokey}_{$sid}_{:CONTROLLER_NAME}";
+        var posname="pos_{$platform}_{$sort}_{$sokey}_{$op}_{:CONTROLLER_NAME}";
+        var htname="ht_{$platform}_{$sort}_{$sokey}_{$op}_{:CONTROLLER_NAME}";
+        var pgname="pg_{$platform}_{$sort}_{$sokey}_{$op}_{:CONTROLLER_NAME}";
         var pgnum = parseInt(sessionStorage.getItem(pgname));
         if(pgnum>0){
-        var pageIndex = pgnum;
-    }else{
-        var pageIndex = 1;
-    }
-
+            var pageIndex = pgnum;
+        }else{
+            var pageIndex = 1;
+        }
 
         if(isFirst){
         var tops = parseInt(sessionStorage.getItem(posname));
         var htmldata = sessionStorage.getItem(htname);
         if(htmldata){
-        $('#list').html(htmldata);
-        $("html,body").scrollTop(tops);
+           $('#list').html(htmldata);
+           $("html,body").scrollTop(tops);
     }
         $('#page').val(pageIndex);
         sessionStorage.removeItem(posname);

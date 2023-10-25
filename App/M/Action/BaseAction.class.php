@@ -75,7 +75,7 @@ class BaseAction extends FirstendAction
                 $param=I('post.');
                 if ($param['wx_openkey']==$this->accessKey && $param['wx_status']=='ok') {
                     $res=$this->_wechat_login($param);
-                    if (!$res) {
+                    if (!$res && $param['wx_nickname']!='微信用户') {
                         $mod=new userModel();
                         $track_val=cookie('trackid');
                         if ($track_val) {

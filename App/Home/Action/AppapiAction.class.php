@@ -2135,9 +2135,8 @@ public function pddlist(){
             $c->appkey = $appkey;
             $c->secretKey = $appsecret;
             $c->format = 'json';
-            $req = new \TbkDgMaterialOptionalRequest();
+            $req = new \TbkDgMaterialOptionalUpgradeRequest();
             $req->setAdzoneId($AdzoneId);
-            $req->setPlatform("1");
             $req->setPageSize("20");
             if ($ali_id) {
                 $req->setCat("".$ali_id."");
@@ -2154,8 +2153,6 @@ public function pddlist(){
                 $req->setPageNo(1);
             }
 
-            //$req->setHasCoupon('true');
-           // $req->setIncludePayRate30("true");
             if ($sort=='hot') {
                 $req->setSort("total_sales_des");
             } elseif ($sort=='price') {
@@ -2168,27 +2165,36 @@ public function pddlist(){
             $resp = $c->execute($req);
             $resp = json_decode(json_encode($resp), true);
             $resp = $resp['result_list']['map_data'];
+
             $patterns = "/\d+/";
             foreach ($resp as $k=>$v) {
-               if(($key && $this->FilterWords($key)) || $this->FilterWords($v['title']) || !$v['item_id']){
+                $title = $v['item_basic_info']['short_title']?$v['item_basic_info']['short_title']:$v['item_basic_info']['title'];
+               if(($key && $this->FilterWords($key)) || $this->FilterWords($title) || !$v['item_id']){
                continue;
                }
-                $goodslist[$k+$count]['quan']=formatprice($v['coupon_amount']);
-                $goodslist[$k+$count]['quanurl']=$v['coupon_share_url'];
+
+                $coupon_price =  $v['price_promotion_info']['final_promotion_price']?$v['price_promotion_info']['final_promotion_price']:$v['price_promotion_info']['zk_final_price'];
+                $quan = $v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_fee'];
+                $coupon_id = $v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_id'];
+                $quanurl = $v['publish_info']['coupon_share_url'] ? $v['publish_info']['coupon_share_url']:$v['publish_info']['click_url'];
+                $rate = $v['publish_info']['income_rate']*100;
+
+                $goodslist[$k+$count]['quan']=formatprice($quan);
+                $goodslist[$k+$count]['quanurl']=$quanurl;
                 $goodslist[$k+$count]['num_iid']=$v['item_id'];
-                $goodslist[$k+$count]['title']=$v['title'];
-                $goodslist[$k+$count]['coupon_price']=round($v['zk_final_price']-$goodslist[$k+$count]['quan'], 2);
-                $goodslist[$k+$count]['rebate']=Rebate1($goodslist[$k+$count]['coupon_price']*$v['commission_rate']/10000);
-                if ($v['user_type']=="1") {
+                $goodslist[$k+$count]['title']=$title;
+                $goodslist[$k+$count]['coupon_price']=round($coupon_price, 2);
+                $goodslist[$k+$count]['rebate']=Rebate1($coupon_price*$rate/10000);
+                if ($v['item_basic_info']['user_type']=="1") {
                     $goodslist[$k+$count]['shop_type']='B';
                 } else {
                     $goodslist[$k+$count]['shop_type']='C';
                 }
-                $goodslist[$k+$count]['commission_rate']=$v['commission_rate']; //比例
-                $goodslist[$k+$count]['price']=round($v['zk_final_price'], 2);
-                $goodslist[$k+$count]['volume']=$v['volume'];
+                $goodslist[$k+$count]['commission_rate']=$rate; //比例
+                $goodslist[$k+$count]['price']=round($v['price_promotion_info']['zk_final_price'], 2);
+                $goodslist[$k+$count]['volume']=$v['item_basic_info']['volume'];
                 $goodslist[$k+$count]['ali_id']=$ali_id;
-                $goodslist[$k+$count]['pic_url']=$v['pict_url'];
+                $goodslist[$k+$count]['pic_url']=$v['item_basic_info']['white_image']?$v['item_basic_info']['white_image']:$v['item_basic_info']['pict_url'];
                 $goodslist[$k+$count]['quankouling']='';
             }
         }

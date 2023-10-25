@@ -18,7 +18,7 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 	
 		if(C('yh_site_tiaozhuan') == 1){
 			
-			 $this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid')->where(array('opid'=>$this->openid))->find();
+			 $this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid,jd_pid')->where(array('opid'=>$this->openid))->find();
 			 $this->uid = $this->memberInfo['id'];
 			if(!$this->memberInfo){
 				$json=array(
@@ -29,10 +29,10 @@ $this->mdomain=str_replace('/index.php/m','',trim(C('yh_headerm_html')));
 	
 		}elseif(C('yh_qrcode') == 2){ //关闭登录提醒
 		
-		$this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid')->where(array('openid'=>$this->openid))->find();
+		$this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid,jd_pid')->where(array('openid'=>$this->openid))->find();
 		$this->uid = $this->memberInfo['id'];
 		}else{
-		$this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid')->where(array('opid'=>$this->openid))->find();
+		$this->memberInfo=$mod->field('id,special_id,webmaster_rate,webmaster_pid,jd_pid')->where(array('opid'=>$this->openid))->find();
 		$this->uid = $this->memberInfo['id'];
 		if(!$this->uid){
 			$json=array(
@@ -261,7 +261,7 @@ $ischeck=$mod_cash->where(array('uid'=>$this->uid,'type'=>12))->order('id desc')
 
 [玫瑰]置顶公众号 找券更方便！[玫瑰]
 
-👉<a href="'.$this->mdomain.'/index.php?m=m&c=help&a=index&id=wap">《新手领券指南》</a>',
+👉<a href="'.$this->mdomain.'/index.php?m=m&c=article&a=guide">《新手领券指南》</a>',
 	'state'=>1
 	);
 	exit(json_encode($data));
@@ -285,7 +285,7 @@ $res=$mod_cash->add($data);
 --------------------------
 [玫瑰]置顶公众号 找券更方便！[玫瑰]
 
-👉<a href="'.$this->mdomain.'/index.php?m=m&c=help&a=index&id=wap">《新手领券指南》</a>',
+👉<a href="'.$this->mdomain.'/index.php?m=m&c=article&a=guide">《新手领券指南》</a>',
 		'state'=>1
 		);
 		exit(json_encode($json));
@@ -300,7 +300,7 @@ $data=array(
 --------------------------
 [玫瑰]置顶公众号 找券更方便！[玫瑰]
 
-👉<a href="'.$this->mdomain.'/index.php?m=m&c=help&a=index&id=wap">《新手领券指南》</a>',
+👉<a href="'.$this->mdomain.'/index.php?m=m&c=article&a=guide">《新手领券指南》</a>',
 'state'=>1
 );
 
@@ -327,6 +327,8 @@ exit(json_encode($data));
 		'rate'=>$this->memberInfo['webmaster_rate'],
 		'sid'=>$this->memberInfo['special_id'],
 		'rid'=>$this->memberInfo['webmaster_pid'],
+        'positionId'=>$this->memberInfo['jd_pid'],
+        'jdPid'=>C('yh_jdpid'),
 		'isauth'=>C('yh_bingtaobao'), //2 开启
 		'ismsg'=>C('yh_qrcode'), //1 开启 2 关闭
 		'state'=>1

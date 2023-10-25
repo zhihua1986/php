@@ -141,7 +141,6 @@ class IndexAction extends BaseAction
         $brandlist = $BrandMod ->BrandList(30, 'ordid desc');
         $this->assign('brandlist', $brandlist);
 
-        //$bestseller = $this->TbkDgMaterial(20,3786);
 
         $MyCate = $this->CallTophot();
         $data = $this->CallTophot('goods',4,1,$MyCate['result'][0]['id'],1);

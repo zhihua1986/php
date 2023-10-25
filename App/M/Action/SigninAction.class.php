@@ -134,9 +134,8 @@ class SigninAction extends BaseAction
                 $c->appkey = $appkey;
                 $c->secretKey = $appsecret;
                 $c->format = 'json';
-                $req = new \TbkDgMaterialOptionalRequest();
+                $req = new \TbkDgMaterialOptionalUpgradeRequest();
                 $req->setAdzoneId($AdzoneId);
-                $req->setPlatform("1");
                 $req->setPageSize("20");
                 if ($key) {
                     $req->setQ((string)$key);
@@ -160,22 +159,23 @@ class SigninAction extends BaseAction
                 $resp=$resp['result_list']['map_data'];
                 $patterns = "/\d+/";
                 foreach($resp as $k=>$v){
-                    if($this->FilterWords($v['title']) || !$v['item_id']){
+                    $title = $v['item_basic_info']['short_title']?$v['item_basic_info']['short_title']:$v['item_basic_info']['title'];
+                    if($this->FilterWords($title) || !$v['item_id']){
                         continue;
                     }
-                    preg_match_all($patterns,$v['coupon_info'],$arr);
-                    $quan=$arr[0];
-                    $list[$k+$count]['couponmoney']=$v['coupon_amount'];
-                    $list[$k+$count]['coupon_click_url']=$v['coupon_share_url']?$v['coupon_share_url']:$v['url'];
-                    $list[$k+$count]['itemid']=$v['num_iid'];
-                    $list[$k+$count]['itemtitle']=$v['title'];
-                    $list[$k+$count]['itemendprice']=$v['zk_final_price']-$list[$k+$count]['quan'];
-                    $list[$k+$count]['commission_rate']=$v['commission_rate']; //比例
-                    $list[$k+$count]['price']=$v['zk_final_price'];
-                    $list[$k+$count]['volume']=$v['volume'];
-                    $list[$k+$count]['shopname']=$v['nick'];
-                    $list[$k+$count]['itempic']=$v['pict_url'];
-                    $list[$k+$count]['category_id']=$v['category_id'];
+                    $quan=$v['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data'][0]['promotion_fee'];
+                    $coupon_price =  $v['price_promotion_info']['final_promotion_price']?$v['price_promotion_info']['final_promotion_price']:$v['price_promotion_info']['zk_final_price'];
+                    $list[$k+$count]['couponmoney']=$quan;
+                    $list[$k+$count]['coupon_click_url']=$v['publish_info']['coupon_share_url'] ? $v['publish_info']['coupon_share_url']:$v['publish_info']['click_url'];
+                    $list[$k+$count]['itemid']=$v['item_id'];
+                    $list[$k+$count]['itemtitle']=$title;
+                    $list[$k+$count]['itemendprice']=$coupon_price;
+                    $list[$k+$count]['commission_rate']=$v['publish_info']['income_rate']*100; //比例
+                    $list[$k+$count]['price']=$v['price_promotion_info']['zk_final_price'];
+                    $list[$k+$count]['volume']=$v['item_basic_info']['volume'];
+                    $list[$k+$count]['shopname']=$v['item_basic_info']['shop_title'];
+                    $list[$k+$count]['itempic']=$v['item_basic_info']['white_image']?$v['item_basic_info']['white_image']:$v['item_basic_info']['pict_url'];
+                    $list[$k+$count]['category_id']=$v['item_basic_info']['category_id'];
                 }
 
             }

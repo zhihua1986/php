@@ -5,55 +5,6 @@ use Common\Api\Weixin;
 class FuncAction extends Action
 {
 
-/*
-物料搜索
-*/
-protected function TbkDgMaterial($size,$material_id,$page=1){
-vendor("taobao.taobao");
-$appkey=trim(C('yh_taobao_appkey'));
-$appsecret=trim(C('yh_taobao_appsecret'));
-$apppid=trim(C('yh_taobao_pid'));
-$apppid=explode('_', $apppid);
-$AdzoneId=$apppid[3];	
-$c = new \TopClient();
-$c->appkey = $appkey;
-$c->secretKey = $appsecret;
-$c->format = 'json';
-$req = new \TbkDgMaterialOptionalRequest();
-$req->setAdzoneId($AdzoneId);
-$req->setPlatform("2");
-$req->setPageSize("".$size."");
-$req->setMaterialId("".$material_id."");
-$req->setSort("total_sales_des");
-$req->setNeedPrepay("true");
-$req->setHasCoupon("true");
-$req->setQ('true');
-$req->setNpxLevel("2");
-$req->setPageNo("".$page."");
-$resp = $c->execute($req);
-$resp = json_decode(json_encode($resp), true);
-$resp=$resp['result_list']['map_data'];
-$patterns = "/\d+/";
-$goodslist = array();
-foreach($resp as $k=>$v){
-$goodslist[$k]['quan']=$v['coupon_amount'];
-$goodslist[$k]['coupon_click_url']=$this->Tohttps($v['coupon_share_url']);
-$goodslist[$k]['num_iid']=$v['item_id'];
-$goodslist[$k]['title']=$v['title'];
-$goodslist[$k]['coupon_price']=$v['zk_final_price']-$goodslist[$k]['quan'];
-if($v['user_type']=="1"){
-$goodslist[$k]['shop_type']='B';	
-}else{
-$goodslist[$k]['shop_type']='C';	
-}
-$goodslist[$k]['commission_rate']=$v['commission_rate']; //比例
-$goodslist[$k]['price']=$v['zk_final_price'];
-$goodslist[$k]['volume']=$v['volume'];
-$goodslist[$k]['pic_url']=$v['pict_url'];
-}
-return $goodslist;
-	
-}
 
  private function Tohttps($url){
 if(substr($url,0,2)=='//'){ 

@@ -30,6 +30,7 @@ $data=array(
 '670'=>'电脑、办公',
 '1319'=>'母婴',
 );
+
 if($key){
 return $data[$key];	
 }else{

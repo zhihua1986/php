@@ -70,13 +70,14 @@
 				</div>
 			</if>
 
-			<if condition="$item['pic_urls']">
-				<div class="clear" style="padding-top: .5rem;"></div>
+			<if condition="C('yh_dn_item_desc') eq '0'">
+				<input type="hidden" id="getdesc" value="{:$item['num_iid']}"/>
+			<div class="clear" style="padding-top: .5rem;"></div>
 				<div class="tqk-bg-white tqk-rad-12">
 					<div class="goods-des-title">
 						<div class="phb-content-title"><span>商品详情</span></div>
 					</div>
-					<div class="goods-des" style="padding-top: 1rem;">
+					<div class="goods-des" style="padding-top: 1rem;" id="images-content">
 						<volist name="item.pic_urls" key="k" id="img">
 							<img src="{$img}" align="absmiddle">
 						</volist>
@@ -252,5 +253,6 @@
 
 	<include file="Item:foot" />
 	<include file="Public:stat" />
+
 </body>
 </html>

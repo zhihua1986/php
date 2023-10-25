@@ -11,6 +11,22 @@
 .weui-cells__title{ padding-left: 3px; padding-right: 3px;}
 </style>
 <body>
+<div style="height:0;overflow:hidden;z-index: -1; max-width: 750px; margin: 0 auto">
+<div class="canvas-mask" style="height:auto; width:100%; overflow: hidden; padding: 0;">
+    <div class="canvas-container" style="padding-top:0px ; margin-top: 0px;">
+        <div class="canvas-wrap">
+            <div class="canvas-pics" style="position:relative">
+                <img id="canvas-pic" src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lc3lMC2MgYhvUjDH9_!!3175549857.jpg" class="canvas-pic" />
+            </div>
+            <div class="text-box" style="width:100%; text-align: center;">
+                <label style="display:block; margin: 0 auto;">
+                    <img id="qr-code" width="160" height="160" src="https://img.alicdn.com/imgextra/i2/3175549857/O1CN01lc3lMC2MgYhvUjDH9_!!3175549857.jpg" />
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 <div class="pagebox">
 
     <div class="topfixed fixs">
@@ -34,7 +50,7 @@
 
         <volist name="list" id="vo">
         <div class="weui-row page-list">
-            <div class="weui-col-50"><img src="{$vo.img}"> </div>
+            <div class="weui-col-50"> <a href="javascript:;" rel="{$vo.id}" title="{$vo.title}"  class="buy-btn"><img src="{$vo.img}"> </a></div>
             <div class="weui-col-50">
               <strong>  {$vo.title}</strong>
               <div class="weui-cells__title"> {$vo.des}</div>
@@ -70,19 +86,8 @@
                         <div class="am-panel-hd">长按图片识别或发送给好友</div>
                         <div class="am-panel-bd">
 
-                            <div class="canvas-mask" style="height:auto; width:100%; overflow: hidden; padding: 0;">
-                                <div class="canvas-container" style="padding-top:0px ; margin-top: 0px;">
-                                    <div class="canvas-wrap">
-                                        <div class="canvas-pics" style="position:relative">
-                                            <img id="canvas-pic" src="https://img.alicdn.com/imgextra/i3/6000000001594/O1CN0187p2Km1Ne68biBOa5_!!6000000001594-2-o2oad.png" class="canvas-pic" />
-                                        </div>
-                                        <div class="text-box" style="width:100%; text-align: center;">
-                                            <label style="display:block; margin: 0 auto;">
-                                                <img id="qr-code" width="160" height="160" src="https://img.alicdn.com/imgextra/i3/3175549857/O1CN011oXJuK2MgYeivutfs_!!3175549857.png" />
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div style="padding: .3rem;" class="demo-pitch">
+                                <img id="haibaoimg" crossOrigin="anonymous" width="100%" src="https://img.alicdn.com/imgextra/i3/6000000001594/O1CN0187p2Km1Ne68biBOa5_!!6000000001594-2-o2oad.png"  style="min-height: 180px;" >
                             </div>
 
                         </div>
@@ -98,8 +103,6 @@
         </div>
     </div>
 </div>
-
-
 
 <script src="__SKIN2__/ui/js/html2canvas.js?v=1"></script>
 <include file="Public:stat" />
@@ -136,6 +139,65 @@
                     }else{
                         $('#copy_btn').remove();
                     }
+
+
+
+                    ! function(win, $) {
+                        function $$(selector) {
+                            return document.querySelector(selector);
+                        }
+
+                        var main = {
+                            init:function(){
+                                main.setListener();
+                            },
+                            setListener:function(){
+                                // $(".canvasimg").on("click", function() {
+                                main.html2Canvas();
+                                //   });
+                            },
+                            getPixelRatio:function(context){
+                                var backingStore = context.backingStorePixelRatio ||
+                                    context.webkitBackingStorePixelRatio ||
+                                    context.mozBackingStorePixelRatio ||
+                                    context.msBackingStorePixelRatio ||
+                                    context.oBackingStorePixelRatio ||
+                                    context.backingStorePixelRatio || 1;
+                                return (window.devicePixelRatio || 1) / backingStore;
+                            },
+                            html2Canvas: function () {
+                                var shareContent = $$(".canvas-mask");
+                                var canvas = document.createElement('canvas');
+                                var context = canvas.getContext('2d');
+                                width="100%";
+                                height="auto";
+                                offsetTop=0;
+                                scaleBy=2;
+                                canvas.width = width * scaleBy;
+                                canvas.height = (height + offsetTop) * scaleBy;
+                                context.scale(scaleBy, scaleBy);
+                                var opts = {
+                                    allowTaint:false,
+                                    useCORS:true,
+                                    tainttest:true,
+                                    scale:scaleBy,
+                                    canvas:canvas,
+                                    logging: false,
+                                    width:width,
+                                    height:height
+                                };
+                                html2canvas(shareContent, opts).then(function (canvas) {
+                                    var dataUrl = canvas.toDataURL("image/png");
+
+                                    $('#haibaoimg').attr('src',dataUrl);
+
+                                });
+                            }
+                        };
+                        main.init();
+                    }(window, jQuery);
+
+
 
 
 
@@ -178,60 +240,7 @@
         $('#super').submit();
     });
 
-    ! function(win, $) {
-        function $$(selector) {
-            return document.querySelector(selector);
-        }
 
-        var main = {
-            init:function(){
-                main.setListener();
-            },
-            setListener:function(){
-                // $(".canvasimg").on("click", function() {
-                main.html2Canvas();
-                //   });
-            },
-            getPixelRatio:function(context){
-                var backingStore = context.backingStorePixelRatio ||
-                    context.webkitBackingStorePixelRatio ||
-                    context.mozBackingStorePixelRatio ||
-                    context.msBackingStorePixelRatio ||
-                    context.oBackingStorePixelRatio ||
-                    context.backingStorePixelRatio || 1;
-                return (window.devicePixelRatio || 1) / backingStore;
-            },
-            html2Canvas: function () {
-                var shareContent = $$(".canvas-mask");
-                var canvas = document.createElement('canvas');
-                var context = canvas.getContext('2d');
-                width="100%";
-                height="auto";
-                offsetTop=0;
-                scaleBy=2;
-                canvas.width = width * scaleBy;
-                canvas.height = (height + offsetTop) * scaleBy;
-                context.scale(scaleBy, scaleBy);
-                var opts = {
-                    allowTaint:false,
-                    useCORS:true,
-                    tainttest:true,
-                    scale:scaleBy,
-                    canvas:canvas,
-                    logging: false,
-                    width:width,
-                    height:height
-                };
-                html2canvas(shareContent, opts).then(function (canvas) {
-                    var dataUrl = canvas.toDataURL("image/png");
-
-                    $('#haibaoimg').attr('src',dataUrl);
-
-                });
-            }
-        };
-        main.init();
-    }(window, jQuery);
 
 </script>
 </body>

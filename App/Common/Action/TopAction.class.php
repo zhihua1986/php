@@ -31,6 +31,48 @@ class TopAction extends FuncAction
 		}
 	}
 
+    /**
+     * @param $poolId
+     * @return mixed
+     */
+    protected function JdActivity($poolId){
+        $business_data = [
+            'activityReq' => [
+                'poolId' => $poolId,
+                'pageIndex'=>1,
+                'pageSize'=>2,
+                //'activeDate'=>'20230618',
+                'activeDate'=>date('Ymd',time()),
+            ]
+        ];
+        $param_json = json_encode($business_data);
+        $system_data = [
+            'method' => 'jd.union.open.activity.query',
+            'app_key' => $this->jdappkey,
+            'timestamp' => date("Y-m-d H:i:s"),
+            'format' => 'json',
+            'v' => '1.0',
+            'sign_method' => 'md5',
+            'sign' => '',
+            '360buy_param_json' => $param_json
+        ];
+        $orderData = $this->paramOrder($system_data);
+        $sign = $this->paramSign($orderData);
+        $system_data['sign'] = $sign;
+        $res = $this->apiSign($system_data);
+        $arr =  json_decode($res, true);
+        $res = $arr['jd_union_open_activity_query_responce']['queryResult'];
+        $arr =  json_decode($res, true);
+        return $arr;
+
+    }
+
+    /**
+     * @param $action
+     * @param $param
+     * @return array
+     * @throws \Duomai\CpsClient\Exceptions\ServiceException
+     */
 	protected function DmRequest($action,$param){
 		vendor("duomai.autoload");
 		$config = [
@@ -284,7 +326,7 @@ class TopAction extends FuncAction
 		$req->setStartTkRate("2000");
 		$resp = $c->execute($req);
 		$resp = json_decode(json_encode($resp), true);
-		$resp=$resp['result_list']['map_data'];	
+		$resp=$resp['result_list']['map_data'];
 		$goodslist = array();
 		foreach($resp as $k=>$v){
 		$quan = $v['coupon_amount'];
@@ -430,6 +472,7 @@ class TopAction extends FuncAction
 			if($data){
 				return $data;
 			}
+            F('pddPromotionUrl',$result);
 		   return false;
 	}
 	
@@ -484,6 +527,7 @@ class TopAction extends FuncAction
 
     protected function JdGoodsDetail($id)
     {
+
         $sname = 'jddetail_'.$id;
         $result = S($sname);
         if ($result) {
@@ -610,6 +654,7 @@ class TopAction extends FuncAction
 
         }
 
+
 		if($items_list['goods_search_response']['goods_list']){
 		$today=date('Ymd');
 		$goodslist=array();
@@ -651,7 +696,12 @@ class TopAction extends FuncAction
             'search_id'=>$items_list['goods_search_response']['search_id'],
             'res'=>$AuthLink
 		);
-		
+
+        if($items_list['error_response']['sub_msg']){
+            F('data/PddGoodsSearch',$items_list['error_response']['sub_msg']);
+        }
+
+
         return $data;
     }
 
@@ -707,98 +757,98 @@ class TopAction extends FuncAction
         $sign=md5($ServerToken);
         return strtoupper($sign);
     }
-	
-	
-	protected function JdGoodsList($size,$where,$order,$page=1,$iscount='',$key='',$categoryid=''){
-		$mod = M('jditems')->cache(true, 5 * 60);
-		$start = abs($size * ($page - 1));
-		
-		if(!is_numeric($categoryid)){
-		$items_list = $mod->where($where)->field('id,pict,owner,title,itemid,cate_id,coupon_price,price,quan,item_type,comments,commission_rate')->order($order)->limit($start . ',' . $size)->select();
-		if($iscount){
-		$total_count =$mod->where($where)->count();
-		}
-		}
 
-		if($items_list){
-		$today=date('Ymd');
-		$goodslist=array();
-		foreach($items_list as $k=>$v){
-		if($this->FilterWords($v['title'])){
-		continue;
-		}
-		$goodslist[$k]['id']=$v['id'];
-		$goodslist[$k]['itemid']=$v['itemid'];
-		$goodslist[$k]['title']=$v['title'];
-		$goodslist[$k]['pic_url']=$v['pict'];
-		$goodslist[$k]['coupon_price']=round($v['coupon_price'],2);
-		$goodslist[$k]['price']=round($v['price'],2);
-		$goodslist[$k]['commission_rate']=$v['commission_rate'];
-		$goodslist[$k]['quan']=$v['quan'];
-		$goodslist[$k]['item_type']=$v['item_type'];
-		$goodslist[$k]['owner']=$v['owner'];
-		$goodslist[$k]['cate_id']=$v['cate_id'];
-		$goodslist[$k]['comments']=$v['comments'];	
-		if($today==date('Ymd',$v['addtime'])){
-		$goodslist[$k]['is_new']=1;	
-		}else{
-		$goodslist[$k]['is_new']=0;		
-		}
-		if(C('APP_SUB_DOMAIN_DEPLOY')){
-		$goodslist[$k]['linkurl']=U('/jditem/',array('id'=>$v['id']));
-		}else{
-		$goodslist[$k]['linkurl']=U('jditem/index',array('id'=>$v['id']));
-		}
-			
-		}
-		}
-		
-		$count=count($items_list);
-		
-		if($count<$size && $key){
-		
-		 $Extend = $this->JdExtendedSearch($key,$page,$categoryid);
 
-		if($Extend){
-		foreach($Extend as $k=>$v){
-		$goodslist[$k+$count]['goods_id']=$v['skuId'];
-		$goodslist[$k+$count]['itemid']=$v['skuId'];
-		$goodslist[$k+$count]['title']=$v['skuName'];
-		$goodslist[$k+$count]['pic_url']=$v['whiteImage'];
-		//$goodslist[$k+$count]['coupon_price']=round($v['coupon_price'],2);
-		$goodslist[$k+$count]['price']=round($v['price'],2);
-		$goodslist[$k+$count]['coupon_price']=round($v['lowestPrice']-$v['couponList']['discount'],2);
-		$goodslist[$k+$count]['commission_rate']=str_replace('%','',$v['commissionShare']);
-		$goodslist[$k+$count]['quan']=$v['couponList']['discount'];
-		$goodslist[$k+$count]['quanurl']=$v['couponList']['link'];
-		$goodslist[$k+$count]['item_type']=$v['lowestPriceType'];
-		$goodslist[$k+$count]['owner']=$v['owner'];
-		$goodslist[$k+$count]['cate_id']=$v['cid1'];
-		$goodslist[$k+$count]['comments']=$v['comments'];
-		if(C('APP_SUB_DOMAIN_DEPLOY')){
-		$goodslist[$k+$count]['linkurl']=U('/jditems/',array('id'=>$v['skuId']));
-		}else{
-		$goodslist[$k+$count]['linkurl']=U('jditems/index',array('id'=>$v['skuId']));
-		}
-			
-		}
+    protected function JdGoodsList($size,$where,$order,$page=1,$iscount='',$key='',$categoryid=''){
+        $mod = M('jditems')->cache(true, 5 * 60);
+        $start = abs($size * ($page - 1));
 
-		}
+        if(!is_numeric($categoryid)){
+            $items_list = $mod->where($where)->field('id,pict,owner,title,itemid,cate_id,coupon_price,price,quan,item_type,comments,commission_rate')->order($order)->limit($start . ',' . $size)->select();
+            if($iscount){
+                $total_count =$mod->where($where)->count();
+            }
+        }
 
-		}
-		
-		$data = array(
-		'goodslist'=>array_values($goodslist),
-		'total'=>$total_count
-		);
-		if($goodslist){
-			return $data;
-		}
-		
-		return false;
-		
-		
-	}
+        if($items_list){
+            $today=date('Ymd');
+            $goodslist=array();
+            foreach($items_list as $k=>$v){
+                if($this->FilterWords($v['title'])){
+                    continue;
+                }
+                $goodslist[$k]['id']=$v['id'];
+                $goodslist[$k]['itemid']=$v['itemid'];
+                $goodslist[$k]['title']=$v['title'];
+                $goodslist[$k]['pic_url']=$v['pict'];
+                $goodslist[$k]['coupon_price']=round($v['coupon_price'],2);
+                $goodslist[$k]['price']=round($v['price'],2);
+                $goodslist[$k]['commission_rate']=$v['commission_rate'];
+                $goodslist[$k]['quan']=$v['quan'];
+                $goodslist[$k]['item_type']=$v['item_type'];
+                $goodslist[$k]['owner']=$v['owner'];
+                $goodslist[$k]['cate_id']=$v['cate_id'];
+                $goodslist[$k]['comments']=$v['comments'];
+                if($today==date('Ymd',$v['addtime'])){
+                    $goodslist[$k]['is_new']=1;
+                }else{
+                    $goodslist[$k]['is_new']=0;
+                }
+                if(C('APP_SUB_DOMAIN_DEPLOY')){
+                    $goodslist[$k]['linkurl']=U('/jditem/',array('id'=>$v['id']));
+                }else{
+                    $goodslist[$k]['linkurl']=U('jditem/index',array('id'=>$v['id']));
+                }
+
+            }
+        }
+
+        $count=count($items_list);
+
+        if($count<$size && $key){
+
+            $Extend = $this->JdExtendedSearch($key,$page,$categoryid);
+
+            if($Extend){
+                foreach($Extend as $k=>$v){
+                    $goodslist[$k+$count]['goods_id']=$v['skuId'];
+                    $goodslist[$k+$count]['itemid']=$v['skuId'];
+                    $goodslist[$k+$count]['title']=$v['skuName'];
+                    $goodslist[$k+$count]['pic_url']=$v['whiteImage'];
+                    //$goodslist[$k+$count]['coupon_price']=round($v['coupon_price'],2);
+                    $goodslist[$k+$count]['price']=round($v['price'],2);
+                    $goodslist[$k+$count]['coupon_price']=round($v['lowestPrice']-$v['couponList']['discount'],2);
+                    $goodslist[$k+$count]['commission_rate']=str_replace('%','',$v['commissionShare']);
+                    $goodslist[$k+$count]['quan']=$v['couponList']['discount'];
+                    $goodslist[$k+$count]['quanurl']=$v['couponList']['link'];
+                    $goodslist[$k+$count]['item_type']=$v['lowestPriceType'];
+                    $goodslist[$k+$count]['owner']=$v['owner'];
+                    $goodslist[$k+$count]['cate_id']=$v['cid1'];
+                    $goodslist[$k+$count]['comments']=$v['comments'];
+                    if(C('APP_SUB_DOMAIN_DEPLOY')){
+                        $goodslist[$k+$count]['linkurl']=U('/jditems/',array('id'=>$v['skuId']));
+                    }else{
+                        $goodslist[$k+$count]['linkurl']=U('jditems/index',array('id'=>$v['skuId']));
+                    }
+
+                }
+
+            }
+
+        }
+
+        $data = array(
+            'goodslist'=>array_values($goodslist),
+            'total'=>$total_count
+        );
+        if($goodslist){
+            return $data;
+        }
+
+        return false;
+
+
+    }
 
     protected function JdExtendedSearch($key,$page=1,$cid='')
     {
@@ -1034,9 +1084,13 @@ class TopAction extends FuncAction
 		return $resp;
 		
 	}
-	
 
-    public function getItem($num_iid, $activityId)
+    /**
+     * @param $num_iid
+     * @param $activityId
+     * @return array|false
+     */
+    public function getItem($num_iid, $activityId="")
     {
         $appkey = trim(C('yh_taobao_appkey'));
         $appsecret = trim(C('yh_taobao_appsecret'));
@@ -1045,47 +1099,34 @@ class TopAction extends FuncAction
             $c = new \TopClient();
             $c->appkey = $appkey;
             $c->secretKey = $appsecret;
-            $req = new \TbkItemInfoGetRequest();
-          //  $req->setFields("num_iid,user_type,title,seller_id,volume,nick,pict_url,reserve_price,zk_final_price,item_url");
-            $req->setPlatform("1");
-            $req->setNumIids($num_iid);
+            $req = new \TbkItemInfoUpgradeGetRequest();
+            $req->setItemId($num_iid);
             $resp = $c->execute($req);
             $resparr = xmlToArray($resp);
-            $contents = $resparr['results']['n_tbk_item'];
+            $contents = $resparr['results']['tbk_item_detail'];
         }
 
         if ($contents) {
             $info = [];
-            $info['title'] = $contents['title'];
-            $info['volume'] = $contents['volume'];
-            $info['price'] = $contents['zk_final_price'];
-            $info['pic_url'] = $contents['pict_url'];
+            $info['title'] = $contents['item_basic_info']['title'];
+            $info['volume'] = $contents['item_basic_info']['volume'];
+            $info['price'] = $contents['price_promotion_info']['zk_final_price'];
+            $info['coupon_price'] = $contents['price_promotion_info']['final_promotion_price'];
+            $info['quan'] = $contents['price_promotion_info']['final_promotion_path_list']['final_promotion_path_map_data']['promotion_fee'];
+            $info['pic_url'] = $contents['item_basic_info']['pict_url'];
             $info['pic_url'] = str_replace('_320x320.jpg', "", $info['pic_url']);
-            $info['sellerId'] = $contents['seller_id'];
-            $info['nick'] = $contents['nick'];
-            if ($contents['user_type'] == "1") {
+           // $info['sellerId'] = $contents['seller_id'];
+            $info['nick'] = $contents['item_basic_info']['shop_title'];
+            if ($contents['item_basic_info']['user_type'] == "1") {
                 $info['shop_type'] = "B";
             } else {
                 $info['shop_type'] = "C";
             }
-            $info['num_iid'] = $num_iid;
+            $info['commission_rate']=$contents['publish_info']['income_rate']*100;
+            $info['num_iid'] = $contents['item_id'];
+            $info['pic_urls'] = $contents['item_basic_info']['small_images']['string'];
             $info['coupon_start_time'] = date('Y-m-d H:i', time());
             $info['coupon_end_time'] = date('Y-m-d H:i', time() + 86400 * 7);
-            //			$descUrl = 'http://hws.m.taobao.com/cache/mtop.wdetail.getItemDescx/4.1/?data=%7B%22item_num_id%22%3A%22' . $num_iid . '%22%7D';
-//          $source = $this->_curl($descUrl);
-//          if (!$source) {
-//              $source = file_get_contents($descUrl);
-//          }
-//          $result_data = json_decode($source, true);
-//          $dinfo = array();
-//          $num = $result_data['data']['images'];
-//          for ($i = 0; $i < count($num); $i++) {
-//              $images = $i + 1;
-//              $desc[$images] = $num[$i];
-//              $desc[$images] = '<img class="lazy" src=' . $desc[$images] . '>';
-//          }
-//          $info['desc'] = $desc[1] . '' . $desc[2] . '' . $desc[3] . '' . $desc[4] . '' . $desc[5] . '' . $desc[6] . '' . $desc[7] . '' . $desc[8] . '' . $desc[9] . '' . $desc[10] . '' . $desc[11] . '' . $desc[12] . '' . $desc[13] . '' . $desc[14] . '' . $desc[15] . '' . $desc[16] . '' . $desc[17] . '' . $desc[18] . '' . $desc[19] . '' . $desc[20] . '' . $desc[21] . '' . $desc[22] . '' . $desc[23] . '' . $desc[24] . '' . $desc[25] . '' . $desc[26] . '' . $desc[27] . '' . $desc[28] . '' . $desc[29] . '' . $desc[30];
-//
             return $info;
         }
         return false;
@@ -1314,25 +1355,7 @@ return false;
             return $body;
         }
     }
-    protected function paramOrder($params)
-    {
-        ksort($params);
-        $stringToBeSigned = "";
-        $i = 0;
-        foreach ($params as $k => $v) {
-            if (false === $this->checkEmpty($v)) {
-                $v = $this->characet($v, 'utf-8');
-                if ($i == 0) {
-                    $stringToBeSigned .= "$k" . "$v";
-                } else {
-                    $stringToBeSigned .=  "$k" . "$v";
-                }
-                $i++;
-            }
-        }
-        unset($k, $v);
-        return $stringToBeSigned;
-    }
+
     //为空检查
     protected function checkEmpty($value)
     {
@@ -1347,6 +1370,27 @@ return false;
         }
         return false;
     }
+
+    //排序ksort
+    protected function paramOrder($params){
+        ksort($params);
+        $stringToBeSigned = "";
+        $i = 0;
+        foreach ($params as $k => $v) {
+            if (false === $this->checkEmpty($v)) {
+                $v = $this->characet($v, 'utf-8');
+                if ($i == 0) {
+                    $stringToBeSigned .= "$k" . "$v";
+                } else {
+                    $stringToBeSigned .=  "$k" . "$v";
+                }
+                $i++;
+            }
+        }
+        unset ($k, $v);
+        return $stringToBeSigned;
+    }
+
     protected function characet($data, $targetCharset)
     {
         if (!empty($data)) {
