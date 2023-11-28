@@ -56,7 +56,7 @@ class PddAction extends BaseAction
             if($data['res']){
                 $back = $_SERVER["HTTP_REFERER"];
                 if ($back) {
-                    $url = U('auth/pdd',array('back'=>urlencode($back),'ac'=>urlencode($data['res'])));
+                    $url = U('auth/pdd',array('back'=>urlencode(urlencode($back)),'ac'=>urlencode(urlencode($data['res']))));
                     redirect($url);
                 }
             }

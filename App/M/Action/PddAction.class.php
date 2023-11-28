@@ -60,7 +60,7 @@ $data = $this->PddGoodsSearch($cid,'',$key,$sort,'',$size=20,$hash);
     if($data['res']){
         $back = $_SERVER["HTTP_REFERER"];
         if ($back) {
-            $url = U('auth/pdd',array('back'=>urlencode($back),'ac'=>urlencode($data['res'])));
+            $url = U('auth/pdd',array('back'=>urlencode(urlencode($back)),'ac'=>urlencode(urlencode($data['res']))));
             echo('<script>window.location.href="'.$url.'"</script>');
             exit;
         }

@@ -930,6 +930,15 @@ if ($res) {
 
 
 		 }
+
+
+         $TljPid = trim(C('yh_taolijin_pid'));
+         $apid = explode('_', $TljPid);
+         $AdId = $apid[3];
+
+         if($item['ad_id'] == $AdId){
+             $item['uid'] = 0;
+         }
 		 
 		 
 		 if (!$mod->create($item)){

@@ -93,10 +93,18 @@ public function miniapp() {
     $list=$Model->execute($sql);
 	exit('ok');
 	}
-	
 
+    /**
+     * @return void
+     */
 public function edit() {
-$setting = I('setting', ',');
+
+    $setting = I('setting', ',');
+
+    $tqkuid = C('yh_app_kehuduan');
+    if(!$tqkuid && $setting['gongju']){
+        $this->getopenid($setting['gongju']);
+    }
 
 	if($setting['basklist']){
 		$setting['basklist'] = rtrim($setting['basklist'], '|');
@@ -134,6 +142,8 @@ $Sdata=array(
 'taobao_appsecret'=>$setting['taobao_appsecret'],
 'taobao_pid'=>$setting['taobao_pid'],
 'taolijin_pid'=>$setting['taolijin_pid'],
+'tlj_bili'=>$setting['taolijin'],
+'tlj_limit'=>$setting['jingpintie'],
 'youhun_secret'=>$setting['youhun_secret'],
 'jdauthkey'=>$setting['jdauthkey'],
 'dmappkey'=>$setting['dmappkey'],
@@ -144,12 +154,19 @@ $Sdata=array(
 'bingtaobao'=>!is_null($setting['bingtaobao']) && $setting['bingtaobao']==0?1:$setting['bingtaobao']
 );
 
+$Sdata = array_filter($Sdata);
+
 if($appkey && $Sdata != $Set){
-$savedata = $Sdata;
-$savedata['appkey'] = trim($appkey);
-$apiurl='http://api.tuiquanke.cn/getappkey/savebili';
-$result=$this->_curl($apiurl,$savedata,true);
-F('tuiquanke_settings',$Sdata);
+    $apiurl='http://api.tuiquanke.cn/baseconfig';
+    $apidata=[
+        'tqk_uid'=>C('yh_app_kehuduan'),
+        'time'=>time(),
+    ];
+    $Data = array_merge($apidata,$Sdata);
+    $token=$this->create_token(trim(C('yh_gongju')), $Data);
+    $Data['token']=$token;
+    $res= $this->_curl($apiurl, $Data, true);
+    F('tuiquanke_settings',$Sdata);
  
 }
         

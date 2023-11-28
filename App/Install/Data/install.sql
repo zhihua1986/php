@@ -763,6 +763,10 @@ CREATE TABLE IF NOT EXISTS `tqk_items_temp` (
   KEY `idx_ordid` (`ordid`),
   KEY `idx_is_commend` (`is_commend`),
   KEY `idx_volume` (`volume`),
+  KEY `idx_pass` (`pass`),
+  KEY `idx_status` (`status`),
+  KEY `idx_isshow` (`isshow`),
+  KEY `idx_tuisong` (`tuisong`),
   KEY `idx_coupon_price` (`coupon_price`),
   KEY `idx_id` (`id`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

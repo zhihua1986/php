@@ -965,9 +965,11 @@ class TopAction extends FuncAction
         }
     }
 
+
     protected function create_token($key, $data=[])
     {
         $ServerToken='';
+        $data = array_filter($data);
         foreach ($data as $k=>$v) {
             $ServerToken.=md5($v);
         }
@@ -1994,7 +1996,10 @@ $text = '';
         $item['fuid'] = $res['fuid'];
         $item['guid'] = $res['guid'];
         $item['leve1'] = $res['rate'] ? $res['rate'] : $item['leve1'];
-        $item['uid'] = $res['uid'];
+
+        if($res['uid']>0){
+            $item['uid'] = $res['uid'];
+        }
 
         if ($item['validCode']<15 || ($item['validCode']>17 && $item['validCode']<24)) {
             $item['validCode'] = 1;

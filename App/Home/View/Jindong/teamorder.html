@@ -35,7 +35,7 @@
 						<thead>
 							<tr>
 								<th>付款时间</th>
-								<th width="30%">商品名/订单编号</th>
+								<th width="30%">订单编号</th>
 								<th>付款金额</th>
 								<th>预计收益</th>
 								<th>状态</th>
@@ -47,7 +47,7 @@
 							<volist name="list" id="vo">
 								<tr>
 									<td>{$vo.order_pay_time|frienddate}</td>
-									<td>{$vo.goods_name}<br/>
+									<td>
 										<div class="tqk-c-999">订单号:{$vo.order_sn}</div></td> 
 									<td><b class="c-main">
 										<if condition="$vo['order_amount']">

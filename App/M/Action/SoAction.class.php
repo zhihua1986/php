@@ -40,7 +40,7 @@ class SoAction extends BaseAction
 
         }elseif ($platFrom == 'tb' && $text){
 
-            echo('<script>window.location.href="'.U('cate/index',array('k'=>$text)).'"</script>');
+            echo('<script>window.location.href="'.U('so/index',array('from'=>'tb','k'=>$text)).'"</script>');
 
 
         }elseif ($platFrom == 'jd' && (strstr($text, 'jd.com') || strstr($text, 'jingxi.com') || strstr($text, 'jd.hk'))){
@@ -51,7 +51,7 @@ class SoAction extends BaseAction
             }
 
         }elseif ($platFrom == 'jd'){
-            echo('<script>window.location.href="'.U('jd/index',array('k'=>$text)).'"</script>');
+            echo('<script>window.location.href="'.U('so/index',array('from'=>'jd','k'=>$text)).'"</script>');
         }elseif ($platFrom == 'pdd' && (strstr($text, 'yangkeduo.com') )){
 
                 $skuid = $this->pdditemid($text);
@@ -65,7 +65,7 @@ class SoAction extends BaseAction
                 }
 
         }elseif($platFrom == 'pdd'){
-            echo('<script>window.location.href="'.U('pdd/index').'?k='.$text.'"</script>');
+            echo('<script>window.location.href="'.U('so/index').'?from=pdd&k='.$text.'"</script>');
         }elseif ($platFrom == 'vph' && (strstr($text, 't.vip.com') )){
             $url = htmlspecialchars_decode(trim(urldecode($text)));
             if (preg_match('/\=([0-9]{6,})\&brandId/i', $url, $m)) {
@@ -77,7 +77,7 @@ class SoAction extends BaseAction
             }
 
         }elseif($platFrom == 'vph'){
-            echo('<script>window.location.href="'.U('vph/index',array('k'=>$text)).'"</script>');
+            echo('<script>window.location.href="'.U('so/index',array('from'=>'vph','k'=>$text)).'"</script>');
 
         }elseif ($platFrom == 'dy' && (strstr($text, 'douyin.com') )){
 
@@ -91,7 +91,7 @@ class SoAction extends BaseAction
 
 
         }elseif($platFrom == 'dy'){
-            echo('<script>window.location.href="'.U('douyin/index',array('k'=>$text)).'"</script>');
+            echo('<script>window.location.href="'.U('so/index',array('from'=>'dy','k'=>$text)).'"</script>');
 
         }
 
@@ -183,7 +183,7 @@ class SoAction extends BaseAction
                     if($data['res']){
                         $back = $_SERVER["HTTP_REFERER"];
                         if ($back) {
-                            $url = U('auth/pdd',array('back'=>urlencode($back),'ac'=>urlencode($data['res'])));
+                            $url = U('auth/pdd',array('back'=>urlencode(urlencode($back)),'ac'=>urlencode(urlencode($data['res']))));
                             echo('<script>window.location.href="'.$url.'"</script>');
                             exit;
                         }

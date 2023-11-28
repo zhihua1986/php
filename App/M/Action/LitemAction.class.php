@@ -21,8 +21,8 @@ class LitemAction extends BaseAction
     {
         $id = I('num_iid');
         $item = $this->GetTbDetail($id);
-        $quan = $item['coupon_amount'];
-        $coupon_price = $item['zk_final_price']- $quan;
+        $quan = $item['quan'];
+        $coupon_price = $item['coupon_price'];
         $commission = round($coupon_price*($item['commission_rate']/10000), 2);
         $linjin = round($commission*(C('yh_taolijin')/100), 2);
 		
@@ -68,8 +68,8 @@ class LitemAction extends BaseAction
     {
         $id = I('id');
         $item = $this->GetTbDetail($id);
-        $quan = $item['coupon_amount'];
-        $coupon_price = $item['zk_final_price']- $quan;
+        $quan = $item['quan'];
+        $coupon_price = $item['coupon_price'];
         $commission = round($coupon_price*($item['commission_rate']/10000), 2);
         $linjin = round($commission*(C('yh_taolijin')/100), 2);
 		
@@ -79,21 +79,21 @@ class LitemAction extends BaseAction
 		}
 		
         $item['taolijin']=$linjin;
-        $item['sellerId']=$item['seller_id'];
-        $item['pic_url']=$item['pict_url'];
-        $item['price']=$item['zk_final_price'];
-        $item['link']=$item['item_url'];
-        $item['quan']=$item['coupon_amount'];
+        $item['sellerId']=$item['sellerId'];
+        $item['pic_url']=$item['pic_url'];
+        $item['price']=$item['price'];
+        $item['link']=$item['link'];
+        $item['quan']=$item['quan'];
         $item['commission_rate']=$item['commission_rate'];
         $item['tk_commission_rate']=$item['commission_rate'];
-        $item['click_url']='https:'.$item['url'];
+        $item['click_url']='https:'.$item['click_url'];
         $item['volume']=$item['volume'];
-        $item['coupon_price']=$item['zk_final_price']-$item['coupon_amount'];
+        $item['coupon_price']=$item['coupon_price'];
         $item['coupon_end_time']=$item['coupon_end_time'];
         $item['ems']=2;
-        $quanurl = $item['coupon_share_url'];
+        $quanurl = $item['quanurl'];
         $item['quanurl']=$quanurl ? 'https:'.$quanurl : 'https:'.$item['url'];
-        $item['Quan_id']=$item['coupon_id'];
+        $item['Quan_id']=$item['Quan_id'];
         $item['zhuanxiang']=round($item['coupon_price']-$item['taolijin'], 2);
 		$this->assign('mdomain', str_replace('/index.php/m', '', C('yh_headerm_html')));
         $file = 'orlike_m' .  $item['id'];

@@ -42,18 +42,18 @@
 
     <div class="tabnav" id="subnav" style="background: #CE3522; padding-top: 2.5rem">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><a href="{:U('so/index',array('from'=>'tb'))}?k={$k}"  <if condition="$platform eq 'tb'">class="active"</if> >淘宝</a></div>
+            <div class="swiper-slide"><a href="{:U('so/index',array('from'=>'tb','k'=>$k))}"  <if condition="$platform eq 'tb'">class="active"</if> >淘宝</a></div>
             <if condition="C('yh_openjd') eq 1">
-            <div class="swiper-slide"><a href="{:U('so/index',array('from'=>'jd'))}?k={$k}" <if condition="$platform eq 'jd'">class="active"</if>>京东</a></div>
+            <div class="swiper-slide"><a href="{:U('so/index',array('from'=>'jd','k'=>$k))}" <if condition="$platform eq 'jd'">class="active"</if>>京东</a></div>
             </if>
                 <if condition="C('yh_openduoduo') eq 1">
-            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'pdd'))}?k={$k}" <if condition="$platform eq 'pdd'">class="active"</if>>拼多多</a></div>
+            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'pdd','k'=>$k))}" <if condition="$platform eq 'pdd'">class="active"</if>>拼多多</a></div>
             </if>
             <if condition="C('yh_vphpid')">
-            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'vph'))}?k={$k}" <if condition="$platform eq 'vph'">class="active"</if>>唯品会</a></div>
+            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'vph','k'=>$k))}" <if condition="$platform eq 'vph'">class="active"</if>>唯品会</a></div>
             </if>
             <if condition="C('yh_dm_cid_dy') eq 1">
-            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'dy'))}?k={$k}" <if condition="$platform eq 'dy'">class="active"</if> >抖音</a></div>
+            <div class="swiper-slide"><a  href="{:U('so/index',array('from'=>'dy','k'=>$k))}" <if condition="$platform eq 'dy'">class="active"</if> >抖音</a></div>
             </if>
         </div>
     </div>

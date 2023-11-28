@@ -2347,7 +2347,7 @@ public function pddlist(){
         $itemslist = $ItemMod->GoodsList(30, $sqlwhere, C('yh_index_sort'));
         //$Taolijin =  $ItemMod->GoodsList(5, ['ems'=>2], 'id desc');
 		
-		if (C('yh_taolijin')>0) {
+		/*if (C('yh_taolijin')>0) {
 			
 			$taoData = S('taolijin');
 			if($taoData){
@@ -2357,7 +2357,7 @@ public function pddlist(){
 				S('taolijin',$Taolijin);
 			}
 		
-		}
+		}*/
 		 if (C('yh_openjd')) {
 		$Jdmod = new jditemsModel();
 		$where = [

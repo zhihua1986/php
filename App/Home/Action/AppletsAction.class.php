@@ -119,7 +119,7 @@ protected function bdmenu(){
 		);
 		$data = array_merge($data,$meituan);
 		}
-
+/*
 		if(C('yh_openduoduo') == '1'){
 		$chongzhi = array(
 		array(
@@ -130,7 +130,7 @@ protected function bdmenu(){
 		);
 		$data = array_merge($data,$chongzhi);
 		}
-		
+		*/
 		return $data;
 	}
 	

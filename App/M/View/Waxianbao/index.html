@@ -183,11 +183,19 @@
 <script src="__SKIN3__/imgbox/box.min.js"></script>
 <script type="text/javascript">
     $(function(){
-        $('.goods-des').find('img').each(function(){
-            var _this = $(this);
-            var _src = _this.attr("src");
-            _this.wrap('<a data-fancybox="images" href="' + _src + '"></a>');
-        })
+
+
+        $("#list").delegate("img", "click", function() {
+
+            $('.goods-des').find('img').each(function(){
+                var _this = $(this);
+                var _src = _this.attr("src");
+                _this.wrap('<a data-fancybox="images" href="' + _src + '"></a>');
+            })
+
+        });
+
+
     })
 </script>
 <img class="tqk-totop" src="/Public/static/wap/images/icon/mescroll-totop.png" width="36" height="36" />

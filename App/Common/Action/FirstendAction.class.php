@@ -116,6 +116,7 @@ class FirstendAction extends TopAction
         if ($res && $memberinfo && $memberinfo['special_id'] < 2) {
 
             $quanurl = $res['coupon_info']?$res['quanurl']:$res['item_url'];
+            $quanurl = $quanurl.$relation;
             S($cacheName, $quanurl);
             return $quanurl;
 
@@ -125,6 +126,7 @@ class FirstendAction extends TopAction
                 $quanurl = 'https://uland.taobao.com/coupon/edetail?e=' . $me . $activityId . '&pid=' . $pid . $relation . '&af=1';
             } else {
                 $quanurl = $res['coupon_info']?$res['quanurl']:$res['item_url'];
+                $quanurl = $quanurl.$relation;
             }
             S($cacheName, $quanurl);
             return $quanurl;
@@ -248,7 +250,6 @@ class FirstendAction extends TopAction
 
             $apiurl=$this->tqkapi.'/tophot';
             $data=[
-                'key'=>$this->_userappkey,
                 'time'=>time(),
                 'tqk_uid'=>	$this->tqkuid,
             ];
@@ -733,14 +734,14 @@ class FirstendAction extends TopAction
 
     protected function Takeout()
     {
-
+/*
         if (C('yh_openjd') == 1) {
             $part1[] = [
                 'img' => 'https://img.alicdn.com/imgextra/i2/3175549857/O1CN01ZVLZFa2MgYl9OJjgs_!!3175549857.jpg',
                 'name' => '话费流量充值享折扣',
                 'url' => '/index.php?c=elm&a=chong',
             ];
-        }
+        }*/
 
         if (C('yh_dm_cid_kfc') == 1) {
             $part1[] = [
@@ -1227,6 +1228,7 @@ array(
             }
             $req->setAdzoneId($AdzoneId);
             $resp = $c->execute($req);
+
             $resp = json_decode(json_encode($resp), true);
             $resp=$resp['result_list']['map_data'];
 

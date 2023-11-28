@@ -195,8 +195,14 @@ abstract class Driver
                 return $this->getResult();
             }
         } catch (\PDOException $e) {
-            $this->error();
+
+            echo 'queryStr='.$this->queryStr.'<br/>';
+            $this->error($e->getMessage());
+          //  print "Error: " . $e->getMessage() . "<br/>";
             return false;
+
+
+//            return false;
         }
     }
 
@@ -259,8 +265,14 @@ abstract class Driver
                 return $this->numRows;
             }
         } catch (\PDOException $e) {
-            $this->error();
+
+            echo 'queryStr='.$this->queryStr.'<br/>';
+           $this->error($e->getMessage());
+          // print "Error: " . $e->getMessage() . "<br/>";
             return false;
+
+//            $this->error();
+//            return false;
         }
     }
 

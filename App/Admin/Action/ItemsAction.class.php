@@ -71,6 +71,7 @@ class ItemsAction extends BaseAction {
             //获取数据
             if (false === $data = $this->_mod->create()) {
                 $this->error($this->_mod->getError());
+                exit;
             }
 			
 		    $parse = parse_url(stripslashes(htmlspecialchars_decode($data['quanurl'])));
@@ -82,10 +83,10 @@ class ItemsAction extends BaseAction {
             }
             
              if( !$data['quanurl']||!trim($data['quanurl']) ){
-                $this->error('优惠券链接必须要填写');
+               // $this->error('优惠券链接必须要填写');
             }
-			
-			$data['link'] ='https://item.taobao.com/item.htm?id='.$data['num_iid'];
+
+			$data['link'] ='https://uland.taobao.com/item/edetail?id='.$data['num_iid'];
 			$data['Quan_id'] = $quanid?$quanid:'0';
 			$item_id = explode('-',$data['num_iid']);
 			$data['item_id'] = $item_id[1]?$item_id[1]:$data['num_iid'];
@@ -110,11 +111,14 @@ class ItemsAction extends BaseAction {
         if (IS_POST) {
             //获取数据
             if (false === $data = $this->_mod->create()) {
+
+                dump($this->_mod->getError());
+                exit;
                 $this->error($this->_mod->getError());
             }
             
              if( !$data['quanurl']||!trim($data['quanurl']) ){
-                $this->error('优惠券链接必须要填写');
+              //  $this->error('优惠券链接必须要填写');
             }
 			
 			$parse = parse_url(stripslashes(htmlspecialchars_decode($data['quanurl'])));
@@ -122,7 +126,7 @@ class ItemsAction extends BaseAction {
 			$quanid = $params['activityId'];
 			$data['Quan_id'] = $quanid?$quanid:'0';
 			$data['quanurl'] = $data['quanurl'];
-			$data['link'] ='https://item.taobao.com/item.htm?id='.$data['num_iid'];
+			$data['link'] ='https://uland.taobao.com/item/edetail?id='.$data['num_iid'];
 			$item_id = explode('-',$data['num_iid']);
 			$data['item_id'] = $item_id[1]?$item_id[1]:$data['num_iid'];
             if( !$data['cate_id']||!trim($data['cate_id']) ){

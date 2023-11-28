@@ -22,6 +22,7 @@ class TakeoutAction extends BaseAction
 		$uid = $this->memberinfo['id']?$this->memberinfo['id']:$this->GetTrackid('t');
 		if(C('yh_dm_cid_mt') == 1){
 		$LinkInfo = $this->DuomaiLink($PageInfo['id'],'https://i.meituan.com',array('euid'=>$uid?$uid:'m001'));
+
 		}else{
 		$qrcode = $this->MeituanCode($PageInfo['id'],$uid);
 		$linktype = 1;

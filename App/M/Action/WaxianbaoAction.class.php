@@ -2,7 +2,6 @@
 
 namespace M\Action;
 
-
 class WaxianbaoAction extends BaseAction
 {
 
@@ -15,11 +14,11 @@ class WaxianbaoAction extends BaseAction
     public function  index(){
 
         $tab = I('tab');
-         $this->assign('tab',$tab);
+        $this->assign('tab',$tab);
 
         $data = $this->CallApi($tab?$tab:1,20,1);
 
-          $this->assign('list',$data);
+        $this->assign('list',$data);
 
         $this->_config_seo([
             'title' => '挖掘淘宝、京东线报，购物可以省更多'.C('yh_site_name'),
@@ -28,7 +27,6 @@ class WaxianbaoAction extends BaseAction
         $this->display();
 
     }
-
 
 
     private function CallApi($topic='',$pagesize='',$page=''){
@@ -56,7 +54,7 @@ class WaxianbaoAction extends BaseAction
             $result=$this->_curl($apiurl, $data, true);
             $data=json_decode($result, true);
 
-             $result = array();
+            $result = array();
 
             foreach ($data['data']['list'] as $k=>$v){
 
@@ -71,10 +69,9 @@ class WaxianbaoAction extends BaseAction
                 $result[$k]['contentCopy'] = str_replace(array('[淘口令请转链]','CZ0001'), '', $v['contentCopy']);
 
             }
-             $data = $result;
+            $data = $result;
             S($CacheName,$data,300);
         }
-
 
         return $data;
 
@@ -106,15 +103,15 @@ class WaxianbaoAction extends BaseAction
             $data = json_decode($result, true);
 
 
-                if($data['result']){
+            if($data['result']){
 
-                    foreach ($data['result'] as $url) {
-                        $needle = '[京东请转链]';
-                        $content =   substr_replace($content,'<a target="_blank" href="'.$url.'">'.$url.'</a>',strpos($content,$needle),strlen($needle));
-                    }
-
-
+                foreach ($data['result'] as $url) {
+                    $needle = '[京东请转链]';
+                    $content =   substr_replace($content,'<a target="_blank" href="'.$url.'">'.$url.'</a>',strpos($content,$needle),strlen($needle));
                 }
+
+
+            }
 
         }
 
@@ -156,8 +153,8 @@ class WaxianbaoAction extends BaseAction
         $id = I('id');
         if (IS_POST && $id) {
 
-           $link = $this->Tbconvert($id,$this->memberinfo);
-           $kouLing = kouling('https://gw.alicdn.com/tfs/TB1lOScxDtYBeNjy1XdXXXXyVXa-540-260.png', '活动', $link);
+            $link = $this->Tbconvert($id,$this->memberinfo);
+            $kouLing = kouling('https://gw.alicdn.com/tfs/TB1lOScxDtYBeNjy1XdXXXXyVXa-540-260.png', '活动', $link);
 
             $json=[
                 'status'=>200,
@@ -169,7 +166,6 @@ class WaxianbaoAction extends BaseAction
 
 
         }
-
 
     }
 

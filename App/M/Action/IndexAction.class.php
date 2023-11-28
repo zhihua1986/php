@@ -125,33 +125,27 @@ class IndexAction extends BaseAction
                 'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01PCcjdW2MgYsptBPXb_!!3175549857.png'
             ),
             array(
+                'name' => '挖线报',
+                'tip' => '',
+                'link' => U('waxianbao/index'),
+                'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01TkmWEX2MgYuHM8Ene_!!3175549857.gif'
+            ),
+            array(
                 'name' => '人工精选',
                 'tip' => '',
                 'link' => U('tophot/index'),
                 'img' => 'https://img.alicdn.com/imgextra/i3/126947653/O1CN01FwPRPB26P7yDFxiLb_!!126947653.gif'
             ),
-           array(
-               'name' => '双11红包',
-               'tip' => '抢',
-               'link' => U('promotion/index'),
-               'img' => 'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01RgXKF82MgYuPq1qCg_!!3175549857.gif'
-           )
+//           array(
+//               'name' => '双11红包',
+//               'tip' => '抢',
+//               'link' => U('promotion/index'),
+//               'img' => 'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01RgXKF82MgYuPq1qCg_!!3175549857.gif'
+//           )
 
         ];
         if(C('yh_openjd') == 1) {
             $jd = array(
-                array(
-                    'name' => '话费充值',
-                    'tip' => '特惠',
-                    'link' => U('recharge/index'),
-                    'img' => 'https://img.alicdn.com/imgextra/i4/3175549857/O1CN01NNZXb62MgYkpHmTRi_!!3175549857.png'
-                ),
-                array(
-                    'name' => '挖线报',
-                    'tip' => '',
-                    'link' => U('waxianbao/index'),
-                    'img' => 'https://img.alicdn.com/imgextra/i1/3175549857/O1CN01TkmWEX2MgYuHM8Ene_!!3175549857.gif'
-                ),
                 array(
                     'name' => '京东',
                     'tip' => '',
@@ -287,7 +281,7 @@ class IndexAction extends BaseAction
             );
             $data = array_merge($douyin,$data);
         }
-        if(C('yh_taolijin') > 0) {
+     /*   if(C('yh_taolijin') > 0) {
             $lijin = array(
                 array(
                     'name' => '淘礼金专区',
@@ -297,7 +291,7 @@ class IndexAction extends BaseAction
                 )
             );
             $data = array_merge($lijin,$data);
-        }
+        }*/
             $other = array(
                 array(
                     'name' => '品牌券',

@@ -18,7 +18,7 @@
 				<volist name="list" id="vo">
 					<li>
 						<div class="am-cf">
-				<p class="am-serif">{$vo.goods_name}</p>
+				<p class="am-serif"><em>订单编号</em>{$vo.order_sn}</p>
 							<if condition="$vo['order_amount']">
 								<p class="am-fl"><em>付款金额</em><span class="c-main">￥{$vo.order_amount}</span></p>
 							</if>
@@ -33,8 +33,6 @@
 						<div class="am-cf">
 							<p class="am-fl"><em>付款时间</em>{$vo.order_pay_time|frienddate}</p>
 						</div>
-						<p><em>订单编号</em>{$vo.order_sn}</p>
-						
 						<if condition="$guid">
 							<p><em>预计返</em>￥{:Orebate3(array('price'=>$vo['promotion_amount'],'leve'=>$vo['leve3']))}</p>
 							

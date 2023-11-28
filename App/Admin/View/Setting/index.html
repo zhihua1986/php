@@ -24,9 +24,9 @@
         	<th>推券客采集线路 :</th>
         	 	<td>
    <select name="setting[api_line]" class="input-text radius valid" style="width: 120px;" >
-                   	<option <if condition="C('yh_api_line') eq 'http://api.tuiquanke.cn'">selected="selected"</if> value="http://api.tuiquanke.cn">华南</option>
-						<option <if condition="C('yh_api_line') eq 'http://api.tuiquanke.com'">selected="selected"</if> value="http://api.tuiquanke.com">华东</option>
-						<option <if condition="C('yh_api_line') eq 'http://hk.tuiquanke.cn'">selected="selected"</if> value="http://hk.tuiquanke.cn">香港</option>
+	   <option <if condition="C('yh_api_line') eq 'http://api.tuiquanke.com'">selected="selected"</if> value="http://api.tuiquanke.com">华东</option>
+	   <option <if condition="C('yh_api_line') eq 'http://api.tuiquanke.cn'">selected="selected"</if> value="http://api.tuiquanke.cn">华南</option>
+
 	</select>
             	<span class="gray">（请根据你的服务器所在地选择对应的线路）</span>
             </td>
@@ -455,19 +455,19 @@
          <tr>
             <th width="150">淘礼金红包补贴:</th>
             <td><input type="number" style="width: 180px;" max="100" placeholder="如：30" name="setting[taolijin]" class="input-text" value="{:C('yh_taolijin')?C('yh_taolijin'):0}" />%
-             <span class="gray ml10">说明：假如设置比例30%，如果商品佣金为10元，当用户查询淘礼金时会创建3元淘礼金红包</span>
+             <span class="gray ml10"><label class="red">⇑</label>说明：假如设置比例30%，如果商品佣金为10元，当用户查询淘礼金时会创建3元淘礼金红包</span>
             </td>
         </tr>
 		<tr>
 		       <th width="150">淘礼金补贴限额 :</th>
 		       <td><input type="text" placeholder=" 如：15" name="setting[jingpintie]" class="input-text" size="50" value="{:C('yh_jingpintie')?C('yh_jingpintie'):0}" />
-		      <span class="gray ml10">不限制最高补贴额度请填数字0 </span></td>
+		      <span class="gray ml10"><label class="red">⇑</label>不限制最高补贴额度请填数字0 </span></td>
 				</tr>
         <tr>
             <th width="150">淘礼金专属PID:</th>
             <td>
             	 <input type="text" name="setting[taolijin_pid]" placeholder="要和上面的阿里妈妈PID属于同一媒体下" class="input-text" size="50" value="{:C('yh_taolijin_pid')}" />
-             <span class="gray ml10"><font class="red">⇑</font>说明：填写PID后淘礼金订单不会给用户返利</span>
+             <span class="gray ml10"><label class="red">⇑</label>说明：填写PID后淘礼金订单不会给用户返利</span>
             </td>
         </tr>
         

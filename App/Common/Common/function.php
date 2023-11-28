@@ -94,7 +94,7 @@ function Fanli_leve1($price,$fuid,$guid)
 }
 
 
-
+/*
 function Income_leve1($res=array())
 {
    if($res['fuid']>0 && $res['guid']>0){
@@ -111,6 +111,7 @@ function Income_leve1($res=array())
 	}
 }
 
+*/
 
 
 function Fanli_leve2($price)
@@ -118,7 +119,7 @@ function Fanli_leve2($price)
    return round($price*(C('yh_bili1')/100)+$price*(C('yh_bili2')/100), 2);	
     //return round(($price*(C('yh_bili1')/100))*(C('yh_bili2')/100), 2);
 }
-
+/*
 function Income_leve2($res=array())
 {
 	return round($price*($res['leve1']/100)+$price*($res['leve2']/100), 2);	
@@ -136,7 +137,7 @@ function Fanli_leve3($price)
     return round($price*(C('yh_bili1')/100)+$price*(C('yh_bili3')/100), 2);
    //return round(($price*(C('yh_bili1')/100))*(C('yh_bili3')/100), 2);
 }
-
+*/
 function pdd_cate($key=''){
 $data=array(
 '12'=>'优惠精选',
@@ -307,7 +308,7 @@ function fftime($time){
 function changeTimeType($seconds){
 	if ($seconds>3600){
 		$hours = intval($seconds/3600);
-		$minutes = $seconds600;
+		$minutes = $seconds/60;
 		$time = $hours."时".gmstrftime('%M分%S秒', $minutes);
 	}else{
 		$time = gmstrftime('%H时%M分%S秒', $seconds);
@@ -321,6 +322,7 @@ function addslashes_deep($value) {
     $value = is_array($value) ? array_map('addslashes_deep', $value) : addslashes($value);
     return $value;
 }
+
 
 
 function stripslashes_deep($value) {
@@ -341,7 +343,7 @@ function stripslashes_deep($value) {
 function filter_default(&$value){
     $value = htmlspecialchars($value);
 }
-
+/*
 function Newiconv($_input_charset="GBK",$_output_charset="UTF-8",$input ) {
 	$output = "";
 	if(!isset($_output_charset) )$_output_charset = $this->parameter['_input_charset '];
@@ -355,7 +357,7 @@ function Newiconv($_input_charset="GBK",$_output_charset="UTF-8",$input ) {
 		else die("对不起，你的服务器系统无法进行字符转码.请联系空间商。");
 		return $output;
 }
-
+*/
 function newicon($time){
 	$date = '';
 	if (date('Y-m-d') == date('Y-m-d',$time)){
